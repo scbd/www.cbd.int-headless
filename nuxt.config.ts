@@ -9,17 +9,17 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n'
   ],
   site: { indexable: false },
-  i18n: {       
+  i18n: {
     locales: [
       { code: 'ar', iso: 'ar-SA', file: 'ar.json', dir: 'rtl' },
-      { code: 'en', iso: 'en-US', file: 'en.json'             },
-      { code: 'es', iso: 'es-ES', file: 'es.json'             },
-      { code: 'fr', iso: 'fr-FR', file: 'fr.json'             },
-      { code: 'ru', iso: 'ru-RU', file: 'ru.json'             },
-      { code: 'zh', iso: 'zh-CN', file: 'zh.json'             },
+      { code: 'en', iso: 'en-US', file: 'en.json' },
+      { code: 'es', iso: 'es-ES', file: 'es.json' },
+      { code: 'fr', iso: 'fr-FR', file: 'fr.json' },
+      { code: 'ru', iso: 'ru-RU', file: 'ru.json' },
+      { code: 'zh', iso: 'zh-CN', file: 'zh.json' },
     ],
     defaultLocale: 'en',
-    detectBrowserLanguage : {
+    detectBrowserLanguage: {
       alwaysRedirect: true,
       fallbackLocale: 'en'
     },
