@@ -1,31 +1,31 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   modules: [
-    '@pinia/nuxt',
-    'nuxt-gtag',
-    '@nuxtjs/robots',
-    '@nuxtjs/i18n',
-    '@nuxt/image',
+    "@pinia/nuxt",
+    "nuxt-gtag",
+    "@nuxtjs/robots",
+    "@nuxtjs/i18n",
+    "@nuxt/image",
   ],
   site: { indexable: false },
   i18n: {
     locales: [
-      { code: 'ar', iso: 'ar-SA', file: 'ar.json', dir: 'rtl' },
-      { code: 'en', iso: 'en-GB', file: 'en.json' },
-      { code: 'es', iso: 'es-ES', file: 'es.json' },
-      { code: 'fr', iso: 'fr-FR', file: 'fr.json' },
-      { code: 'ru', iso: 'ru-RU', file: 'ru.json' },
-      { code: 'zh', iso: 'zh-CN', file: 'zh.json' },
+      { code: "ar", iso: "ar-SA", file: "ar.json", dir: "rtl" },
+      { code: "en", iso: "en-GB", file: "en.json" },
+      { code: "es", iso: "es-ES", file: "es.json" },
+      { code: "fr", iso: "fr-FR", file: "fr.json" },
+      { code: "ru", iso: "ru-RU", file: "ru.json" },
+      { code: "zh", iso: "zh-CN", file: "zh.json" },
     ],
-    defaultLocale: 'en',
+    defaultLocale: "en",
     detectBrowserLanguage: {
       alwaysRedirect: true,
-      fallbackLocale: 'en'
+      fallbackLocale: "en",
     },
     strategy: "prefix_and_default",
-    vueI18n: './config/i18n.config.ts'
+    vueI18n: "./config/i18n.config.ts",
   },
   runtimeConfig: {
     drupalBaseUrl: "",
@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     drupalClientSecret: "",
     drupalScope: "",
     apiBaseUrl: "",
-    ortUrl: ""
+    ortUrl: "",
   },
   css: ["~/assets/scss/styles.scss"],
-})
+});
