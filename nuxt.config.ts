@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   i18n: {
     locales: [
       { code: 'ar', iso: 'ar-SA', file: 'ar.json', dir: 'rtl' },
-      { code: 'en', iso: 'en-US', file: 'en.json' },
+      { code: 'en', iso: 'en-GB', file: 'en.json' },
       { code: 'es', iso: 'es-ES', file: 'es.json' },
       { code: 'fr', iso: 'fr-FR', file: 'fr.json' },
       { code: 'ru', iso: 'ru-RU', file: 'ru.json' },
