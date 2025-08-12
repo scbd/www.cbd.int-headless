@@ -44,27 +44,9 @@
       display: flex;
       column-gap: 0.5rem;
       &::after {
-        content: url(//cbd.int.ddev.site/themes/custom/custom/cbd_int_theme/_assets/images/icon_arrow-circle-right_full.svg);
+        content: url(/images/icons/icon_arrow-circle-right_full.svg);
         display: flex;
       }
-    }
-  }
-  .gbf-target-1 {
-    --cc_gbf-target: 80, 185, 35;
-    .header {
-      background-image: url(//cbd.int.ddev.site/themes/custom/custom/cbd_int_theme/_assets/images/target-1.jpg);
-    }
-  }
-  .gbf-target-2 {
-    --cc_gbf-target: 118, 166, 6;
-    .header {
-      background-image: url(//cbd.int.ddev.site/themes/custom/custom/cbd_int_theme/_assets/images/target-2.jpg);
-    }
-  }
-  .gbf-target-3 {
-    --cc_gbf-target: 150, 192, 66;
-    .header {
-      background-image: url(//cbd.int.ddev.site/themes/custom/custom/cbd_int_theme/_assets/images/target-3.jpg);
     }
   }
 }
