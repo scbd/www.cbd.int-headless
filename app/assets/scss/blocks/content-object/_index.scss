@@ -1,4 +1,5 @@
 @use "gbf-target";
+@use "update";
 @use "search-item";
 
 .content-row {
@@ -71,10 +72,8 @@
         text-transform: capitalize;
         margin-right: 0.5rem;
         padding-right: 0.5rem;
-        box-shadow:
-          0 0.2rem inset var(--bs-body-bg),
-          0 -0.2rem inset var(--bs-body-bg),
-          -2px 0 inset var(--bs-tertiary-bg);
+        box-shadow: 0 0.2rem inset var(--bs-body-bg),
+          0 -0.2rem inset var(--bs-body-bg), -2px 0 inset var(--bs-tertiary-bg);
       }
       .type {
         text-transform: capitalize;
@@ -269,10 +268,8 @@ html:dir(rtl) {
           padding-left: 0.5rem;
           margin-right: 0;
           padding-right: 0;
-          box-shadow:
-            0 0.2rem inset var(--bs-body-bg),
-            0 -0.2rem inset var(--bs-body-bg),
-            2px 0 inset var(--bs-tertiary-bg);
+          box-shadow: 0 0.2rem inset var(--bs-body-bg),
+            0 -0.2rem inset var(--bs-body-bg), 2px 0 inset var(--bs-tertiary-bg);
         }
       }
     }
