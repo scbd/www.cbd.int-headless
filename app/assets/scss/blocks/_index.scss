@@ -1,0 +1,39 @@
+@use "cus-main";
+@use "cus-serp";
+@use "cus-footer";
+@use "navigation";
+@use "content-object";
+@use "aside";
+
+.cus-header,
+.cus-main,
+.cus-footer {
+  width: 100%;
+}
+
+.cus-landing-page,
+.cus-landing-page-protocol,
+.cus-internal-page {
+  .cus-article,
+  .region {
+    row-gap: 2rem;
+  }
+}
+
+.cus-internal-page {
+  & .main-wrapper > .container-xxl {
+    padding: 0 1rem;
+    column-gap: 2rem;
+    align-items: stretch;
+  }
+  .cus-article,
+  .cus-region {
+    padding: 0;
+    margin: 0;
+    flex: 1 2 100%;
+  }
+}
+
+.cus-article {
+  padding: 1rem;
+}

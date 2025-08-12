@@ -1,0 +1,120 @@
+.protocol-subnavigation {
+  padding: 0 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+
+  .navbar {
+    padding: 0 1rem;
+  }
+
+  .nav {
+    width: 100%;
+    flex-direction: column;
+    row-gap: 0.5rem;
+  }
+
+  .nav-item {
+    transition: box-shadow 0.25s ease-in;
+    .nav-link {
+      color: var(--bs-body-color);
+      transition:
+        color 0.25s ease-in,
+        padding-top 0.25s ease-in;
+      &.show {
+        cursor: default;
+      }
+      &:hover {
+        color: var(--cbd-content-accent);
+      }
+      &:not([href]) {
+        cursor: pointer;
+      }
+    }
+    &.current-page {
+      background-color: var(--cbd-content-accent);
+      .nav-link {
+        color: var(--bs-tertiary-color);
+        &:hover {
+          color: var(--bs-tertiary-color);
+        }
+      }
+    }
+    &.show:not(.current-page) {
+      box-shadow: 0 -0.167rem inset var(--cbd-content-accent);
+      .nav-link {
+        padding-top: 0.33rem;
+        color: var(--cbd-content-accent);
+      }
+    }
+  }
+
+  .subnav-header {
+    flex-basis: 100%;
+    display: flex;
+    column-gap: 0.5rem;
+
+    .nav-item:first-of-type:not(.current-page) {
+      .nav-link {
+        padding-left: 0;
+      }
+    }
+
+    .nav-link {
+      color: var(--cbd-content-accent);
+    }
+
+    .cbd-btn-subnavigation {
+      display: none;
+    }
+  }
+
+  .subnav-level-2-items {
+    // display: flex;
+    flex-wrap: nowrap;
+    box-shadow: 0 3px var(--cbd-content-accent);
+    .nav-item {
+      flex: 1 1 auto;
+      align-content: center;
+      .nav-link {
+        text-align: center;
+      }
+    }
+    .subnav-level-3-items {
+      display: none;
+    }
+  }
+  .subnav-level-3-items {
+    margin-top: 0.5rem;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+    &.item-overflow {
+      flex-wrap: wrap;
+      .nav-item {
+        flex-basis: 12.5%;
+      }
+    }
+    .nav-item.current-page {
+      background-color: transparent;
+      .nav-link {
+        color: var(--cbd-content-accent);
+        box-shadow: 0 -3px var(--cbd-content-accent) inset;
+      }
+    }
+    .nav-link {
+      text-align: center;
+    }
+  }
+}
+
+.subnav-level-2-items {
+  display: flex;
+}
+
+.cus-internal-page,
+.cus-serp {
+  .protocol-subnavigation {
+    padding: 2rem 0;
+    background-color: var(--bs-secondary-bg);
+  }
+}
