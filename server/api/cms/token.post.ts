@@ -1,7 +1,19 @@
-import useApiFetch from '../../../composables/use-api-fetch';
+import useApiFetch from '../../../composables/api-fetch';
 import { type drupalToken } from '../../../types/drupal-token';
+import domainCheck from '../../../utils/domain-check';
+import { getHeader } from 'h3';
 
 export default defineEventHandler(async (event) => {
+    const origin = getHeader(event, 'origin') as string;
+
+    if(!domainCheck(origin)) {
+        throw createError({
+            statusCode: 403,
+            statusMessage: 'Forbidden',
+            message: `Domain ${origin} is not allowed to access this resource.`
+        });
+    }
+
     const config = useRuntimeConfig();
 
     const method = 'POST';
