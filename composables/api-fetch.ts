@@ -43,6 +43,6 @@ export default async function useApiFetch<T>(
                 message: `Error occurred executing ${method} / ${bodyParams} request for url ${path}.`
             });
         }
-    return data.value as T
+    return data.value as T;
     }
 }
