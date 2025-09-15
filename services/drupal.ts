@@ -61,9 +61,8 @@ export default class DrupalService {
         return content;
     };
 
-    static async getMenu(id: string) {
+    static async getMenu(id: string) : Promise<Menu[]> {
         const data = await this.drupalApi.getMenu(id);
-        if(!data) { return null; }
 
         const menus: Menu[] = [];
         const items: { [ key: string ]: Menu } = {};
