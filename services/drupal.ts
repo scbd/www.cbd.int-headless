@@ -95,33 +95,6 @@ export default class DrupalService {
 
         });
 
-        // data.data.forEach(( item: any ) => {
-        //     const menuItem = items[item.id];
-        //     const parentId = item.attributes.parent;
-            
-        //     if (!parentId || parentId === '') {
-        //         menus.push(menuItem);
-        //     } else {
-        //         const parent = items[parentId];
-        //         if (parent) {
-        //             if (!parent.children) {
-        //                 parent.children = [];
-        //             }
-        //             parent.children.push(menuItem);
-        //         }
-        //     };
-        // });
-
-        // const sortPosition = ( items: Menu[] ): void => {
-        //     items.sort((a, b) => a.position - b.position);
-        //     items.forEach(item => {
-        //         if (item.children && item.children.length > 0) {
-        //             sortPosition(item.children);
-        //         }
-        //     });
-        // };
-
-        // sortPosition(menus);
         return menus;
     }
 };

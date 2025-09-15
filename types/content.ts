@@ -4,7 +4,7 @@ export interface Content {
     created: Date,
     changed: Date,
     alias: string,
-    lang: ["en"|"fr"|"es"|"zh-hans"|"ar"],
+    lang: "en"|"fr"|"es"|"zh"|"ar",
     body: string,
     summary: string,
 }

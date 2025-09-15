@@ -28,14 +28,7 @@ export default class DrupalApi extends ApiBase<DrupalApiOptions>
                 }
             });
 
-            let data = await response.json();
-
-            /*
-            // Move this to the service.
-            data = Deserializer(data).map((item: any) => {
-                return _.mapKeys(item, (key) => _.camelCase(key));
-            });
-            */
+            const data = await response.json();
 
             return data;
 
@@ -65,16 +58,9 @@ export default class DrupalApi extends ApiBase<DrupalApiOptions>
 
             let data = await response.json();
 
-            /*
-            data = Deserializer(data).map((item: any) => {
-                return _.mapKeys(item, (key) => _.camelCase(key));
-            });
-            */
-
             return data;
 
         } catch (error: any) {
-            // Replace the function with api-error.ts from Kronos
             throw createError({
                 statusCode: error.statusCode || error.value?.statusCode || 500,
                 statusMessage: error.value?.data || error.value,
@@ -100,16 +86,9 @@ export default class DrupalApi extends ApiBase<DrupalApiOptions>
 
             let data = await response.json();
 
-            /*
-            data = Deserializer(data).map((item: any) => {
-                return _.mapKeys(item, (key) => _.camelCase(key));
-            });
-            */
-
             return data;
 
         } catch (error: any) {
-            // Replace the function with api-error.ts from Kronos
             throw createError({
                 statusCode: error.statusCode || error.value?.statusCode || 500,
                 statusMessage: error.value?.data || error.value,
@@ -140,17 +119,9 @@ export default class DrupalApi extends ApiBase<DrupalApiOptions>
 
             let data = await response.json();
 
-            /*
-            // Move this to the service.
-            data = Deserializer(data).map((item: any) => {
-                return _.mapKeys(item, (key) => _.camelCase(key));
-            });
-            */
-
             return data.data;
 
         } catch (error: any) {
-            // Replace the function with api-error.ts from Kronos
             throw createError({
                 statusCode: error.statusCode || error.value?.statusCode || 500,
                 statusMessage: error.value?.data || error.value,

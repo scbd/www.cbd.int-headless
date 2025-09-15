@@ -31,9 +31,8 @@ export default defineNuxtConfig({
     drupalClientId: "",
     drupalClientSecret: "",
     drupalScope: "",
-    gaiaBaseUrl: "",
-    ortUrl: "",
-    solrUrl: ""
+    apiBaseUrl: "",
+    ortUrl: ""
   },
   css: ["~/assets/scss/styles.scss"],
 })
