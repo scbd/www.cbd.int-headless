@@ -3,7 +3,7 @@ export interface Menu {
     url: string,
     position: number,
     submenu?: string,
-    composable?: string,
+    component?: string,
     icon?: string,
     children?: Menu[]
 }

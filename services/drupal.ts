@@ -74,7 +74,7 @@ export default class DrupalService {
                 position: weight,
                 submenu: options?.attributes?.submenu,
                 icon: options?.attributes?.icon,
-                composable: options?.attributes?.component,
+                component: options?.attributes?.component,
                 children: []
             };
 
