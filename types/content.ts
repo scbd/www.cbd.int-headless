@@ -1,8 +1,8 @@
 export interface Content {
     title: string,
     bundle: string,
-    created: Date,
-    changed: Date,
+    createdDate: Date,
+    changedDate: Date,
     alias: string,
     lang: "en"|"fr"|"es"|"zh"|"ar",
     body: string,
@@ -10,11 +10,9 @@ export interface Content {
 }
 
 export interface Article extends Content {
-    image: {
-        filename: string,
+    coverImage: {
         path: string,
         alt: string,
-        title: string,
         width: number,
         height: number
     },

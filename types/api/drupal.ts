@@ -1,5 +1,4 @@
-import { ApiOptions } from "./api-options"
-export interface DrupalApiOptions extends ApiOptions {
+export interface DrupalApiOptions {
     drupalBaseUrl: string,
     drupalClientId: string,
     drupalClientSecret: string,

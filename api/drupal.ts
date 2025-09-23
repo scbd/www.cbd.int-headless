@@ -1,131 +1,49 @@
-import _ from "lodash";
-import ApiBase from "./api-base";
-import { createError } from "h3";
+import ApiBase from "api-client/api-base";
+import { badRequest, handleError } from "api-client/api-error";
 import { DrupalApiOptions } from "../types/api/drupal";
-
-export default class DrupalApi extends ApiBase<DrupalApiOptions>
+export default class DrupalApi extends ApiBase
 {
     constructor(config: DrupalApiOptions) {
-        super(config);
+        super({
+            ...config,
+            baseURL: config.drupalBaseUrl,
+            onResponseError: handleError
+        })
     };
 
     async getRoute(path: string) {
         if(!path) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: `Bad request. Parameter path is required.`,
-            });
+            throw badRequest("Parameter path is required.");
         };
         
-        try {
-            const url = new URL(`${this.config.drupalBaseUrl}/router/translate-path`);
-            url.searchParams.append('path', path);
-            
-            const response = await fetch(url.toString(), {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            const data = await response.json();
-
-            return data;
-
-        } catch (error: any) {
-            throw createError({
-                statusCode: error.statusCode || error.value?.statusCode || 500,
-                statusMessage: error.value?.data || error.value,
-            });
-        };
+        const data = await this.fetch(`/router/translate-path?path=${encodeURIComponent(path)}`);
+        return data;
     };
 
     async getContent(id: string, type: string) {
         if(!id || !type) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: `Bad request. Parameters url and type are required.`,
-            });
+            throw badRequest("Parameters id and type are required.");
         };
 
-        try {
-            const response = await fetch(`${this.config.drupalBaseUrl}/jsonapi/node/${type}/${id}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            let data = await response.json();
-
-            return data;
-
-        } catch (error: any) {
-            throw createError({
-                statusCode: error.statusCode || error.value?.statusCode || 500,
-                statusMessage: error.value?.data || error.value,
-            });
-        };
+        const data = await this.fetch(`/jsonapi/node/${encodeURIComponent(type)}/${encodeURIComponent(id)}`);
+        return data;
     };
 
     async getMedia(id: string) {
         if(!id) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: `Bad request. Parameters url is required.`,
-            });
+            throw badRequest("Parameters id and type are required.");
         };
 
-        try {
-            const response = await fetch(`${this.config.drupalBaseUrl}/jsonapi/file/file/${id}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            let data = await response.json();
-
-            return data;
-
-        } catch (error: any) {
-            throw createError({
-                statusCode: error.statusCode || error.value?.statusCode || 500,
-                statusMessage: error.value?.data || error.value,
-            });
-        };
+        const data = await this.fetch(`/jsonapi/file/file/${encodeURIComponent(id)}`);
+        return data;
     };
 
-    async getMenu(menu: string, limit?: string) {
+    async getMenu(menu: string) {
         if(!menu) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: `Bad request. Parameter menu is required.`,
-            });
+            throw badRequest("Parameter menu is required.");
         };
 
-        if(!limit) limit = '100';
-
-        try {
-            const url = new URL(`${this.config.drupalBaseUrl}/jsonapi/menu_items/${menu}`);
-            url.searchParams.append('page[limit]', limit);
-            
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            let data = await response.json();
-
-            return data.data;
-
-        } catch (error: any) {
-            throw createError({
-                statusCode: error.statusCode || error.value?.statusCode || 500,
-                statusMessage: error.value?.data || error.value,
-            });
-        };
+        const { data } = await this.fetch(`/jsonapi/menu_items/${encodeURIComponent(menu)}`);
+        return data;
     };
 };

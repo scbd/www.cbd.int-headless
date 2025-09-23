@@ -16,6 +16,7 @@
     "@popperjs/core": "^2.11.8",
     "@types/bootstrap": "^5.2.10",
     "@types/jsonapi-serializer": "^3.6.8",
+    "api-client": "github:scbd/api-client",
     "bootstrap": "5.3.7",
     "jsonapi-serializer": "^3.6.9",
     "jwt-decode": "^4.0.0",

@@ -20,8 +20,8 @@ export default class DrupalService {
         const content : Content = {
             bundle: route.entity.bundle,
             title: attributes.title,
-            created: attributes.created,
-            changed: attributes.changed,
+            createdDate: attributes.created,
+            changedDate: attributes.changed,
             alias: attributes.path.alias,
             lang: attributes.path.langcode,
             body: attributes.body.processed,
@@ -38,21 +38,18 @@ export default class DrupalService {
             const article = content as Article;
             const { field_image } = drupalContent.data.relationships;
 
-            article.image =  {
+            article.coverImage =  {
                 alt : field_image.data.meta.alt,
-                title : field_image.data.meta.title,
                 width : field_image.data.meta.width,
                 height : field_image.data.meta.height,
-                filename : '',
                 path : ''
             };
 
             const media = await this.drupalApi.getMedia(drupalContent.data.relationships.field_image.data.id);
 
             if(media) {
-                article.image = {
-                    ...article.image,
-                    filename: media.data.attributes.filename,
+                article.coverImage = {
+                    ...article.coverImage,
                     path: media.data.attributes.uri.url,
                 };
             };
@@ -87,13 +84,11 @@ export default class DrupalService {
                 const parent = items[parentId];
 
                 parent.children?.push(menuItem);
-            }
-            else{
+            } else {
                 menus.push(menuItem);
             }
-
         });
 
         return menus;
-    }
+    };
 };
