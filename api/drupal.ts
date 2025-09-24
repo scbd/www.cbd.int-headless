@@ -22,7 +22,7 @@ export default class DrupalApi extends ApiBase
 
     async getContent(id: string, type: string) {
         if(!id || !type) {
-            throw badRequest("Parameters id and type are required.");
+            throw badRequest("Parameter id and type are required.");
         };
 
         const data = await this.fetch(`/jsonapi/node/${encodeURIComponent(type)}/${encodeURIComponent(id)}`);
