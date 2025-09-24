@@ -1,20 +1,20 @@
-import type { ELstring } from "../types/schemas/base/ELstring";
+import type lstring from "api-client/types/lstring";
 export interface Notification {
     id: string,
     notificationCode: string,
-    title: ELstring[],
+    title: lstring,
     url: string[],
-    themes: ELstring[],
+    themes: lstring,
     createdDate: Date,
     endDate: Date,
     updatedDate: Date,
     actionDate: Date,
     deadlineDate: Date,
     reference: string,
-    fulltext: ELstring[],
-    from: ELstring[],
+    fulltext: lstring,
+    from: lstring,
     sender: string,
-    recipient: ELstring[],
+    recipient: lstring,
 };
 
 export interface NotificationMetadata {

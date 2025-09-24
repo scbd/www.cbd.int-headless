@@ -1,4 +1,4 @@
-import { badRequest, notFound } from "api-client/api-error";
+import { notFound, mandatory } from "api-client/api-error";
 import SolrIndexAPI from "../api/solr-index";
 import { solrEscape } from "../utils/solr";
 import { SolrQuery } from "../types/api/solr";
@@ -12,7 +12,7 @@ export default class MeetingService {
 
     static async getMeeting(meetingCode: string, extraParams?: SolrQuery) : Promise<Meeting> {
         if(!meetingCode) {
-            throw badRequest("Parameter meetingCode is required.");
+            throw mandatory(meetingCode, "meetingCode");
         };
 
         const params : SolrQuery = 

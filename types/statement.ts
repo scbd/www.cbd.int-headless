@@ -1,14 +1,13 @@
-import type { ELstring } from "../types/schemas/base/ELstring";
+import type lstring from "api-client/types/lstring";
 export interface Statement {
     id: string,
     statementCode: string,
-    title: ELstring[],
+    title: lstring,
     url: string[],
-    themes: ELstring[],
+    themes: lstring,
     createdDate: Date,
     updatedDate: Date,
 };
-
 export interface StatementMetadata {
     total: number,
     start: number

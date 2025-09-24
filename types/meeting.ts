@@ -1,17 +1,16 @@
-import type { ELstring } from "../types/schemas/base/ELstring";
+import type lstring from "api-client/types/lstring";
 export interface Meeting {
     id: string,
     meetingCode: string,
-    title: ELstring[],
+    title: lstring,
     url: string[],
-    themes: ELstring[],
+    themes: lstring,
     startDate: Date,
     endDate: Date,
     updatedDate: Date,
-    country: ELstring[],
-    city: ELstring[]
+    country: lstring,
+    city: lstring
 };
-
 export interface MeetingMetadata {
     total: number,
     start: number

@@ -1,5 +1,5 @@
 import ApiBase from "api-client/api-base";
-import { badRequest, handleError } from "api-client/api-error";
+import { mandatory, handleError } from "api-client/api-error";
 import { DrupalApiOptions } from "../types/api/drupal";
 export default class DrupalApi extends ApiBase
 {
@@ -13,16 +13,19 @@ export default class DrupalApi extends ApiBase
 
     async getRoute(path: string) {
         if(!path) {
-            throw badRequest("Parameter path is required.");
+            throw mandatory(path, "Parameter path is required.");
         };
         
-        const data = await this.fetch(`/router/translate-path?path=${encodeURIComponent(path)}`);
+        const query = { path };
+        const data = await this.fetch(`/router/translate-path`, { query });
         return data;
     };
 
     async getContent(id: string, type: string) {
-        if(!id || !type) {
-            throw badRequest("Parameter id and type are required.");
+        if(!id) {
+            throw mandatory(id, "Parameter id is required.");
+        } else if(!type) {
+            throw mandatory(id, "Parameter type is required.");
         };
 
         const data = await this.fetch(`/jsonapi/node/${encodeURIComponent(type)}/${encodeURIComponent(id)}`);
@@ -31,7 +34,7 @@ export default class DrupalApi extends ApiBase
 
     async getMedia(id: string) {
         if(!id) {
-            throw badRequest("Parameters id and type are required.");
+            throw mandatory(id, "Parameter id is required.");
         };
 
         const data = await this.fetch(`/jsonapi/file/file/${encodeURIComponent(id)}`);
@@ -40,7 +43,7 @@ export default class DrupalApi extends ApiBase
 
     async getMenu(menu: string) {
         if(!menu) {
-            throw badRequest("Parameter menu is required.");
+            throw mandatory(menu, "Parameter menu is required.");
         };
 
         const { data } = await this.fetch(`/jsonapi/menu_items/${encodeURIComponent(menu)}`);
