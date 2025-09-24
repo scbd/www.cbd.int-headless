@@ -15,17 +15,17 @@ export default class DrupalService {
     static async getContent(url: string) : Promise<Content | Page | Article> {
         const route = await this.drupalApi.getRoute(url);
         const drupalContent = await this.drupalApi.getContent(route.entity.uuid, route.entity.bundle);
-        const { attributes } = drupalContent.data;
+        const { attributes } = drupalContent?.data;
 
         const content : Content = {
-            bundle: route.entity.bundle,
-            title: attributes.title,
-            createdDate: attributes.created,
-            changedDate: attributes.changed,
-            alias: attributes.path.alias,
-            lang: attributes.path.langcode,
-            body: attributes.body.processed,
-            summary: attributes.body.summary,
+            bundle: route?.entity?.bundle,
+            title: attributes?.title,
+            createdDate: attributes?.created,
+            changedDate: attributes?.changed,
+            alias: attributes?.path?.alias,
+            lang: attributes?.path?.langcode,
+            body: attributes?.body?.processed,
+            summary: attributes?.body?.summary,
         };
 
         if(route.entity.bundle == 'page') { 
@@ -36,12 +36,12 @@ export default class DrupalService {
 
         if(route.entity.bundle == 'article') { 
             const article = content as Article;
-            const { field_image } = drupalContent.data.relationships;
+            const { field_image } = drupalContent?.data?.relationships;
 
             article.coverImage =  {
-                alt : field_image.data.meta.alt,
-                width : field_image.data.meta.width,
-                height : field_image.data.meta.height,
+                alt : field_image?.data?.meta?.alt,
+                width : field_image?.data?.meta?.width,
+                height : field_image?.data?.meta?.height,
                 path : ''
             };
 
@@ -50,7 +50,7 @@ export default class DrupalService {
             if(media) {
                 article.coverImage = {
                     ...article.coverImage,
-                    path: media.data.attributes.uri.url,
+                    path: media?.data?.attributes?.uri?.url,
                 };
             };
         };
@@ -65,7 +65,7 @@ export default class DrupalService {
         const items: { [ key: string ]: Menu } = {};
 
         data.forEach(( item: any ) => {
-            const { title, url, weight, options } = item.attributes;
+            const { title, url, weight, options } = item?.attributes;
             const parentId = item.attributes.parent;
 
             const menuItem: Menu = {

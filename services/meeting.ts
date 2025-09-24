@@ -1,6 +1,6 @@
 import { badRequest, notFound } from "api-client/api-error";
 import SolrIndexAPI from "../api/solr-index";
-import { solrEscape } from "../utils/string";
+import { solrEscape } from "../utils/solr";
 import { SolrQuery } from "../types/api/solr";
 import { Meeting, MeetingList } from "../types/meeting";
 

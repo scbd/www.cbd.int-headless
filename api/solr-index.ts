@@ -2,7 +2,7 @@ import ApiBase from "api-client/api-base";
 import { handleError } from "api-client/api-error";
 import { SolrQuery } from "../types/api/solr";
 import { Api } from "../types/api/api";
-import { localizeFields } from "../utils/string";
+import { localizeFields } from "../utils/solr";
 
 export default class SolrIndexAPI extends ApiBase {
 
