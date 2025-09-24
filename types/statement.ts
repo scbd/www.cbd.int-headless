@@ -1,23 +1,10 @@
+import type { ELstring } from "../types/schemas/base/ELstring";
 export interface Statement {
     id: string,
     statementCode: string,
-    title: {
-        en: string,
-        fr?: string,
-        es?: string,
-        ru?: string,
-        zh?: string,
-        ar?: string
-    },
+    title: ELstring[],
     url: string[],
-    themes: {
-        en: string[],
-        fr?: string[],
-        es?: string[],
-        ru?: string[],
-        zh?: string[],
-        ar?: string[]
-    },
+    themes: ELstring[],
     createdDate: Date,
     updatedDate: Date,
 };

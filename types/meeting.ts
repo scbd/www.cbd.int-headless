@@ -1,42 +1,15 @@
+import type { ELstring } from "../types/schemas/base/ELstring";
 export interface Meeting {
     id: string,
     meetingCode: string,
-    title: {
-        en: string,
-        fr?: string,
-        es?: string,
-        ru?: string,
-        zh?: string,
-        ar?: string
-    },
+    title: ELstring[],
     url: string[],
-    themes: {
-        en: string[],
-        fr?: string[],
-        es?: string[],
-        ru?: string[],
-        zh?: string[],
-        ar?: string[]
-    },
+    themes: ELstring[],
     startDate: Date,
     endDate: Date,
     updatedDate: Date,
-    country: {
-        en: string,
-        fr?: string,
-        es?: string,
-        ru?: string,
-        zh?: string,
-        ar?: string
-    },
-    city: {
-        en: string,
-        fr?: string,
-        es?: string,
-        ru?: string,
-        zh?: string,
-        ar?: string
-    }
+    country: ELstring[],
+    city: ELstring[]
 };
 
 export interface MeetingMetadata {

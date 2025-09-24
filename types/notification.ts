@@ -1,47 +1,20 @@
+import type { ELstring } from "../types/schemas/base/ELstring";
 export interface Notification {
     id: string,
     notificationCode: string,
-    title: {
-        en: string,
-        fr?: string,
-        es?: string,
-        ru?: string,
-        zh?: string,
-        ar?: string
-    },
+    title: ELstring[],
     url: string[],
-    themes: {
-        en: string[],
-        fr?: string[],
-        es?: string[],
-        ru?: string[],
-        zh?: string[],
-        ar?: string[]
-    },
+    themes: ELstring[],
     createdDate: Date,
     endDate: Date,
     updatedDate: Date,
     actionDate: Date,
     deadlineDate: Date,
     reference: string,
-    fulltext: {
-        en: string,
-        fr?: string,
-        es?: string,
-        ru?: string,
-        zh?: string,
-        ar?: string
-    },
-    from: {
-        en: string,
-        fr?: string,
-        es?: string,
-        ru?: string,
-        zh?: string,
-        ar?: string
-    },
+    fulltext: ELstring[],
+    from: ELstring[],
     sender: string,
-    recipient: string[]
+    recipient: ELstring[],
 };
 
 export interface NotificationMetadata {
