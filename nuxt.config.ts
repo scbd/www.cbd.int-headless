@@ -3,11 +3,11 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   modules: [
-    "@pinia/nuxt",
-    "nuxt-gtag",
-    "@nuxtjs/robots",
-    "@nuxtjs/i18n",
-    "@nuxt/image",
+    '@pinia/nuxt',
+    'nuxt-gtag',
+    '@nuxtjs/robots',
+    '@nuxtjs/i18n',
+    '@nuxt/image',
   ],
   site: { indexable: false },
   i18n: {
