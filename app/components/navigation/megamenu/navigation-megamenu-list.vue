@@ -26,7 +26,7 @@
       </NuxtLink>
 
       <ul v-if="menuItem.children" class="level-3-items nav">
-        <NavigationMegamenuListitem :menuItem="menuItem" />
+        <navigation-megamenu-listitem :menuItem="menuItem" />
       </ul>
     </li>
   </div>

@@ -1,8 +1,8 @@
 <template>
   <header class="cus-navigation">
     <nav class="navbar navbar-expand-xl d-flex flex-column">
-      <NavigationOptions />
-      <NavigationMegamenu />
+      <navigation-options />
+      <navigation-megamenu />
     </nav>
   </header>
 </template>

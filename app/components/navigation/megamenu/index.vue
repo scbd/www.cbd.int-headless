@@ -1,6 +1,6 @@
 <template>
   <div class="cus-mega-menu container-fluid" role="navigation">
-    <NavigationBranding />
+    <navigation-branding />
 
     <button
       class="navbar-toggler"
@@ -118,7 +118,7 @@
             {{ childMenuItem.title }}
           </NuxtLink>
 
-          <NavigationMegamenuDrawer :menuItem="childMenuItem" />
+          <navigation-megamenu-drawer :menuItem="childMenuItem" />
         </li>
       </ul>
     </div>
