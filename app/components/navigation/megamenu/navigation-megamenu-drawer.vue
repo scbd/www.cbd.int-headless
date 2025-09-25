@@ -12,13 +12,13 @@
       </li>
 
       <template v-if="menuItem.submenu">
-        <NavigationMegamenuList
+        <navigation-megamenu-list
           :submenu="menuItem.submenu"
           class="level-2-items"
         />
       </template>
     </ul>
-    <NavigationMegamenuSocialmedia />
+    <navigation-megamenu-socialmedia />
   </nav>
 </template>
 
