@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'nuxt-gtag',
     '@nuxtjs/robots',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    '@nuxt/image',
   ],
   site: { indexable: false },
   i18n: {
