@@ -1,35 +1,33 @@
 import ApiBase from "api-client/api-base";
 import { handleError } from "api-client/api-error";
-import { SolrQuery } from "../types/api/solr";
-import { Api } from "../types/api/api";
+import type { SolrQuery } from "../types/api/solr";
 import { localizeFields } from "../utils/solr";
 
-export default class SolrIndexAPI extends ApiBase {
+export default class SolrIndexApi extends ApiBase {
 
-    constructor( config: Api ) {
+    constructor(options: {baseURL: string}) {
         super({
-            ...config,
-            baseURL: config.apiBaseUrl,
-            onResponseError: handleError
+            ...options,
+            onResponseError: handleError // TODO: mix with api-base/concatInterceptors
         })
     };
 
     async querySolr(params: SolrQuery) {
 
         const defaults = {
-            fieldQueries: [],
-            searchField : 'text_EN_txt',
+            fieldQueries: '',
+            searchField : "text_EN_txt",
             start : 0, rowsPerPage : 25
         };
 
-        params = {...defaults, ...params };
+        params = { ...defaults, ...params };
 
         var queryListParameters = {
             df    : params.searchField,
             fq    : params.fieldQueries,
             q     : params.query,
-            sort  : localizeFields(params.sort),
-            fl    : localizeFields(params.fields),
+            sort  : localizeFields(params.sort || ""),
+            fl    : localizeFields(params.fields || ""),
             wt    : "json",
             start : params.start,
             rows  : params.rowsPerPage,
@@ -38,5 +36,4 @@ export default class SolrIndexAPI extends ApiBase {
         const data = await this.fetch(`/api/v2013/index/select`, { method : "POST", body : queryListParameters });
         return data;
     };
-
 };

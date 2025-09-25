@@ -1,6 +1,6 @@
 import DrupalApi from "../api/drupal";
-import { Content, Article, Page } from "../types/content";
-import { Menu } from "../types/menu";
+import type { Content, Article, Page } from "../types/content";
+import type { Menu } from "../types/menu";
 export default class DrupalService {
 
     private static drupalApi = new DrupalApi(
@@ -83,7 +83,7 @@ export default class DrupalService {
             if(parentId) {
                 const parent = items[parentId];
 
-                parent.children?.push(menuItem);
+                parent?.children?.push(menuItem);
             } else {
                 menus.push(menuItem);
             }

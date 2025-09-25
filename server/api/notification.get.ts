@@ -1,5 +1,5 @@
-import { Notification, NotificationList } from "../../types/notification";
 import NotificationService from "../../services/notification";
+import type { Notification, NotificationList } from "../../types/notification";
 
 export default defineEventHandler(async (event) => {
     const { notificationCode } = getQuery(event) as { notificationCode: string };

@@ -1,6 +1,6 @@
 import ApiBase from "api-client/api-base";
 import { mandatory, handleError } from "api-client/api-error";
-import { DrupalApiOptions } from "../types/api/drupal";
+import type { DrupalApiOptions } from "../types/api/drupal";
 export default class DrupalApi extends ApiBase
 {
     constructor(config: DrupalApiOptions) {

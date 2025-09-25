@@ -1,13 +1,13 @@
 import { badRequest, notFound } from "api-client/api-error";
-import SolrIndexAPI from "../api/solr-index";
+import SolrIndexApi from "../api/solr-index";
 import { solrEscape } from "../utils/solr";
-import { SolrQuery } from "../types/api/solr";
-import { Notification, NotificationList } from "../types/notification";
+import type { SolrQuery } from "../types/api/solr";
+import type { Notification, NotificationList } from "../types/notification";
 
 export default class NotificationService {
 
-    private static api = new SolrIndexAPI({
-        apiBaseUrl: useRuntimeConfig().apiBaseUrl as string
+    private static api = new SolrIndexApi({
+        baseURL: useRuntimeConfig().apiBaseUrl,
     });
 
     static async getNotification(notificationCode: string, extraParams?: SolrQuery) : Promise<Notification> {
@@ -17,7 +17,8 @@ export default class NotificationService {
 
         const params : SolrQuery = 
         {
-            query : `schema_s:notification AND symbol_s:${solrEscape(notificationCode)} AND _state_s:public`,
+            fieldQueries : `schema_s:notification AND symbol_s:${solrEscape(notificationCode)} AND _state_s:public`,
+            query : "*:*",
             sort : "updatedDate_dt DESC",
             fields : "id,symbol_s,title_*_s,url_ss,from_*_s,sender_s,themes_*_ss,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_s, fulltext_*_s,recipient_ss",
             rowsPerPage : 1,

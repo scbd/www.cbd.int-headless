@@ -1,23 +1,24 @@
 import { notFound, mandatory } from "api-client/api-error";
-import SolrIndexAPI from "../api/solr-index";
+import SolrIndexApi from "../api/solr-index";
 import { solrEscape } from "../utils/solr";
-import { SolrQuery } from "../types/api/solr";
-import { Meeting, MeetingList } from "../types/meeting";
+import type { SolrQuery } from "../types/api/solr";
+import type { Meeting, MeetingList } from "../types/meeting";
 
 export default class MeetingService {
 
-    private static api = new SolrIndexAPI({
-        apiBaseUrl: useRuntimeConfig().apiBaseUrl as string
+    private static api = new SolrIndexApi({
+        baseURL: useRuntimeConfig().apiBaseUrl,
     });
 
     static async getMeeting(meetingCode: string, extraParams?: SolrQuery) : Promise<Meeting> {
         if(!meetingCode) {
-            throw mandatory(meetingCode, "meetingCode");
+            throw mandatory(meetingCode, "Parameter meetingCode is required.");
         };
 
         const params : SolrQuery = 
         {
-            query : `schema_s:meeting AND symbol_s:${solrEscape(meetingCode)} AND status_s:CONFIRM`,
+            fieldQueries : `schema_s:meeting AND symbol_s:${solrEscape(meetingCode)} AND status_s:CONFIRM`,
+            query : "*:*",
             sort : "updatedDate_dt DESC",
             fields : "id,symbol_s,title_*_s,eventCountry_*_s,eventCity_*_s,url_ss,themes_*_ss,startDate_dt,endDate_dt,updatedDate_dt",
             rowsPerPage : 1,

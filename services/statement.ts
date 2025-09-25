@@ -1,13 +1,13 @@
 import { badRequest, notFound } from "api-client/api-error";
-import SolrIndexAPI from "../api/solr-index";
+import SolrIndexApi from "../api/solr-index";
 import { solrEscape } from "../utils/solr";
-import { SolrQuery } from "../types/api/solr";
-import { Statement, StatementList } from "../types/statement";
+import type { SolrQuery } from "../types/api/solr";
+import type { Statement, StatementList } from "../types/statement";
 
 export default class StatementService {
 
-    private static api = new SolrIndexAPI({
-        apiBaseUrl: useRuntimeConfig().apiBaseUrl as string
+    private static api = new SolrIndexApi({
+        baseURL: useRuntimeConfig().apiBaseUrl,
     });
 
     static async getStatement(statementCode: string, extraParams?: SolrQuery) : Promise<Statement> {
@@ -17,7 +17,8 @@ export default class StatementService {
 
         const params : SolrQuery = 
         {
-            query : `schema_s:statement AND symbol_s:${solrEscape(statementCode)} AND _state_s:public`,
+            fieldQueries : `schema_s:statement AND symbol_s:${solrEscape(statementCode)} AND _state_s:public`,
+            query : "*:*",
             sort : "updatedDate_dt DESC",
             fields : "id,symbol_s,title_*_s,url_ss,themes_*_ss,createdDate_dt,updatedDate_dt",
             rowsPerPage : 1,

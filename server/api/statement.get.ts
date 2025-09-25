@@ -1,5 +1,5 @@
-import { Statement, StatementList } from "../../types/statement";
 import StatementService from "../../services/statement";
+import type { Statement, StatementList } from "../../types/statement";
 
 export default defineEventHandler(async (event) => {
     const { statementCode } = getQuery(event) as { statementCode: string };
