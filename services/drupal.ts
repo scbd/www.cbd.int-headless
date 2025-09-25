@@ -20,8 +20,8 @@ export default class DrupalService {
         const content : Content = {
             bundle: route?.entity?.bundle,
             title: attributes?.title,
-            createdDate: attributes?.created,
-            changedDate: attributes?.changed,
+            createdOn: attributes?.created,
+            changedOn: attributes?.changed,
             alias: attributes?.path?.alias,
             lang: attributes?.path?.langcode,
             body: attributes?.body?.processed,

@@ -3,9 +3,14 @@ import MeetingService from "../../services/meeting";
 
 export default defineEventHandler(async (event) => {
     const { meetingCode } = getQuery(event) as { meetingCode: string };
-    if(!meetingCode) { 
-        return await MeetingService.listMeetings() as MeetingList;
-    } else {
-        return await MeetingService.getMeeting(meetingCode) as Meeting;
-    };
+    const { sort } = getQuery(event) as { sort: string };
+    const { rowsPerPage } = getQuery(event) as { rowsPerPage: number };
+    const { start } = getQuery(event) as { start: number };
+    
+    return await MeetingService.listMeetings(
+        meetingCode,
+        sort, 
+        rowsPerPage, 
+        start
+    ) as MeetingList;
 });

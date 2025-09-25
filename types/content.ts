@@ -1,8 +1,8 @@
 export interface Content {
     title: string,
     bundle: string,
-    createdDate: Date,
-    changedDate: Date,
+    createdOn: Date,
+    changedOn: Date,
     alias: string,
     lang: "en"|"fr"|"es"|"zh"|"ar",
     body: string,

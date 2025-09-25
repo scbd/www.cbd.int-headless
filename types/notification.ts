@@ -4,22 +4,20 @@ export interface Notification {
     notificationCode: string,
     title: lstring,
     url: string[],
-    themes: lstring,
-    createdDate: Date,
-    endDate: Date,
-    updatedDate: Date,
-    actionDate: Date,
-    deadlineDate: Date,
+    themes: lstring[],
+    createdOn: Date,
+    endOn: Date,
+    updatedOn: Date,
+    actionOn: Date,
+    deadlineOn: Date,
     reference: string,
     fulltext: lstring,
     from: lstring,
     sender: string,
-    recipient: lstring,
+    recipient: string[],
 };
 
-export interface NotificationMetadata {
-    total: number,
-    start: number
+export interface NotificationList {
+    rows: Notification[],
+    total: number
 };
-
-export type NotificationList = (Notification | NotificationMetadata)[];

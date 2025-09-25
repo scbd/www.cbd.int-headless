@@ -4,16 +4,14 @@ export interface Meeting {
     meetingCode: string,
     title: lstring,
     url: string[],
-    themes: lstring,
-    startDate: Date,
-    endDate: Date,
-    updatedDate: Date,
+    themes: lstring[],
+    startOn: Date,
+    endOn: Date,
+    updatedOn: Date,
     country: lstring,
     city: lstring
 };
-export interface MeetingMetadata {
-    total: number,
-    start: number
-};
-
-export type MeetingList = (Meeting | MeetingMetadata)[];
+export interface MeetingList {
+    rows: Meeting[],
+    total: number
+}

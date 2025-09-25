@@ -4,13 +4,14 @@ export interface Statement {
     statementCode: string,
     title: lstring,
     url: string[],
-    themes: lstring,
-    createdDate: Date,
-    updatedDate: Date,
+    themes: lstring[],
+    createdOn: Date,
+    updatedOn: Date,
 };
 export interface StatementMetadata {
-    total: number,
-    start: number
+    total: number
 };
-
-export type StatementList = (Statement | StatementMetadata)[];
+export interface StatementList {
+    rows: Statement[],
+    total: number
+}
