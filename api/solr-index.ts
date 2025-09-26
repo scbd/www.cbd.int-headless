@@ -22,7 +22,7 @@ export default class SolrIndexApi extends ApiBase {
 
         params = { ...defaults, ...params };
 
-        var queryListParameters = {
+        const queryListParameters = {
             df    : params.searchField,
             fq    : params.fieldQueries,
             q     : params.query,
