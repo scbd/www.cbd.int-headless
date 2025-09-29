@@ -4,14 +4,9 @@ import type { Content, Article, Page } from "../types/content";
 import type { Menu } from "../types/menu";
 export default class DrupalService {
 
-    private static drupalApi = new DrupalApi(
-        {
-            drupalBaseUrl: useRuntimeConfig().drupalBaseUrl as string,
-            drupalClientId: useRuntimeConfig().drupalClientId as string,
-            drupalClientSecret: useRuntimeConfig().drupalClientSecret as string,
-            drupalScope: useRuntimeConfig().drupalScope as string
-        }
-    );
+    private static drupalApi = new DrupalApi({
+        baseURL: useRuntimeConfig().drupalBaseUrl
+    });
 
     static async getContent(url: string) : Promise<Content | Page | Article> {
         const route = await this.drupalApi.getRoute(url);

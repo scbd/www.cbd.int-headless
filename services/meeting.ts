@@ -16,7 +16,7 @@ export default class MeetingService {
             'schema_s:meeting',
             '_state_s:public',
             ...(code ? [`symbol_s:${solrEscape(code)}`] : [])
-        ]);
+        ], "AND");
 
         const params : SolrQuery = 
         {

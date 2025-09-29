@@ -16,7 +16,7 @@ export default class StatementService {
             'schema_s:statement',
             '_state_s:public',
             ...(code ? [`symbol_s:${solrEscape(code)}`] : [])
-        ]);
+        ], "AND");
         
         const params : SolrQuery = 
         {

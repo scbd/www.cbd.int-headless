@@ -3,10 +3,9 @@ import { mandatory, handleError } from "api-client/api-error";
 import type { DrupalApiOptions } from "../types/api/drupal";
 export default class DrupalApi extends ApiBase
 {
-    constructor(config: DrupalApiOptions) {
+    constructor(options: {baseURL: string}) {
         super({
-            ...config,
-            baseURL: config.drupalBaseUrl,
+            ...options,
             onResponseError: handleError
         })
     };

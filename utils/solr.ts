@@ -65,37 +65,30 @@ export function toLStringArray(item: any, field: string, type: LTypeArray = LTyp
     let maxEntries = 0;
     
     for (const locale of locales) {
-        const localeField = `${field}_${locale.toUpperCase()}_${type}`;
-        const value = item[localeField];
+        const value = item[`${field}_${locale.toUpperCase()}_${type}`];
         
         maxEntries = Math.max(maxEntries, value?.length || 0);
-    }
+    };
     
     if (maxEntries === 0) {
         return [];
-    }
+    };
     
     const result: Lstring[] = [];
     
     for (let i = 0; i < maxEntries; i++) {
         const lstring = locales.reduce((ltext: Lstring, locale) => {
-            const localeField = `${field}_${locale.toUpperCase()}_${type}`;
-            const value = item[localeField];
-            
-            ltext[locale as keyof Lstring] = value[i];
-            
+            ltext[locale as keyof Lstring] = item[`${field}_${locale.toUpperCase()}_${type}`][i];
             return ltext;
         }, {} as Lstring);
         
         result.push(lstring);
-    }
+    };
     
     return result;
 };
 
-export function andOr(query: string | Array<string>, sep?: string) : string {
-
-    sep = sep || "AND";
+export function andOr(query: string | Array<string>, sep: string) : string {
 
     if(_.isArray(query)) {
 

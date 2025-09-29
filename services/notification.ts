@@ -16,7 +16,7 @@ export default class NotificationService {
             'schema_s:notification',
             '_state_s:public',
             ...(code ? [`symbol_s:${solrEscape(code)}`] : [])
-        ]);
+        ], "AND");
 
         const params : SolrQuery = 
         {
