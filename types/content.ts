@@ -1,20 +1,19 @@
+import type lstring from "api-client/types/lstring";
 export interface Content {
     title: string,
     bundle: string,
-    created: Date,
-    changed: Date,
+    createdOn: Date,
+    updatedOn: Date,
     alias: string,
-    lang: "en"|"fr"|"es"|"zh"|"ar",
+    locale: lstring,
     body: string,
     summary: string,
 }
 
 export interface Article extends Content {
-    image: {
-        filename: string,
+    coverImage: {
         path: string,
         alt: string,
-        title: string,
         width: number,
         height: number
     },
