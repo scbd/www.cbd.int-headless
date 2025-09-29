@@ -4,10 +4,5 @@ import MeetingService from "../../services/meeting";
 
 export default defineEventHandler(async (event) => {
     const { code, sort, limit, skip } = getQuery(event) as QueryParams;
-    return await MeetingService.listMeetings(
-        code,
-        sort, 
-        limit, 
-        skip
-    ) as MeetingList;
+    return await MeetingService.listMeetings(code, sort, limit, skip) as MeetingList;
 });

@@ -29,9 +29,7 @@ export default class NotificationService {
         };
         const { response } = await this.api.querySolr(params);
 
-        if(response.numFound == 0) {
-            throw notFound("No notifications found.");
-        }
+        if(response.numFound == 0) throw notFound("No notifications found.");
 
         const notificationList: Notification[] = response.docs.map((item: any): Notification => ({
             id: item.id,

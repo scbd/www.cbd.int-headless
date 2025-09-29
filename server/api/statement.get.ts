@@ -4,10 +4,5 @@ import StatementService from "../../services/statement";
 
 export default defineEventHandler(async (event) => {
     const { code, sort, limit, skip } = getQuery(event) as QueryParams;
-    return await StatementService.listStatements(
-        code,
-        sort, 
-        limit, 
-        skip
-    ) as StatementList;
+    return await StatementService.listStatements(code, sort, limit, skip) as StatementList;
 });

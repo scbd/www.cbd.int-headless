@@ -11,15 +11,11 @@ export default class DrupalService {
     static async getContent(url: string) : Promise<Content | Page | Article> {
         const route = await this.drupalApi.getRoute(url);
 
-        if(!route) {
-            throw notFound("Route not found.");
-        };
-        
+        if(!route) throw notFound("Route not found.");
+
         const drupalContent = await this.drupalApi.getContent(route.entity.uuid, route.entity.bundle);
 
-        if(!drupalContent) {
-            throw notFound("Content not found.");
-        }
+        if(!drupalContent) throw notFound("Content not found.");
 
         const { attributes } = drupalContent?.data;
 
@@ -67,9 +63,7 @@ export default class DrupalService {
     static async getMenu(id: string) : Promise<Menu[]> {
         const data = await this.drupalApi.getMenu(id);
 
-        if(!data) {
-            throw notFound("No menu found.");
-        };
+        if(!data) throw notFound("No menu found.");
 
         const menus: Menu[] = [];
         const items: { [ key: string ]: Menu } = {};

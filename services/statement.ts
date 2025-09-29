@@ -29,10 +29,8 @@ export default class StatementService {
         };
         const { response } = await this.api.querySolr(params);
         
-        if(response.numFound == 0) {
-            throw notFound("No statements found.");
-        }
-            
+        if(response.numFound == 0) throw notFound("No statements found.");
+
         const statementList: Statement[] = response.docs.map((item: any): Statement => ({
             id: item.id,
             code: item.symbol_s,

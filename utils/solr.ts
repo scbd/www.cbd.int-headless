@@ -1,4 +1,4 @@
-import { Locale } from "../types/api/locale";
+import { Locales } from "../types/api/locales";
 import { LTypeString, LTypeArray } from "../types/api/ltypes";
 import Lstring from "api-client/types/lstring";
 import _ from "lodash";
@@ -48,7 +48,7 @@ export function solrEscape(value: string | number | Date) {
     return value;
 };
 
-export function toLString(item: any, field: string, type: LTypeString = LTypeString.t, locales: Locale[] = Object.values(Locale)) : Lstring {
+export function toLString(item: any, field: string, type: LTypeString = LTypeString.t, locales: Locales[] = Object.values(Locales)) : Lstring {
     return locales.reduce((ltext: Lstring, locale) => {
         const localeField = `${field}_${locale.toUpperCase()}_${type}`;
         const value = item[localeField];
@@ -60,7 +60,7 @@ export function toLString(item: any, field: string, type: LTypeString = LTypeStr
     }, {} as Lstring);
 };
 
-export function toLStringArray(item: any, field: string, type: LTypeArray = LTypeArray.txt, locales: Locale[] = Object.values(Locale)) : Array<Lstring> {
+export function toLStringArray(item: any, field: string, type: LTypeArray = LTypeArray.txt, locales: Locales[] = Object.values(Locales)) : Array<Lstring> {
     
     let maxEntries = 0;
     

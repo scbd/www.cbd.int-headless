@@ -29,9 +29,7 @@ export default class MeetingService {
         };
         const { response } = await this.api.querySolr(params);
 
-        if(response.numFound == 0) {
-            throw notFound("No meetings found.");
-        };
+        if(response.numFound == 0) throw notFound("No meetings found.");
 
         const meetingList: Meeting[] = response.docs.map((item: any): Meeting => ({
             id: item.id,
