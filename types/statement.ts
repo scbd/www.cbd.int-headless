@@ -1,9 +1,9 @@
 import type lstring from "api-client/types/lstring";
 export interface Statement {
     id: string,
-    statementCode: string,
+    code: string,
     title: lstring,
-    url: string[],
+    urls: string[],
     themes: lstring[],
     createdOn: Date,
     updatedOn: Date,

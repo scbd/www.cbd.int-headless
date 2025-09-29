@@ -1,5 +1,8 @@
-import _ from "lodash";
+import { Locale } from "../types/api/locale";
+import { LTypeString, LTypeArray } from "../types/api/ltypes";
 import Lstring from "api-client/types/lstring";
+import _ from "lodash";
+
 
 export function localizeFields(fields : string, locale?: string) {
     if(!fields)
@@ -45,7 +48,7 @@ export function solrEscape(value: string | number | Date) {
     return value;
 };
 
-export function toLString(item: any, field: string, type: "t" | "s" = "t", locales = ["en","fr","es","ru","zh","ar"]) : Lstring {
+export function toLString(item: any, field: string, type: LTypeString = LTypeString.t, locales: Locale[] = Object.values(Locale)) : Lstring {
     return locales.reduce((ltext: Lstring, locale) => {
         const localeField = `${field}_${locale.toUpperCase()}_${type}`;
         const value = item[localeField];
@@ -57,7 +60,7 @@ export function toLString(item: any, field: string, type: "t" | "s" = "t", local
     }, {} as Lstring);
 };
 
-export function toLStringArray(item: any, field: string, type: "txt" | "ss" = "txt", locales = ["en","fr","es","ru","zh","ar"]) : Array<Lstring> {
+export function toLStringArray(item: any, field: string, type: LTypeArray = LTypeArray.txt, locales: Locale[] = Object.values(Locale)) : Array<Lstring> {
     
     let maxEntries = 0;
     
@@ -88,4 +91,25 @@ export function toLStringArray(item: any, field: string, type: "txt" | "ss" = "t
     }
     
     return result;
+};
+
+export function andOr(query: string | Array<string>, sep?: string) : string {
+
+    sep = sep || "AND";
+
+    if(_.isArray(query)) {
+
+        query = _.map(query, function(criteria){
+
+            if(_.isArray(criteria)) {
+                return andOr(criteria, sep=="AND" ? "OR" : "AND");
+            }
+
+            return criteria;
+        });
+
+        query = '(' + query.join(' ' + sep + ' ') + ')';
+    };
+
+    return query;
 };

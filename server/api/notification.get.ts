@@ -1,16 +1,13 @@
+import type { NotificationList } from "../../types/notification";
+import type { QueryParams } from "../../types/api/query-params";
 import NotificationService from "../../services/notification";
-import type { Notification, NotificationList } from "../../types/notification";
 
 export default defineEventHandler(async (event) => {
-    const { notificationCode } = getQuery(event) as { notificationCode: string };
-    const { sort } = getQuery(event) as { sort: string };
-    const { rowsPerPage } = getQuery(event) as { rowsPerPage: number };
-    const { start } = getQuery(event) as { start: number };
-
+    const { code, sort, limit, skip } = getQuery(event) as QueryParams;
     return await NotificationService.listNotifications(
-        notificationCode,
+        code,
         sort, 
-        rowsPerPage, 
-        start
+        limit, 
+        skip
     ) as NotificationList;
 });

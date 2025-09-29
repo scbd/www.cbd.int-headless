@@ -1,16 +1,13 @@
+import type { StatementList } from "../../types/statement";
+import type { QueryParams } from "../../types/api/query-params";
 import StatementService from "../../services/statement";
-import type { Statement, StatementList } from "../../types/statement";
 
 export default defineEventHandler(async (event) => {
-    const { statementCode } = getQuery(event) as { statementCode: string };
-    const { sort } = getQuery(event) as { sort: string };
-    const { rowsPerPage } = getQuery(event) as { rowsPerPage: number };
-    const { start } = getQuery(event) as { start: number };
-
+    const { code, sort, limit, skip } = getQuery(event) as QueryParams;
     return await StatementService.listStatements(
-        statementCode,
-        sort,
-        rowsPerPage, 
-        start
+        code,
+        sort, 
+        limit, 
+        skip
     ) as StatementList;
 });

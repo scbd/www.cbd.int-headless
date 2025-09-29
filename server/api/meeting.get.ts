@@ -1,16 +1,13 @@
 import type { Meeting, MeetingList } from "../../types/meeting";
+import type { QueryParams } from "../../types/api/query-params";
 import MeetingService from "../../services/meeting";
 
 export default defineEventHandler(async (event) => {
-    const { meetingCode } = getQuery(event) as { meetingCode: string };
-    const { sort } = getQuery(event) as { sort: string };
-    const { rowsPerPage } = getQuery(event) as { rowsPerPage: number };
-    const { start } = getQuery(event) as { start: number };
-    
+    const { code, sort, limit, skip } = getQuery(event) as QueryParams;
     return await MeetingService.listMeetings(
-        meetingCode,
+        code,
         sort, 
-        rowsPerPage, 
-        start
+        limit, 
+        skip
     ) as MeetingList;
 });

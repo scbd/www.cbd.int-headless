@@ -1,9 +1,8 @@
-import { badRequest, notFound } from "api-client/api-error";
+import { notFound } from "api-client/api-error";
 import SolrIndexApi from "../api/solr-index";
-import { solrEscape, toLString, toLStringArray } from "../utils/solr";
+import { solrEscape, andOr, toLString, toLStringArray } from "../utils/solr";
 import type { SolrQuery } from "../types/api/solr";
 import type { Notification, NotificationList } from "../types/notification";
-import lstring from "api-client/types/lstring";
 
 export default class NotificationService {
 
@@ -11,15 +10,20 @@ export default class NotificationService {
         baseURL: useRuntimeConfig().apiBaseUrl,
     });
 
-    static async listNotifications(notificationCode?: string, sort?: string, rowsPerPage?: number, start?: number) : Promise<NotificationList> {
-        const fieldQueries = `schema_s:notification AND _state_s:public` + (notificationCode ? ` AND symbol_s:${solrEscape(notificationCode)}` : "");
-        
+    static async listNotifications(code?: string, sort?: string, rowsPerPage?: number, start?: number) : Promise<NotificationList> {
+
+        const fieldQueries = andOr([
+            'schema_s:notification',
+            '_state_s:public',
+            ...(code ? [`symbol_s:${solrEscape(code)}`] : [])
+        ]);
+
         const params : SolrQuery = 
         {
             fieldQueries,
             query : "*:*",
             sort : sort || "updatedDate_dt DESC",
-            fields : "id,symbol_s,title_*_t,url_txt,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt",
+            fields : "id,symbol_s,title_*_t,url_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt",
             start: start || 0,
             rowsPerPage : rowsPerPage || 25,
         };
@@ -31,9 +35,9 @@ export default class NotificationService {
 
         const notificationList: Notification[] = response.docs.map((item: any): Notification => ({
             id: item.id,
-            notificationCode: item.symbol_s,
+            code: item.symbol_s,
             title: toLString(item, "title"),
-            url: item.url_txt,
+            urls: item.url_ss,
             themes: toLStringArray(item, "themes"),
             createdOn: new Date(item.createdDate_dt),
             endOn: new Date(item.endDate_dt),
@@ -43,7 +47,7 @@ export default class NotificationService {
             reference: item.reference_t,
             fulltext: toLString(item, "fulltext"),
             from: toLString(item, "from"),
-            recipient: item.recipient_txt,
+            recipients: item.recipient_txt,
             sender: item.sender_t
         }));
 

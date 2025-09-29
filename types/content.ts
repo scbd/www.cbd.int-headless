@@ -1,10 +1,11 @@
+import type lstring from "api-client/types/lstring";
 export interface Content {
     title: string,
     bundle: string,
     createdOn: Date,
-    changedOn: Date,
+    updatedOn: Date,
     alias: string,
-    lang: "en"|"fr"|"es"|"zh"|"ar",
+    locale: lstring,
     body: string,
     summary: string,
 }

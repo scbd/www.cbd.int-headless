@@ -1,9 +1,9 @@
 import type lstring from "api-client/types/lstring";
 export interface Meeting {
     id: string,
-    meetingCode: string,
+    code: string,
     title: lstring,
-    url: string[],
+    urls: string[],
     themes: lstring[],
     startOn: Date,
     endOn: Date,

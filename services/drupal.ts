@@ -1,3 +1,4 @@
+import { notFound } from "api-client/api-error";
 import DrupalApi from "../api/drupal";
 import type { Content, Article, Page } from "../types/content";
 import type { Menu } from "../types/menu";
@@ -14,27 +15,37 @@ export default class DrupalService {
 
     static async getContent(url: string) : Promise<Content | Page | Article> {
         const route = await this.drupalApi.getRoute(url);
+
+        if(!route) {
+            throw notFound("Route not found.");
+        };
+        
         const drupalContent = await this.drupalApi.getContent(route.entity.uuid, route.entity.bundle);
+
+        if(!drupalContent) {
+            throw notFound("Content not found.");
+        }
+
         const { attributes } = drupalContent?.data;
 
         const content : Content = {
             bundle: route?.entity?.bundle,
             title: attributes?.title,
             createdOn: attributes?.created,
-            changedOn: attributes?.changed,
+            updatedOn: attributes?.changed,
             alias: attributes?.path?.alias,
-            lang: attributes?.path?.langcode,
+            locale: attributes?.path?.langcode,
             body: attributes?.body?.processed,
             summary: attributes?.body?.summary,
         };
 
-        if(route.entity.bundle == 'page') { 
+        if(route.entity.bundle == "page") { 
             const page = content as Page;
 
             page.menu = drupalContent.data.attributes.field_menu;
         }
 
-        if(route.entity.bundle == 'article') { 
+        if(route.entity.bundle == "article") { 
             const article = content as Article;
             const { field_image } = drupalContent?.data?.relationships;
 
@@ -60,6 +71,10 @@ export default class DrupalService {
 
     static async getMenu(id: string) : Promise<Menu[]> {
         const data = await this.drupalApi.getMenu(id);
+
+        if(!data) {
+            throw notFound("No menu found.");
+        };
 
         const menus: Menu[] = [];
         const items: { [ key: string ]: Menu } = {};

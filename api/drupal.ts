@@ -13,7 +13,7 @@ export default class DrupalApi extends ApiBase
 
     async getRoute(path: string) {
         if(!path) {
-            throw mandatory(path, "Parameter path is required.");
+            throw mandatory("path", "Parameter path is required.");
         };
         
         const query = { path };
@@ -23,9 +23,9 @@ export default class DrupalApi extends ApiBase
 
     async getContent(id: string, type: string) {
         if(!id) {
-            throw mandatory(id, "Parameter id is required.");
+            throw mandatory("id", "Parameter id is required.");
         } else if(!type) {
-            throw mandatory(id, "Parameter type is required.");
+            throw mandatory("type", "Parameter type is required.");
         };
 
         const data = await this.fetch(`/jsonapi/node/${encodeURIComponent(type)}/${encodeURIComponent(id)}`);
@@ -34,7 +34,7 @@ export default class DrupalApi extends ApiBase
 
     async getMedia(id: string) {
         if(!id) {
-            throw mandatory(id, "Parameter id is required.");
+            throw mandatory("id", "Parameter id is required.");
         };
 
         const data = await this.fetch(`/jsonapi/file/file/${encodeURIComponent(id)}`);
@@ -43,7 +43,7 @@ export default class DrupalApi extends ApiBase
 
     async getMenu(menu: string) {
         if(!menu) {
-            throw mandatory(menu, "Parameter menu is required.");
+            throw mandatory("menu", "Parameter menu is required.");
         };
 
         const { data } = await this.fetch(`/jsonapi/menu_items/${encodeURIComponent(menu)}`);

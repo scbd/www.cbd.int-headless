@@ -1,9 +1,9 @@
 import type lstring from "api-client/types/lstring";
 export interface Notification {
     id: string,
-    notificationCode: string,
+    code: string,
     title: lstring,
-    url: string[],
+    urls: string[],
     themes: lstring[],
     createdOn: Date,
     endOn: Date,
@@ -14,7 +14,7 @@ export interface Notification {
     fulltext: lstring,
     from: lstring,
     sender: string,
-    recipient: string[],
+    recipients: string[],
 };
 
 export interface NotificationList {
