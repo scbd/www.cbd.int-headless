@@ -50,7 +50,7 @@
           <li>
             <NuxtLink to="//un.org" target="_blank" rel="noopener noreferrer"
               ><NuxtImg
-                src="/images/logo_un_negative.svg"
+                src="/images/logo-un-negative.svg"
                 class="logo-footer-un"
                 alt="UN Logo"
             /></NuxtLink>
@@ -58,7 +58,7 @@
           <li>
             <NuxtLink to="//unep.org" target="_blank" rel="noopener noreferrer">
               <img
-                :src="`/images/UNEP-logo-EN.svg`"
+                :src="`/images/unep-logo-en.svg`"
                 class="logo-footer-unep"
                 alt="UNEP Logo"
               />

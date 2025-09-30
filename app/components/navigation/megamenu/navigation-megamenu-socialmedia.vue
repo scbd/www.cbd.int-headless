@@ -4,31 +4,31 @@
     <div class="social-media-icons">
       <NuxtLink to="#" target="_blank"
         ><NuxtImg
-          src="/images/icons/icon_social-yt.svg"
+          src="/images/icons/icon-social-yt.svg"
           alt="Follow us on YouTube"
           class="social-media-icon"
       /></NuxtLink>
       <NuxtLink to="#" target="_blank"
         ><NuxtImg
-          src="/images/icons/icon_social-fb.svg"
+          src="/images/icons/icon-social-fb.svg"
           alt="Follow us on Facebook"
           class="social-media-icon"
       /></NuxtLink>
       <NuxtLink to="#" target="_blank"
         ><NuxtImg
-          src="/images/icons/icon_social-x.svg"
+          src="/images/icons/icon-social-x.svg"
           alt="Follow us on X"
           class="social-media-icon"
       /></NuxtLink>
       <NuxtLink to="#" target="_blank"
         ><NuxtImg
-          src="/images/icons/icon_social-li.svg"
+          src="/images/icons/icon-social-li.svg"
           alt="Follow us on LinkedIn"
           class="social-media-icon"
       /></NuxtLink>
       <NuxtLink to="#" target="_blank"
         ><NuxtImg
-          src="/images/icons/icon_social-ig.svg"
+          src="/images/icons/icon-social-ig.svg"
           alt="Follow us on Instagram"
           class="social-media-icon"
       /></NuxtLink>
