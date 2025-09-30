@@ -5,20 +5,17 @@
       <li class="level-1-item nav-item">
         <NuxtLink
           class="nav-link"
-          :to="menuItem.url !== '<nolink>' ? menuItem.url : ''"
+          :to="menu.url !== '<nolink>' ? menu.url : ''"
         >
-          {{ menuItem.title }}
+          {{ menu.title }}
         </NuxtLink>
       </li>
 
-      <template v-if="menuItem.submenu">
-        <navigation-megamenu-list
-          :submenu="menuItem.submenu"
-          class="level-2-items"
-        />
+      <template v-if="menu.submenu">
+        <NavigationMegaMenuList :submenu="menu.submenu" class="level-2-items" />
       </template>
     </ul>
-    <navigation-megamenu-socialmedia />
+    <NavigationMegaMenuSocialMedia />
   </nav>
 </template>
 
@@ -28,6 +25,6 @@ import type { Menu } from "~~/types/menu";
 const { t } = useI18n();
 
 const props = defineProps<{
-  menuItem: Menu;
+  menu: Menu;
 }>();
 </script>

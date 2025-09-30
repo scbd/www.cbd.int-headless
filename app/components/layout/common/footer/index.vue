@@ -12,33 +12,33 @@
         >
           <div>
             <li
-              v-for="child in menuItem.children.slice(
+              v-for="childMenuItem in menuItem.children.slice(
                 0,
                 Math.round(menuItem.children.length / 2)
               )"
             >
-              <NuxtLink :to="child.url">
-                {{ child.title }}
+              <NuxtLink :to="childMenuItem.url">
+                {{ childMenuItem.title }}
               </NuxtLink>
             </li>
           </div>
           <div>
             <li
-              v-for="child in menuItem.children.slice(
+              v-for="childMenuItem in menuItem.children.slice(
                 Math.round(menuItem.children.length / 2),
                 menuItem.children.length
               )"
             >
-              <NuxtLink :to="child.url">
-                {{ child.title }}
+              <NuxtLink :to="childMenuItem.url">
+                {{ childMenuItem.title }}
               </NuxtLink>
             </li>
           </div>
         </ul>
         <ul v-else>
-          <li v-for="child in menuItem.children">
-            <NuxtLink :to="child.url">
-              {{ child.title }}
+          <li v-for="childMenuItem in menuItem.children">
+            <NuxtLink :to="childMenuItem.url">
+              {{ childMenuItem.title }}
             </NuxtLink>
           </li>
         </ul>
@@ -48,7 +48,10 @@
         <div class="nav-title">A part of</div>
         <ul>
           <li>
-            <NuxtLink to="//un.org" target="_blank" rel="noopener noreferrer"
+            <NuxtLink
+              to="https://un.org"
+              target="_blank"
+              rel="noopener noreferrer"
               ><NuxtImg
                 src="/images/logo-un-negative.svg"
                 class="logo-footer-un"
@@ -62,7 +65,7 @@
               rel="noopener noreferrer"
             >
               <img
-                :src="`/images/unep-logo-en.svg`"
+                :src="unepLogoUrl"
                 class="logo-footer-unep"
                 alt="UNEP Logo"
               />
@@ -75,14 +78,16 @@
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
-const { data } = await useFetch("/api/menu", {
+const { data: menu } = await useFetch("/api/menu", {
   method: "GET",
   params: {
     menu: "cbd-footer",
   },
 });
 
-const menu = data.value;
+const unepLogoUrl = computed(
+  () => `/images/unep-logo-${encodeURIComponent(locale.value)}.svg`
+);
 </script>

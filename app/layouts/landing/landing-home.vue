@@ -1,10 +1,10 @@
 <template>
   <div class="body-replace">
-    <cbd-header />
+    <LayoutCommonHeader />
     <main class="cus-main cus-landing-page d-flex flex-column" role="main">
       <NuxtPage />
     </main>
-    <cbd-footer />
+    <LayoutCommonFooter />
   </div>
 </template>
 

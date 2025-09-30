@@ -65,12 +65,12 @@
                 <ul class="language-selector-dropdown dropdown-menu show">
                   <li
                     v-for="language in [
-                      { langCode: 'ar', label: 'Arabic' },
+                      { langCode: 'ar', label: 'عربي (Arabic)' },
                       { langCode: 'en', label: 'English' },
-                      { langCode: 'es', label: 'Spanish' },
-                      { langCode: 'fr', label: 'French' },
-                      { langCode: 'ru', label: 'Russian' },
-                      { langCode: 'zh', label: 'Chinese' },
+                      { langCode: 'es', label: 'Español (Spanish)' },
+                      { langCode: 'fr', label: 'Français (French)' },
+                      { langCode: 'ru', label: 'Русский (Russian)' },
+                      { langCode: 'zh', label: '中国人 (Chinese)' },
                     ]"
                     :key="language.langCode"
                   >
@@ -105,20 +105,17 @@
         </li>
       </ul>
       <ul class="navbar-nav">
-        <li
-          v-for="childMenuItem in menu"
-          class="mega-menu-item nav-item dropdown"
-        >
+        <li v-for="childMenu in menu" class="mega-menu-item nav-item dropdown">
           <NuxtLink
             class="nav-link dropdown-toggle"
-            :to="childMenuItem.url !== '<nolink>' ? childMenuItem.url : ''"
+            :to="childMenu.url"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            {{ childMenuItem.title }}
+            {{ childMenu.title }}
           </NuxtLink>
 
-          <navigation-megamenu-drawer :menuItem="childMenuItem" />
+          <NavigationMegaMenuDrawer :menu="childMenu" />
         </li>
       </ul>
     </div>
@@ -128,12 +125,10 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
-const { data } = await useFetch("/api/menu", {
+const { data: menu } = await useFetch("/api/menu", {
   method: "GET",
   params: {
     menu: "cbd-header",
   },
 });
-
-const menu = data.value;
 </script>

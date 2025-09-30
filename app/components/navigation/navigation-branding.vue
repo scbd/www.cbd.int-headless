@@ -2,12 +2,16 @@
   <NuxtLink to="/" class="navbar-brand">
     <NuxtImg
       class="cus-logo"
-      :src="`/images/cbd-logo-en.svg`"
+      :src="cbdLogoUrl"
       alt="Convention of Biological Diversity Logo"
     />
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n();
+const { t, locale } = useI18n();
+
+const cbdLogoUrl = computed(
+  () => `/images/cbd-logo-${encodeURIComponent(locale.value)}.svg`
+);
 </script>

@@ -28,12 +28,12 @@
         <ul class="language-selector-dropdown dropdown-menu">
           <li
             v-for="language in [
-              { langCode: 'ar', label: 'Arabic' },
+              { langCode: 'ar', label: 'عربي (Arabic)' },
               { langCode: 'en', label: 'English' },
-              { langCode: 'es', label: 'Spanish' },
-              { langCode: 'fr', label: 'French' },
-              { langCode: 'ru', label: 'Russian' },
-              { langCode: 'zh', label: 'Chinese' },
+              { langCode: 'es', label: 'Español (Spanish)' },
+              { langCode: 'fr', label: 'Français (French)' },
+              { langCode: 'ru', label: 'Русский (Russian)' },
+              { langCode: 'zh', label: '中国人 (Chinese)' },
             ]"
             :key="language.langCode"
           >
