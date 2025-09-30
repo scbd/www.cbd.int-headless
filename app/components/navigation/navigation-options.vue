@@ -4,7 +4,7 @@
       <li class="nav-item">
         <NuxtLink class="nav-link" :to="''" role="button">
           <NuxtImg
-            src="/images/icons/icon-nav-search_outline.svg"
+            src="/images/icons/icon-nav-search-outline.svg"
             :alt="'Search Icon'"
           />
           <span class="nav-options-search-slot">Search</span>
@@ -19,7 +19,7 @@
           aria-expanded="false"
         >
           <NuxtImg
-            src="/images/icons/icon-nav-language_outline.svg"
+            src="/images/icons/icon-nav-language-outline.svg"
             :alt="'Language Icon'"
           />
           <span class="nav-options-current-lang-slot"> English </span>
@@ -46,7 +46,7 @@
       <li class="nav-item">
         <NuxtLink class="nav-link" to="#" role="button">
           <NuxtImg
-            src="/images/icons/icon-nav-account_outline.svg"
+            src="/images/icons/icon-nav-account-outline.svg"
             :alt="'Login Icon'"
           />
           <span class="nav-options-login-slot">Login</span>
@@ -55,7 +55,7 @@
       <li class="nav-item">
         <NuxtLink class="nav-link" to="#" role="button">
           <NuxtImg
-            src="/images/icons/icon-nav-settings_outline.svg"
+            src="/images/icons/icon-nav-settings-outline.svg"
             :alt="'Settings Icon'"
           />
           <span class="nav-options-settings-slot">Settings</span>

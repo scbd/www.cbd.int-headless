@@ -56,7 +56,11 @@
             /></NuxtLink>
           </li>
           <li>
-            <NuxtLink to="//unep.org" target="_blank" rel="noopener noreferrer">
+            <NuxtLink
+              to="https://unep.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <img
                 :src="`/images/unep-logo-en.svg`"
                 class="logo-footer-unep"
