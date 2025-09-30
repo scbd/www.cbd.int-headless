@@ -1,7 +1,7 @@
 export default defineI18nConfig(() => ({
-    precompile: {
-        strictMessage: false,
-    },
-    legacy: false,
-    fallbackLocale: 'en',
-}))
+  precompile: {
+    strictMessage: false,
+  },
+  legacy: false,
+  fallbackLocale: "en",
+}));

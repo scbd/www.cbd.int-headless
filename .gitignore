@@ -17,6 +17,10 @@ logs
 .DS_Store
 .fleet
 .idea
+<<<<<<< HEAD
+=======
+keys
+>>>>>>> 51e2f92 (Initial commit)
 .vscode
 
 # Local env files
