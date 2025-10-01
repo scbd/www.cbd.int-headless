@@ -18,16 +18,14 @@
 </template>
 
 <script setup lang="ts">
+import useMenuApi from "~/composables/useMenuApi";
+
 const props = defineProps<{
   submenu: string;
 }>();
 
-const { data: menu } = await useFetch("/api/menu", {
-  method: "GET",
-  params: {
-    menu: props.submenu,
-  },
-});
+const { getMenu } = useMenuApi();
+const { data: menu } = await getMenu(props.submenu);
 
 const level2MenuColumnCount = computed(() => {
   if (menu.value && menu.value.length < 5)

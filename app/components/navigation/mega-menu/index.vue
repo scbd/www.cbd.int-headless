@@ -123,12 +123,10 @@
 </template>
 
 <script setup lang="ts">
+import useMenuApi from "~/composables/useMenuApi";
+
 const { t } = useI18n();
 
-const { data: menu } = await useFetch("/api/menu", {
-  method: "GET",
-  params: {
-    menu: "cbd-header",
-  },
-});
+const { getMenu } = useMenuApi();
+const { data: menu } = await getMenu("cbd-header");
 </script>

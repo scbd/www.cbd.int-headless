@@ -78,14 +78,12 @@
 </template>
 
 <script setup lang="ts">
+import useMenuApi from "~/composables/useMenuApi";
+
 const { t, locale } = useI18n();
 
-const { data: menu } = await useFetch("/api/menu", {
-  method: "GET",
-  params: {
-    menu: "cbd-footer",
-  },
-});
+const { getMenu } = useMenuApi();
+const { data: menu } = await getMenu("cbd-footer");
 
 const unepLogoUrl = computed(
   () => `/images/unep-logo-${encodeURIComponent(locale.value)}.svg`
