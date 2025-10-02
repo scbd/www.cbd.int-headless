@@ -124,8 +124,8 @@ const { t, locale } = useI18n();
 const languagesDropdown = computed(() =>
   Languages.map((language, index) => {
     return language.locale !== locale.value
-      ? `${language.name} (${language.translations?.[locale.value]})`
-      : language.name;
+      ? `${language.name[language.locale]} (${language.name?.[locale.value]})`
+      : language.name[locale.value];
   })
 );
 

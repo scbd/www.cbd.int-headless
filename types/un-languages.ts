@@ -2,18 +2,15 @@ import { Locales as Locale } from './api/locales';
 
 export interface Language {
   locale: Locale;
-  name: string;
-  direction: 'ltr' | 'rtl';
-  translations?: {
+  name: {
     [lang: string]: string;
   };
 }
 
 export const English: Language = {
   locale: Locale.en,
-  name: 'English',
-  direction: 'ltr',
-  translations: {
+  name: {
+    [Locale.en]: 'English',
     [Locale.es]: 'Inglés',
     [Locale.fr]: 'Anglais',
     [Locale.ar]: 'إنجليزي',
@@ -23,10 +20,9 @@ export const English: Language = {
 };
 export const Spanish: Language = {
   locale: Locale.es,
-  name: 'Español',
-  direction: 'ltr',
-  translations: {
+  name: {
     [Locale.en]: 'Spanish',
+    [Locale.es]: 'Español',
     [Locale.fr]: 'Espagnol',
     [Locale.ar]: 'الأسبانية',
     [Locale.ru]: 'испанский',
@@ -35,11 +31,10 @@ export const Spanish: Language = {
 };
 export const French: Language = {
   locale: Locale.fr,
-  name: 'Français',
-  direction: 'ltr',
-  translations: {
+  name: {
     [Locale.en]: 'French',
     [Locale.es]: 'Francés',
+    [Locale.fr]: 'Français',
     [Locale.ar]: 'فرنسي',
     [Locale.ru]: 'Французский',
     [Locale.zh]: '法语',
@@ -47,38 +42,35 @@ export const French: Language = {
 };
 export const Arabic: Language = {
   locale: Locale.ar,
-  name: 'العربية',
-  direction: 'rtl',
-  translations: {
+  name: {
     [Locale.en]: 'Arabic',
     [Locale.es]: 'Árabe',
     [Locale.fr]: 'Arabe',
+    [Locale.ar]: 'العربية',
     [Locale.ru]: 'арабский',
     [Locale.zh]: '阿拉伯',
   },
 };
 export const Russian: Language = {
   locale: Locale.ru,
-  name: 'Русский',
-  direction: 'ltr',
-  translations: {
+  name: {
     [Locale.en]: 'Russian',
     [Locale.es]: 'Rusa',
     [Locale.fr]: 'Russe',
     [Locale.ar]: 'الروسية',
+    [Locale.ru]: 'Русский',
     [Locale.zh]: '俄语',
   },
 };
 export const Chinese: Language = {
   locale: Locale.zh,
-  name: '中文',
-  direction: 'ltr',
-  translations: {
+  name: {
     [Locale.en]: 'Chinese',
     [Locale.es]: 'Chino',
     [Locale.fr]: 'Chinois',
     [Locale.ar]: 'الصينية',
     [Locale.ru]: 'китайский',
+    [Locale.zh]: '中文',
   },
 };
 
