@@ -64,18 +64,11 @@
 
                 <ul class="language-selector-dropdown dropdown-menu show">
                   <li
-                    v-for="language in [
-                      { langCode: 'ar', label: 'عربي (Arabic)' },
-                      { langCode: 'en', label: 'English' },
-                      { langCode: 'es', label: 'Español (Spanish)' },
-                      { langCode: 'fr', label: 'Français (French)' },
-                      { langCode: 'ru', label: 'Русский (Russian)' },
-                      { langCode: 'zh', label: '中国人 (Chinese)' },
-                    ]"
-                    :key="language.langCode"
+                    v-for="(language, index) in Languages"
+                    :key="language.locale"
                   >
-                    <NuxtLink class="dropdown-item" to="#" @click.prevent="">
-                      {{ language.label }}
+                    <NuxtLink class="dropdown-item" to="#">
+                      {{ languagesDropdown[index] }}
                     </NuxtLink>
                   </li>
                 </ul>
@@ -123,9 +116,18 @@
 </template>
 
 <script setup lang="ts">
+import { Languages } from '~~/types/un-languages';
 import useMenuApi from '~/composables/use-menu-api';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+
+const languagesDropdown = computed(() =>
+  Languages.map((language, index) => {
+    return language.locale !== locale.value
+      ? `${language.name} (${language.translations?.[locale.value]})`
+      : language.name;
+  })
+);
 
 const { getMenu } = useMenuApi();
 const { data: menu } = await getMenu('cbd-header');

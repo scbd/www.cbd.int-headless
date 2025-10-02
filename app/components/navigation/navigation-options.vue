@@ -26,19 +26,9 @@
         </NuxtLink>
 
         <ul class="language-selector-dropdown dropdown-menu">
-          <li
-            v-for="language in [
-              { langCode: 'ar', label: 'عربي (Arabic)' },
-              { langCode: 'en', label: 'English' },
-              { langCode: 'es', label: 'Español (Spanish)' },
-              { langCode: 'fr', label: 'Français (French)' },
-              { langCode: 'ru', label: 'Русский (Russian)' },
-              { langCode: 'zh', label: '中国人 (Chinese)' },
-            ]"
-            :key="language.langCode"
-          >
+          <li v-for="(language, index) in Languages" :key="language.locale">
             <NuxtLink class="dropdown-item" to="#">
-              {{ language.label }}
+              {{ languagesDropdown[index] }}
             </NuxtLink>
           </li>
         </ul>
@@ -66,5 +56,15 @@
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n();
+import { Languages } from '~~/types/un-languages';
+
+const { t, locale } = useI18n();
+
+const languagesDropdown = computed(() =>
+  Languages.map((language, index) => {
+    return language.locale !== locale.value
+      ? `${language.name} (${language.translations?.[locale.value]})`
+      : language.name;
+  })
+);
 </script>
