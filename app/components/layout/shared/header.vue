@@ -2,7 +2,7 @@
   <header class="cus-navigation">
     <nav class="navbar navbar-expand-xl d-flex flex-column">
       <NavigationOptions />
-      <NavigationMegaMenu />
+      <slot />
     </nav>
   </header>
 </template>

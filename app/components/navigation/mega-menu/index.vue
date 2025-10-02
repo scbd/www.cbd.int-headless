@@ -123,10 +123,10 @@
 </template>
 
 <script setup lang="ts">
-import useMenuApi from "~/composables/use-menu-api";
+import useMenuApi from '~/composables/use-menu-api';
 
 const { t } = useI18n();
 
 const { getMenu } = useMenuApi();
-const { data: menu } = await getMenu("cbd-header");
+const { data: menu } = await getMenu('cbd-header');
 </script>
