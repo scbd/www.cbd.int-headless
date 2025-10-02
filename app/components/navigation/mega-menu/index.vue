@@ -123,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import useMenuApi from "~/composables/useMenuApi";
+import useMenuApi from "~/composables/use-menu-api";
 
 const { t } = useI18n();
 
