@@ -1,5 +1,5 @@
 <template>
-  <div v-if="menu" :style="level2MenuColumnCount">
+  <div v-if="menu" :style="level2MenuColumnCount.styles">
     <li
       v-for="(menuItem, index) in menu"
       class="level-2-item nav-item"
@@ -28,19 +28,23 @@ const { getMenu } = useMenuApi();
 const { data: menu } = await getMenu(props.submenu);
 
 const level2MenuColumnCount = computed(() => {
-  if (menu.value && menu.value.length < 5)
-    return `--level2-column-count: ${menu.value.length}`;
+  const classes: string[] = [];
+  const styles: { [key: string]: string | number } = {};
+
+  if (menu.value && menu.value.length < 5) {
+    styles['--level2-column-count'] = menu.value?.length;
+  }
+
+  return { classes, styles };
 });
 
 const level3MenuColumns = computed(() =>
   menu.value?.map((menuItem, index) => {
-    const classes = [];
+    const classes: string[] = [];
     const styles: { [key: string]: string | number } = {};
 
     if (menuItem.children) {
-      if (menuItem.children.length > 8) {
-        classes.push('level-3-items-multi-col');
-      }
+      if (menuItem.children.length > 8) classes.push('level-3-items-multi-col');
 
       styles['--level3-column-count'] = Math.ceil(menuItem.children.length / 8);
     }
