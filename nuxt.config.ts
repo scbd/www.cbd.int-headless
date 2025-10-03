@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'nuxt-gtag',
     '@nuxtjs/robots',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    '@nuxt/image',
   ],
   site: { indexable: false },
   i18n: {
@@ -21,18 +22,18 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
     detectBrowserLanguage: {
       alwaysRedirect: true,
-      fallbackLocale: 'en'
+      fallbackLocale: 'en',
     },
-    strategy: "prefix_and_default",
-    vueI18n: './config/i18n.config.ts'
+    strategy: 'prefix_and_default',
+    vueI18n: './config/i18n.config.ts',
   },
   runtimeConfig: {
-    drupalBaseUrl: "",
-    drupalClientId: "",
-    drupalClientSecret: "",
-    drupalScope: "",
-    apiBaseUrl: "",
-    ortUrl: ""
+    drupalBaseUrl: '',
+    drupalClientId: '',
+    drupalClientSecret: '',
+    drupalScope: '',
+    apiBaseUrl: '',
+    ortUrl: '',
   },
-  css: ["~/assets/scss/styles.scss"],
-})
+  css: ['~/assets/scss/styles.scss'],
+});
