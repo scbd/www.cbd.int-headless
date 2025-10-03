@@ -64,7 +64,7 @@
 
                 <ul class="language-selector-dropdown dropdown-menu show">
                   <li
-                    v-for="(language, index) in Languages"
+                    v-for="(language, index) in languages"
                     :key="language.locale"
                   >
                     <NuxtLink class="dropdown-item" to="#">
@@ -116,13 +116,13 @@
 </template>
 
 <script setup lang="ts">
-import { Languages } from '~~/types/un-languages';
+import { languages } from '~~/types/un-languages';
 import useMenuApi from '~/composables/use-menu-api';
 
 const { t, locale } = useI18n();
 
 const languagesDropdown = computed(() =>
-  Languages.map((language, index) => {
+  languages.map((language, index) => {
     return language.locale !== locale.value
       ? `${language.name[language.locale]} (${language.name?.[locale.value]})`
       : language.name[locale.value];

@@ -7,7 +7,7 @@ export interface Language {
   };
 }
 
-export const English: Language = {
+export const english: Language = {
   locale: Locale.en,
   name: {
     [Locale.en]: 'English',
@@ -18,7 +18,7 @@ export const English: Language = {
     [Locale.zh]: '英语',
   },
 };
-export const Spanish: Language = {
+export const spanish: Language = {
   locale: Locale.es,
   name: {
     [Locale.en]: 'Spanish',
@@ -29,7 +29,7 @@ export const Spanish: Language = {
     [Locale.zh]: '西班牙语',
   },
 };
-export const French: Language = {
+export const french: Language = {
   locale: Locale.fr,
   name: {
     [Locale.en]: 'French',
@@ -40,7 +40,7 @@ export const French: Language = {
     [Locale.zh]: '法语',
   },
 };
-export const Arabic: Language = {
+export const arabic: Language = {
   locale: Locale.ar,
   name: {
     [Locale.en]: 'Arabic',
@@ -51,7 +51,7 @@ export const Arabic: Language = {
     [Locale.zh]: '阿拉伯',
   },
 };
-export const Russian: Language = {
+export const russian: Language = {
   locale: Locale.ru,
   name: {
     [Locale.en]: 'Russian',
@@ -62,7 +62,7 @@ export const Russian: Language = {
     [Locale.zh]: '俄语',
   },
 };
-export const Chinese: Language = {
+export const chinese: Language = {
   locale: Locale.zh,
   name: {
     [Locale.en]: 'Chinese',
@@ -74,13 +74,13 @@ export const Chinese: Language = {
   },
 };
 
-export const Languages: Language[] = [
-  English,
-  Spanish,
-  French,
-  Arabic,
-  Russian,
-  Chinese,
+export const languages: Language[] = [
+  english,
+  spanish,
+  french,
+  arabic,
+  russian,
+  chinese,
 ];
 
-export const Locales: Array<string> = Languages.map(({ locale }) => locale);
+export const Locales: Array<string> = languages.map(({ locale }) => locale);
