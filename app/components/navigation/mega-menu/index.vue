@@ -16,7 +16,7 @@
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="mainNavigation">
       <div class="offcanvas-header">
-        <NavigationBranding />
+        <navigation-branding />
         <button
           type="button"
           class="btn-close"
@@ -108,7 +108,7 @@
             {{ childMenu.title }}
           </NuxtLink>
 
-          <NavigationMegaMenuDrawer :menu="childMenu" />
+          <navigation-mega-menu-drawer :menu="childMenu" />
         </li>
       </ul>
     </div>

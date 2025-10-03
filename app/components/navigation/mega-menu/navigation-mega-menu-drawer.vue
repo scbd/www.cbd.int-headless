@@ -12,15 +12,18 @@
       </li>
 
       <template v-if="menu.submenu">
-        <NavigationMegaMenuList :submenu="menu.submenu" class="level-2-items" />
+        <navigation-mega-menu-list
+          :submenu="menu.submenu"
+          class="level-2-items"
+        />
       </template>
     </ul>
-    <NavigationMegaMenuSocialMedia />
+    <navigation-mega-menu-social-media />
   </nav>
 </template>
 
 <script setup lang="ts">
-import type { Menu } from "~~/types/menu";
+import type { Menu } from '~~/types/menu';
 
 const { t } = useI18n();
 
