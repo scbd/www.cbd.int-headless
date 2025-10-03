@@ -1,76 +1,75 @@
-import { Locales as Locale } from '../types/api/locales';
+import { Locales as localeCodes } from '../types/api/locales';
+import type lstring from 'api-client/types/lstring';
 
 export interface language {
-  locale: Locale;
-  name: {
-    [lang: string]: string;
-  };
+  locale: localeCodes;
+  name: lstring;
 }
 
 export const english: language = {
-  locale: Locale.en,
+  locale: localeCodes.en,
   name: {
-    [Locale.en]: 'English',
-    [Locale.es]: 'Inglés',
-    [Locale.fr]: 'Anglais',
-    [Locale.ar]: 'إنجليزي',
-    [Locale.ru]: 'Английский',
-    [Locale.zh]: '英语',
+    en: 'English',
+    es: 'Inglés',
+    fr: 'Anglais',
+    ar: 'إنجليزي',
+    ru: 'Английский',
+    zh: '英语',
   },
 };
 export const spanish: language = {
-  locale: Locale.es,
+  locale: localeCodes.es,
   name: {
-    [Locale.en]: 'Spanish',
-    [Locale.es]: 'Español',
-    [Locale.fr]: 'Espagnol',
-    [Locale.ar]: 'الأسبانية',
-    [Locale.ru]: 'испанский',
-    [Locale.zh]: '西班牙语',
+    en: 'Spanish',
+    es: 'Español',
+    fr: 'Espagnol',
+    ar: 'الأسبانية',
+    ru: 'испанский',
+    zh: '西班牙语',
   },
 };
 export const french: language = {
-  locale: Locale.fr,
+  locale: localeCodes.fr,
   name: {
-    [Locale.en]: 'French',
-    [Locale.es]: 'Francés',
-    [Locale.fr]: 'Français',
-    [Locale.ar]: 'فرنسي',
-    [Locale.ru]: 'Французский',
-    [Locale.zh]: '法语',
+    en: 'French',
+    es: 'Francés',
+    fr: 'Français',
+    ar: 'فرنسي',
+    ru: 'Французский',
+    zh: '法语',
   },
 };
 export const arabic: language = {
-  locale: Locale.ar,
+  locale: localeCodes.ar,
   name: {
-    [Locale.en]: 'Arabic',
-    [Locale.es]: 'Árabe',
-    [Locale.fr]: 'Arabe',
-    [Locale.ar]: 'العربية',
-    [Locale.ru]: 'арабский',
-    [Locale.zh]: '阿拉伯',
+    en: 'Arabic',
+    es: 'Árabe',
+    fr: 'Arabe',
+    ar: 'العربية',
+    ru: 'арабский',
+    zh: '阿拉伯',
   },
 };
 export const russian: language = {
-  locale: Locale.ru,
+  locale: localeCodes.ru,
   name: {
-    [Locale.en]: 'Russian',
-    [Locale.es]: 'Rusa',
-    [Locale.fr]: 'Russe',
-    [Locale.ar]: 'الروسية',
-    [Locale.ru]: 'Русский',
-    [Locale.zh]: '俄语',
+    en: 'Russian',
+    es: 'Rusa',
+    fr: 'Russe',
+    ar: 'الروسية',
+    ru: 'Русский',
+    zh: '俄语',
   },
 };
 export const chinese: language = {
-  locale: Locale.zh,
+  locale: localeCodes.zh,
   name: {
-    [Locale.en]: 'Chinese',
-    [Locale.es]: 'Chino',
-    [Locale.fr]: 'Chinois',
-    [Locale.ar]: 'الصينية',
-    [Locale.ru]: 'китайский',
-    [Locale.zh]: '中文',
+    en: 'Chinese',
+    es: 'Chino',
+    fr: 'Chinois',
+    ar: 'الصينية',
+    ru: 'китайский',
+    zh: '中文',
   },
 };
 
