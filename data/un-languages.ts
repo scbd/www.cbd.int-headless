@@ -1,9 +1,9 @@
 import { Locales as localeCodes } from '../types/api/locales';
-import type lstring from 'api-client/types/lstring';
+import type LString from 'api-client/types/lstring';
 
 export interface Language {
   locale: localeCodes;
-  name: lstring;
+  name: LString;
 }
 
 export const english: Language = {
