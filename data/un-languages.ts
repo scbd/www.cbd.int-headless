@@ -1,4 +1,4 @@
-import { Locales as Locale } from './api/locales';
+import { Locales as Locale } from '../types/api/locales';
 
 export interface Language {
   locale: Locale;

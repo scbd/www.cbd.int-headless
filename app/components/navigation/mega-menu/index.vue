@@ -64,11 +64,11 @@
 
                 <ul class="language-selector-dropdown dropdown-menu show">
                   <li
-                    v-for="(language, index) in languages"
+                    v-for="language in languagesWithLabel"
                     :key="language.locale"
                   >
                     <NuxtLink class="dropdown-item" to="#">
-                      {{ languagesDropdown[index] }}
+                      {{ language.label }}
                     </NuxtLink>
                   </li>
                 </ul>
@@ -116,16 +116,20 @@
 </template>
 
 <script setup lang="ts">
-import { languages } from '~~/types/un-languages';
+import { languages } from '~~/data/un-languages';
+import type { Menu } from '~~/types/menu';
 import useMenuApi from '~/composables/use-menu-api';
 
 const { t, locale } = useI18n();
 
-const languagesDropdown = computed(() =>
-  languages.map((language, index) => {
-    return language.locale !== locale.value
-      ? `${language.name[language.locale]} (${language.name?.[locale.value]})`
-      : language.name[locale.value];
+const languagesWithLabel = computed(() =>
+  languages.map((l) => {
+    const label =
+      l.locale !== locale.value
+        ? `${l.name[l.locale]} (${l.name?.[locale.value]})`
+        : l.name[locale.value];
+
+    return { ...l, label };
   })
 );
 
