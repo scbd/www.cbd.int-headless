@@ -1,13 +1,13 @@
 import { Locales as Locale } from '../types/api/locales';
 
-export interface Language {
+export interface language {
   locale: Locale;
   name: {
     [lang: string]: string;
   };
 }
 
-export const english: Language = {
+export const english: language = {
   locale: Locale.en,
   name: {
     [Locale.en]: 'English',
@@ -18,7 +18,7 @@ export const english: Language = {
     [Locale.zh]: '英语',
   },
 };
-export const spanish: Language = {
+export const spanish: language = {
   locale: Locale.es,
   name: {
     [Locale.en]: 'Spanish',
@@ -29,7 +29,7 @@ export const spanish: Language = {
     [Locale.zh]: '西班牙语',
   },
 };
-export const french: Language = {
+export const french: language = {
   locale: Locale.fr,
   name: {
     [Locale.en]: 'French',
@@ -40,7 +40,7 @@ export const french: Language = {
     [Locale.zh]: '法语',
   },
 };
-export const arabic: Language = {
+export const arabic: language = {
   locale: Locale.ar,
   name: {
     [Locale.en]: 'Arabic',
@@ -51,7 +51,7 @@ export const arabic: Language = {
     [Locale.zh]: '阿拉伯',
   },
 };
-export const russian: Language = {
+export const russian: language = {
   locale: Locale.ru,
   name: {
     [Locale.en]: 'Russian',
@@ -62,7 +62,7 @@ export const russian: Language = {
     [Locale.zh]: '俄语',
   },
 };
-export const chinese: Language = {
+export const chinese: language = {
   locale: Locale.zh,
   name: {
     [Locale.en]: 'Chinese',
@@ -74,7 +74,7 @@ export const chinese: Language = {
   },
 };
 
-export const languages: Language[] = [
+export const languages: language[] = [
   english,
   spanish,
   french,

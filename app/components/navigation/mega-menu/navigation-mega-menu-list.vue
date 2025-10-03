@@ -18,28 +18,28 @@
 </template>
 
 <script setup lang="ts">
-import useMenuApi from '~/composables/use-menu-api';
+import useMenuApi from '~/composables/api/use-menu-api';
 
 const props = defineProps<{
   submenu: string;
 }>();
 
 const { getMenu } = useMenuApi();
-const { data: menu } = await getMenu(props.submenu);
+const menu = await getMenu(props.submenu);
 
 const level2MenuColumnCount = computed(() => {
   const classes: string[] = [];
   const styles: { [key: string]: string | number } = {};
 
-  if (menu.value && menu.value.length < 5) {
-    styles['--level2-column-count'] = menu.value?.length;
+  if (menu.length < 5) {
+    styles['--level2-column-count'] = menu.length;
   }
 
   return { classes, styles };
 });
 
 const level3MenuColumns = computed(() =>
-  menu.value?.map((menuItem, index) => {
+  menu.map((menuItem, index) => {
     const classes: string[] = [];
     const styles: { [key: string]: string | number } = {};
 

@@ -116,9 +116,9 @@
 </template>
 
 <script setup lang="ts">
-import { languages } from '~~/data/un-languages';
 import type { Menu } from '~~/types/menu';
-import useMenuApi from '~/composables/use-menu-api';
+import { languages } from '~~/data/un-languages';
+import useMenuApi from '~/composables/api/use-menu-api';
 
 const { t, locale } = useI18n();
 
@@ -134,5 +134,5 @@ const languagesWithLabel = computed(() =>
 );
 
 const { getMenu } = useMenuApi();
-const { data: menu } = await getMenu('cbd-header');
+const menu: Menu[] = await getMenu('cbd-header');
 </script>
