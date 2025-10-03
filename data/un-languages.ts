@@ -1,12 +1,12 @@
 import { Locales as localeCodes } from '../types/api/locales';
 import type lstring from 'api-client/types/lstring';
 
-export interface language {
+export interface Language {
   locale: localeCodes;
   name: lstring;
 }
 
-export const english: language = {
+export const english: Language = {
   locale: localeCodes.en,
   name: {
     en: 'English',
@@ -17,7 +17,7 @@ export const english: language = {
     zh: '英语',
   },
 };
-export const spanish: language = {
+export const spanish: Language = {
   locale: localeCodes.es,
   name: {
     en: 'Spanish',
@@ -28,7 +28,7 @@ export const spanish: language = {
     zh: '西班牙语',
   },
 };
-export const french: language = {
+export const french: Language = {
   locale: localeCodes.fr,
   name: {
     en: 'French',
@@ -39,7 +39,7 @@ export const french: language = {
     zh: '法语',
   },
 };
-export const arabic: language = {
+export const arabic: Language = {
   locale: localeCodes.ar,
   name: {
     en: 'Arabic',
@@ -50,7 +50,7 @@ export const arabic: language = {
     zh: '阿拉伯',
   },
 };
-export const russian: language = {
+export const russian: Language = {
   locale: localeCodes.ru,
   name: {
     en: 'Russian',
@@ -61,7 +61,7 @@ export const russian: language = {
     zh: '俄语',
   },
 };
-export const chinese: language = {
+export const chinese: Language = {
   locale: localeCodes.zh,
   name: {
     en: 'Chinese',
@@ -73,7 +73,7 @@ export const chinese: language = {
   },
 };
 
-export const languages: language[] = [
+export const languages: Language[] = [
   english,
   spanish,
   french,
