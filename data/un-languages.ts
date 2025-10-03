@@ -81,5 +81,3 @@ export const languages: language[] = [
   russian,
   chinese,
 ];
-
-export const Locales: Array<string> = languages.map(({ locale }) => locale);
