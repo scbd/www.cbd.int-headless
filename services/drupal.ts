@@ -3,38 +3,44 @@ import DrupalApi from "../api/drupal";
 import type { Content, Article, Page, ArticleOptions } from "../types/content";
 import type { Menu } from "../types/menu";
 export default class DrupalService {
+  private static drupalApi = new DrupalApi({
+    baseURL: useRuntimeConfig().drupalBaseUrl,
+  });
 
-    private static drupalApi = new DrupalApi({
-        baseURL: useRuntimeConfig().drupalBaseUrl
-    });
+  static async getContent(url: string): Promise<Content | Page | Article> {
+    const route = await this.drupalApi.getRoute(url);
 
-    static async getContent(url: string) : Promise<Content | Page | Article> {
-        const route = await this.drupalApi.getRoute(url);
+    if (!route) throw notFound('Route not found.');
 
-        if(!route) throw notFound("Route not found.");
+    const drupalContent = await this.drupalApi.getContent(
+      route.entity.uuid,
+      route.entity.bundle
+    );
 
-        const drupalContent = await this.drupalApi.getContent(route.entity.uuid, route.entity.bundle);
+    if (!drupalContent) throw notFound('Content not found.');
 
-        if(!drupalContent) throw notFound("Content not found.");
+    const { attributes } = drupalContent?.data;
 
-        const { attributes } = drupalContent?.data;
+    const content: Content = {
+      bundle: route?.entity?.bundle,
+      title: attributes?.title,
+      createdOn: attributes?.created,
+      updatedOn: attributes?.changed,
+      alias: attributes?.path?.alias,
+      locale: attributes?.path?.langcode,
+      body: attributes?.body?.processed,
+      summary: attributes?.body?.summary,
+    };
 
-        const content : Content = {
-            bundle: route?.entity?.bundle,
-            title: attributes?.title,
-            createdOn: attributes?.created,
-            updatedOn: attributes?.changed,
-            alias: attributes?.path?.alias,
-            locale: attributes?.path?.langcode,
-            body: attributes?.body?.processed,
-            summary: attributes?.body?.summary,
-        };
+    if (route.entity.bundle == 'page') {
+      const page = content as Page;
 
-        if(route.entity.bundle == "page") { 
-            const page = content as Page;
+      page.menu = drupalContent.data.attributes.field_menu;
+    }
 
-            page.menu = drupalContent.data.attributes.field_menu;
-        }
+    if (route.entity.bundle == 'article') {
+      const article = content as Article;
+      const { field_image } = drupalContent?.data?.relationships;
 
         if(route.entity.bundle == "article") { 
             const article = content as Article;
@@ -47,7 +53,13 @@ export default class DrupalService {
                 path : ""
             };
 
-            const media = await this.drupalApi.getMedia(drupalContent.data.relationships.field_image.data.id);
+      if (media) {
+        article.coverImage = {
+          ...article.coverImage,
+          path: media?.data?.attributes?.uri?.url,
+        };
+      }
+    }
 
             if(media) {
                 article.coverImage = {
@@ -55,43 +67,52 @@ export default class DrupalService {
                     path: media?.data?.attributes?.uri?.url
                 };
             };
+          };
         };
+      };
+    }[] = data.data;
 
-        return content;
-    };
+    if (!articlesData) throw notFound('No Articles found');
 
-    static async getMenu(id: string) : Promise<Menu[]> {
-        const data = await this.drupalApi.getMenu(id);
+    const articleList: Article[] = articlesData.map(
+      (content): Article => ({
+        title: content.attributes.title,
+        bundle: 'article',
+        createdOn: content.attributes.created,
+        updatedOn: content.attributes.changed,
+        alias: content.attributes.path.alias,
+        locale: content.attributes.path.langcode,
+        body: content.attributes.body.processed,
+        summary: content.attributes.body.summary,
+        coverImage: {
+          alt: content.relationships.field_image.data.meta.alt,
+          width: content.relationships.field_image.data.meta.width,
+          height: content.relationships.field_image.data.meta.height,
+          path: content.relationships.field_image.data.id,
+        },
+      })
+    );
 
-        if(!data) throw notFound("No menu found.");
+    for await (const article of articleList) {
+      const media = await this.drupalApi.getMedia(article.coverImage.path);
 
-        const menus: Menu[] = [];
-        const items: { [ key: string ]: Menu } = {};
+      article.coverImage.path = media?.data?.attributes?.uri?.url;
+    }
 
-        data.forEach(( item: any ) => {
-            const { title, url, weight, options } = item?.attributes;
-            const parentId = item.attributes.parent;
+    return articleList;
+  }
 
-            const menuItem: Menu = {
-                title,
-                url,
-                position: weight,
-                submenu: options?.attributes?.submenu,
-                icon: options?.attributes?.icon,
-                component: options?.attributes?.component,
-                children: []
-            };
+  static async getMenu(id: string): Promise<Menu[]> {
+    const data = await this.drupalApi.getMenu(id);
 
-            items[item.id] = menuItem;
+    if (!data) throw notFound('No menu found.');
 
-            if(parentId) {
-                const parent = items[parentId];
+    const menus: Menu[] = [];
+    const items: { [key: string]: Menu } = {};
 
-                parent?.children?.push(menuItem);
-            } else {
-                menus.push(menuItem);
-            }
-        });
+    data.forEach((item: any) => {
+      const { title, url, weight, options } = item?.attributes;
+      const parentId = item.attributes.parent;
 
         return menus;
     };
