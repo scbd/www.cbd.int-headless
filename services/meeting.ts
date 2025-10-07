@@ -1,35 +1,43 @@
-import { notFound } from "api-client/api-error";
+import { mandatory, notFound } from "api-client/api-error";
 import SolrIndexApi from "../api/solr-index";
-import { solrEscape, andOr, toLString, toLStringArray } from "../utils/solr";
+import { solrEscape, toLString, toLStringArray } from "../utils/solr";
 import type { SolrQuery } from "../types/api/solr";
-import type { Meeting, MeetingList } from "../types/meeting";
+import type { Meeting, MeetingList, MeetingOptions } from "../types/meeting";
 
+function normalizeMeetingCode(code: string) : string {
+    return code.toUpperCase();
+};
 export default class MeetingService {
 
     private static api = new SolrIndexApi({
         baseURL: useRuntimeConfig().apiBaseUrl,
     });
 
-    static async listMeetings(code?: string, sort?: string, limit?: number, skip?: number) : Promise<MeetingList> {
+    static async getMeeting(code: string) : Promise<Meeting> {
+        if(!code) throw mandatory("code", "Meeting code is required.");
+        const data = await this.searchMeetings({ code: normalizeMeetingCode(code) });
+        
+        if(data.total === 0) throw notFound(`Meeting '${code}' not found.`);
+        return data.rows[0];
+    };
 
-        const fieldQueries = andOr([
-            'schema_s:meeting',
-            '_state_s:public',
-            ...(code ? [`symbol_s:${solrEscape(code)}`] : [])
-        ], "AND");
+    static async listMeetings(options: MeetingOptions) : Promise<MeetingList> {
+        return this.searchMeetings(options);
+    };
+
+    private static async searchMeetings(options?: MeetingOptions & { code?: string }) : Promise<MeetingList> {
+        const query = options?.code ? `symbol_s:${solrEscape(options?.code)}` : "*.*";
 
         const params : SolrQuery = 
         {
-            fieldQueries,
-            query : "*:*",
-            sort : sort || "updatedDate_dt DESC",
+            query,
+            fieldQueries: "schema_s:meeting",
+            sort : options?.sort || "updatedDate_dt DESC",
             fields : "id,symbol_s,title_*_t,eventCountry_*_t,eventCity_*_t,url_ss,themes_*_txt,startDate_dt,endDate_dt,updatedDate_dt",
-            start: skip || 0,
-            rowsPerPage : limit || 25,
+            start: options?.skip || 0,
+            rowsPerPage : options?.limit || 25,
         };
         const { response } = await this.api.querySolr(params);
-
-        if(response.numFound == 0) throw notFound("No meetings found.");
 
         const meetingList: Meeting[] = response.docs.map((item: any): Meeting => ({
             id: item.id,
@@ -50,3 +58,4 @@ export default class MeetingService {
         };
     };
 };
+
