@@ -3,6 +3,7 @@ import DrupalApi from '../api/drupal';
 import type { Content, Article, Page } from '../types/content';
 import type { Menu } from '../types/menu';
 import type lstring from 'api-client/types/lstring';
+import type { ArticlesQueryParamsOptions } from '~~/types/api/query-params';
 export default class DrupalService {
   private static drupalApi = new DrupalApi({
     baseURL: useRuntimeConfig().drupalBaseUrl,
@@ -65,8 +66,15 @@ export default class DrupalService {
     return content;
   }
 
-  static async getArticles(sort: string, limit?: number, isFeatured?: boolean) {
-    const data = await this.drupalApi.getArticles(sort);
+  static async getArticles(
+    sort: string,
+    { limit, offset, status }: ArticlesQueryParamsOptions = {}
+  ): Promise<Article[]> {
+    const data = await this.drupalApi.getArticles(sort, {
+      limit,
+      offset,
+      status,
+    });
     const articlesData: {
       attributes: {
         path: {
@@ -74,8 +82,8 @@ export default class DrupalService {
           alias: string;
         };
         title: string;
-        created: Date;
-        changed: Date;
+        created: string;
+        changed: string;
         body: {
           processed: string;
           summary: string;
@@ -97,32 +105,32 @@ export default class DrupalService {
 
     if (!articlesData) throw notFound('No Articles found');
 
-    const articleList: Article[] = articlesData.map(
-      (content): Article => ({
-        title: content.attributes.title,
+    const articles: Article[] = articlesData.map(
+      (article): Article => ({
+        title: article.attributes.title,
         bundle: 'article',
-        createdOn: content.attributes.created,
-        updatedOn: content.attributes.changed,
-        alias: content.attributes.path.alias,
-        locale: content.attributes.path.langcode,
-        body: content.attributes.body.processed,
-        summary: content.attributes.body.summary,
+        createdOn: new Date(article.attributes.created),
+        updatedOn: new Date(article.attributes.changed),
+        alias: article.attributes.path.alias,
+        locale: article.attributes.path.langcode,
+        body: article.attributes.body.processed,
+        summary: article.attributes.body.summary,
         coverImage: {
-          alt: content.relationships.field_image.data.meta.alt,
-          width: content.relationships.field_image.data.meta.width,
-          height: content.relationships.field_image.data.meta.height,
-          path: content.relationships.field_image.data.id,
+          alt: article.relationships.field_image.data.meta.alt,
+          width: article.relationships.field_image.data.meta.width,
+          height: article.relationships.field_image.data.meta.height,
+          path: article.relationships.field_image.data.id,
         },
       })
     );
 
-    for await (const article of articleList) {
+    for await (const article of articles) {
       const media = await this.drupalApi.getMedia(article.coverImage.path);
 
       article.coverImage.path = media?.data?.attributes?.uri?.url;
     }
 
-    return articleList;
+    return articles;
   }
 
   static async getMenu(id: string): Promise<Menu[]> {

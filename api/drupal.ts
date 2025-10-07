@@ -1,6 +1,6 @@
 import ApiBase from 'api-client/api-base';
 import { mandatory, handleError } from 'api-client/api-error';
-import type { DrupalApiOptions } from '../types/api/drupal';
+import type { ArticlesQueryParamsOptions } from '~~/types/api/query-params';
 export default class DrupalApi extends ApiBase {
   constructor(options: { baseURL: string }) {
     super({
@@ -27,8 +27,12 @@ export default class DrupalApi extends ApiBase {
     return data;
   }
 
-  async getArticles(sort?: string, limit?: number, isFeatured?: boolean) {
-    const data = await this.fetch(`/jsonapi/node/article/`);
+  async getArticles(
+    sort: string = '-created',
+    { limit, offset, status }: ArticlesQueryParamsOptions = {}
+  ) {
+    const query = { sort, limit, offset, status };
+    const data = await this.fetch(`/jsonapi/node/article/`, { query });
     return data;
   }
 
