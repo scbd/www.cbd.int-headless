@@ -25,17 +25,17 @@ export default class MeetingService {
         return this.searchMeetings(options);
     };
 
-    private static async searchMeetings(options: MeetingOptions & { code?: string }) : Promise<MeetingList> {
-        const query = options.code ? `symbol_s:${solrEscape(options.code)}` : "*.*";
+    private static async searchMeetings(options?: MeetingOptions & { code?: string }) : Promise<MeetingList> {
+        const query = options?.code ? `symbol_s:${solrEscape(options?.code)}` : "*.*";
 
         const params : SolrQuery = 
         {
             query,
             fieldQueries: "schema_s:meeting",
-            sort : options.sort || "updatedDate_dt DESC",
+            sort : options?.sort || "updatedDate_dt DESC",
             fields : "id,symbol_s,title_*_t,eventCountry_*_t,eventCity_*_t,url_ss,themes_*_txt,startDate_dt,endDate_dt,updatedDate_dt",
-            start: options.skip || 0,
-            rowsPerPage : options.limit || 25,
+            start: options?.skip || 0,
+            rowsPerPage : options?.limit || 25,
         };
         const { response } = await this.api.querySolr(params);
 
