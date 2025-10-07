@@ -17,7 +17,6 @@ export interface MeetingList {
 };
 
 export interface MeetingOptions {
-    code?: string,
     sort?: string,
     limit?: number,
     skip?: number 
