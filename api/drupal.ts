@@ -5,7 +5,7 @@ export default class DrupalApi extends ApiBase {
   constructor(options: { baseURL: string }) {
     super({
       ...options,
-      onResponseError: handleError,
+      onResponseError: handleError
     });
   }
 
