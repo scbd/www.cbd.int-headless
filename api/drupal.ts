@@ -27,8 +27,12 @@ export default class DrupalApi extends ApiBase
     return data;
   }
 
-  async getArticles(sort?: string, limit?: number, isFeatured?: boolean) {
-    const data = await this.fetch(`/jsonapi/node/article/`);
+  async getArticles(
+    sort: string = '-created',
+    { limit, offset, status }: ArticlesQueryParamsOptions = {}
+  ) {
+    const query = { sort, limit, offset, status };
+    const data = await this.fetch(`/jsonapi/node/article/`, { query });
     return data;
   }
 

@@ -1,20 +1,21 @@
-import type { Content, Page, Article } from '~~/types/content';
+import type { Article } from '~~/types/content';
+import type { ArticlesQueryParamsOptions } from '~~/types/api/query-params';
 
 export default function useContentApi() {
-  const getArticles = async () => {};
+  const getArticles = async (
+    sort: string = '-created',
+    { limit, offset, status }: ArticlesQueryParamsOptions = {}
+  ): Promise<Article[]> => {
+    const response = await useFetch('/api/articles', {
+      method: 'GET',
+    });
 
-  const getArticle = async (articlePath: string) => {
-    // const response = await useFetch('/api/content', {
-    //   method: 'GET',
-    //   params: {
-    //     article: articlePath,
-    //   },
-    // });
-    // const article = response.data;
-    // return article;
+    const articles: Article[] = response.data.value?.articles || [];
+
+    return articles;
   };
 
   return {
-    getArticle,
+    getArticles,
   };
 }
