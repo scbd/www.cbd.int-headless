@@ -14,4 +14,11 @@ export interface Meeting {
 export interface MeetingList {
     rows: Meeting[],
     total: number
-}
+};
+
+export interface MeetingOptions {
+    code?: string,
+    sort?: string,
+    limit?: number,
+    skip?: number 
+};
