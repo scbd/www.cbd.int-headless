@@ -1,6 +1,6 @@
 import { notFound } from "api-client/api-error";
 import DrupalApi from "../api/drupal";
-import type { Content, Article, Page } from "../types/content";
+import type { Content, Article, Page, ArticleOptions } from "../types/content";
 import type { Menu } from "../types/menu";
 export default class DrupalService {
 
@@ -38,13 +38,13 @@ export default class DrupalService {
 
         if(route.entity.bundle == "article") { 
             const article = content as Article;
-            const { field_image } = drupalContent?.data?.relationships;
+            const { meta } = drupalContent?.data?.relationships?.field_image?.data;
 
             article.coverImage =  {
-                alt : field_image?.data?.meta?.alt,
-                width : field_image?.data?.meta?.width,
-                height : field_image?.data?.meta?.height,
-                path : ''
+                alt : meta?.alt,
+                width : meta?.width,
+                height : meta?.height,
+                path : ""
             };
 
             const media = await this.drupalApi.getMedia(drupalContent.data.relationships.field_image.data.id);
@@ -52,7 +52,7 @@ export default class DrupalService {
             if(media) {
                 article.coverImage = {
                     ...article.coverImage,
-                    path: media?.data?.attributes?.uri?.url,
+                    path: media?.data?.attributes?.uri?.url
                 };
             };
         };
@@ -94,5 +94,49 @@ export default class DrupalService {
         });
 
         return menus;
+    };
+
+    static async listArticles(options?: ArticleOptions): Promise<Article[]> {
+        const data = await this.drupalApi.listArticles(options);
+
+        const articles = await Promise.all(
+            data.map(async (item: any) => {
+                const { attributes } = item;
+                const { meta } = item?.relationships?.field_image?.data;
+
+                const content: Content = {
+                    bundle: "article",
+                    title: attributes?.title,
+                    createdOn: attributes?.created,
+                    updatedOn: attributes?.changed,
+                    alias: attributes?.path?.alias,
+                    locale: attributes?.path?.langcode,
+                    body: attributes?.body?.processed,
+                    summary: attributes?.body?.summary,
+                };
+
+                const article = content as Article;
+
+                article.coverImage = {
+                    alt: meta?.alt,
+                    width: meta?.width,
+                    height: meta?.height,
+                    path: ""
+                };
+
+                const media = await this.drupalApi.getMedia(item?.relationships?.field_image?.data?.id);
+
+                if (media) {
+                    article.coverImage = {
+                        ...article.coverImage,
+                        path: media?.data?.attributes?.uri?.url
+                    };
+                }
+
+                return article;
+            })
+        );
+
+        return articles;
     };
 };
