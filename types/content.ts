@@ -8,7 +8,7 @@ export interface Content {
     locale: lstring,
     body: string,
     summary: string,
-}
+};
 
 export interface Article extends Content {
     coverImage: {
@@ -17,8 +17,14 @@ export interface Article extends Content {
         width: number,
         height: number
     },
-}
+};
 
 export interface Page extends Content {
     menu: string
-}
+};
+
+export interface ArticleOptions {
+    sort?: string,
+    limit?: number,
+    skip?: number 
+};
