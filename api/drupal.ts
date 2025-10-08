@@ -53,4 +53,19 @@ export default class DrupalApi extends ApiBase {
     );
     return data;
   }
+
+  async listArticles(options?: {
+    sort?: string;
+    limit?: number;
+    skip?: number;
+  }) {
+    const { data } = await this.fetch(`/jsonapi/node/article`, {
+      query: {
+        sort: options?.sort || '-changed',
+        'page[limit]': options?.limit || 10,
+        'page[offset]': options?.skip || 0
+      }
+    });
+    return data;
+  }
 }
