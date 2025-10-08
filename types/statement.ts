@@ -14,4 +14,10 @@ export interface StatementMetadata {
 export interface StatementList {
     rows: Statement[],
     total: number
-}
+};
+
+export interface StatementOptions {
+    sort?: string,
+    limit?: number,
+    skip?: number 
+};
