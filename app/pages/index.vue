@@ -1,5 +1,9 @@
 <template>
-  <div></div>
+  <main class="cus-main cus-landing-page d-flex flex-column" role="main">
+    <article class="cus-article container-xxl d-flex flex-column">
+      <shared-card-row contentBlocksType="meeting" />
+    </article>
+  </main>
 </template>
 
 <script setup lang="ts">
