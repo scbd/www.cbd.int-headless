@@ -21,3 +21,9 @@ export interface NotificationList {
     rows: Notification[],
     total: number
 };
+
+export interface NotificationOptions {
+    sort?: string,
+    limit?: number,
+    skip?: number 
+};
