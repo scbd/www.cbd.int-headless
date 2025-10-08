@@ -4,7 +4,7 @@ import type { Content, Article, Page, ArticleOptions } from "../types/content";
 import type { Menu } from "../types/menu";
 export default class DrupalService {
   private static drupalApi = new DrupalApi({
-    baseURL: useRuntimeConfig().drupalBaseUrl,
+    baseURL: useRuntimeConfig().drupalBaseUrl
   });
 
   static async getContent(url: string): Promise<Content | Page | Article> {
@@ -29,7 +29,7 @@ export default class DrupalService {
       alias: attributes?.path?.alias,
       locale: attributes?.path?.langcode,
       body: attributes?.body?.processed,
-      summary: attributes?.body?.summary,
+      summary: attributes?.body?.summary
     };
 
     if (route.entity.bundle == 'page') {
@@ -40,7 +40,7 @@ export default class DrupalService {
 
     if (route.entity.bundle == 'article') {
       const article = content as Article;
-      const { field_image } = drupalContent?.data?.relationships;
+      const { meta } = drupalContent?.data?.relationships?.field_image?.data;
 
         if(route.entity.bundle == "article") { 
             const article = content as Article;
@@ -56,7 +56,7 @@ export default class DrupalService {
       if (media) {
         article.coverImage = {
           ...article.coverImage,
-          path: media?.data?.attributes?.uri?.url,
+          path: media?.data?.attributes?.uri?.url
         };
       }
     }
