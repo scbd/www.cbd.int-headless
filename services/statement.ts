@@ -1,8 +1,12 @@
-import { notFound } from "api-client/api-error";
+import { mandatory, notFound } from "api-client/api-error";
 import SolrIndexApi from "../api/solr-index";
 import { solrEscape, andOr, toLString, toLStringArray  } from "../utils/solr";
 import type { SolrQuery } from "../types/api/solr";
-import type { Statement, StatementList } from "../types/statement";
+import type { Statement, StatementList, StatementOptions } from "../types/statement";
+
+function normalizeStatementCode(code: string) : string {
+    return code.toUpperCase();
+};
 
 export default class StatementService {
 
@@ -10,27 +14,36 @@ export default class StatementService {
         baseURL: useRuntimeConfig().apiBaseUrl,
     });
 
-    static async listStatements(code?: string, sort?: string, rowsPerPage?: number, start?: number) : Promise<StatementList> {
+    static async getStatement(code: string) : Promise<Statement> {
+        if(!code) throw mandatory("code", "Statement code is required.");
+        const data = await this.searchStatements({ code: normalizeStatementCode(code) });
         
+        if(data.total === 0) throw notFound(`Statement '${code}' not found.`);
+        return data.rows[0];
+    };
+
+    static async listStatements(options: StatementOptions) : Promise<StatementList> {
+        return this.searchStatements(options);
+    };
+
+    private static async searchStatements(options?: StatementOptions & { code?: string }) : Promise<StatementList> {
         const fieldQueries = andOr([
             'schema_s:statement',
             '_state_s:public',
-            ...(code ? [`symbol_s:${solrEscape(code)}`] : [])
+            ...(options?.code ? [`symbol_s:${solrEscape(options?.code)}`] : [])
         ], "AND");
         
         const params : SolrQuery = 
         {
             fieldQueries,
             query : "*:*",
-            sort : sort || "updatedDate_dt DESC",
+            sort : options?.sort || "updatedDate_dt DESC",
             fields : "id,symbol_s,title_*_t,url_ss,themes_*_txt,createdDate_dt,updatedDate_dt",
-            start: start || 0,
-            rowsPerPage : rowsPerPage || 25,
+            start: options?.skip || 0,
+            rowsPerPage : options?.limit || 25,
         };
         const { response } = await this.api.querySolr(params);
         
-        if(response.numFound == 0) throw notFound("No statements found.");
-
         const statementList: Statement[] = response.docs.map((item: any): Statement => ({
             id: item.id,
             code: item.symbol_s,
@@ -45,5 +58,6 @@ export default class StatementService {
             total: response.numFound,
             rows: statementList
         };
+
     };
 };
