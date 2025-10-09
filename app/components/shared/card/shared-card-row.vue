@@ -10,6 +10,7 @@
       <meeting-card
         v-for="meeting in contentBlocks.objects"
         :meeting="meeting"
+        :key="meeting.id"
       />
     </div>
     <shared-button-more
@@ -20,19 +21,19 @@
 </template>
 
 <script lang="ts" setup>
-import type { Meeting, MeetingList } from "~~/types/meeting";
-import useMeetingsApi from "~/composables/api/use-meetings";
+import type { Meeting, MeetingList } from '~~/types/meeting';
+import useMeetingsApi from '~/composables/api/use-meetings';
 
 const { t } = useI18n();
 
 const props = defineProps<{
   contentBlocksType:
-    | "article"
-    | "meeting"
-    | "notification"
-    | "statement"
-    | "gbf-target"
-    | "update";
+    | 'article'
+    | 'meeting'
+    | 'notification'
+    | 'statement'
+    | 'gbf-target'
+    | 'update';
 }>();
 
 const { getMeetings } = useMeetingsApi();
@@ -47,10 +48,10 @@ const contentBlocks = computed(() => {
   } = {};
   let path = `/${props.contentBlocksType}s`;
 
-  if (props.contentBlocksType !== "update") {
+  if (props.contentBlocksType !== 'update') {
     classes.push(props.contentBlocksType);
   } else {
-    classes.push("recent-updates");
+    classes.push('recent-updates');
   }
 
   return {
