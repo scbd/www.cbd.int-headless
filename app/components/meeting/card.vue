@@ -1,14 +1,13 @@
 <template>
   <div class="content-object" :class="meeting.type">
     <div class="date">
-      {{ meeting.startOnString }}
+      {{ meeting.startOn }}
       <template v-if="meeting.endOn">
         &nbsp;&ndash;&nbsp;
-        {{ meeting.endOnString }}
+        {{ meeting.endOn }}
       </template>
     </div>
     <div class="title">{{ meeting.title[locale] }}</div>
-    <!-- TODO: Create a util to format location based on locale -->
     <div v-show="meeting.city || meeting.country" class="location">
       {{ `${meeting.city[locale]}, ${meeting.country[locale]}` }}
     </div>
@@ -17,7 +16,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { Meeting } from '~~/types/meeting';
+import type { Meeting } from "~~/types/meeting";
+import { formatDate } from "~~/utils/date";
 
 const { t, locale } = useI18n();
 
@@ -26,19 +26,9 @@ const props = defineProps<{
 }>();
 
 const meeting = {
-  type: 'meeting',
+  type: "meeting",
   ...props.meeting,
-  startOnString: Intl.DateTimeFormat(locale.value, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(new Date(props.meeting.startOn)),
-  endOnString: props.meeting.endOn
-    ? Intl.DateTimeFormat(locale.value, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }).format(new Date(props.meeting.endOn))
-    : null,
+  startOn: formatDate(props.meeting.startOn, locale.value),
+  endOn: formatDate(props.meeting.endOn, locale.value),
 };
 </script>
