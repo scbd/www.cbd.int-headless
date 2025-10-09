@@ -1,4 +1,4 @@
-export function formatDate(date: Date, locale?: string) {
+export function formatDate(date: Date | string, locale?: string) {
     if(!date) return "";
     if(!locale) locale = "en";
 
