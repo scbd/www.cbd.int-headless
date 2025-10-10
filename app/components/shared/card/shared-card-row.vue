@@ -15,7 +15,7 @@
     </div>
     <shared-button-more
       :type="contentBlocks.type"
-      :urls="[contentBlocks.path]"
+      :url="[contentBlocks.path]"
     />
   </section>
 </template>

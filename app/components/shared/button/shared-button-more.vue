@@ -1,15 +1,21 @@
 <template>
   <NuxtLink
-    :to="{ path: urls[0] }"
+    :to="{ path: url[0] }"
     class="btn cbd-btn cbd-btn-outline-more-content"
     role="button"
-    >{{ `More ${type}s` }}</NuxtLink
+    >{{ more }}</NuxtLink
   >
 </template>
 
 <script lang="ts" setup>
+import { ContentNames } from '~~/data/content-types';
 const props = defineProps<{
   type: string;
-  urls: string[];
+  url: string[];
 }>();
+
+const more = `More ${
+  ContentNames[`${props.type}s` as keyof typeof ContentNames]
+}`;
+const test = '';
 </script>
