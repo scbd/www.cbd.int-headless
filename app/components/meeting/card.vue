@@ -3,8 +3,7 @@
     <div class="date">
       {{ meeting.startOn }}
       <template v-if="meeting.endOn">
-        &nbsp;&ndash;&nbsp;
-        {{ meeting.endOn }}
+        <span class="dash">&ndash;</span> {{ meeting.endOn }}
       </template>
     </div>
     <div class="title">{{ meeting.title[locale] }}</div>

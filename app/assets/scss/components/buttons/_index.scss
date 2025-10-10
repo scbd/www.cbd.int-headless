@@ -86,7 +86,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
   align-self: flex-end;
 
   &::after {
-    content: url(/images/icons/icon_btn-arrow-circle-right_full.svg);
+    content: url(/images/icons/icon-btn-arrow-circle-right-full.svg);
     display: flex;
   }
 
@@ -105,14 +105,13 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
   --bs-btn-focus-shadow-rgb: transparent;
   --bs-btn-active-color: transparent;
 
-  // padding: 0.5rem;
   display: flex;
   column-gap: 0.5rem;
   align-items: center;
   align-self: flex-end;
 
   &::after {
-    content: url(/images/icons/icon_btn-arrow-circle-right_outline.svg);
+    content: url(/images/icons/icon-btn-arrow-circle-right-outline.svg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -144,7 +143,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
   }
 
   &.more-content::after {
-    content: url(/images/icons/icon_btn-arrow-circle-right_outline.svg);
+    content: url(/images/icons/icon-btn-arrow-circle-right-outline.svg);
   }
 
   &.related-content {
@@ -153,7 +152,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
     border-width: 1px;
     border-style: solid;
     &::after {
-      content: url(/images/icons/icon_btn-info.svg);
+      content: url(/images/icons/icon-btn-info.svg);
     }
   }
 
@@ -163,7 +162,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
     --bs-btn-active-color: var(--bs-body-color);
     font-weight: 600;
     &::after {
-      content: url(/images/icons/icon_filter-and-sort.svg);
+      content: url(/images/icons/icon-filter-and-sort.svg);
     }
     &:hover {
       opacity: 0.75;
@@ -187,7 +186,6 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
   --bs-btn-active-color: var(--cbd-content-accent);
   --bs-btn-active-border-color: var(--cbd-content-accent);
 
-  // background-color: var(--bs-btn-bg);
   background: linear-gradient(
     $bd-secondary 42%,
     color.scale($bd-secondary, $lightness: -9.5%)
@@ -231,7 +229,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
 
 .results-pagination {
   .search-results-control {
-    --bs-form-select-bg-img: url(/images/icons/icon_nav-arrow.svg);
+    --bs-form-select-bg-img: url(/images/icons/icon-nav-arrow.svg);
     background: var(--bs-form-select-bg-img) no-repeat center;
 
     &.prev-page {
