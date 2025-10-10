@@ -2,7 +2,7 @@ export enum ContentName {
   article = 'article',
   meeting = 'meeting',
   notification = 'notification',
-  statenement = 'statement',
+  statement = 'statement',
   update = 'update',
 }
 
@@ -10,6 +10,6 @@ export enum ContentNames {
   articles = 'articles',
   meetings = 'meetings',
   notifications = 'notifications',
-  statenements = 'statements',
+  statements = 'statements',
   updates = 'updates',
 }
