@@ -4,7 +4,7 @@
     :class="contentBlocks.classes"
   >
     <div class="row-title">
-      {{ `${contentBlocks.type}s` }}
+      {{ contentBlocks.title }}
     </div>
     <div class="content-wrapper d-flex">
       <meeting-card
@@ -13,21 +13,19 @@
         :key="meeting.id"
       />
     </div>
-    <shared-button-more
-      :type="contentBlocks.type"
-      :url="[contentBlocks.path]"
-    />
+    <shared-button-more :type="contentBlocks.type" :url="contentBlocks.path" />
   </section>
 </template>
 
 <script lang="ts" setup>
 import type { Meeting, MeetingList } from '~~/types/meeting';
+import { ContentNames } from '~~/data/content-types';
 import useMeetingsApi from '~/composables/api/use-meetings';
 
 const { t } = useI18n();
 
 const props = defineProps<{
-  contentBlocksType:
+  type:
     | 'article'
     | 'meeting'
     | 'notification'
@@ -46,10 +44,12 @@ const contentBlocks = computed(() => {
   const styles: {
     [key: string]: string | number;
   } = {};
-  let path = `/${props.contentBlocksType}s`;
 
-  if (props.contentBlocksType !== 'update') {
-    classes.push(props.contentBlocksType);
+  let alias = ContentNames[`${props.type}s` as keyof typeof ContentNames];
+  let path = `/${alias}`;
+
+  if (props.type !== 'update') {
+    classes.push(props.type);
   } else {
     classes.push('recent-updates');
   }
@@ -58,7 +58,8 @@ const contentBlocks = computed(() => {
     objects: rows.slice(0, 4) as Meeting[],
     classes,
     styles,
-    type: props.contentBlocksType,
+    title: alias,
+    type: props.type,
     path,
   };
 });
