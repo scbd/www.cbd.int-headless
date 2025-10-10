@@ -4,13 +4,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ContentNames } from '~~/data/content-types';
+import { ContentName } from '~~/data/content-types';
 const props = defineProps<{
   type: string;
   url: string;
 }>();
 
-const more = `View ${
-  ContentNames[`${props.type}` as keyof typeof ContentNames]
-}`;
+const more = `View ${ContentName[`${props.type}` as keyof typeof ContentName]}`;
 </script>

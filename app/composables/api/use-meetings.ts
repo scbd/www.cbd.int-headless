@@ -1,13 +1,12 @@
-import { handleError, internalServerError } from "api-client/api-error";
-import type { MeetingList } from "~~/types/meeting";
-import type { MeetingOptions } from "~~/types/meeting";
+import { handleError, internalServerError } from 'api-client/api-error';
+import type { MeetingList, MeetingOptions } from '~~/types/meeting';
 
 export default function useMeetingsApi() {
   const getMeetings = async (
     options?: MeetingOptions
   ): Promise<MeetingList> => {
-    const { data, error } = await useFetch("/api/meetings", {
-      method: "GET",
+    const { data, error } = await useFetch('/api/meetings', {
+      method: 'GET',
       params: {
         sort: options?.sort,
         limit: options?.limit,
@@ -17,7 +16,7 @@ export default function useMeetingsApi() {
 
     if (error.value) {
       throw internalServerError(error.value.message);
-    };
+    }
 
     const response = data.value || { total: 0, rows: [] };
 
@@ -35,4 +34,4 @@ export default function useMeetingsApi() {
   };
 
   return { getMeetings };
-};
+}

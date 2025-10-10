@@ -22,7 +22,7 @@ import type { Meeting, MeetingList } from '~~/types/meeting';
 import { ContentNames } from '~~/data/content-types';
 import useMeetingsApi from '~/composables/api/use-meetings';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const props = defineProps<{
   type:
