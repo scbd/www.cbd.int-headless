@@ -29,6 +29,6 @@ const meeting = {
   ...props.meeting,
   startOn: formatDate(props.meeting.startOn, locale.value),
   endOn: formatDate(props.meeting.endOn, locale.value),
-  url: props.meeting.urls[0]!,
+  url: props.meeting.urls?.[0] || '#',
 };
 </script>
