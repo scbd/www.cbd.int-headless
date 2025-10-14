@@ -10,7 +10,9 @@
     <div v-show="meeting.city || meeting.country" class="location">
       {{ `${meeting.city[locale]}, ${meeting.country[locale]}` }}
     </div>
-    <shared-button-read-on :url="meeting.url" :type="meeting.type" />
+    <div class="read-on-wrapper">
+      <shared-button-more :url="meeting.url" :type="meeting.type" :length="1" />
+    </div>
   </div>
 </template>
 

@@ -1,19 +1,20 @@
 <template>
-  <section
-    class="content-row d-flex flex-column"
-    :class="contentBlocks.classes"
-  >
+  <section class="content-row d-flex flex-column" :class="itemsProps.classes">
     <div class="row-title">
-      {{ contentBlocks.title }}
+      {{ itemsProps.title }}
     </div>
     <div class="content-wrapper d-flex">
       <meeting-card
-        v-for="meeting in contentBlocks.objects"
+        v-for="meeting in itemsProps.items"
         :meeting="meeting"
         :key="meeting.id"
       />
     </div>
-    <shared-button-more :type="contentBlocks.type" :url="contentBlocks.path" />
+    <shared-button-more
+      :type="itemsProps.type"
+      :url="itemsProps.path"
+      :length="itemsProps.items.length"
+    />
   </section>
 </template>
 
@@ -34,17 +35,25 @@ const props = defineProps<{
     | 'update';
 }>();
 
+/**
+ * TODO: make the result of @itemList generic based on @props.type
+ * eg. if props.type === 'article' then itemList: ArticleList
+ */
 const { getMeetings } = useMeetingsApi();
-const contentBlockList: MeetingList = await getMeetings();
+const itemList: MeetingList = await getMeetings();
 
-const { total, rows }: MeetingList = contentBlockList;
+const { total, rows }: MeetingList = itemList;
 
-const contentBlocks = computed(() => {
+const itemsProps = computed(() => {
   const classes: string[] = [];
   const styles: {
     [key: string]: string | number;
   } = {};
 
+  /**
+   * TODO: handle aliases and pluralization of @items with i18n
+   * eg. t(`${props.type}.plural`);
+   */
   let alias = ContentNames[`${props.type}s` as keyof typeof ContentNames];
   let path = `/${alias}`;
 
@@ -55,7 +64,7 @@ const contentBlocks = computed(() => {
   }
 
   return {
-    objects: rows.slice(0, 4) as Meeting[],
+    items: rows.slice(0, 4),
     classes,
     styles,
     title: alias,

@@ -1,3 +1,7 @@
+/**
+ * These enums are filler until i18n is implemented
+ */
+
 export enum ContentName {
   article = 'article',
   meeting = 'meeting',
