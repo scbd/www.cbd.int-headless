@@ -6,7 +6,6 @@ export default function useMeetingsApi() {
     options?: MeetingOptions
   ): Promise<MeetingList> => {
     const { data, error } = await useFetch('/api/meetings', {
-      method: 'GET',
       params: {
         sort: options?.sort,
         limit: options?.limit,

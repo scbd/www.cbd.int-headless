@@ -26,6 +26,11 @@ const props = defineProps<{
   meeting: Meeting;
 }>();
 
+/**
+ * TODO: Make composable for formateDate() to use locale internally
+ * as mentioned here: https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2432608355
+ */
+
 const meeting = {
   type: 'meeting',
   ...props.meeting,
@@ -33,4 +38,9 @@ const meeting = {
   endOn: formatDate(props.meeting.endOn, locale.value),
   url: props.meeting.urls?.[0] || '#',
 };
+
+/**
+ * TODO: Use LString for location (city, country) and title
+ * as described in https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2432554274
+ */
 </script>
