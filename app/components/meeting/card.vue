@@ -6,6 +6,9 @@
         <span class="dash">&ndash;</span> {{ meeting.endOn }}
       </template>
     </div>
+
+    <img :src="meeting.image" @error="missingImageUrl" class="content-image" />
+
     <div class="title">{{ meeting.title[locale] }}</div>
     <div v-show="meeting.city || meeting.country" class="location">
       {{ `${meeting.city[locale]}, ${meeting.country[locale]}` }}
@@ -19,6 +22,7 @@
 <script lang="ts" setup>
 import type { Meeting } from '~~/types/meeting';
 import { formatDate } from '~~/utils/date';
+import { solrImageUrl, missingImageUrl } from '~~/utils/images';
 
 const { t, locale } = useI18n();
 
@@ -37,7 +41,10 @@ const meeting = {
   startOn: formatDate(props.meeting.startOn, locale.value),
   endOn: formatDate(props.meeting.endOn, locale.value),
   url: props.meeting.urls?.[0] || '#',
+  image: solrImageUrl(props.meeting.urls?.[0] || ''),
 };
+
+console.log(meeting.image);
 
 /**
  * TODO: Use LString for location (city, country) and title
