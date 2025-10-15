@@ -10,22 +10,24 @@
         :key="meeting.id"
       />
     </div>
-    <shared-button-more
-      :type="itemsProps.type"
-      :url="itemsProps.path"
-      :length="itemsProps.items.length"
-    />
+    <NuxtLink
+      :to="itemsProps.path"
+      class="btn cbd-btn cbd-btn-outline-more-content"
+    >
+      More meetings
+    </NuxtLink>
   </section>
 </template>
 
 <script lang="ts" setup>
-import type { Meeting, MeetingList } from '~~/types/meeting';
+import type { Meeting, MeetingList, MeetingOptions } from '~~/types/meeting';
 import useMeetingsApi from '~/composables/api/use-meetings';
 
 const { t, locale } = useI18n();
 
 const { getMeetings } = useMeetingsApi();
-const { total, rows }: MeetingList = await getMeetings();
+const options: MeetingOptions = { limit: 4 };
+const { total, rows }: MeetingList = await getMeetings(options);
 
 const itemsProps = computed(() => {
   const classes: string[] = [];
@@ -41,7 +43,7 @@ const itemsProps = computed(() => {
    */
 
   return {
-    items: rows.slice(0, 4),
+    items: rows,
     classes,
     styles,
     title: 'meetings',

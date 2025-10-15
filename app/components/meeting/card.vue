@@ -11,7 +11,7 @@
       {{ `${meeting.city[locale]}, ${meeting.country[locale]}` }}
     </div>
     <div class="read-on-wrapper">
-      <shared-button-more :url="meeting.url" :type="meeting.type" :length="1" />
+      <NuxtLink :to="meeting.url" class="read-on">View meeting</NuxtLink>
     </div>
   </div>
 </template>
