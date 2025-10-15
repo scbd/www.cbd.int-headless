@@ -1,6 +1,6 @@
 export function formatDate(date: Date | string, locale?: string) {
-    if(!date) return "";
-    if(!locale) locale = "en";
+    if (!date) return "";
+    if (!locale) locale = "en";
 
     const convertedDate = typeof date === "string" ? new Date(date) : date;
     return Intl.DateTimeFormat(locale, {
