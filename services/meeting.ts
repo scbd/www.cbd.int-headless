@@ -52,7 +52,7 @@ export default class MeetingService {
             city: toLString(item, "eventCity")
             // imageUrl: MeetingService.getImageUrl(item),
             /**
-             * FOR @DevDrupal ONLY
+             * FOR @DevDrupal ONLY; WILL BE REMOVED SOON
              *  TODO: implement image handling when available
              */
         }));
@@ -65,7 +65,7 @@ export default class MeetingService {
 
     /**
      * TODO: implement image handling when available
-     * FOR @DevDrupal ONLY
+     * FOR @DevDrupal ONLY; WILL BE REMOVED SOON
      * @see https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2437169504
      */
     private static getImageUrl(meeting: Meeting) {

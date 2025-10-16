@@ -7,10 +7,7 @@
       </template>
     </div>
 
-    <NuxtImg
-      :src="meeting.image"
-      class="content-image"
-    />
+    <NuxtImg :src="meeting.image" class="content-image" />
 
     <div class="title">{{ meeting.title[locale] }}</div>
     <div v-show="meeting.city || meeting.country" class="location">
@@ -45,8 +42,9 @@ const meeting = computed(() => {
     endOn: formatDate(props.meeting.endOn, locale.value),
     url: props.meeting.urls?.[0] || '#',
     /**
- * To be replaced with proper image handling when available
- */
+     * To be replaced with proper image handling when available;
+     * WILL BE REMOVED SOON
+     */
     image: '/images/content-replacement.svg',
   };
 });
