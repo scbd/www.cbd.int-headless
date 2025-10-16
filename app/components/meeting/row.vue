@@ -5,10 +5,12 @@
     </div>
     <div class="content-wrapper d-flex">
       <meeting-card
+        v-if="!itemsProps.error"
         v-for="meeting in itemsProps.items"
         :meeting="meeting"
         :key="meeting.id"
       />
+      <status v-else class="error-loader" />
     </div>
     <NuxtLink
       :to="itemsProps.path"
@@ -27,7 +29,7 @@ const { t, locale } = useI18n();
 
 const { getMeetings } = useMeetingsApi();
 const options: MeetingOptions = { limit: 4 };
-const { total, rows }: MeetingList = await getMeetings(options);
+const { total, rows, error } = await getMeetings(options);
 
 const itemsProps = computed(() => {
   const classes: string[] = [];
@@ -44,6 +46,7 @@ const itemsProps = computed(() => {
 
   return {
     items: rows,
+    error: error,
     classes,
     styles,
     title: 'meetings',

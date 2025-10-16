@@ -1,23 +1,27 @@
 import { handleError, internalServerError } from 'api-client/api-error';
 import type { rest } from 'lodash';
-import type { MeetingList, MeetingOptions } from '~~/types/meeting';
+import type { Meeting, MeetingList, MeetingOptions } from '~~/types/meeting';
 
-// TODO: replace this with a implement handleError whenever api-client is fixed (Stephane).
-function throwOnError({ error, ...rest }) {
-  if (error.value) throw error.value;
+/** TODO: replace this with a implement handleError whenever api-client is fixed (Stephane).
+ *  https://scbd.atlassian.net/browse/CIR-139
+ */
 
+function throwOnError({ error, ...rest }: { error: any; [key: string]: any }) {
+  // if (error.value) throw error.value;
+
+  if (error.value) rest = { error: true, ...rest };
   return rest;
-};
+}
 
 export default function useMeetingsApi() {
   const getMeetings = async (
     options?: MeetingOptions
-  ): Promise<MeetingList> => {
+  ): Promise<{ error: boolean; total: number; rows: Meeting[] }> => {
     const { data, error } = await useFetch<MeetingList>('/api/meetings', {
       params: {
         sort: options?.sort,
         limit: options?.limit,
-        skip: options?.skip
+        skip: options?.skip,
       },
     }).then(throwOnError);
 
@@ -25,7 +29,7 @@ export default function useMeetingsApi() {
 
     const meetings: MeetingList = {
       total: response.total,
-      rows: response.rows.map((meeting: any) => ({
+      rows: response.rows.map((meeting: Meeting) => ({
         ...meeting,
         startOn: new Date(meeting.startOn),
         endOn: new Date(meeting.endOn),
@@ -33,7 +37,7 @@ export default function useMeetingsApi() {
       })),
     };
 
-    return meetings;
+    return { error, ...meetings };
   };
 
   return { getMeetings };
