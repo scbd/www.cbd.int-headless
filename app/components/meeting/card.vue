@@ -7,7 +7,11 @@
       </template>
     </div>
 
-    <img :src="meeting.image" @error="missingImageUrl" class="content-image" />
+    <NuxtImg
+      :src="meetingImage"
+      class="content-image"
+      @error="meetingImage = missingImageUrl"
+    />
 
     <div class="title">{{ meeting.title[locale] }}</div>
     <div v-show="meeting.city || meeting.country" class="location">
@@ -35,16 +39,17 @@ const props = defineProps<{
  * as mentioned here: https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2432608355
  */
 
-const meeting = {
-  type: 'meeting',
-  ...props.meeting,
-  startOn: formatDate(props.meeting.startOn, locale.value),
-  endOn: formatDate(props.meeting.endOn, locale.value),
-  url: props.meeting.urls?.[0] || '#',
-  image: solrImageUrl(props.meeting.urls?.[0] || ''),
-};
+const meeting = computed(() => {
+  return {
+    type: 'meeting',
+    ...props.meeting,
+    startOn: formatDate(props.meeting.startOn, locale.value),
+    endOn: formatDate(props.meeting.endOn, locale.value),
+    url: props.meeting.urls?.[0] || '#',
+  };
+});
 
-console.log(meeting.image);
+const meetingImage = ref<string>(solrImageUrl(props.meeting.urls[0]));
 
 /**
  * TODO: Use LString for location (city, country) and title
