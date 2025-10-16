@@ -8,9 +8,8 @@
     </div>
 
     <NuxtImg
-      :src="meetingImage"
+      :src="meeting.image"
       class="content-image"
-      @error="meetingImage = missingImageUrl"
     />
 
     <div class="title">{{ meeting.title[locale] }}</div>
@@ -26,7 +25,6 @@
 <script lang="ts" setup>
 import type { Meeting } from '~~/types/meeting';
 import { formatDate } from '~~/utils/date';
-import { solrImageUrl, missingImageUrl } from '~~/utils/images';
 
 const { t, locale } = useI18n();
 
@@ -46,10 +44,12 @@ const meeting = computed(() => {
     startOn: formatDate(props.meeting.startOn, locale.value),
     endOn: formatDate(props.meeting.endOn, locale.value),
     url: props.meeting.urls?.[0] || '#',
+    /**
+ * To be replaced with proper image handling when available
+ */
+    image: '/images/content-replacement.svg',
   };
 });
-
-const meetingImage = ref<string>(solrImageUrl(props.meeting.urls[0]));
 
 /**
  * TODO: Use LString for location (city, country) and title
