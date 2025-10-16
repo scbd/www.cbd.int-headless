@@ -5,17 +5,14 @@ export default function useMeetingsApi() {
   const getMeetings = async (
     options?: MeetingOptions
   ): Promise<MeetingList> => {
-    const { data, error } = await useFetch('/api/meetings', {
+    const { data } = await useFetch('/api/meetings', {
       params: {
         sort: options?.sort,
         limit: options?.limit,
         skip: options?.skip,
       },
+      onRequestError: handleError
     });
-
-    if (error.value) {
-      throw internalServerError(error.value.message);
-    }
 
     const response = data.value || { total: 0, rows: [] };
 
