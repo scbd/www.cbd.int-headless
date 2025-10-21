@@ -50,6 +50,11 @@ export default class MeetingService {
             updatedOn: new Date(item.updatedDate_dt),
             country: toLString(item, "eventCountry"),
             city: toLString(item, "eventCity")
+            // imageUrl: MeetingService.getImageUrl(item),
+            /**
+             * FOR @DevDrupal ONLY; WILL BE REMOVED SOON
+             *  TODO: implement image handling when available
+             */
         }));
 
         return {
@@ -57,5 +62,14 @@ export default class MeetingService {
             rows: meetingList
         };
     };
+
+    /**
+     * TODO: implement image handling when available
+     * FOR @DevDrupal ONLY; WILL BE REMOVED SOON
+     * @see https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2437169504
+     */
+    private static getImageUrl(meeting: Meeting) {
+        
+    }
 };
 
