@@ -37,6 +37,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/content/images/**': {
+      // NOTE: runtimeConfig not accessible from defineNuxt config.  we need to test use of process.env in the context or use build-time config. TO BE TESTED
       proxy: `${process.env.NUXT_DRUPAL_BASE_URL}/sites/default/files/**`
     }
   },
