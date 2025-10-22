@@ -4,7 +4,17 @@
       {{ notification.createdOn }}
     </div>
 
-    <NuxtImg :src="notification.image" class="content-image" />
+    <NuxtImg
+      :src="notification.image"
+      class="content-image"
+      v-slot="{ src, isLoaded, imgAttrs }"
+      :preload="false"
+      :custom="true"
+    >
+      <img v-if="isLoaded" v-bind="imgAttrs" :src="src" alt="loaded" />
+
+      <img v-else :src="notification.imageFallBack" class="content-image" />
+    </NuxtImg>
 
     <div class="title">{{ notification.fullTitle }}</div>
 
@@ -16,9 +26,7 @@
       Subjects: {{ notification.themes[locale] }}
     </div>
 
-    <div class="description">
-      {{ notification.fulltext[locale] }}
-    </div>
+    <div v-html="notification.fulltext[locale]" class="description"></div>
 
     <div class="read-on-wrapper">
       <NuxtLink :to="notification.url" class="read-on"
@@ -62,13 +70,20 @@ const notification = computed(() => {
     actionOn: formatDate(props.notification.actionOn, locale.value),
     deadlineOn: formatDate(props.notification.deadlineOn, locale.value),
     url: props.notification.urls?.[0] || '#',
-    /**
-     * To be replaced with proper image handling when available;
-     * WILL BE REMOVED SOON
-     */
-    image: '/images/content-replacement.svg',
+    image: `/content/images/notifications/${props.notification.code}.jpg`,
+    imageFallBack: '/images/content-replacement.svg',
   };
 });
+
+const removePlaceholder = (event: Event) => {
+  event.target as HTMLImageElement;
+};
+
+const imgSrcNotFound = (error: Event | string) => {
+  console.log((error as Event).target);
+  // ((error as Event).target as HTMLImageElement).src =
+  //   '/images/content-replacement.svg';
+};
 
 /**
  * TODO: Use LString for location (city, country) and title
