@@ -35,5 +35,10 @@ export default defineNuxtConfig({
     apiBaseUrl: '',
     ortUrl: '',
   },
+  routeRules: {
+    '/content/images/**': {
+      proxy: `${process.env.NUXT_DRUPAL_BASE_URL}/sites/default/files/**`
+    }
+  },
   css: ['~/assets/scss/styles.scss'],
 });
