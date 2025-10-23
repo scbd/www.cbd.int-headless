@@ -4,12 +4,26 @@
       {{ notification.createdOn }}
     </div>
 
-    <img
+    <NuxtImg
+      v-if="!isError"
       :src="notification.image"
       alt=""
       class="content-image"
-      @error="handleImageError"
       loading="lazy"
+      :custom="true"
+      provider="drupal"
+      @error="isError = true"
+      v-slot="{ src, imgAttrs, isLoaded }"
+    >
+      <img v-if="isLoaded" :src="src" v-bind="imgAttrs" data-cbd="cool" />
+    </NuxtImg>
+
+    <NuxtImg
+      v-else
+      :src="notification.imageFallBack"
+      alt=""
+      class="content-image"
+      role="img"
     />
 
     <div class="title">{{ notification.fullTitle }}</div>
@@ -66,14 +80,15 @@ const notification = computed(() => {
     actionOn: formatDate(props.notification.actionOn, locale.value),
     deadlineOn: formatDate(props.notification.deadlineOn, locale.value),
     url: props.notification.urls?.[0] || '#',
-    image: `/content/images/notifications/${props.notification.code}.jpg`,
+    image: `/notifications/${props.notification.code}.jpg`,
     imageFallBack: '/images/content-replacement.svg',
   };
 });
 
-const handleImageError = (event: Event) => {
-  const img = event.target as HTMLImageElement;
-  img.src = notification.value.imageFallBack;
+const isError = ref<boolean>(false);
+
+const handleImageError = () => {
+  isError.value = true;
 };
 
 /**

@@ -27,6 +27,20 @@ export default defineNuxtConfig({
     strategy: 'prefix_and_default',
     vueI18n: './config/i18n.config.ts',
   },
+  image: {
+    domains: ['cms-dev.drupal.www.infra.cbd.int'],
+    providers: {
+      drupal: {
+        name: 'drupal',
+        provider: '../providers/drupal.ts',
+        options: {
+          baseURL:
+            'https://cms-dev.drupal.www.infra.cbd.int/sites/default/files/',
+          // `${process.env.NUXT_DRUPAL_BASE_URL}/sites/default/files/`,
+        },
+      },
+    },
+  },
   runtimeConfig: {
     drupalBaseUrl: '',
     drupalClientId: '',
@@ -38,8 +52,8 @@ export default defineNuxtConfig({
   routeRules: {
     '/content/images/**': {
       // NOTE: runtimeConfig not accessible from defineNuxt config.  we need to test use of process.env in the context or use build-time config. TO BE TESTED
-      proxy: `${process.env.NUXT_DRUPAL_BASE_URL}/sites/default/files/**`
-    }
+      proxy: `${process.env.NUXT_DRUPAL_BASE_URL}/sites/default/files/**`,
+    },
   },
   css: ['~/assets/scss/styles.scss'],
 });
