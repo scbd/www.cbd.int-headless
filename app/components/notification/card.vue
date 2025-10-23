@@ -6,7 +6,7 @@
 
     <img
       :src="notification.image"
-      :alt="`Notification ${notification.code}`"
+      alt=""
       class="content-image"
       @error="handleImageError"
       loading="lazy"
@@ -33,8 +33,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { Notification } from "~~/types/notification";
-import { formatDate } from "~~/utils/date";
+import type { Notification } from '~~/types/notification';
+import { formatDate } from '~~/utils/date';
 
 const { t, locale } = useI18n();
 
@@ -55,7 +55,7 @@ const props = defineProps<{
 
 const notification = computed(() => {
   return {
-    type: "notification",
+    type: 'notification',
     ...props.notification,
     fullTitle: `${props.notification.code} - ${
       props.notification.title[locale.value]
@@ -65,9 +65,9 @@ const notification = computed(() => {
     endOn: formatDate(props.notification.endOn, locale.value),
     actionOn: formatDate(props.notification.actionOn, locale.value),
     deadlineOn: formatDate(props.notification.deadlineOn, locale.value),
-    url: props.notification.urls?.[0] || "#",
+    url: props.notification.urls?.[0] || '#',
     image: `/content/images/notifications/${props.notification.code}.jpg`,
-    imageFallBack: "/images/content-replacement.svg",
+    imageFallBack: '/images/content-replacement.svg',
   };
 });
 
