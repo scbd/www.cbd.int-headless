@@ -4,17 +4,13 @@
       {{ notification.createdOn }}
     </div>
 
-    <NuxtImg
+    <img
       :src="notification.image"
+      :alt="`Notification ${notification.code}`"
       class="content-image"
-      v-slot="{ src, isLoaded, imgAttrs }"
-      :preload="false"
-      :custom="true"
-    >
-      <img v-if="isLoaded" v-bind="imgAttrs" :src="src" alt="loaded" />
-
-      <img v-else :src="notification.imageFallBack" class="content-image" />
-    </NuxtImg>
+      @error="handleImageError"
+      loading="lazy"
+    />
 
     <div class="title">{{ notification.fullTitle }}</div>
 
@@ -37,8 +33,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { Notification } from '~~/types/notification';
-import { formatDate } from '~~/utils/date';
+import type { Notification } from "~~/types/notification";
+import { formatDate } from "~~/utils/date";
 
 const { t, locale } = useI18n();
 
@@ -59,7 +55,7 @@ const props = defineProps<{
 
 const notification = computed(() => {
   return {
-    type: 'notification',
+    type: "notification",
     ...props.notification,
     fullTitle: `${props.notification.code} - ${
       props.notification.title[locale.value]
@@ -69,20 +65,15 @@ const notification = computed(() => {
     endOn: formatDate(props.notification.endOn, locale.value),
     actionOn: formatDate(props.notification.actionOn, locale.value),
     deadlineOn: formatDate(props.notification.deadlineOn, locale.value),
-    url: props.notification.urls?.[0] || '#',
+    url: props.notification.urls?.[0] || "#",
     image: `/content/images/notifications/${props.notification.code}.jpg`,
-    imageFallBack: '/images/content-replacement.svg',
+    imageFallBack: "/images/content-replacement.svg",
   };
 });
 
-const removePlaceholder = (event: Event) => {
-  event.target as HTMLImageElement;
-};
-
-const imgSrcNotFound = (error: Event | string) => {
-  console.log((error as Event).target);
-  // ((error as Event).target as HTMLImageElement).src =
-  //   '/images/content-replacement.svg';
+const handleImageError = (event: Event) => {
+  const img = event.target as HTMLImageElement;
+  img.src = notification.value.imageFallBack;
 };
 
 /**
