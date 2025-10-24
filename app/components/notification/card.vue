@@ -1,5 +1,5 @@
 <template>
-  <div class="content-object" :class="notification.type">
+  <div class="content-object notification">
     <div class="date">
       {{ notification.createdOn }}
     </div>
@@ -55,7 +55,6 @@ const props = defineProps<{
 
 const notification = computed(() => {
   return {
-    type: 'notification',
     ...props.notification,
     fullTitle: `${props.notification.code} - ${
       props.notification.title[locale.value]

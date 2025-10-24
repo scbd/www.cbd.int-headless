@@ -1,5 +1,5 @@
 <template>
-  <div class="content-object" :class="meeting.type">
+  <div class="content-object meeting">
     <div class="date">
       {{ meeting.startOn }}
       <template v-if="meeting.endOn">
@@ -36,7 +36,6 @@ const props = defineProps<{
 
 const meeting = computed(() => {
   return {
-    type: 'meeting',
     ...props.meeting,
     startOn: formatDate(props.meeting.startOn, locale.value),
     endOn: formatDate(props.meeting.endOn, locale.value),

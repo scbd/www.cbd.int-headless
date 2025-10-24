@@ -1,7 +1,7 @@
 <template>
   <section class="content-row d-flex flex-column" :class="itemsProps.classes">
     <div class="row-title">
-      {{ itemsProps.title }}
+      {{ t('meetings') }}
     </div>
     <div class="content-wrapper d-flex">
       <meeting-card
@@ -49,8 +49,6 @@ const itemsProps = computed(() => {
     error: error,
     classes,
     styles,
-    title: 'meetings',
-    type: 'meeting',
     path: '/meeting',
   };
 });
