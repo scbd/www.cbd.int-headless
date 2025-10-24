@@ -5,7 +5,7 @@
     </div>
     <div class="content-wrapper d-flex">
       <notification-card
-        v-if="!itemsProps.error"
+        v-if="!itemsProps.isError"
         v-for="notification in itemsProps.items"
         :notification="notification"
         :key="notification.id"
@@ -33,7 +33,7 @@ const { t, locale } = useI18n();
 
 const { getNotifications } = useNotificationsApi();
 const options: NotificationOptions = { limit: 4 };
-const { total, rows, error } = await getNotifications(options);
+const { total, rows, isError } = await getNotifications(options);
 
 const itemsProps = computed(() => {
   const classes: string[] = [];
@@ -50,7 +50,7 @@ const itemsProps = computed(() => {
 
   return {
     items: rows,
-    error,
+    isError,
     classes,
     styles,
     path: '/notification',

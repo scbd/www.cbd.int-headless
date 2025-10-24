@@ -5,7 +5,7 @@
     </div>
     <div class="content-wrapper d-flex">
       <meeting-card
-        v-if="!itemsProps.error"
+        v-if="!itemsProps.isError"
         v-for="meeting in itemsProps.items"
         :meeting="meeting"
         :key="meeting.id"
@@ -29,7 +29,7 @@ const { t, locale } = useI18n();
 
 const { getMeetings } = useMeetingsApi();
 const options: MeetingOptions = { limit: 4 };
-const { total, rows, error } = await getMeetings(options);
+const { total, rows, isError } = await getMeetings(options);
 
 const itemsProps = computed(() => {
   const classes: string[] = [];
@@ -46,7 +46,7 @@ const itemsProps = computed(() => {
 
   return {
     items: rows,
-    error: error,
+    isError,
     classes,
     styles,
     path: '/meeting',

@@ -5,22 +5,26 @@ import type {
   NotificationOptions,
 } from '~~/types/notification';
 
-/** TODO: replace this with a implement handleError whenever api-client is fixed (Stephane).
+/** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
  *  https://scbd.atlassian.net/browse/CIR-139
  */
-
-function throwOnError({ error, ...rest }: { error: any; [key: string]: any }) {
-  // if (error.value) throw error.value;
-
-  if (error.value) rest = { error: true, ...rest };
+const setErrorBoolean = ({
+  isError,
+  error,
+  ...rest
+}: {
+  [key: string]: any;
+  error: any;
+}) => {
+  if (error.value) rest = { ...rest, error, isError: true };
   return rest;
-}
+};
 
 export default function useNotificationsApi() {
   const getNotifications = async (
     options?: NotificationOptions
-  ): Promise<{ error: boolean; total: number; rows: Notification[] }> => {
-    const { data, error } = await useFetch<NotificationList>(
+  ): Promise<{ isError: boolean; total: number; rows: Notification[] }> => {
+    const { data, error, isError } = await useFetch<NotificationList>(
       '/api/notifications',
       {
         params: {
@@ -29,7 +33,7 @@ export default function useNotificationsApi() {
           skip: options?.skip,
         },
       }
-    ).then(throwOnError);
+    ).then(setErrorBoolean);
 
     const response = data.value || { total: 0, rows: [] };
 
@@ -45,7 +49,7 @@ export default function useNotificationsApi() {
       })),
     };
 
-    return { error, ...notifications };
+    return { isError, ...notifications };
   };
 
   return { getNotifications };

@@ -1,29 +1,35 @@
 import { handleError, internalServerError } from 'api-client/api-error';
-import type { rest } from 'lodash';
 import type { Meeting, MeetingList, MeetingOptions } from '~~/types/meeting';
 
-/** TODO: replace this with a implement handleError whenever api-client is fixed (Stephane).
+/** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
  *  https://scbd.atlassian.net/browse/CIR-139
  */
-
-function throwOnError({ error, ...rest }: { error: any; [key: string]: any }) {
-  // if (error.value) throw error.value;
-
-  if (error.value) rest = { error: true, ...rest };
+const setErrorBoolean = ({
+  isError,
+  error,
+  ...rest
+}: {
+  [key: string]: any;
+  error: any;
+}) => {
+  if (error.value) rest = { ...rest, error, isError: true };
   return rest;
-}
+};
 
 export default function useMeetingsApi() {
   const getMeetings = async (
     options?: MeetingOptions
-  ): Promise<{ error: boolean; total: number; rows: Meeting[] }> => {
-    const { data, error } = await useFetch<MeetingList>('/api/meetings', {
-      params: {
-        sort: options?.sort,
-        limit: options?.limit,
-        skip: options?.skip,
-      },
-    }).then(throwOnError);
+  ): Promise<{ isError: boolean; total: number; rows: Meeting[] }> => {
+    const { data, error, isError } = await useFetch<MeetingList>(
+      '/api/meetings',
+      {
+        params: {
+          sort: options?.sort,
+          limit: options?.limit,
+          skip: options?.skip,
+        },
+      }
+    ).then(setErrorBoolean);
 
     const response = data.value || { total: 0, rows: [] };
 
@@ -37,7 +43,7 @@ export default function useMeetingsApi() {
       })),
     };
 
-    return { error, ...meetings };
+    return { isError, ...meetings };
   };
 
   return { getMeetings };
