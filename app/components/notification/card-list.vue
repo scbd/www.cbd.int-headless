@@ -50,7 +50,7 @@ const itemsProps = computed(() => {
 
   return {
     items: rows,
-    error: error,
+    error,
     classes,
     styles,
     title: 'notifications',
