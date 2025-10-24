@@ -16,8 +16,7 @@ const setErrorBoolean = ({
   [key: string]: any;
   error: any;
 }) => {
-  if (error.value) rest = { ...rest, error, isError: true };
-  return rest;
+  return error.value ? { ...rest, error, isError } : rest;
 };
 
 export default function useNotificationsApi() {
