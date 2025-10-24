@@ -27,20 +27,6 @@ export default defineNuxtConfig({
     strategy: 'prefix_and_default',
     vueI18n: './config/i18n.config.ts',
   },
-  image: {
-    domains: ['cms-dev.drupal.www.infra.cbd.int'],
-    providers: {
-      drupal: {
-        name: 'drupal',
-        provider: '../providers/drupal.ts',
-        options: {
-          baseURL:
-            'https://cms-dev.drupal.www.infra.cbd.int/sites/default/files/',
-          // `${process.env.NUXT_DRUPAL_BASE_URL}/sites/default/files/`,
-        },
-      },
-    },
-  },
   runtimeConfig: {
     drupalBaseUrl: '',
     drupalClientId: '',

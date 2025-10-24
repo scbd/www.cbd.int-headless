@@ -5,25 +5,11 @@
     </div>
 
     <NuxtImg
-      v-if="!isError"
       :src="notification.image"
       alt=""
       class="content-image"
       loading="lazy"
-      :custom="true"
-      provider="drupal"
-      @error="isError = true"
-      v-slot="{ src, imgAttrs, isLoaded }"
-    >
-      <img v-if="isLoaded" :src="src" v-bind="imgAttrs" data-cbd="cool" />
-    </NuxtImg>
-
-    <NuxtImg
-      v-else
-      :src="notification.imageFallBack"
-      alt=""
-      class="content-image"
-      role="img"
+      :placeholder="notification.imageFallBack"
     />
 
     <div class="title">{{ notification.fullTitle }}</div>
@@ -80,16 +66,14 @@ const notification = computed(() => {
     actionOn: formatDate(props.notification.actionOn, locale.value),
     deadlineOn: formatDate(props.notification.deadlineOn, locale.value),
     url: props.notification.urls?.[0] || '#',
-    image: `/notifications/${props.notification.code}.jpg`,
+    /**
+     * To be replaced with proper image handling when available;
+     * WILL BE REMOVED SOON
+     */
+    image: `/content/images/notifications/${props.notification.code}.jpg`,
     imageFallBack: '/images/content-replacement.svg',
   };
 });
-
-const isError = ref<boolean>(false);
-
-const handleImageError = () => {
-  isError.value = true;
-};
 
 /**
  * TODO: Use LString for location (city, country) and title
