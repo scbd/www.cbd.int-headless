@@ -22,7 +22,7 @@
       Subjects: {{ notification.themes[locale] }}
     </div>
 
-    <div v-html="notification.fulltext[locale]" class="description"></div>
+    <div v-safe-html="notification.fulltext[locale]" class="description"></div>
 
     <div class="read-on-wrapper">
       <NuxtLink :to="notification.url" class="read-on"
