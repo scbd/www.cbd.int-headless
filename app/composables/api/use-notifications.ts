@@ -4,7 +4,7 @@ import type {
   NotificationList,
   NotificationOptions
 } from '~~/types/notification';
-import { urls } from '~~/data/constants';
+import { API_URLS } from '~~/data/constants';
 
 /** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
  *  https://scbd.atlassian.net/browse/CIR-139
@@ -25,7 +25,7 @@ export default function useNotificationsApi() {
     options?: NotificationOptions
   ): Promise<{ isError: boolean; total: number; rows: Notification[] }> => {
     const { data, error, isError } = await useFetch<NotificationList>(
-      urls.api.notifications,
+      API_URLS.NOTIFICATIONS,
       {
         params: {
           sort: options?.sort,

@@ -1,6 +1,6 @@
 import { handleError, internalServerError } from 'api-client/api-error';
 import type { Meeting, MeetingList, MeetingOptions } from '~~/types/meeting';
-import { urls } from '~~/data/constants';
+import { API_URLS } from '~~/data/constants';
 
 /** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
  *  https://scbd.atlassian.net/browse/CIR-139
@@ -21,7 +21,7 @@ export default function useMeetingsApi() {
     options?: MeetingOptions
   ): Promise<{ isError: boolean; total: number; rows: Meeting[] }> => {
     const { data, error, isError } = await useFetch<MeetingList>(
-      urls.api.meetings,
+      API_URLS.MEETINGS,
       {
         params: {
           sort: options?.sort,
