@@ -25,15 +25,19 @@
 import type {
   Notification,
   NotificationList,
-  NotificationOptions,
+  NotificationOptions
 } from '~~/types/notification';
 import useNotificationsApi from '~/composables/api/use-notifications';
 
 const { t, locale } = useI18n();
 
+const isError = ref<boolean>(false);
 const { getNotifications } = useNotificationsApi();
 const options: NotificationOptions = { limit: 4 };
-const { total, rows, isError } = await getNotifications(options);
+//@ts-check
+const { total, rows } = await getNotifications(options).catch(
+  (error) => (isError.value = true)
+);
 
 const itemsProps = computed(() => {
   const classes: string[] = [];
@@ -50,10 +54,10 @@ const itemsProps = computed(() => {
 
   return {
     items: rows,
-    isError,
+    isError: isError.value,
     classes,
     styles,
-    path: '/notification',
+    path: '/notification'
   };
 });
 </script>

@@ -27,9 +27,12 @@ import useMeetingsApi from '~/composables/api/use-meetings';
 
 const { t, locale } = useI18n();
 
+const isError = ref<boolean>(false);
 const { getMeetings } = useMeetingsApi();
 const options: MeetingOptions = { limit: 4 };
-const { total, rows, isError } = await getMeetings(options);
+const { total, rows } = await getMeetings(options).catch(
+  (error) => (isError.value = true)
+);
 
 const itemsProps = computed(() => {
   const classes: string[] = [];
@@ -46,10 +49,10 @@ const itemsProps = computed(() => {
 
   return {
     items: rows,
-    isError,
+    isError: isError.value,
     classes,
     styles,
-    path: '/meeting',
+    path: '/meeting'
   };
 });
 </script>

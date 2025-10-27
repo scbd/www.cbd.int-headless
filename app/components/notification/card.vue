@@ -22,7 +22,10 @@
       Subjects: {{ notification.themes[locale] }}
     </div>
 
-    <div v-safe-html="notification.fulltext[locale]" class="description"></div>
+    <div
+      v-dompurify-html:plaintext="notification.fulltext[locale]"
+      class="description"
+    ></div>
 
     <div class="read-on-wrapper">
       <NuxtLink :to="notification.url" class="read-on"
@@ -70,7 +73,7 @@ const notification = computed(() => {
      * WILL BE REMOVED SOON
      */
     image: `/content/images/notifications/${props.notification.code}.jpg`,
-    imageFallBack: '/images/content-replacement.svg',
+    imageFallBack: '/images/content-replacement.svg'
   };
 });
 
