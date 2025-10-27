@@ -34,7 +34,6 @@ const { t, locale } = useI18n();
 const isError = ref<boolean>(false);
 const { getNotifications } = useNotificationsApi();
 const options: NotificationOptions = { limit: 4 };
-//@ts-check
 const { total, rows } = await getNotifications(options).catch(
   (error) => (isError.value = true)
 );
