@@ -2,8 +2,9 @@ import { handleError, internalServerError } from 'api-client/api-error';
 import type {
   Notification,
   NotificationList,
-  NotificationOptions,
+  NotificationOptions
 } from '~~/types/notification';
+import { urls } from '~~/data/constants';
 
 /** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
  *  https://scbd.atlassian.net/browse/CIR-139
@@ -24,13 +25,13 @@ export default function useNotificationsApi() {
     options?: NotificationOptions
   ): Promise<{ isError: boolean; total: number; rows: Notification[] }> => {
     const { data, error, isError } = await useFetch<NotificationList>(
-      '/api/notifications',
+      urls.api.notifications,
       {
         params: {
           sort: options?.sort,
           limit: options?.limit,
-          skip: options?.skip,
-        },
+          skip: options?.skip
+        }
       }
     ).then(setErrorBoolean);
 
@@ -44,11 +45,11 @@ export default function useNotificationsApi() {
         endOn: new Date(notification.endOn),
         updatedOn: new Date(notification.updatedOn),
         actionOn: new Date(notification.actionOn),
-        deadlineOn: new Date(notification.deadlineOn),
-      })),
+        deadlineOn: new Date(notification.deadlineOn)
+      }))
     };
 
-    return { isError, ...notifications };
+    return { ...notifications, isError };
   };
 
   return { getNotifications };
