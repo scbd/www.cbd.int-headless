@@ -63,10 +63,9 @@ const notification = computed(() => {
       props.notification.title[locale.value]
     }`,
     themes: props.notification.themes.find((l) => l[locale.value]),
-    createdOn: formatDate(props.notification.createdOn, locale.value),
-    endOn: formatDate(props.notification.endOn, locale.value),
-    actionOn: formatDate(props.notification.actionOn, locale.value),
-    deadlineOn: formatDate(props.notification.deadlineOn, locale.value),
+    actionOn: props.notification.actionOn
+      ? formatDate(props.notification.actionOn, locale.value)
+      : props.notification.actionOn,
     url: props.notification.urls?.[0] ?? '#',
     /**
      * To be replaced with proper image handling when available;
