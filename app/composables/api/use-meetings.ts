@@ -1,6 +1,7 @@
 import { handleError, internalServerError } from 'api-client/api-error';
 import type { Meeting, MeetingList, MeetingOptions } from '~~/types/meeting';
 import { MEETINGS } from '~~/constants/api-paths';
+import normalizeObjectDates from '~~/utils/normalize-object-dates';
 
 /** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
  *  https://scbd.atlassian.net/browse/CIR-139
@@ -32,12 +33,9 @@ export default function useMeetingsApi() {
 
     return {
       total: response.total,
-      rows: response.rows.map((meeting: Meeting) => ({
-        ...meeting,
-        startOn: new Date(meeting.startOn),
-        endOn: new Date(meeting.endOn),
-        updatedOn: new Date(meeting.updatedOn)
-      }))
+      rows: response.rows.map((meeting: Meeting) =>
+        normalizeObjectDates(meeting)
+      )
     };
   };
 

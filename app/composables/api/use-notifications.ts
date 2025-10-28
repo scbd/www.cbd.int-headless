@@ -5,6 +5,7 @@ import type {
   NotificationOptions
 } from '~~/types/notification';
 import { NOTIFICATIONS } from '~~/constants/api-paths';
+import normalizeObjectDates from '~~/utils/normalize-object-dates';
 
 /** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
  *  https://scbd.atlassian.net/browse/CIR-139
@@ -36,14 +37,9 @@ export default function useNotificationsApi() {
 
     return {
       total: response.total,
-      rows: response.rows.map((notification: Notification) => ({
-        ...notification,
-        createdOn: new Date(notification.createdOn),
-        endOn: new Date(notification.endOn),
-        updatedOn: new Date(notification.updatedOn),
-        actionOn: new Date(notification.actionOn),
-        deadlineOn: new Date(notification.deadlineOn)
-      }))
+      rows: response.rows.map((notification: Notification) =>
+        normalizeObjectDates(notification)
+      )
     };
   };
 
