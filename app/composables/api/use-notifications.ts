@@ -24,7 +24,7 @@ export default function useNotificationsApi() {
   const getNotifications = async (
     options?: NotificationOptions
   ): Promise<NotificationList> => {
-    const { data, error } = await useFetch<NotificationList>(NOTIFICATIONS, {
+    const { data } = await useFetch<NotificationList>(NOTIFICATIONS, {
       params: {
         sort: options?.sort,
         limit: options?.limit,
@@ -32,7 +32,7 @@ export default function useNotificationsApi() {
       }
     }).then(handleErrorState);
 
-    const response = data.value || { total: 0, rows: [] };
+    const response = data.value ?? { total: 0, rows: [] };
 
     return {
       total: response.total,

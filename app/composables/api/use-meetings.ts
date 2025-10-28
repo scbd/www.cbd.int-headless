@@ -20,7 +20,7 @@ export default function useMeetingsApi() {
   const getMeetings = async (
     options?: MeetingOptions
   ): Promise<MeetingList> => {
-    const { data, error } = await useFetch<MeetingList>(MEETINGS, {
+    const { data } = await useFetch<MeetingList>(MEETINGS, {
       params: {
         sort: options?.sort,
         limit: options?.limit,
@@ -28,7 +28,7 @@ export default function useMeetingsApi() {
       }
     }).then(handleErrorState);
 
-    const response = data.value || { total: 0, rows: [] };
+    const response = data.value ?? { total: 0, rows: [] };
 
     return {
       total: response.total,

@@ -1,21 +1,18 @@
 <template>
-  <section class="content-row d-flex flex-column" :class="itemsProps.classes">
+  <section class="content-row d-flex flex-column">
     <div class="row-title">
       {{ t('meetings') }}
     </div>
     <div class="content-wrapper d-flex">
       <meeting-card
         v-if="!isError"
-        v-for="meeting in itemsProps.items"
+        v-for="meeting in items"
         :meeting="meeting"
         :key="meeting.id"
       />
       <status v-else class="error-loader" />
     </div>
-    <NuxtLink
-      :to="itemsProps.path"
-      class="btn cbd-btn cbd-btn-outline-more-content"
-    >
+    <NuxtLink :to="MEETINGS" class="btn cbd-btn cbd-btn-outline-more-content">
       More meetings
     </NuxtLink>
   </section>
@@ -24,35 +21,14 @@
 <script lang="ts" setup>
 import type { Meeting, MeetingList, MeetingOptions } from '~~/types/meeting';
 import useMeetingsApi from '~/composables/api/use-meetings';
+import { MEETINGS } from '~~/constants/api-paths';
 
 const { t, locale } = useI18n();
 
-const isError = ref<boolean>(false);
+const isError = ref<Error>();
 const { getMeetings } = useMeetingsApi();
-const options: MeetingOptions = { limit: 4 };
-const { total, rows } = await getMeetings(options).catch((error) => {
-  isError.value = true;
-  return { total: 0, rows: [] };
-});
-
-const itemsProps = computed(() => {
-  const classes: string[] = [];
-  const styles: Record<string, string | number> = {};
-
-  /**
-   * TODO: handle aliases and pluralization of @items with i18n
-   * eg. t(`${props.type}.plural`);
-   */
-
-  /**
-   * TODO: replace itemProps.path with named route
-   */
-
-  return {
-    items: rows,
-    classes,
-    styles,
-    path: '/meeting'
-  };
+const { rows: items } = await getMeetings({ limit: 4 }).catch((error) => {
+  isError.value = error;
+  return { rows: [] };
 });
 </script>

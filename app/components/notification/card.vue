@@ -67,7 +67,7 @@ const notification = computed(() => {
     endOn: formatDate(props.notification.endOn, locale.value),
     actionOn: formatDate(props.notification.actionOn, locale.value),
     deadlineOn: formatDate(props.notification.deadlineOn, locale.value),
-    url: props.notification.urls?.[0] || '#',
+    url: props.notification.urls?.[0] ?? '#',
     /**
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
