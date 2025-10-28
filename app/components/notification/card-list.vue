@@ -5,7 +5,7 @@
     </div>
     <div class="content-wrapper d-flex">
       <notification-card
-        v-if="!itemsProps.isError"
+        v-if="!isError"
         v-for="notification in itemsProps.items"
         :notification="notification"
         :key="notification.id"
@@ -55,7 +55,6 @@ const itemsProps = computed(() => {
   return {
     items: rows,
     total,
-    isError: isError.value,
     classes,
     styles,
     path: '/notification'
