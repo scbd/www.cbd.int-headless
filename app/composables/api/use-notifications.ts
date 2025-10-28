@@ -33,7 +33,7 @@ export default function useNotificationsApi() {
       }
     }).then(handleErrorState);
 
-    const response = data.value ?? { total: 0, rows: [] };
+    const response: NotificationList = data.value;
 
     return {
       total: response.total,

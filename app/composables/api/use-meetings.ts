@@ -29,7 +29,7 @@ export default function useMeetingsApi() {
       }
     }).then(handleErrorState);
 
-    const response = data.value ?? { total: 0, rows: [] };
+    const response: MeetingList = data.value;
 
     return {
       total: response.total,

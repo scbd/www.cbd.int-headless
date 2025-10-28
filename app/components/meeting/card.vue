@@ -39,12 +39,12 @@ const meeting = computed(() => {
     ...props.meeting,
     startOn: formatDate(props.meeting.startOn, locale.value),
     endOn: formatDate(props.meeting.endOn, locale.value),
-    url: props.meeting.urls?.[0] || '#',
+    url: props.meeting.urls[0] ?? '#',
     /**
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    image: '/images/content-replacement.svg',
+    image: '/images/content-replacement.svg'
   };
 });
 
