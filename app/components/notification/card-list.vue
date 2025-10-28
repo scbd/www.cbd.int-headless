@@ -22,11 +22,6 @@
 </template>
 
 <script lang="ts" setup>
-import type {
-  Notification,
-  NotificationList,
-  NotificationOptions
-} from '~~/types/notification';
 import useNotificationsApi from '~/composables/api/use-notifications';
 import { NOTIFICATIONS } from '~~/constants/api-paths';
 

@@ -19,7 +19,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { Meeting, MeetingList, MeetingOptions } from '~~/types/meeting';
 import useMeetingsApi from '~/composables/api/use-meetings';
 import { MEETINGS } from '~~/constants/api-paths';
 

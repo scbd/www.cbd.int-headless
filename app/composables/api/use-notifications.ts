@@ -17,7 +17,7 @@ const handleErrorState = ({
   error: any;
 }) => {
   if (error.value) throw error.value;
-  return { ...rest };
+  return rest;
 };
 
 export default function useNotificationsApi() {
