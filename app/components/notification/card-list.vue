@@ -34,9 +34,10 @@ const { t, locale } = useI18n();
 const isError = ref<boolean>(false);
 const { getNotifications } = useNotificationsApi();
 const options: NotificationOptions = { limit: 4 };
-const { total, rows } = await getNotifications(options).catch(
-  (error) => (isError.value = true)
-);
+const { total, rows } = await getNotifications(options).catch((error) => {
+  isError.value = true;
+  return { total: 0, rows: [] };
+});
 
 const itemsProps = computed(() => {
   const classes: string[] = [];
@@ -53,6 +54,7 @@ const itemsProps = computed(() => {
 
   return {
     items: rows,
+    total,
     isError: isError.value,
     classes,
     styles,
