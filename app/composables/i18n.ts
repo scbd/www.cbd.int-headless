@@ -4,7 +4,10 @@ export async function loadTranslations(path: string) {
 
     const currentLocale = locale.value || 'en';
 
-    const translationPath = `../../i18n/${currentLocale}/${path}.json`;
+    const translationComponentPath = `../../i18n/${currentLocale}/${path}.json`;
+    const translationFallbackPath = `../../i18n/en/${path}.json`;
+
+    const translationPath = translationComponentPath in translations ? translationComponentPath : translationFallbackPath;
 
     try {
         const loader = translations[translationPath];
