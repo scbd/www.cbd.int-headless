@@ -22,6 +22,6 @@ export async function loadTranslations(path: string) {
 
         mergeLocaleMessage(currentLocale, messages);
     } catch (error) {
-        console.warn(`No translations found for ${path} in ${currentLocale}`, error);
+        console.warn(`No translations found for ${translationPath} in ${currentLocale}`, error);
     }
 };
