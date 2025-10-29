@@ -38,7 +38,9 @@ const meeting = computed(() => {
   return {
     ...props.meeting,
     startOn: formatDate(props.meeting.startOn, locale.value),
-    endOn: formatDate(props.meeting.endOn, locale.value),
+    endOn: props.meeting.endOn
+      ? formatDate(props.meeting.endOn, locale.value)
+      : props.meeting.endOn,
     url: props.meeting.urls[0] ?? '#',
     /**
      * To be replaced with proper image handling when available;

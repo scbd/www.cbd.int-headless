@@ -63,6 +63,7 @@ const notification = computed(() => {
       props.notification.title[locale.value]
     }`,
     themes: props.notification.themes.find((l) => l[locale.value]),
+    createdOn: formatDate(props.notification.createdOn, locale.value),
     actionOn: props.notification.actionOn
       ? formatDate(props.notification.actionOn, locale.value)
       : props.notification.actionOn,
