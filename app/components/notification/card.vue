@@ -5,11 +5,11 @@
     </div>
 
     <NuxtImg
-      :src="notification.image"
+      :src="notification.imageUrl"
       alt=""
       class="content-image"
       loading="lazy"
-      :placeholder="notification.imageFallBack"
+      :placeholder="IMAGE_FALLBACK"
     />
 
     <div class="title">{{ notification.fullTitle }}</div>
@@ -38,23 +38,13 @@
 <script lang="ts" setup>
 import type { Notification } from '~~/types/notification';
 import { formatDate } from '~~/utils/date';
+import { IMAGE_FALLBACK } from '~~/constants/image-paths';
 
 const { t, locale } = useI18n();
 
 const props = defineProps<{
   notification: Notification;
 }>();
-
-/**
- * TODO: Make composable for formateDate() to use locale internally
- * as mentioned here: https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2432608355
- */
-
-/**
- * TODO: https://scbd.atlassian.net/browse/CIR-140
- * Add LString composable to manage LString values/properties
- *
- */
 
 const notification = computed(() => {
   return {
@@ -72,13 +62,7 @@ const notification = computed(() => {
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    image: `/content/images/notifications/${props.notification.code}.jpg`,
-    imageFallBack: '/images/content-replacement.svg'
+    imageUrl: `/content/images/notifications/${props.notification.code}.jpg`
   };
 });
-
-/**
- * TODO: Use LString for location (city, country) and title
- * as described in https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2432554274
- */
 </script>

@@ -10,7 +10,7 @@
         :notification="notification"
         :key="notification.id"
       />
-      <status v-else :fetchError="isError" />
+      <status v-else :error="isError" />
     </div>
     <NuxtLink
       :to="NOTIFICATIONS"

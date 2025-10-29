@@ -10,7 +10,7 @@
         :meeting="meeting"
         :key="meeting.id"
       />
-      <status v-else class="error-loader" />
+      <status v-else :error="isError" />
     </div>
     <NuxtLink :to="MEETINGS" class="btn cbd-btn cbd-btn-outline-more-content">
       More meetings

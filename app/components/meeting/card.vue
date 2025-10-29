@@ -7,7 +7,12 @@
       </template>
     </div>
 
-    <NuxtImg :src="meeting.image" class="content-image" />
+    <NuxtImg
+      :src="meeting.imageUrl"
+      class="content-image"
+      loading="lazy"
+      :placeholder="IMAGE_FALLBACK"
+    />
 
     <div class="title">{{ meeting.title[locale] }}</div>
     <div v-show="meeting.city || meeting.country" class="location">
@@ -22,17 +27,13 @@
 <script lang="ts" setup>
 import type { Meeting } from '~~/types/meeting';
 import { formatDate } from '~~/utils/date';
+import { IMAGE_FALLBACK } from '~~/constants/image-paths';
 
 const { t, locale } = useI18n();
 
 const props = defineProps<{
   meeting: Meeting;
 }>();
-
-/**
- * TODO: Make composable for formateDate() to use locale internally
- * as mentioned here: https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2432608355
- */
 
 const meeting = computed(() => {
   return {
@@ -46,12 +47,7 @@ const meeting = computed(() => {
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    image: '/images/content-replacement.svg'
+    imageUrl: `/content/images/notifications/${props.meeting.code}.jpg`
   };
 });
-
-/**
- * TODO: Use LString for location (city, country) and title
- * as described in https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2432554274
- */
 </script>
