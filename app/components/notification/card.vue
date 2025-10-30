@@ -62,7 +62,9 @@ const notification = computed(() => {
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    imageUrl: `/content/images/notifications/${props.notification.code}.jpg`
+    imageUrl: `/content/images/notifications/${encodeURIComponent(
+      props.notification.code
+    )}.jpg`
   };
 });
 </script>
