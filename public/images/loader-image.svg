@@ -1,0 +1,21 @@
+<svg opacity="25%" viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg"><style>.square {
+            animation: moving 2.5s ease-in-out infinite;
+
+        }
+
+        @keyframes moving {
+            0% {
+                width: 0%;
+            }
+
+            50% {
+                width: 100%;
+                transform: translate(0%, 0);
+            }
+
+            100% {
+                width: 0;
+                right: 0;
+                transform: translate(100%, 0);
+            }
+        }</style><rect class="square" width="480" height="270" fill="currentColor"/></svg>
