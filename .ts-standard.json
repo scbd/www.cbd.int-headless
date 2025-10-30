@@ -1,0 +1,20 @@
+{
+  "ignore": [
+    ".nuxt/**/*",
+    ".output/**/*",
+    "dist/**/*",
+    "node_modules/**/*"
+  ],
+  "globals": [
+    "$fetch",
+    "defineNuxtConfig",
+    "defineNuxtPlugin",
+    "defineEventHandler",
+    "navigateTo",
+    "useNuxtApp",
+    "useRuntimeConfig",
+    "useState",
+    "useFetch",
+    "useAsyncData"
+  ]
+}
