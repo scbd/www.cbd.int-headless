@@ -47,7 +47,9 @@ const meeting = computed(() => {
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    imageUrl: `/content/images/notifications/${props.meeting.code}.jpg`
+    imageUrl: `/content/images/notifications/${encodeURIComponent(
+      props.meeting.code
+    )}.jpg`
   };
 });
 </script>
