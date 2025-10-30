@@ -47,7 +47,7 @@ const statement = computed(() => {
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    imageUrl: `/content/images/notifications/${props.statement.code}.jpg`
+    imageUrl: `/content/images/notifications/${encodeURIComponent(props.statement.code)}.jpg`
   };
 });
 </script>
