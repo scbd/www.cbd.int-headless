@@ -1,6 +1,10 @@
 import { handleError, internalServerError } from 'api-client/api-error';
-import type { Meeting, MeetingList, MeetingOptions } from '~~/types/meeting';
-import { MEETINGS } from '~~/constants/api-paths';
+import type {
+  Notification,
+  NotificationList,
+  NotificationOptions
+} from '~~/types/notification';
+import { NOTIFICATIONS } from '~~/constants/api-paths';
 import normalizeObjectDates from '~~/utils/normalize-object-dates';
 
 /** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
@@ -17,11 +21,11 @@ const handleErrorState = ({
   return rest;
 };
 
-export default function useMeetingsApi() {
-  const getMeetings = async (
-    options?: MeetingOptions
-  ): Promise<MeetingList> => {
-    const { data } = await useFetch<MeetingList>(MEETINGS, {
+export default function useNotificationsApi() {
+  const getNotifications = async (
+    options?: NotificationOptions
+  ): Promise<NotificationList> => {
+    const { data } = await useFetch<NotificationList>(NOTIFICATIONS, {
       params: {
         sort: options?.sort,
         limit: options?.limit,
@@ -29,15 +33,15 @@ export default function useMeetingsApi() {
       }
     }).then(handleErrorState);
 
-    const response: MeetingList = data.value;
+    const response: NotificationList = data.value;
 
     return {
       total: response.total,
-      rows: response.rows.map((meeting: Meeting) =>
-        normalizeObjectDates(meeting)
+      rows: response.rows.map((notification: Notification) =>
+        normalizeObjectDates(notification)
       )
     };
   };
 
-  return { getMeetings };
+  return { getNotifications };
 }
