@@ -1,4 +1,3 @@
-import { handleError, internalServerError } from 'api-client/api-error';
 import type { Menu as Portal } from '~~/types/menu';
 import { MENUS as PORTALS } from '~~/constants/api-paths';
 
@@ -14,9 +13,9 @@ const handleErrorState = ({
 };
 
 export default function usePortalsApi() {
-  const getPortals = async (menu: string): Promise<Portal[]> => {
+  const getPortals = async (portal: string): Promise<Portal[]> => {
     const { data } = await useFetch<Portal[]>(PORTALS, {
-      params: { menu }
+      params: { menu: portal }
     }).then(handleErrorState);
 
     return data.value;

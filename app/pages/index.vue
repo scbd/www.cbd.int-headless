@@ -4,7 +4,7 @@
       <meeting-card-list />
       <notification-card-list />
       <statement-card-list />
-      <portal-card-list />
+      <portal-card-list portals="cbd-portals" />
     </article>
   </main>
 </template>
