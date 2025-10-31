@@ -13,11 +13,15 @@
 <script lang="ts" setup>
 import usePortalsApi from '~/composables/api/use-portals';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
+
+const props = defineProps<{
+    portals: string;
+}>();
 
 const isError = ref<Error>();
 const { getPortals } = usePortalsApi();
-const items = await getPortals('cbd-portals').catch((error) => {
+const items = await getPortals(encodeURIComponent(props.portals)).catch((error) => {
     isError.value = error;
     return [];
 });

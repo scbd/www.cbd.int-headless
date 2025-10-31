@@ -15,8 +15,6 @@
 import type { Menu as Portal } from '~~/types/menu';
 import { IMAGE_FALLBACK } from '~~/constants/image-paths';
 
-const { t, locale } = useI18n();
-
 const props = defineProps<{
     portal: Portal;
 }>();
@@ -24,7 +22,7 @@ const props = defineProps<{
 const portal = computed(() => {
     return {
         ...props.portal,
-        imageUrl: props.portal.icon ? `/images/${props.portal.icon}` : IMAGE_FALLBACK
+        imageUrl: props.portal.icon ? `/images/${encodeURIComponent(props.portal.icon)}` : IMAGE_FALLBACK
     };
 });
 </script>
