@@ -4,6 +4,7 @@
       <meeting-card-list />
       <notification-card-list />
       <statement-card-list />
+      <portal-card-list />
     </article>
   </main>
 </template>
