@@ -13,7 +13,7 @@ const handleErrorState = ({
   return rest;
 };
 
-export default function useMeetingsApi() {
+export default function usePortalsApi() {
   const getPortals = async (menu: string): Promise<Portal[]> => {
     const { data } = await useFetch<Portal[]>(PORTALS, {
       params: { menu }
