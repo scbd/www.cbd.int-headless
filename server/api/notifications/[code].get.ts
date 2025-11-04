@@ -1,7 +1,7 @@
-import type { Notification } from "../../../types/notification";
-import NotificationService from "../../../services/notification";
+import type { Notification } from '../../../types/notification'
+import NotificationService from '../../../services/notification'
 
 export default defineEventHandler(async (event) => {
-    const code = getRouterParam(event, 'code') || "";
-    return await NotificationService.getNotification(code) as Notification;
-});
+  const code = getRouterParam(event, 'code') || ''
+  return await NotificationService.getNotification(code)
+})

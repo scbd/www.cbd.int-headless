@@ -1,11 +1,11 @@
-import { handleError, internalServerError } from 'api-client/api-error';
+import { handleError, internalServerError } from 'api-client/api-error'
 import type {
   Statement,
   StatementList,
   StatementOptions
-} from '~~/types/statement';
-import { STATEMENTS } from '~~/constants/api-paths';
-import normalizeObjectDates from '~~/utils/normalize-object-dates';
+} from '~~/types/statement'
+import { STATEMENTS } from '~~/constants/api-paths'
+import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
 /** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
  *  https://scbd.atlassian.net/browse/CIR-139
@@ -14,14 +14,14 @@ const handleErrorState = ({
   error,
   ...rest
 }: {
-  [key: string]: any;
-  error: any;
+  [key: string]: any
+  error: any
 }) => {
-  if (error.value) throw error.value;
-  return rest;
-};
+  if (error.value) throw error.value
+  return rest
+}
 
-export default function useStatementsApi() {
+export default function useStatementsApi () {
   const getStatements = async (
     options?: StatementOptions
   ): Promise<StatementList> => {
@@ -31,17 +31,17 @@ export default function useStatementsApi() {
         limit: options?.limit,
         skip: options?.skip
       }
-    }).then(handleErrorState);
+    }).then(handleErrorState)
 
-    const response: StatementList = data.value;
+    const response: StatementList = data.value
 
     return {
       total: response.total,
       rows: response.rows.map((statement: Statement) =>
         normalizeObjectDates(statement)
       )
-    };
-  };
+    }
+  }
 
-  return { getStatements };
+  return { getStatements }
 }

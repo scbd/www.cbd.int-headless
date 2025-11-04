@@ -1,3 +1,3 @@
 export interface DrupalApiOptions {
-    drupalBaseUrl: string
+  drupalBaseUrl: string
 };

@@ -1,9 +1,9 @@
-import { Locales as localeCodes } from '../types/api/locales';
-import type LString from 'api-client/types/lstring';
+import { Locales as localeCodes } from '../types/api/locales'
+import type LString from 'api-client/types/lstring'
 
 export interface Language {
-  locale: localeCodes;
-  name: LString;
+  locale: localeCodes
+  name: LString
 }
 
 export const english: Language = {
@@ -14,9 +14,9 @@ export const english: Language = {
     fr: 'Anglais',
     ar: 'إنجليزي',
     ru: 'Английский',
-    zh: '英语',
-  },
-};
+    zh: '英语'
+  }
+}
 export const spanish: Language = {
   locale: localeCodes.es,
   name: {
@@ -25,9 +25,9 @@ export const spanish: Language = {
     fr: 'Espagnol',
     ar: 'الأسبانية',
     ru: 'испанский',
-    zh: '西班牙语',
-  },
-};
+    zh: '西班牙语'
+  }
+}
 export const french: Language = {
   locale: localeCodes.fr,
   name: {
@@ -36,9 +36,9 @@ export const french: Language = {
     fr: 'Français',
     ar: 'فرنسي',
     ru: 'Французский',
-    zh: '法语',
-  },
-};
+    zh: '法语'
+  }
+}
 export const arabic: Language = {
   locale: localeCodes.ar,
   name: {
@@ -47,9 +47,9 @@ export const arabic: Language = {
     fr: 'Arabe',
     ar: 'العربية',
     ru: 'арабский',
-    zh: '阿拉伯',
-  },
-};
+    zh: '阿拉伯'
+  }
+}
 export const russian: Language = {
   locale: localeCodes.ru,
   name: {
@@ -58,9 +58,9 @@ export const russian: Language = {
     fr: 'Russe',
     ar: 'الروسية',
     ru: 'Русский',
-    zh: '俄语',
-  },
-};
+    zh: '俄语'
+  }
+}
 export const chinese: Language = {
   locale: localeCodes.zh,
   name: {
@@ -69,9 +69,9 @@ export const chinese: Language = {
     fr: 'Chinois',
     ar: 'الصينية',
     ru: 'китайский',
-    zh: '中文',
-  },
-};
+    zh: '中文'
+  }
+}
 
 export const languages: Language[] = [
   english,
@@ -79,5 +79,5 @@ export const languages: Language[] = [
   french,
   arabic,
   russian,
-  chinese,
-];
+  chinese
+]

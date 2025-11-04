@@ -1,7 +1,7 @@
-import type { Meeting } from "../../../types/meeting";
-import MeetingService from "../../../services/meeting";
+import type { Meeting } from '../../../types/meeting'
+import MeetingService from '../../../services/meeting'
 
 export default defineEventHandler(async (event) => {
-    const code = getRouterParam(event, 'code') || "";
-    return await MeetingService.getMeeting(code) as Meeting;
-});
+  const code = getRouterParam(event, 'code') || ''
+  return await MeetingService.getMeeting(code)
+})

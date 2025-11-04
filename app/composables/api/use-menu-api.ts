@@ -6,13 +6,13 @@ export default function useMenuApi () {
       method: 'GET',
       params: {
         menu: menuName
-      },
+      }
     })
 
     const menu: Menu[] = response.data.value ?? []
 
     return menu
-  };
+  }
 
   return { getMenu }
 }
