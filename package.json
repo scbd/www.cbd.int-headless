@@ -17,7 +17,8 @@
       "dist",
       "node_modules",
       ".output"
-    ]
+    ],
+    "project": "./tsconfig.eslint.json"
   },
   "dependencies": {
     "@nuxt/image": "1.11.0",
