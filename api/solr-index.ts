@@ -25,8 +25,8 @@ export default class SolrIndexApi extends ApiBase {
       df: params.searchField,
       fq: params.fieldQueries,
       q: params.query,
-      sort: localizeFields(params.sort || ''),
-      fl: localizeFields(params.fields || ''),
+      sort: localizeFields(params.sort ?? ''),
+      fl: localizeFields(params.fields ?? ''),
       wt: 'json',
       start: params.start,
       rows: params.rowsPerPage

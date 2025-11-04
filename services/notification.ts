@@ -28,10 +28,10 @@ export default class NotificationService {
         {
           query,
           fieldQueries: 'schema_s:notification',
-          sort: options?.sort || 'updatedDate_dt DESC',
+          sort: options?.sort ?? 'updatedDate_dt DESC',
           fields: 'id,symbol_s,title_*_t,url_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
-          start: options?.skip || 0,
-          rowsPerPage: options?.limit || 25
+          start: options?.skip ?? 0,
+          rowsPerPage: options?.limit ?? 25
         }
     const { response } = await this.api.querySolr(params)
 
