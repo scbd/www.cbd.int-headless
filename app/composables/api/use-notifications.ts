@@ -1,4 +1,3 @@
-import { handleError, internalServerError } from 'api-client/api-error'
 import type {
   Notification,
   NotificationList,

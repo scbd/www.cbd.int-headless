@@ -6,7 +6,7 @@ import _ from 'lodash'
 export function localizeFields (fields: string, locale?: string) {
   if (!fields) { return }
 
-  if (locale && locale != 'en') {
+  if (locale && locale !== 'en') {
     return fields.replace(/_EN/ig, '_' + (locale || 'en').toUpperCase())
   };
 
@@ -25,10 +25,10 @@ export function solrEscape (value: string | number | Date) {
 
   value = value.replace(/\\/g, '\\\\')
   value = value.replace(/\+/g, '\\+')
-  value = value.replace(/\-/g, '\\-')
-  value = value.replace(/\&\&/g, '\\&&')
+  value = value.replace(/-/g, '\\-')
+  value = value.replace(/&&/g, '\\&&')
   value = value.replace(/\|\|/g, '\\||')
-  value = value.replace(/\!/g, '\\!')
+  value = value.replace(/!/g, '\\!')
   value = value.replace(/\(/g, '\\(')
   value = value.replace(/\)/g, '\\)')
   value = value.replace(/\{/g, '\\{')
@@ -36,11 +36,11 @@ export function solrEscape (value: string | number | Date) {
   value = value.replace(/\[/g, '\\[')
   value = value.replace(/\]/g, '\\]')
   value = value.replace(/\^/g, '\\^')
-  value = value.replace(/\"/g, '\\"')
-  value = value.replace(/\~/g, '\\~')
+  value = value.replace(/"/g, '\\"')
+  value = value.replace(/~/g, '\\~')
   value = value.replace(/\*/g, '\\*')
   value = value.replace(/\?/g, '\\?')
-  value = value.replace(/\:/g, '\\:')
+  value = value.replace(/:/g, '\\:')
 
   return value
 };
@@ -88,7 +88,7 @@ export function andOr (query: string | string[], sep: string): string {
   if (_.isArray(query)) {
     query = _.map(query, function (criteria) {
       if (_.isArray(criteria)) {
-        return andOr(criteria, sep == 'AND' ? 'OR' : 'AND')
+        return andOr(criteria, sep === 'AND' ? 'OR' : 'AND')
       }
 
       return criteria

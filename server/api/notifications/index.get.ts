@@ -1,4 +1,3 @@
-import type { NotificationList } from '../../../types/notification'
 import type { QueryParams } from '../../../types/api/query-params'
 import NotificationService from '../../../services/notification'
 

@@ -1,4 +1,3 @@
-import type { StatementList } from '../../../types/statement'
 import type { QueryParams } from '../../../types/api/query-params'
 import StatementService from '../../../services/statement'
 

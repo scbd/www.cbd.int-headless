@@ -1,4 +1,3 @@
-import type { Meeting } from '../../../types/meeting'
 import MeetingService from '../../../services/meeting'
 
 export default defineEventHandler(async (event) => {

@@ -1,4 +1,3 @@
-import type { Statement } from '../../../types/statement'
 import StatementService from '../../../services/statement'
 
 export default defineEventHandler(async (event) => {

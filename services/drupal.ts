@@ -30,13 +30,13 @@ export default class DrupalService {
       summary: attributes?.body?.summary
     }
 
-    if (route.entity.bundle == 'page') {
+    if (route.entity.bundle === 'page') {
       const page = content as Page
 
       page.menu = drupalContent.data.attributes.field_menu
     }
 
-    if (route.entity.bundle == 'article') {
+    if (route.entity.bundle === 'article') {
       const article = content as Article
       const { meta } = drupalContent?.data?.relationships?.field_image?.data
 
