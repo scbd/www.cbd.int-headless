@@ -106,6 +106,7 @@ export default class DrupalService {
 
     data.forEach((item: any) => {
       const { title, url, weight, options } = item?.attributes
+      const parentId = item.attributes.parent
 
       const portalItem: Portal = {
         title,
@@ -118,6 +119,14 @@ export default class DrupalService {
       }
 
       items[item.id] = portalItem
+
+      if (parentId) {
+        const parent = items[parentId]
+
+        parent?.children?.push(portalItem)
+      } else {
+        portals.push(portalItem)
+      }
     })
 
     return portals
