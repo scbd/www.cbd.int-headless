@@ -16,7 +16,7 @@ import usePortalsApi from '~/composables/api/use-portals';
 const { t } = useI18n();
 
 const props = defineProps<{
-    portals: string;
+    portal: string;
 }>();
 
 const isError = ref<Error>();
