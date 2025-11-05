@@ -8,31 +8,30 @@ function normalizeStatementCode (code: string): string {
   return code.toUpperCase()
 };
 
-export default class StatementService {
-  private static readonly api = new SolrIndexApi({
-    baseURL: useRuntimeConfig().apiBaseUrl
-  })
+const api = new SolrIndexApi({
+  baseURL: useRuntimeConfig().apiBaseUrl
+})
 
-  static async getStatement (code: string): Promise<Statement> {
-    if (code == null || code === '') throw mandatory('code', 'Statement code is required.')
-    const data = await this.searchStatements({ code: normalizeStatementCode(code) })
+export async function getStatement (code: string): Promise<Statement> {
+  if (code == null || code === '') throw mandatory('code', 'Statement code is required.')
+  const data = await searchStatements({ code: normalizeStatementCode(code) })
 
-    if (data.total === 0) throw notFound(`Statement '${code}' not found.`)
-    return data.rows[0]
-  };
+  if (data.total === 0) throw notFound(`Statement '${code}' not found.`)
+  return data.rows[0]
+}
 
-  static async listStatements (options: StatementOptions): Promise<StatementList> {
-    return await this.searchStatements(options)
-  };
+export async function listStatements (options: StatementOptions): Promise<StatementList> {
+  return await searchStatements(options)
+}
 
-  private static async searchStatements (options?: StatementOptions & { code?: string }): Promise<StatementList> {
-    const fieldQueries = andOr([
-      'schema_s:statement',
-      '_state_s:public',
-      ...(options?.code != null && options.code !== '' ? [`symbol_s:${solrEscape(options?.code)}`] : [])
-    ], 'AND')
+async function searchStatements (options?: StatementOptions & { code?: string }): Promise<StatementList> {
+  const fieldQueries = andOr([
+    'schema_s:statement',
+    '_state_s:public',
+    ...(options?.code != null && options.code !== '' ? [`symbol_s:${solrEscape(options?.code)}`] : [])
+  ], 'AND')
 
-    const params: SolrQuery =
+  const params: SolrQuery =
         {
           fieldQueries,
           query: '*:*',
@@ -41,21 +40,20 @@ export default class StatementService {
           start: options?.skip ?? 0,
           rowsPerPage: options?.limit ?? 25
         }
-    const { response } = await this.api.querySolr(params)
+  const { response } = await api.querySolr(params)
 
-    const statementList: Statement[] = response.docs.map((item: any): Statement => ({
-      id: item.id,
-      code: item.symbol_s,
-      title: toLString(item, 'title'),
-      urls: item.url_ss,
-      themes: toLStringArray(item, 'themes'),
-      createdOn: new Date(item.createdDate_dt),
-      updatedOn: new Date(item.updatedDate_dt)
-    }))
+  const statementList: Statement[] = response.docs.map((item: any): Statement => ({
+    id: item.id,
+    code: item.symbol_s,
+    title: toLString(item, 'title'),
+    urls: item.url_ss,
+    themes: toLStringArray(item, 'themes'),
+    createdOn: new Date(item.createdDate_dt),
+    updatedOn: new Date(item.updatedDate_dt)
+  }))
 
-    return {
-      total: response.numFound,
-      rows: statementList
-    }
-  };
+  return {
+    total: response.numFound,
+    rows: statementList
+  }
 };
