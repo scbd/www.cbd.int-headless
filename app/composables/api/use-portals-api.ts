@@ -7,12 +7,12 @@ const handleErrorState = ({
 }: {
   [key: string]: any
   error: any
-}) => {
-  if (error.value) throw error.value
+}): { [key: string]: any } => {
+  if (error.value != null) throw error.value
   return rest
 }
 
-export default function usePortalsApi () {
+export default function usePortalsApi (): { getPortals: (portal: string) => Promise<Portal[]> } {
   const getPortals = async (portal: string): Promise<Portal[]> => {
     const { data } = await useFetch<Portal[]>(PORTALS, {
       params: { portal }
