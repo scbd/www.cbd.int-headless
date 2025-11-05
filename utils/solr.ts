@@ -1,6 +1,6 @@
 import { Locales } from '../types/api/locales'
 import { LTypeString, LTypeArray } from '../types/api/ltypes'
-import Lstring from 'api-client/types/lstring'
+import type Lstring from 'api-client/types/lstring'
 import _ from 'lodash'
 
 export function localizeFields (fields: string, locale?: string): string | undefined {
