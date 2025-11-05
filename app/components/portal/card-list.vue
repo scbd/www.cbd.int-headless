@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import usePortalsApi from '~/composables/api/use-portals';
+import usePortalsApi from '~/composables/api/use-portals-api';
 
 const { t } = useI18n();
 
@@ -21,7 +21,7 @@ const props = defineProps<{
 
 const isError = ref<Error>();
 const { getPortals } = usePortalsApi();
-const items = await getPortals(encodeURIComponent(props.portals)).catch((error) => {
+const items = await getPortals(encodeURIComponent(props.portal)).catch((error) => {
     isError.value = error;
     return [];
 });
