@@ -15,7 +15,7 @@ const handleErrorState = ({
 }: {
   [key: string]: any
   error: any
-}) => {
+}): { [key: string]: any } => {
   if (error.value != null) throw error.value
   return rest
 }
