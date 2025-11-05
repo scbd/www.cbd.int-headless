@@ -15,7 +15,7 @@ export async function getMeeting (code: string): Promise<Meeting> {
   if (code == null || code === '') throw mandatory('code', 'Meeting code is required.')
   const data = await searchMeetings({ code: normalizeMeetingCode(code) })
 
-  if (data.total === 0) throw notFound(`Meeting '${code}' not found.`)
+  if (data.total === 0 || data.rows[0] === null) throw notFound(`Meeting '${code}' not found.`)
   return data.rows[0]
 };
 

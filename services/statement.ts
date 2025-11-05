@@ -16,7 +16,7 @@ export async function getStatement (code: string): Promise<Statement> {
   if (code == null || code === '') throw mandatory('code', 'Statement code is required.')
   const data = await searchStatements({ code: normalizeStatementCode(code) })
 
-  if (data.total === 0) throw notFound(`Statement '${code}' not found.`)
+  if (data.total === 0 || data.rows[0] === null) throw notFound(`Statement '${code}' not found.`)
   return data.rows[0]
 }
 

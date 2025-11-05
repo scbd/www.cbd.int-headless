@@ -12,7 +12,7 @@ export async function getNotification (code: string): Promise<Notification> {
   if (code == null || code === '') throw mandatory('code', 'Notification code is required.')
   const data = await searchNotifications({ code })
 
-  if (data.total === 0) throw notFound(`Notification '${code}' not found.`)
+  if (data.total === 0 || data.rows[0] === null) throw notFound(`Notification '${code}' not found.`)
   return data.rows[0]
 };
 
