@@ -9,7 +9,7 @@ export default class DrupalApi extends ApiBase {
   };
 
   async getRoute (path: string) {
-    if (!path) throw mandatory('path', 'Parameter path is required.')
+    if (path == null || path === '') throw mandatory('path', 'Parameter path is required.')
 
     const query = { path }
     const data = await this.fetch('/router/translate-path', { query })
@@ -17,22 +17,22 @@ export default class DrupalApi extends ApiBase {
   };
 
   async getContent (id: string, type: string) {
-    if (!id) throw mandatory('id', 'Parameter id is required.')
-    if (!type) throw mandatory('type', 'Parameter type is required.')
+    if (id == null || id === '') throw mandatory('id', 'Parameter id is required.')
+    if (type == null || type === '') throw mandatory('type', 'Parameter type is required.')
 
     const data = await this.fetch(`/jsonapi/node/${encodeURIComponent(type)}/${encodeURIComponent(id)}`)
     return data
   };
 
   async getMedia (id: string) {
-    if (!id) throw mandatory('id', 'Parameter id is required.')
+    if (id == null || id === '') throw mandatory('id', 'Parameter id is required.')
 
     const data = await this.fetch(`/jsonapi/file/file/${encodeURIComponent(id)}`)
     return data
   };
 
   async getMenu (menu: string) {
-    if (!menu) throw mandatory('menu', 'Parameter menu is required.')
+    if (menu == null || menu === '') throw mandatory('menu', 'Parameter menu is required.')
 
     const { data } = await this.fetch(`/jsonapi/menu_items/${encodeURIComponent(menu)}`)
     return data

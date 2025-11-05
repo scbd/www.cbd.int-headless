@@ -10,7 +10,7 @@ export default class NotificationService {
   })
 
   static async getNotification (code: string): Promise<Notification> {
-    if (!code) throw mandatory('code', 'Notification code is required.')
+    if (code == null || code === '') throw mandatory('code', 'Notification code is required.')
     const data = await this.searchNotifications({ code })
 
     if (data.total === 0) throw notFound(`Notification '${code}' not found.`)
@@ -22,7 +22,7 @@ export default class NotificationService {
   };
 
   private static async searchNotifications (options?: NotificationOptions & { code?: string }): Promise<NotificationList> {
-    const query = options?.code ? `symbol_s:${solrEscape(options?.code)}` : '*.*'
+    const query = options?.code != null && options.code !== '' ? `symbol_s:${solrEscape(options?.code)}` : '*.*'
 
     const params: SolrQuery =
         {

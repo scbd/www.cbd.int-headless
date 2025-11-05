@@ -15,7 +15,7 @@ function normalizeObjectDates<T = any> (
 
   if (Array.isArray(obj)) {
     return (
-      options.recursive
+      options.recursive === true
         ? obj.map((item) => normalizeObjectDates(item, options))
         : obj
     ) as T
@@ -27,7 +27,7 @@ function normalizeObjectDates<T = any> (
 
     if (typeof value === 'string' && isoDateRegex.test(value)) {
       result[key] = new Date(value)
-    } else if (typeof value === 'object' && options.recursive) {
+    } else if (typeof value === 'object' && options.recursive === true) {
       result[key] = normalizeObjectDates(value, options)
     } else {
       result[key] = value

@@ -13,7 +13,7 @@ export default class MeetingService {
   })
 
   static async getMeeting (code: string): Promise<Meeting> {
-    if (!code) throw mandatory('code', 'Meeting code is required.')
+    if (code == null || code === '') throw mandatory('code', 'Meeting code is required.')
     const data = await this.searchMeetings({ code: normalizeMeetingCode(code) })
 
     if (data.total === 0) throw notFound(`Meeting '${code}' not found.`)
@@ -25,7 +25,7 @@ export default class MeetingService {
   };
 
   private static async searchMeetings (options?: MeetingOptions & { code?: string }): Promise<MeetingList> {
-    const query = options?.code ? `symbol_s:${solrEscape(options?.code)}` : '*.*'
+    const query = options?.code != null && options.code !== '' ? `symbol_s:${solrEscape(options?.code)}` : '*.*'
 
     const params: SolrQuery =
         {
@@ -67,7 +67,4 @@ export default class MeetingService {
      * FOR @DevDrupal ONLY; WILL BE REMOVED SOON
      * @see https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2437169504
      */
-  private static getImageUrl (meeting: Meeting) {
-
-  }
 };

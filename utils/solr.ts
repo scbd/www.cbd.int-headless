@@ -3,20 +3,20 @@ import { LTypeString, LTypeArray } from '../types/api/ltypes'
 import Lstring from 'api-client/types/lstring'
 import _ from 'lodash'
 
-export function localizeFields (fields: string, locale?: string) {
-  if (!fields) { return }
+export function localizeFields (fields: string, locale?: string): string | undefined {
+  if (fields == null || fields === '') { return }
 
-  if (locale && locale !== 'en') {
-    return fields.replace(/_EN/ig, '_' + (locale || 'en').toUpperCase())
+  if (locale != null && locale !== '' && locale !== 'en') {
+    return fields.replace(/_EN/ig, '_' + (locale ?? 'en').toUpperCase())
   };
 
   return fields
 };
 
-export function solrEscape (value: string | number | Date) {
-  if (value === undefined) throw 'Value is undefined'
-  if (value === null) throw 'Value is null'
-  if (value === '') throw 'Value is null'
+export function solrEscape (value: string | number | Date): string {
+  if (value === undefined) throw new Error('Value is undefined')
+  if (value === null) throw new Error('Value is null')
+  if (value === '') throw new Error('Value is null')
 
   if (_.isNumber(value)) value = value.toString()
   if (_.isDate(value)) value = value.toISOString()
@@ -63,7 +63,7 @@ export function toLStringArray (item: any, field: string, type: LTypeArray = LTy
   for (const locale of locales) {
     const value = item[`${field}_${locale.toUpperCase()}_${type}`]
 
-    maxEntries = Math.max(maxEntries, value?.length || 0)
+    maxEntries = Math.max(maxEntries, value?.length ?? 0)
   };
 
   if (maxEntries === 0) {

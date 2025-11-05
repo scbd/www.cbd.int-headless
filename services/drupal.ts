@@ -11,11 +11,11 @@ export default class DrupalService {
   static async getContent (url: string): Promise<Content | Page | Article> {
     const route = await this.drupalApi.getRoute(url)
 
-    if (!route) throw notFound('Route not found.')
+    if (route == null) throw notFound('Route not found.')
 
     const drupalContent = await this.drupalApi.getContent(route.entity.uuid, route.entity.bundle)
 
-    if (!drupalContent) throw notFound('Content not found.')
+    if (drupalContent == null) throw notFound('Content not found.')
 
     const { attributes } = drupalContent?.data
 
@@ -49,7 +49,7 @@ export default class DrupalService {
 
       const media = await this.drupalApi.getMedia(drupalContent.data.relationships.field_image.data.id)
 
-      if (media) {
+      if (media != null) {
         article.coverImage = {
           ...article.coverImage,
           path: media?.data?.attributes?.uri?.url
@@ -63,7 +63,7 @@ export default class DrupalService {
   static async getMenu (id: string): Promise<Menu[]> {
     const data = await this.drupalApi.getMenu(id)
 
-    if (!data) throw notFound('No menu found.')
+    if (data == null || data === '') throw notFound('No menu found.')
 
     const menus: Menu[] = []
     const items: { [ key: string ]: Menu } = {}
@@ -84,7 +84,7 @@ export default class DrupalService {
 
       items[item.id] = menuItem
 
-      if (parentId) {
+      if (parentId != null) {
         const parent = items[parentId]
 
         parent?.children?.push(menuItem)
@@ -162,7 +162,7 @@ export default class DrupalService {
 
         const media = await this.drupalApi.getMedia(item?.relationships?.field_image?.data?.id)
 
-        if (media) {
+        if (media != null) {
           article.coverImage = {
             ...article.coverImage,
             path: media?.data?.attributes?.uri?.url
