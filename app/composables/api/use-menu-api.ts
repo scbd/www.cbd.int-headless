@@ -1,18 +1,18 @@
-import type { Menu } from '~~/types/menu';
+import type { Menu } from '~~/types/menu'
 
-export default function useMenuApi() {
+export default function useMenuApi () {
   const getMenu = async (menuName: string): Promise<Menu[]> => {
-    const response = await useFetch('/api/menu', {
+    const response = await useFetch('/api/menus', {
       method: 'GET',
       params: {
-        menu: menuName,
+        menu: menuName
       },
-    });
+    })
 
-    const menu: Menu[] = response.data.value ?? [];
+    const menu: Menu[] = response.data.value ?? []
 
-    return menu;
+    return menu
   };
 
-  return { getMenu };
+  return { getMenu }
 }
