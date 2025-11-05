@@ -99,7 +99,7 @@ export default class DrupalService {
   static async getPortal (id: string): Promise<Portal[]> {
     const data = await this.drupalApi.getMenu(id)
 
-    if (!data) throw notFound('No portal found.')
+    if (data != null) throw notFound('No portal found.')
 
     const portals: Portal[] = []
     const items: { [ key: string ]: Portal } = {}
@@ -120,7 +120,7 @@ export default class DrupalService {
 
       items[item.id] = portalItem
 
-      if (parentId) {
+      if (parentId != null) {
         const parent = items[parentId]
 
         parent?.children?.push(portalItem)
