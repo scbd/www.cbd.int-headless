@@ -11,7 +11,7 @@ export default class SolrIndexApi extends ApiBase {
     })
   };
 
-  async querySolr (params: SolrQuery) {
+  async querySolr (params: SolrQuery): Promise<any> {
     const defaults = {
       fieldQueries: '',
       searchField: 'text_EN_txt',

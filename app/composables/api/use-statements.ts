@@ -20,7 +20,7 @@ const handleErrorState = ({
   return rest
 }
 
-export default function useStatementsApi () {
+export default function useStatementsApi (): { getStatements: (options?: StatementOptions) => Promise<StatementList> } {
   const getStatements = async (
     options?: StatementOptions
   ): Promise<StatementList> => {

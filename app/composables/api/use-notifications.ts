@@ -20,7 +20,7 @@ const handleErrorState = ({
   return rest
 }
 
-export default function useNotificationsApi () {
+export default function useNotificationsApi (): { getNotifications: (options?: NotificationOptions) => Promise<NotificationList> } {
   const getNotifications = async (
     options?: NotificationOptions
   ): Promise<NotificationList> => {

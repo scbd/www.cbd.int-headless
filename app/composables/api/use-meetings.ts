@@ -11,12 +11,12 @@ const handleErrorState = ({
 }: {
   [key: string]: any
   error: any
-}) => {
+}): { [key: string]: any } => {
   if (error.value != null) throw error.value
   return rest
 }
 
-export default function useMeetingsApi () {
+export default function useMeetingsApi (): { getMeetings: (options?: MeetingOptions) => Promise<MeetingList> } {
   const getMeetings = async (
     options?: MeetingOptions
   ): Promise<MeetingList> => {

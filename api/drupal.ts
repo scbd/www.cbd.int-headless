@@ -8,7 +8,7 @@ export default class DrupalApi extends ApiBase {
     })
   };
 
-  async getRoute (path: string) {
+  async getRoute (path: string): Promise<any> {
     if (path == null || path === '') throw mandatory('path', 'Parameter path is required.')
 
     const query = { path }
@@ -16,7 +16,7 @@ export default class DrupalApi extends ApiBase {
     return data
   };
 
-  async getContent (id: string, type: string) {
+  async getContent (id: string, type: string): Promise<any> {
     if (id == null || id === '') throw mandatory('id', 'Parameter id is required.')
     if (type == null || type === '') throw mandatory('type', 'Parameter type is required.')
 
@@ -24,21 +24,21 @@ export default class DrupalApi extends ApiBase {
     return data
   };
 
-  async getMedia (id: string) {
+  async getMedia (id: string): Promise<any> {
     if (id == null || id === '') throw mandatory('id', 'Parameter id is required.')
 
     const data = await this.fetch(`/jsonapi/file/file/${encodeURIComponent(id)}`)
     return data
   };
 
-  async getMenu (menu: string) {
+  async getMenu (menu: string): Promise<any> {
     if (menu == null || menu === '') throw mandatory('menu', 'Parameter menu is required.')
 
     const { data } = await this.fetch(`/jsonapi/menu_items/${encodeURIComponent(menu)}`)
     return data
   };
 
-  async listArticles (options?: { sort?: string, limit?: number, skip?: number }) {
+  async listArticles (options?: { sort?: string, limit?: number, skip?: number }): Promise<any> {
     const { data } = await this.fetch('/jsonapi/node/article', {
       query: {
         sort: options?.sort ?? '-changed',
