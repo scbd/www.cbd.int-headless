@@ -12,8 +12,11 @@ const handleErrorState = ({
   [key: string]: any
   error: any
 }): { [key: string]: any } => {
-  if (error.value !== null) throw error.value
-  return rest
+  if (error.value === null || error.value === undefined) {
+    return rest
+  } else {
+    throw error.value
+  }
 }
 
 export default function useMeetingsApi (): { getMeetings: (options?: MeetingOptions) => Promise<MeetingList> } {
