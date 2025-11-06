@@ -1,1 +1,1 @@
-export const IMAGE_FALLBACK = '/images/content-replacement.svg';
+export const IMAGE_FALLBACK = '/images/content-replacement.svg'

@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     'nuxt-gtag',
     '@nuxtjs/robots',
     '@nuxtjs/i18n',
-    '@nuxt/image',
+    '@nuxt/image'
   ],
   site: { indexable: false },
   i18n: {
@@ -21,15 +21,15 @@ export default defineNuxtConfig({
       { code: 'es', iso: 'es-ES', file: 'es.json' },
       { code: 'fr', iso: 'fr-FR', file: 'fr.json' },
       { code: 'ru', iso: 'ru-RU', file: 'ru.json' },
-      { code: 'zh', iso: 'zh-CN', file: 'zh.json' },
+      { code: 'zh', iso: 'zh-CN', file: 'zh.json' }
     ],
     defaultLocale: 'en',
     detectBrowserLanguage: {
       alwaysRedirect: true,
-      fallbackLocale: 'en',
+      fallbackLocale: 'en'
     },
     strategy: 'prefix_and_default',
-    vueI18n: './config/i18n.config.ts',
+    vueI18n: './config/i18n.config.ts'
   },
   runtimeConfig: {
     drupalBaseUrl: '',
@@ -37,13 +37,13 @@ export default defineNuxtConfig({
     drupalClientSecret: '',
     drupalScope: '',
     apiBaseUrl: '',
-    ortUrl: '',
+    ortUrl: ''
   },
   routeRules: {
     '/content/images/**': {
       // NOTE: runtimeConfig not accessible from defineNuxt config.  we need to test use of process.env in the context or use build-time config. TO BE TESTED
-      proxy: `${process.env.NUXT_DRUPAL_BASE_URL}/sites/default/files/**`,
-    },
+      proxy: `${String(process.env.NUXT_DRUPAL_BASE_URL)}/sites/default/files/**`
+    }
   },
-  css: ['~/assets/scss/styles.scss'],
-});
+  css: ['~/assets/scss/styles.scss']
+})

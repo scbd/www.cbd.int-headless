@@ -1,11 +1,10 @@
-import { handleError, internalServerError } from 'api-client/api-error';
 import type {
   Notification,
   NotificationList,
   NotificationOptions
-} from '~~/types/notification';
-import { NOTIFICATIONS } from '~~/constants/api-paths';
-import normalizeObjectDates from '~~/utils/normalize-object-dates';
+} from '~~/types/notification'
+import { NOTIFICATIONS } from '~~/constants/api-paths'
+import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
 /** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
  *  https://scbd.atlassian.net/browse/CIR-139
@@ -14,14 +13,14 @@ const handleErrorState = ({
   error,
   ...rest
 }: {
-  [key: string]: any;
-  error: any;
-}) => {
-  if (error.value) throw error.value;
-  return rest;
-};
+  [key: string]: any
+  error: any
+}): { [key: string]: any } => {
+  if (error.value !== null) throw error.value
+  return rest
+}
 
-export default function useNotificationsApi() {
+export default function useNotificationsApi (): { getNotifications: (options?: NotificationOptions) => Promise<NotificationList> } {
   const getNotifications = async (
     options?: NotificationOptions
   ): Promise<NotificationList> => {
@@ -31,17 +30,17 @@ export default function useNotificationsApi() {
         limit: options?.limit,
         skip: options?.skip
       }
-    }).then(handleErrorState);
+    }).then(handleErrorState)
 
-    const response: NotificationList = data.value;
+    const response: NotificationList = data.value
 
     return {
       total: response.total,
       rows: response.rows.map((notification: Notification) =>
         normalizeObjectDates(notification)
       )
-    };
-  };
+    }
+  }
 
-  return { getNotifications };
+  return { getNotifications }
 }

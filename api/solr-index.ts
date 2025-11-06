@@ -1,39 +1,38 @@
-import ApiBase from "api-client/api-base";
-import { handleError } from "api-client/api-error";
-import type { SolrQuery } from "../types/api/solr";
-import { localizeFields } from "../utils/solr";
+import ApiBase from 'api-client/api-base'
+import { handleError } from 'api-client/api-error'
+import type { SolrQuery } from '../types/api/solr'
+import { localizeFields } from '../utils/solr'
 
 export default class SolrIndexApi extends ApiBase {
+  constructor (options: { baseURL: string }) {
+    super({
+      ...options,
+      onResponseError: handleError // TODO: mix with api-base/concatInterceptors
+    })
+  };
 
-    constructor(options: {baseURL: string}) {
-        super({
-            ...options,
-            onResponseError: handleError // TODO: mix with api-base/concatInterceptors
-        })
-    };
+  async querySolr (params: SolrQuery): Promise<any> {
+    const defaults = {
+      fieldQueries: '',
+      searchField: 'text_EN_txt',
+      start: 0,
+      rowsPerPage: 25
+    }
 
-    async querySolr(params: SolrQuery) {
+    params = { ...defaults, ...params }
 
-        const defaults = {
-            fieldQueries: '',
-            searchField : "text_EN_txt",
-            start : 0, rowsPerPage : 25
-        };
+    const queryListParameters = {
+      df: params.searchField,
+      fq: params.fieldQueries,
+      q: params.query,
+      sort: localizeFields(params.sort ?? ''),
+      fl: localizeFields(params.fields ?? ''),
+      wt: 'json',
+      start: params.start,
+      rows: params.rowsPerPage
+    }
 
-        params = { ...defaults, ...params };
-
-        const queryListParameters = {
-            df    : params.searchField,
-            fq    : params.fieldQueries,
-            q     : params.query,
-            sort  : localizeFields(params.sort || ""),
-            fl    : localizeFields(params.fields || ""),
-            wt    : "json",
-            start : params.start,
-            rows  : params.rowsPerPage,
-        };
-
-        const data = await this.fetch(`/api/v2013/index/select`, { method : "POST", body : queryListParameters });
-        return data;
-    };
+    const data = await this.fetch('/api/v2013/index/select', { method: 'POST', body: queryListParameters })
+    return data
+  };
 };
