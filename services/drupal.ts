@@ -63,7 +63,7 @@ export async function getContent (url: string): Promise<Content | Page | Article
 export async function getMenu (id: string): Promise<Menu[]> {
   const data = await drupalApi.getMenu(id)
 
-  if (data == null || data === '') throw notFound('No menu found.')
+  if (data === null || data === '') throw notFound('No menu found.')
 
   const menus: Menu[] = []
   const items: { [ key: string ]: Menu } = {}
@@ -99,7 +99,7 @@ export async function getMenu (id: string): Promise<Menu[]> {
 export async function getPortal (id: string): Promise<Portal[]> {
   const data = await drupalApi.getMenu(id)
 
-  if (data == null || data === '') throw notFound('No portal found.')
+  if (data === null || data === '') throw notFound('No portal found.')
 
   const portals: Portal[] = []
   const items: { [ key: string ]: Portal } = {}
