@@ -12,7 +12,7 @@ const api = new SolrIndexApi({
 })
 
 export async function getMeeting (code: string): Promise<Meeting> {
-  if (code == null || code === '') throw mandatory('code', 'Meeting code is required.')
+  if (code === null || code === '') throw mandatory('code', 'Meeting code is required.')
   const data = await searchMeetings({ code: normalizeMeetingCode(code) })
 
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Meeting '${code}' not found.`)
@@ -24,7 +24,7 @@ export async function listMeetings (options: MeetingOptions): Promise<MeetingLis
 };
 
 async function searchMeetings (options?: MeetingOptions & { code?: string }): Promise<MeetingList> {
-  const query = options?.code != null && options.code !== '' ? `symbol_s:${solrEscape(options?.code)}` : '*.*'
+  const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
 
   const params: SolrQuery =
         {

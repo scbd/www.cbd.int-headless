@@ -9,7 +9,7 @@ const api = new SolrIndexApi({
 })
 
 export async function getNotification (code: string): Promise<Notification> {
-  if (code == null || code === '') throw mandatory('code', 'Notification code is required.')
+  if (code === null || code === '') throw mandatory('code', 'Notification code is required.')
   const data = await searchNotifications({ code })
 
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Notification '${code}' not found.`)
@@ -21,7 +21,7 @@ export async function listNotifications (options: NotificationOptions): Promise<
 }
 
 async function searchNotifications (options?: NotificationOptions & { code?: string }): Promise<NotificationList> {
-  const query = options?.code != null && options.code !== '' ? `symbol_s:${solrEscape(options?.code)}` : '*.*'
+  const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
 
   const params: SolrQuery =
     {

@@ -11,11 +11,11 @@ const drupalApi = new DrupalApi({
 export async function getContent (url: string): Promise<Content | Page | Article> {
   const route = await drupalApi.getRoute(url)
 
-  if (route == null) throw notFound('Route not found.')
+  if (route === null) throw notFound('Route not found.')
 
   const drupalContent = await drupalApi.getContent(route.entity.uuid, route.entity.bundle)
 
-  if (drupalContent == null) throw notFound('Content not found.')
+  if (drupalContent === null) throw notFound('Content not found.')
 
   const { attributes } = drupalContent?.data
 
@@ -49,7 +49,7 @@ export async function getContent (url: string): Promise<Content | Page | Article
 
     const media = await drupalApi.getMedia(drupalContent.data.relationships.field_image.data.id)
 
-    if (media != null) {
+    if (media !== null) {
       article.coverImage = {
         ...article.coverImage,
         path: media?.data?.attributes?.uri?.url
@@ -162,7 +162,7 @@ export async function listArticles (options?: ArticleOptions): Promise<Article[]
 
       const media = await drupalApi.getMedia(item?.relationships?.field_image?.data?.id)
 
-      if (media != null) {
+      if (media !== null) {
         article.coverImage = {
           ...article.coverImage,
           path: media?.data?.attributes?.uri?.url

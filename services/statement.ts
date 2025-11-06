@@ -13,7 +13,7 @@ const api = new SolrIndexApi({
 })
 
 export async function getStatement (code: string): Promise<Statement> {
-  if (code == null || code === '') throw mandatory('code', 'Statement code is required.')
+  if (code === null || code === '') throw mandatory('code', 'Statement code is required.')
   const data = await searchStatements({ code: normalizeStatementCode(code) })
 
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Statement '${code}' not found.`)
@@ -28,7 +28,7 @@ async function searchStatements (options?: StatementOptions & { code?: string })
   const fieldQueries = andOr([
     'schema_s:statement',
     '_state_s:public',
-    ...(options?.code != null && options.code !== '' ? [`symbol_s:${solrEscape(options?.code)}`] : [])
+    ...(options?.code !== undefined && options.code !== '' ? [`symbol_s:${solrEscape(options?.code)}`] : [])
   ], 'AND')
 
   const params: SolrQuery =

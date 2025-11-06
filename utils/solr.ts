@@ -4,9 +4,9 @@ import type Lstring from 'api-client/types/lstring'
 import _ from 'lodash'
 
 export function localizeFields (fields: string, locale?: string): string | undefined {
-  if (fields == null || fields === '') { return }
+  if (fields === null || fields === '') { return }
 
-  if (locale != null && locale !== '' && locale !== 'en') {
+  if (locale !== null && locale !== '' && locale !== 'en') {
     return fields.replace(/_EN/ig, '_' + (locale ?? 'en').toUpperCase())
   };
 
