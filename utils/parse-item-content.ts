@@ -1,7 +1,7 @@
 export default function parseItemContent (content: string): string {
   const paragraphRegEx = /\r\n\r\n/g
   const urlRegEx = /((https?|ftp):\/\/)[\w/\-?=%.]+\.[0-9a-zA-Z/\-&?=%]+/g
-  const emailRegEx = /[a-z0-9!#$%&'*+\=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi
+  const emailRegEx = /[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 
   const item = {
     content

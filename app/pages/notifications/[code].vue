@@ -83,8 +83,6 @@ const notification = computed(() => {
     }
 })
 
-console.log(item.fulltext.en)
-
 definePageMeta({
     layout: "item",
     breadcrumbs: true
