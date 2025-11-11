@@ -1,61 +1,62 @@
 <template>
   <div class="cus-hero" :class="heroClasses">
-    <div v-if="isError === undefined">
-      <template v-if="featuredArticles.total === 1">
-        <hero-content-featured-item :articles="featuredArticles.primary" />
-      </template>
-      <template v-else>
-        <div class="featured-items">
-          <hero-content-featured-item :articles="featuredArticles.primary" />
-          <div class="triple-ancilliary-wrapper">
-            <hero-content-featured-item
-              :articles="featuredArticles.ancilliary"
-            />
-          </div>
+    <div v-if="!isError">
+      <div class="featured-items">
+        <hero-content-featured-item
+          :article="featuredArticles[0]!"
+          :isPrimary="true"
+          class="featured-primary"
+        />
+        <div v-show="!isSingleArticle" class="triple-ancilliary-wrapper">
+          <hero-content-featured-item
+            v-for="article in featuredArticles.slice(1)"
+            :article="article"
+            :key="article.title"
+          />
         </div>
-      </template>
+      </div>
     </div>
     <status v-else :error="isError" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Article } from "~~/types/content";
-import useArticlesApi from "~/composables/api/use-articles-api";
-import { drupalImagePathNormalizer } from "~~/utils/drupal";
+import type { Article } from '~~/types/content'
+import useArticlesApi from '~/composables/api/use-articles-api'
+import { drupalImagePathNormalizer } from '~~/utils/drupal'
 
-const isError = ref<Error>();
-const { getArticles } = useArticlesApi();
+const isError = ref<Error>()
+
+const { getArticles } = useArticlesApi()
+
 const items = await getArticles({ limit: 3 }).catch((error) => {
-  isError.value = error;
-  return [];
-});
+  isError.value = error
+  return []
+})
+
+const isSingleArticle = ref<boolean>(true)
 
 const featuredArticles = computed(() => {
-  const articles: (Article & { primary: boolean })[] = items.map(
-    (article, index) => {
-      return {
-        ...article,
-        coverImage: {
-          ...article.coverImage,
-          path: encodeURI(drupalImagePathNormalizer(article.coverImage.path)),
-        },
-        primary: index === 0,
-      };
+  const articles: Article[] = items.map((article) => {
+    return {
+      ...article,
+      coverImage: {
+        ...article.coverImage,
+        path: encodeURI(drupalImagePathNormalizer(article.coverImage.path))
+      }
     }
-  );
-  return {
-    total: items.length,
-    primary: articles.slice(0, 1),
-    ancilliary: articles.slice(1),
-  };
-});
+  })
+
+  isSingleArticle.value = articles.length === 1
+
+  return articles
+})
 
 const heroClasses = computed(() => {
-  const classes: string[] = [];
+  const classes: string[] = []
 
-  if (items.length > 1) classes.push("triple-features");
+  if (items.length > 1) classes.push('triple-features')
 
-  return classes;
-});
+  return classes
+})
 </script>
