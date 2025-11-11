@@ -15,6 +15,12 @@ export interface Notification {
   from: lstring
   sender: string
   recipients: string[]
+  files: {
+    type: string,
+    language: lstring
+    url: string
+    name: string
+  }[]
 }
 
 export interface NotificationList {
