@@ -10,15 +10,49 @@ export function handleHtmlTags (content: string): string {
   item.content = `<p>${content}</p>`
   item.content = item.content.replaceAll(paragraphRegEx, '</p><p>')
 
-  const urlList = item.content.matchAll(urlRegEx)
-  for (const [url] of urlList) {
-    item.content = item.content.replaceAll(url, `<a href="${url}" target="_blank">${url}</a>`)
-  }
+  const urlList = [...item.content.matchAll(urlRegEx)]
 
-  const emailList = item.content.matchAll(emailRegEx)
-  for (const [email] of emailList) {
-    item.content = item.content.replaceAll(email, `<a href="mailto:${email}">${email}</a>`)
-  }
+  urlList.forEach((url, index) => {
+    const textReplacement = `<a href="${url[0]}" target="_blank">${url[0]}</a>`
+    const htmlLength = '<a href="" target="_blank"></a>'.length
+    const textStrings = {
+      beforeUrl: '',
+      afterUrl: ''
+    }
+
+    if (index < 1) {
+      textStrings.beforeUrl = item.content.slice(0, url.index)
+      textStrings.afterUrl = item.content.slice(url.index + url[0].length)
+    } else {
+      const modifier = (htmlLength + (urlList[index - 1]?.[0].length ?? 0))
+      textStrings.beforeUrl = item.content.slice(0, (url.index + modifier))
+      textStrings.afterUrl = item.content.slice(url.index + modifier + url[0].length)
+    }
+
+    item.content = `${textStrings.beforeUrl}${textReplacement}${textStrings.afterUrl}`
+  })
+
+  const emailList = [...item.content.matchAll(emailRegEx)]
+
+  emailList.forEach((email, index) => {
+    const textReplacement = `<a href="mailto:${email[0]}">${email[0]}</a>`
+    const htmlLength = '<a href="mailto:"></a>'.length
+    const textStrings = {
+      beforeEmail: '',
+      afterEmail: ''
+    }
+
+    if (index < 1) {
+      textStrings.beforeEmail = item.content.slice(0, email.index)
+      textStrings.afterEmail = item.content.slice(email.index + email[0].length)
+    } else {
+      const modifier = (htmlLength + (emailList[index - 1]?.[0].length ?? 0))
+      textStrings.beforeEmail = item.content.slice(0, (email.index + modifier))
+      textStrings.afterEmail = item.content.slice(email.index + modifier + email[0].length)
+    }
+
+    item.content = `${textStrings.beforeEmail}${textReplacement}${textStrings.afterEmail}`
+  })
 
   return item.content
 }

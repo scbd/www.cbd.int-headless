@@ -75,6 +75,15 @@
           v-dompurify-html:html="notification.fulltext"
           class="rendered-content"
         ></div>
+
+        <div class="signed">
+          <span class="signature">(Signed) Astrid Schomaker</span> <br />
+          {{ notification.sender }}
+        </div>
+
+        <div class="recipients-footer"
+          >{{ t('to') }}: {{ notification.recipientsFooter }}</div
+        >
       </section>
     </article>
   </main>
@@ -117,7 +126,8 @@ const notification = computed(() => {
     files: item.files.map((file) => ({
       ...file,
       mime: handleFileMimeType(file.type)
-    }))
+    })),
+    recipientsFooter: item.recipients.join(', ')
   }
 })
 

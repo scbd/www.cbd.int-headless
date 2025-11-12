@@ -240,6 +240,13 @@
       }
     }
   }
+  .signed {
+    padding: 2rem 0;
+    text-align: right;
+    .signature {
+      font-style: italic;
+    }
+  }
 }
 
 html:dir(rtl) {
