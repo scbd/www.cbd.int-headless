@@ -62,15 +62,8 @@
                   {{ file.language }}
 
                   <NuxtImg
-                    v-show="file.type.includes('pdf')"
-                    src="/images/icons/icon-file-pdf.svg"
-                    alt="Download PDF icon"
-                  />
-
-                  <NuxtImg
-                    v-show="file.type.includes('doc')"
-                    src="/images/icons/icon-file-doc.svg"
-                    alt="Download DOC icon"
+                    :src="`/images/icons/icon-file-${file.mime}.svg`"
+                    :alt="`Download ${file.mime} icon`"
                   />
                 </NuxtLink>
               </div>
@@ -90,7 +83,7 @@
 <script setup lang="ts">
 import useNotificationsApi from '~/composables/api/use-notifications'
 import { formatDate } from '~~/utils/date'
-import parseItemContent from '~~/utils/parse-item-content'
+import { handleHtmlTags, handleFileMimeType } from '~~/utils/parse-item-content'
 
 const { t, locale } = useI18n()
 
@@ -119,8 +112,12 @@ const notification = computed(() => {
       ? formatDate(item.actionOn, locale.value)
       : item.actionOn,
     fulltext: item.fulltext[locale.value]
-      ? parseItemContent(item.fulltext[locale.value]!)
-      : item.fulltext[locale.value]
+      ? handleHtmlTags(item.fulltext[locale.value]!)
+      : item.fulltext[locale.value],
+    files: item.files.map((file) => ({
+      ...file,
+      mime: handleFileMimeType(file.type)
+    }))
   }
 })
 
