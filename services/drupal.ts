@@ -187,4 +187,4 @@ function imagePathNormalizer (value: string): string {
   value = value.replace(/\/sites\/default\/files\//g, '/content/images/')
 
   return value
-};
+}
