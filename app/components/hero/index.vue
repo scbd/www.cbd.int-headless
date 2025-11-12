@@ -23,7 +23,6 @@
 <script setup lang="ts">
 import type { Article } from '~~/types/content'
 import useArticlesApi from '~/composables/api/use-articles-api'
-import { drupalImagePathNormalizer } from '~~/utils/drupal'
 
 const isError = ref<Error>()
 
@@ -42,10 +41,10 @@ const featuredArticles = computed(() => {
       ...article,
       coverImage: {
         ...article.coverImage,
-        path: encodeURI(drupalImagePathNormalizer(article.coverImage.path))
-      }
-    }
-  })
+        path: encodeURI(article.coverImage.path),
+      },
+    };
+  });
 
   isSingleArticle.value = articles.length === 1
 
