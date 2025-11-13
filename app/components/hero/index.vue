@@ -36,15 +36,13 @@ const items = await getArticles({ limit: 3 }).catch((error) => {
 const isSingleArticle = ref<boolean>(true)
 
 const featuredArticles = computed(() => {
-  const articles: Article[] = items.map((article) => {
-    return {
-      ...article,
-      coverImage: {
-        ...article.coverImage,
-        path: encodeURI(article.coverImage.path),
-      },
-    };
-  });
+  const articles: Article[] = items.map((article) => ({
+    ...article,
+    coverImage: {
+      ...article.coverImage,
+      path: encodeURI(article.coverImage.path)
+    }
+  }))
 
   isSingleArticle.value = articles.length === 1
 
