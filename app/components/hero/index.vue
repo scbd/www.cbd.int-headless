@@ -3,13 +3,17 @@
     <div v-if="!isError">
       <div class="featured-items">
         <hero-content-featured-item
-          :article="featuredArticles[0]!"
+          v-if="featuredArticles.primary"
+          :article="featuredArticles.primary"
           :isPrimary="true"
           class="featured-primary"
         />
-        <div v-show="!isSingleArticle" class="triple-ancilliary-wrapper">
+        <div
+          v-show="!featuredArticles.isSingle"
+          class="triple-ancilliary-wrapper"
+        >
           <hero-content-featured-item
-            v-for="article in featuredArticles.slice(1)"
+            v-for="article in featuredArticles.ancilliary"
             :article="article"
             :key="article.title"
           />
@@ -33,8 +37,6 @@ const items = await getArticles({ limit: 3 }).catch((error) => {
   return []
 })
 
-const isSingleArticle = ref<boolean>(true)
-
 const featuredArticles = computed(() => {
   const articles: Article[] = items.map((article) => ({
     ...article,
@@ -44,9 +46,11 @@ const featuredArticles = computed(() => {
     }
   }))
 
-  isSingleArticle.value = articles.length === 1
-
-  return articles
+  return {
+    primary: articles.at(0),
+    ancilliary: articles.slice(1),
+    isSingle: articles.length === 1
+  }
 })
 
 const heroClasses = computed(() => {
