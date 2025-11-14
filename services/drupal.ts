@@ -183,7 +183,6 @@ function imagePathNormalizer (value: string): string {
 
   value = value.toString()
 
-  value = value.replace(/\\/g, '\\\\')
   value = value.replace(/\/sites\/default\/files\//g, '/content/images/')
 
   return value
