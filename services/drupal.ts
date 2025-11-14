@@ -179,7 +179,7 @@ export async function listArticles (options?: ArticleOptions): Promise<Article[]
 function imagePathNormalizer (value: string): string {
   if (value === undefined) throw new Error('Value is undefined')
   if (value === null) throw new Error('Value is null')
-  if (value === '') throw new Error('Value is null')
+  if (value === '') throw new Error('Value is empty')
 
   value = value.toString()
 

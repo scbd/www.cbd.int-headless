@@ -3,7 +3,6 @@
     <img
       :src="article.coverImage.path"
       :alt="article.coverImage.alt"
-      :placeholder="IMAGE_FALLBACK"
       class="featured-cover-image"
     />
     <NuxtLink :to="article.alias" class="featured-wrapper">
@@ -23,7 +22,6 @@
 
 <script setup lang="ts">
 import type { Article } from '~~/types/content'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const props = defineProps<{
   article: Article
