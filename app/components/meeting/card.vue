@@ -15,8 +15,8 @@
     />
 
     <div class="title">{{ meeting.title[locale] }}</div>
-    <div v-show="meeting.city || meeting.country" class="location">
-      {{ `${meeting.city[locale]}, ${meeting.country[locale]}` }}
+    <div v-show="meeting.location" class="location">
+      {{ meeting.location }}
     </div>
     <div class="read-on-wrapper">
       <NuxtLink :to="meeting.url" class="read-on">View meeting</NuxtLink>
@@ -25,15 +25,16 @@
 </template>
 
 <script lang="ts" setup>
-import type { Meeting } from '~~/types/meeting';
-import { formatDate } from '~~/utils/date';
-import { IMAGE_FALLBACK } from '~~/constants/image-paths';
+import type { Meeting } from '~~/types/meeting'
+import { formatDate } from '~~/utils/date'
+import { formatLocation } from '~~/utils/format-item-values'
+import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t, locale } = useI18n();
+const { locale } = useI18n()
 
 const props = defineProps<{
-  meeting: Meeting;
-}>();
+  meeting: Meeting
+}>()
 
 const meeting = computed(() => {
   return {
@@ -42,14 +43,15 @@ const meeting = computed(() => {
     endOn: props.meeting.endOn
       ? formatDate(props.meeting.endOn, locale.value)
       : props.meeting.endOn,
+    location: formatLocation(props.meeting.city, props.meeting.country),
     url: props.meeting.urls[0] ?? '#',
     /**
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    imageUrl: `/content/images/notifications/${encodeURIComponent(
+    imageUrl: `/content/images/meetings/${encodeURIComponent(
       props.meeting.code
     )}.jpg`
-  };
-});
+  }
+})
 </script>
