@@ -1,23 +1,7 @@
 import type { Meeting, MeetingList, MeetingOptions } from '~~/types/meeting'
 import { MEETINGS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
-
-/** TODO: replace this with an implementation of handleError whenever api-client is fixed (Stephane).
- *  https://scbd.atlassian.net/browse/CIR-139
- */
-const handleErrorState = ({
-  error,
-  ...rest
-}: {
-  [key: string]: any
-  error: any
-}): { [key: string]: any } => {
-  if (error.value === null || error.value === undefined) {
-    return rest
-  } else {
-    throw error.value
-  }
-}
+import { handleErrorState } from '~~/utils/api-states'
 
 export default function useMeetingsApi (): { getMeetings: (options?: MeetingOptions) => Promise<MeetingList> } {
   const getMeetings = async (
