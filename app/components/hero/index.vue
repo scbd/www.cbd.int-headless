@@ -3,9 +3,9 @@
     <div v-if="!isError">
       <div class="featured-items">
         <hero-content-featured-item
-          v-if="featuredArticles.primary"
-          :article="featuredArticles.primary"
-          :isPrimary="true"
+          v-if="featuredArticles.primaryArticle"
+          :article="featuredArticles.primaryArticle"
+          :is-primary="true"
           class="featured-primary"
         />
         <div
@@ -13,7 +13,7 @@
           class="triple-ancilliary-wrapper"
         >
           <hero-content-featured-item
-            v-for="article in featuredArticles.ancilliary"
+            v-for="article in featuredArticles.secondaryArticles"
             :article="article"
             :key="article.title"
           />
@@ -47,8 +47,8 @@ const featuredArticles = computed(() => {
   }))
 
   return {
-    primary: articles.at(0),
-    ancilliary: articles.slice(1),
+    primaryArticle: articles.at(0),
+    secondaryArticles: articles.slice(1),
     isSingle: articles.length === 1
   }
 })
