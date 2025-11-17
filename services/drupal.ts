@@ -181,9 +181,7 @@ function imagePathNormalizer (value: string): string {
   if (value === null) throw new Error('Value is null')
   if (value === '') throw new Error('Value is empty')
 
-  value = value.toString()
-
-  value = value.replace(/\/sites\/default\/files\//g, '/content/images/')
+  value = value.replace(/^\/sites\/default\/files\//, '/content/images/')
 
   return value
 }
