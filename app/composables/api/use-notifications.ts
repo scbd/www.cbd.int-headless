@@ -5,7 +5,7 @@ import type {
 } from '~~/types/notification'
 import { NOTIFICATIONS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
-import { handleErrorState } from '~~/utils/api-states'
+import { handleErrorState } from '~~/utils/api-error-handler'
 
 export default function useNotificationsApi (): { getNotifications: (options?: NotificationOptions) => Promise<NotificationList> } {
   const getNotifications = async (

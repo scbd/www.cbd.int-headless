@@ -1,6 +1,6 @@
 import type { Portal } from '~~/types/portal'
 import { PORTALS } from '~~/constants/api-paths'
-import { handleErrorState } from '~~/utils/api-states'
+import { handleErrorState } from '~~/utils/api-error-handler'
 
 export default function usePortalsApi (): { getPortals: (portal: string) => Promise<Portal[]> } {
   const getPortals = async (portal: string): Promise<Portal[]> => {

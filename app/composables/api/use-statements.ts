@@ -5,7 +5,7 @@ import type {
 } from '~~/types/statement'
 import { STATEMENTS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
-import { handleErrorState } from '~~/utils/api-states'
+import { handleErrorState } from '~~/utils/api-error-handler'
 
 export default function useStatementsApi (): { getStatements: (options?: StatementOptions) => Promise<StatementList> } {
   const getStatements = async (

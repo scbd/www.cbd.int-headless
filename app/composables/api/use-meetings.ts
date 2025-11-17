@@ -1,7 +1,7 @@
 import type { Meeting, MeetingList, MeetingOptions } from '~~/types/meeting'
 import { MEETINGS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
-import { handleErrorState } from '~~/utils/api-states'
+import { handleErrorState } from '~~/utils/api-error-handler'
 
 export default function useMeetingsApi (): { getMeetings: (options?: MeetingOptions) => Promise<MeetingList> } {
   const getMeetings = async (
