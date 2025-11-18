@@ -1,63 +1,40 @@
 <template>
   <div class="cus-hero" :class="heroClasses">
-    <div v-if="!isError">
-      <div class="featured-items">
+    <div v-if="!error" class="featured-items">
+      <hero-content-featured-item
+        v-if="primaryArticle"
+        :article="primaryArticle"
+        :is-primary="true"
+        class="featured-primary"
+      />
+      <div v-if="isMultiple" class="triple-ancilliary-wrapper">
         <hero-content-featured-item
-          v-if="featuredArticles.primaryArticle"
-          :article="featuredArticles.primaryArticle"
-          :is-primary="true"
-          class="featured-primary"
+          v-for="article in secondaryArticles"
+          :article="article"
+          :key="article.title"
         />
-        <div
-          v-show="!featuredArticles.isSingle"
-          class="triple-ancilliary-wrapper"
-        >
-          <hero-content-featured-item
-            v-for="article in featuredArticles.secondaryArticles"
-            :article="article"
-            :key="article.title"
-          />
-        </div>
       </div>
     </div>
-    <status v-else :error="isError" />
+    <status v-else :error="error" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Article } from '~~/types/content'
 import useArticlesApi from '~/composables/api/use-articles-api'
 
-const isError = ref<Error>()
+const error = ref<Error>()
 
 const { getArticles } = useArticlesApi()
 
 const items = await getArticles({ limit: 3 }).catch((error) => {
-  isError.value = error
+  error.value = error
   return []
 })
 
-const featuredArticles = computed(() => {
-  const articles: Article[] = items.map((article) => ({
-    ...article,
-    coverImage: {
-      ...article.coverImage,
-      path: encodeURI(article.coverImage.path)
-    }
-  }))
-
-  return {
-    primaryArticle: articles.at(0),
-    secondaryArticles: articles.slice(1),
-    isSingle: articles.length === 1
-  }
-})
-
-const heroClasses = computed(() => {
-  const classes: string[] = []
-
-  if (items.length > 1) classes.push('triple-features')
-
-  return classes
-})
+const primaryArticle = computed(() => items.at(0))
+const secondaryArticles = computed(() => items.slice(1))
+const isMultiple = computed(() => secondaryArticles.value.length !== 0)
+const heroClasses = computed(() =>
+  isMultiple.value ? ['triple-features'] : ['']
+)
 </script>
