@@ -1,14 +1,11 @@
-import type LString from 'api-client/types/lstring'
+import type LString from '~~/types/lstring'
+import type { Locale } from '~~/types/lstring'
+import lstring from '@scbd/vue-components/lstring'
 
-export default function useLstring (ltext: LString | LString[], preferredLocale?: 'ar' | 'en' | 'es' | 'fr' | 'ru' | 'zh'): string {
+export const useLString = (defaultLocale?: Locale): ((ltext: LString | string, lLocaleOverride?: Locale) => string) => {
   const { locale } = useI18n()
 
-  if (ltext === undefined || ltext === null) return ''
-
-  if (Array.isArray(ltext)) {
-    const lArray = ltext.find((l) => l[preferredLocale ?? locale.value] ?? l !== undefined)
-    return lArray?.[preferredLocale ?? locale.value] as string ?? ''
+  return (ltext: LString | string, lLocaleOverride?: Locale): string => {
+    return lstring(ltext, lLocaleOverride ?? defaultLocale ?? locale.value)
   }
-
-  return ltext[preferredLocale ?? locale.value] as string ?? ''
 }

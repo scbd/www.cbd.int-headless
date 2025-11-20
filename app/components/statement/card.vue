@@ -11,10 +11,15 @@
       :placeholder="IMAGE_FALLBACK"
     />
 
-    <div class="title">{{ statement.fullTitle }}</div>
+    <div class="title"
+      >{{ statement.code }} -
+      {{ getLocalizedText(statement.title, locale) }}</div
+    >
 
-    <div v-if="statement.themes" class="subjects">
-      Subjects: {{ statement.themes }}
+    <div class="subjects">
+      <template v-for="theme of statement.themes">
+        {{ getLocalizedText(theme, locale) }}
+      </template>
     </div>
 
     <div class="read-on-wrapper">
@@ -26,10 +31,11 @@
 <script lang="ts" setup>
 import type { Statement } from '~~/types/statement'
 import { formatDate } from '~~/utils/date'
+import { useLString } from '~~/utils/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
-import useLstring from '~~/utils/use-lstring'
 
 const { locale } = useI18n()
+const getLocalizedText = useLString(locale.value)
 
 const props = defineProps<{
   statement: Statement
@@ -38,9 +44,7 @@ const props = defineProps<{
 const statement = computed(() => {
   return {
     ...props.statement,
-    fullTitle: `${props.statement.code} - ${useLstring(props.statement.title)}`,
     createdOn: formatDate(props.statement.createdOn, locale.value),
-    themes: useLstring(props.statement.themes),
     url: props.statement.urls[0] ?? '#',
     /**
      * To be replaced with proper image handling when available;
