@@ -113,16 +113,12 @@ const notification = computed(() => {
   return {
     ...item,
     title: item.title[locale.value],
-    themes: themes,
+    themes: themes.length ? themes : null,
     createdOn: formatDate(item.createdOn, locale.value),
-    endOn: item.endOn ? formatDate(item.endOn, locale.value) : item.endOn,
+    endOn: formatDate(item.endOn, locale.value),
     updatedOn: formatDate(item.updatedOn, locale.value),
-    actionOn: item.actionOn
-      ? formatDate(item.actionOn, locale.value)
-      : item.actionOn,
-    fulltext: item.fulltext[locale.value]
-      ? handleHtmlTags(item.fulltext[locale.value]!)
-      : item.fulltext[locale.value],
+    actionOn: formatDate(item.actionOn, locale.value),
+    fulltext: handleHtmlTags(item.fulltext[locale.value]),
     files: item.files.map((file) => ({
       ...file,
       mime: handleFileMimeType(file.type)

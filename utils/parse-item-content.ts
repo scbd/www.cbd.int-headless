@@ -1,11 +1,16 @@
-export function handleHtmlTags (content: string): string {
-  const paragraphRegEx = /\r\n\r\n/g
-  const urlRegEx = /((https?|ftp):\/\/)[\w/\-?=%.]+\.[0-9a-zA-Z/\-&?=%]+/g
-  const emailRegEx = /[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+export function handleHtmlTags (content?: string): string {
+  
+  if (content === undefined) return ''
+  if (content === null) return ''
+  if (content === '') return ''
 
   const item = {
     content
   }
+  
+  const paragraphRegEx = /\r\n\r\n/g
+  const urlRegEx = /((https?|ftp):\/\/)[\w/\-?=%.]+\.[0-9a-zA-Z/\-&?=%]+/g
+  const emailRegEx = /[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 
   item.content = `<p>${content}</p>`
   item.content = item.content.replaceAll(paragraphRegEx, '</p><p>')
