@@ -59,7 +59,12 @@
                   target="_blank"
                   :to="file.url"
                 >
-                  {{ file.language }}
+                  <template v-if="file.lang">
+                    {{ file.lang.name[locale] }}
+                  </template>
+                  <template v-else>
+                    {{ file.language }}
+                  </template>
 
                   <NuxtImg
                     :src="`/images/icons/icon-file-${file.mime}.svg`"
@@ -93,6 +98,7 @@
 import useNotificationsApi from '~/composables/api/use-notifications'
 import { formatDate } from '~~/utils/date'
 import { handleHtmlTags, handleFileMimeType } from '~~/utils/parse-item-content'
+import { languages } from '~~/data/un-languages'
 
 const { t, locale } = useI18n()
 
@@ -110,6 +116,10 @@ const notification = computed(() => {
     if (theme) themes.push(theme)
   })
 
+  const lang = languages.filter(
+    (language) => language.locale === locale.value
+  )[0]
+
   return {
     ...item,
     title: item.title[locale.value],
@@ -121,6 +131,7 @@ const notification = computed(() => {
     fulltext: handleHtmlTags(item.fulltext[locale.value]),
     files: item.files.map((file) => ({
       ...file,
+      lang: lang,
       mime: handleFileMimeType(file.type)
     })),
     recipientsFooter: item.recipients.join(', ')
