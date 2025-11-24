@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import useNbsapsApi from '~/composables/api/use-nbsaps'
+import useNbsapsApi from '~/composables/api/use-nbsaps-api'
 import { NBSAPS } from '~~/constants/api-paths'
 
 const { t } = useI18n()
