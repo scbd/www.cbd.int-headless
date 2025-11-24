@@ -165,7 +165,7 @@ export async function listArticles (options?: ArticleOptions): Promise<Article[]
       if (media !== null) {
         article.coverImage = {
           ...article.coverImage,
-          path: media?.data?.attributes?.uri?.url
+          path: imagePathNormalizer(media?.data?.attributes?.uri?.url)
         }
       }
 
@@ -174,4 +174,14 @@ export async function listArticles (options?: ArticleOptions): Promise<Article[]
   )
 
   return articles
+}
+
+function imagePathNormalizer (value: string): string {
+  if (value === undefined) throw new Error('Value is undefined')
+  if (value === null) throw new Error('Value is null')
+  if (value === '') throw new Error('Value is empty')
+
+  value = value.replace(/^\/sites\/default\/files\//, '/content/images/')
+
+  return value
 }
