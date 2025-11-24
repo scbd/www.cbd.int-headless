@@ -1,4 +1,4 @@
-import type LString from '~~/types/lstring'
+import type LString from 'api-client/types/lstring'
 export interface Statement {
   id: string
   code: string

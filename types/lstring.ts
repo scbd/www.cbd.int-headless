@@ -3,6 +3,6 @@ type TwoLetterKey = `${Letter}${Letter}`
 type ThreeLetterKey = `${Letter}${Letter}${Letter}`
 export type Locale = TwoLetterKey | ThreeLetterKey
 type LString = {
-    [locale in Locale]?: string
+  [locale in Locale]?: string
 }
 export type { LString as default }
