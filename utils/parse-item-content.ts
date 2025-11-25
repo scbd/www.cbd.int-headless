@@ -1,5 +1,4 @@
 export function handleHtmlTags (content?: string): string {
-  
   if (content === undefined) return ''
   if (content === null) return ''
   if (content === '') return ''
@@ -7,7 +6,7 @@ export function handleHtmlTags (content?: string): string {
   const item = {
     content
   }
-  
+
   const paragraphRegEx = /\r\n\r\n/g
   const urlRegEx = /((https?|ftp):\/\/)[\w/\-?=%.]+\.[0-9a-zA-Z/\-&?=%]+/g
   const emailRegEx = /[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
@@ -60,13 +59,4 @@ export function handleHtmlTags (content?: string): string {
   })
 
   return item.content
-}
-
-export function handleFileMimeType (mimeType: string): string | undefined {
-  const doc = ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
-  const pdf = ['application/pdf']
-
-  if (doc.includes(mimeType)) return 'doc'
-  if (pdf.includes(mimeType)) return 'pdf'
-  return undefined
 }

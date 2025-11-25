@@ -97,7 +97,8 @@
 <script setup lang="ts">
 import useNotificationsApi from '~/composables/api/use-notifications'
 import { formatDate } from '~~/utils/date'
-import { handleHtmlTags, handleFileMimeType } from '~~/utils/parse-item-content'
+import { handleHtmlTags } from '~~/utils/parse-item-content'
+import { handleFileMimeType } from '~~/utils/item-file-type-handler'
 import { languages } from '~~/data/un-languages'
 
 const { t, locale } = useI18n()
