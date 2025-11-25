@@ -28,7 +28,7 @@ async function searchNotification (options?: NotificationOptions & { code?: stri
       query,
       fieldQueries: 'schema_s:notification',
       sort: options?.sort ?? 'updatedDate_dt DESC',
-      fields: 'id,symbol_s,title_*_t,url_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
+      fields: 'id,symbol_s,title_*_t,url_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t,fulltext_*_t,recipient_txt,files_ss',
       start: options?.skip ?? 0,
       rowsPerPage: options?.limit ?? 25
     }
@@ -49,7 +49,8 @@ async function searchNotification (options?: NotificationOptions & { code?: stri
     fulltext: toLString(item, 'fulltext'),
     from: toLString(item, 'from'),
     recipients: item.recipient_txt,
-    sender: item.sender_t
+    sender: item.sender_t,
+    files: JSON.parse(item.files_ss[0] ?? '[]')
   }))
 
   return {
