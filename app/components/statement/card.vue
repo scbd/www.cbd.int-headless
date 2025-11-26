@@ -18,21 +18,28 @@
     </div>
 
     <div class="read-on-wrapper">
-      <NuxtLink :to="statement.url" class="read-on">View statement</NuxtLink>
+      <NuxtLink
+        :to="{
+          name: `statements-code___${locale}`,
+          params: { code: statement.code }
+        }"
+        class="read-on"
+        >View statement</NuxtLink
+      >
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { Statement } from '~~/types/statement';
-import { formatDate } from '~~/utils/date';
-import { IMAGE_FALLBACK } from '~~/constants/image-paths';
+import type { Statement } from '~~/types/statement'
+import { formatDate } from '~~/utils/date'
+import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t, locale } = useI18n();
+const { t, locale } = useI18n()
 
 const props = defineProps<{
-  statement: Statement;
-}>();
+  statement: Statement
+}>()
 
 const statement = computed(() => {
   return {
@@ -47,7 +54,9 @@ const statement = computed(() => {
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    imageUrl: `/content/images/notifications/${encodeURIComponent(props.statement.code)}.jpg`
-  };
-});
+    imageUrl: `/content/images/notifications/${encodeURIComponent(
+      props.statement.code
+    )}.jpg`
+  }
+})
 </script>
