@@ -7,7 +7,18 @@ import { NOTIFICATIONS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { handleErrorState } from '~~/utils/api-error-handler'
 
-export default function useNotificationsApi (): { getNotifications: (options?: NotificationOptions) => Promise<NotificationList> } {
+export default function useNotificationsApi (): {
+  getNotification: (code: string) => Promise<Notification>
+  getNotifications: (options?: NotificationOptions) => Promise<NotificationList>
+} {
+  const getNotification = async (code: string): Promise<Notification> => {
+    const { data } = await useFetch<Notification>(`${NOTIFICATIONS}/${code}`).then(handleErrorState)
+
+    const notification: Notification = data.value
+
+    return notification
+  }
+
   const getNotifications = async (
     options?: NotificationOptions
   ): Promise<NotificationList> => {
@@ -29,5 +40,5 @@ export default function useNotificationsApi (): { getNotifications: (options?: N
     }
   }
 
-  return { getNotifications }
+  return { getNotification, getNotifications }
 }

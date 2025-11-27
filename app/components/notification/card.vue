@@ -18,8 +18,8 @@
       Action required: {{ notification.actionOn }}
     </div>
 
-    <div v-if="notification.themes?.[locale]" class="subjects">
-      Subjects: {{ notification.themes[locale] }}
+    <div v-show="notification.themes" class="subjects">
+      Subjects: {{ notification.themes }}
     </div>
 
     <div
@@ -28,7 +28,7 @@
     ></div>
 
     <div class="read-on-wrapper">
-      <NuxtLink :to="notification.url" class="read-on"
+      <NuxtLink :to="{name: `notifications-code___${locale}`, params: { code: notification.code } }" class="read-on"
         >View notification</NuxtLink
       >
     </div>
@@ -47,12 +47,18 @@ const props = defineProps<{
 }>();
 
 const notification = computed(() => {
+  const themes: string[] = []
+    props.notification.themes.map((l) => {
+        const theme = l[locale.value]
+        if (theme) themes.push(theme)
+    })
+  
   return {
     ...props.notification,
     fullTitle: `${props.notification.code} - ${
       props.notification.title[locale.value]
     }`,
-    themes: props.notification.themes.find((l) => l[locale.value]),
+    themes: themes.join(', '),
     createdOn: formatDate(props.notification.createdOn, locale.value),
     actionOn: props.notification.actionOn
       ? formatDate(props.notification.actionOn, locale.value)
