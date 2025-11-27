@@ -16,14 +16,3 @@ export interface Notification {
   sender: string
   recipients: string[]
 }
-
-export interface NotificationList {
-  rows: Notification[]
-  total: number
-}
-
-export interface NotificationOptions {
-  sort?: string
-  limit?: number
-  skip?: number
-}

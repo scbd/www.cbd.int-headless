@@ -1,4 +1,5 @@
-import type { Article, ArticleOptions } from '~~/types/content'
+import type { Article } from '~~/types/content'
+import type { QueryParams } from '~~/types/api/query-params'
 import { ARTICLES } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
@@ -16,8 +17,8 @@ const handleErrorState = ({
   }
 }
 
-export default function useArticlesApi (): { getArticles: (options?: ArticleOptions) => Promise<Article[]> } {
-  const getArticles = async (options?: ArticleOptions): Promise<Article[]> => {
+export default function useArticlesApi (): { getArticles: (options?: QueryParams) => Promise<Article[]> } {
+  const getArticles = async (options?: QueryParams): Promise<Article[]> => {
     const { data } = await useFetch<Article[]>(ARTICLES, {
       params: {
         sort: options?.sort,

@@ -2,7 +2,8 @@ import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
 import { solrEscape, toLString, toLStringArray } from '../utils/solr'
 import type { SolrQuery } from '../types/api/solr'
-import type { Notification, NotificationList, NotificationOptions } from '../types/notification'
+import type { Notification } from '../types/notification'
+import type { QueryParams, QueryList } from '~~/types/api/query-params'
 
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
@@ -16,11 +17,11 @@ export async function getNotification (code: string): Promise<Notification> {
   return data.rows[0] as Notification
 };
 
-export async function listNotifications (options: NotificationOptions): Promise<NotificationList> {
+export async function listNotifications (options: QueryParams): Promise<QueryList<Notification>> {
   return await searchNotification(options)
 }
 
-async function searchNotification (options?: NotificationOptions & { code?: string }): Promise<NotificationList> {
+async function searchNotification (options?: QueryParams & { code?: string }): Promise<QueryList<Notification>> {
   const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
 
   const params: SolrQuery =

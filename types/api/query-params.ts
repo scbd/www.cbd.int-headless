@@ -1,6 +1,10 @@
 export interface QueryParams {
-  code: string
   sort?: string
   skip?: number
   limit?: number
+}
+
+export interface QueryList<T> {
+  rows: T[]
+  total: number
 }

@@ -2,7 +2,8 @@ import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
 import { solrEscape, toLString, toLStringArray } from '../utils/solr'
 import type { SolrQuery } from '../types/api/solr'
-import type { Meeting, MeetingList, MeetingOptions } from '../types/meeting'
+import type { Meeting } from '../types/meeting'
+import type { QueryParams, QueryList } from '~~/types/api/query-params'
 
 function normalizeMeetingCode (code: string): string {
   return code.toUpperCase()
@@ -19,11 +20,11 @@ export async function getMeeting (code: string): Promise<Meeting> {
   return data.rows[0] as Meeting
 };
 
-export async function listMeetings (options: MeetingOptions): Promise<MeetingList> {
+export async function listMeetings (options: QueryParams): Promise<QueryList<Meeting>> {
   return await searchMeetings(options)
 };
 
-async function searchMeetings (options?: MeetingOptions & { code?: string }): Promise<MeetingList> {
+async function searchMeetings (options?: QueryParams & { code?: string }): Promise<QueryList<Meeting>> {
   const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
 
   const params: SolrQuery =

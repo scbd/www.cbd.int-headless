@@ -1,17 +1,14 @@
-import type {
-  Statement,
-  StatementList,
-  StatementOptions
-} from '~~/types/statement'
+import type { Statement } from '~~/types/statement'
+import type { QueryParams, QueryList } from '~~/types/api/query-params'
 import { STATEMENTS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { handleErrorState } from '~~/utils/api-error-handler'
 
-export default function useStatementsApi (): { getStatements: (options?: StatementOptions) => Promise<StatementList> } {
+export default function useStatementsApi (): { getStatements: (options?: QueryParams) => Promise<QueryList<Statement>> } {
   const getStatements = async (
-    options?: StatementOptions
-  ): Promise<StatementList> => {
-    const { data } = await useFetch<StatementList>(STATEMENTS, {
+    options?: QueryParams
+  ): Promise<QueryList<Statement>> => {
+    const { data } = await useFetch<QueryList<Statement>>(STATEMENTS, {
       params: {
         sort: options?.sort,
         limit: options?.limit,
@@ -19,7 +16,7 @@ export default function useStatementsApi (): { getStatements: (options?: Stateme
       }
     }).then(handleErrorState)
 
-    const response: StatementList = data.value
+    const response: QueryList<Statement> = data.value
 
     return {
       total: response.total,
