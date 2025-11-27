@@ -11,10 +11,15 @@
       :placeholder="IMAGE_FALLBACK"
     />
 
-    <div class="title">{{ statement.fullTitle }}</div>
+    <div class="title"
+      >{{ statement.code }} -
+      {{ getLocalizedText(statement.title, locale) }}</div
+    >
 
-    <div v-if="statement.themes" class="subjects">
-      Subjects: {{ statement.themes[locale] }}
+    <div class="subjects">
+      <template v-for="theme of statement.themes">
+        {{ getLocalizedText(theme, locale) }}
+      </template>
     </div>
 
     <div class="read-on-wrapper">
@@ -24,30 +29,30 @@
 </template>
 
 <script lang="ts" setup>
-import type { Statement } from '~~/types/statement';
-import { formatDate } from '~~/utils/date';
-import { IMAGE_FALLBACK } from '~~/constants/image-paths';
+import type { Statement } from '~~/types/statement'
+import { formatDate } from '~~/utils/date'
+import { useLString } from '~~/utils/use-lstring'
+import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t, locale } = useI18n();
+const { locale } = useI18n()
+const getLocalizedText = useLString(locale.value)
 
 const props = defineProps<{
-  statement: Statement;
-}>();
+  statement: Statement
+}>()
 
 const statement = computed(() => {
   return {
     ...props.statement,
-    fullTitle: `${props.statement.code} - ${
-      props.statement.title[locale.value]
-    }`,
     createdOn: formatDate(props.statement.createdOn, locale.value),
-    themes: props.statement.themes.find((l) => l[locale.value]),
     url: props.statement.urls[0] ?? '#',
     /**
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    imageUrl: `/content/images/notifications/${encodeURIComponent(props.statement.code)}.jpg`
-  };
-});
+    imageUrl: `/content/images/notifications/${encodeURIComponent(
+      props.statement.code
+    )}.jpg`
+  }
+})
 </script>
