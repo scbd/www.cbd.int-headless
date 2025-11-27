@@ -20,15 +20,15 @@
 <i18n src="~~/i18n/dist/app/components/statement/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useStatementsApi from '~/composables/api/use-statements';
-import { STATEMENTS } from '~~/constants/api-paths';
+import useStatementsApi from '~/composables/api/use-statements-api'
+import { STATEMENTS } from '~~/constants/api-paths'
 
-const { t, locale } = useI18n();
+const { t, locale } = useI18n()
 
-const isError = ref<Error>();
-const { getStatements } = useStatementsApi();
+const isError = ref<Error>()
+const { getStatements } = useStatementsApi()
 const { rows: items } = await getStatements({ limit: 4 }).catch((error) => {
-  isError.value = error;
-  return { rows: [] };
-});
+  isError.value = error
+  return { rows: [] }
+})
 </script>
