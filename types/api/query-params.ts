@@ -3,8 +3,3 @@ export interface QueryParams {
   skip?: number
   limit?: number
 }
-
-export interface QueryList<T> {
-  rows: T[]
-  total: number
-}

@@ -3,7 +3,8 @@ import SolrIndexApi from '../api/solr-index'
 import { solrEscape, andOr, toLString, toLStringArray } from '../utils/solr'
 import type { SolrQuery } from '../types/api/solr'
 import type { Statement } from '../types/statement'
-import type { QueryParams, QueryList } from '~~/types/api/query-params'
+import type { QueryParams } from '~~/types/api/query-params'
+import type { SearchResult } from '~~/types/api/search-result'
 
 function normalizeStatementCode (code: string): string {
   return code.toUpperCase()
@@ -21,11 +22,11 @@ export async function getStatement (code: string): Promise<Statement> {
   return data.rows[0] as Statement
 }
 
-export async function listStatements (options: QueryParams): Promise<QueryList<Statement>> {
+export async function listStatements (options: QueryParams): Promise<SearchResult<Statement>> {
   return await searchStatements(options)
 }
 
-async function searchStatements (options?: QueryParams & { code?: string }): Promise<QueryList<Statement>> {
+async function searchStatements (options?: QueryParams & { code?: string }): Promise<SearchResult<Statement>> {
   const fieldQueries = andOr([
     'schema_s:statement',
     '_state_s:public',
