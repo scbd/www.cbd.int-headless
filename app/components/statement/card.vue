@@ -1,7 +1,7 @@
 <template>
   <div class="content-object statement">
     <div class="date">
-      {{ statement.createdOn }}
+      {{ formatDate(statement.createdOn, locale) }}
     </div>
 
     <NuxtImg
@@ -44,8 +44,7 @@ const props = defineProps<{
 const statement = computed(() => {
   return {
     ...props.statement,
-    createdOn: formatDate(props.statement.createdOn, locale.value),
-    url: props.statement.urls[0] ?? '#',
+    url: props.statement.urls[0],
     /**
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
