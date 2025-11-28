@@ -1,6 +1,7 @@
 import { notFound } from 'api-client/api-error'
 import DrupalApi from '../api/drupal'
-import type { Content, Article, Page, ArticleOptions } from '../types/content'
+import type { Content, Article, Page } from '../types/content'
+import type { QueryParams } from '~~/types/api/query-params'
 import type { Menu } from '../types/menu'
 import type { Portal } from '../types/portal'
 
@@ -132,7 +133,7 @@ export async function getPortal (id: string): Promise<Portal[]> {
   return portals
 };
 
-export async function listArticles (options?: ArticleOptions): Promise<Article[]> {
+export async function listArticles (options?: QueryParams): Promise<Article[]> {
   const data = await drupalApi.listArticles(options)
 
   const articles = await Promise.all(

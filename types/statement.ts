@@ -8,16 +8,3 @@ export interface Statement {
   createdOn: Date
   updatedOn: Date
 };
-export interface StatementMetadata {
-  total: number
-};
-export interface StatementList {
-  rows: Statement[]
-  total: number
-};
-
-export interface StatementOptions {
-  sort?: string
-  limit?: number
-  skip?: number
-};

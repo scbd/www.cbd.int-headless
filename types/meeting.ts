@@ -11,13 +11,3 @@ export interface Meeting {
   country: lstring
   city: lstring
 };
-export interface MeetingList {
-  rows: Meeting[]
-  total: number
-};
-
-export interface MeetingOptions {
-  sort?: string
-  limit?: number
-  skip?: number
-};

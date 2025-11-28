@@ -22,9 +22,3 @@ export interface Article extends Content {
 export interface Page extends Content {
   menu: string
 };
-
-export interface ArticleOptions {
-  sort?: string
-  limit?: number
-  skip?: number
-};

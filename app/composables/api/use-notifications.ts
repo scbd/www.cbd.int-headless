@@ -1,17 +1,15 @@
-import type {
-  Notification,
-  NotificationList,
-  NotificationOptions
-} from '~~/types/notification'
+import type { Notification } from '~~/types/notification'
+import type { QueryParams } from '~~/types/api/query-params'
 import { NOTIFICATIONS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { handleErrorState } from '~~/utils/api-error-handler'
+import type { SearchResult } from '~~/types/api/search-result'
 
-export default function useNotificationsApi (): { getNotifications: (options?: NotificationOptions) => Promise<NotificationList> } {
+export default function useNotificationsApi (): { getNotifications: (options?: QueryParams) => Promise<SearchResult<Notification>> } {
   const getNotifications = async (
-    options?: NotificationOptions
-  ): Promise<NotificationList> => {
-    const { data } = await useFetch<NotificationList>(NOTIFICATIONS, {
+    options?: QueryParams
+  ): Promise<SearchResult<Notification>> => {
+    const { data } = await useFetch<SearchResult<Notification>>(NOTIFICATIONS, {
       params: {
         sort: options?.sort,
         limit: options?.limit,
@@ -19,7 +17,7 @@ export default function useNotificationsApi (): { getNotifications: (options?: N
       }
     }).then(handleErrorState)
 
-    const response: NotificationList = data.value
+    const response: SearchResult<Notification> = data.value
 
     return {
       total: response.total,
