@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { useTranslations } from '~/composables/i18n'
 
-const { locale, locales } = useI18n()
+const { locale } = useI18n()
 const pageTranslation = useTranslations('pages/index')
 
 useHead({
