@@ -1,0 +1,26 @@
+{
+    "en": {
+        "title": "Convention on Biological Diversity",
+        "description": "The Convention on Biological Diversity (CBD) is the first global agreement to cover all aspects of biological diversity: the conservation of biological diversity, the sustainable use of its components and the fair and equitable sharing of benefits arising from the use of genetic resources."
+    },
+    "fr": {
+        "title": "Convention sur la Diversité Biologique",
+        "description": "La Convention sur la diversité biologique (CDB) est le premier accord mondial à couvrir tous les aspects de la diversité biologique : la conservation de la diversité biologique, l'utilisation durable de ses composantes et le partage juste et équitable des avantages découlant de l'utilisation des ressources génétiques."
+    },
+    "es": {
+        "title": "Convenio sobre la Diversidad Biológica",
+        "description": "El Convenio sobre la Diversidad Biológica (CDB) es el primer acuerdo global que abarca todos los aspectos de la diversidad biológica: la conservación de la diversidad biológica, el uso sostenible de sus componentes y la participación justa y equitativa en los beneficios derivados del uso de los recursos genéticos."
+    },
+    "ru": {
+        "title": "Конвенция о биологическом разнообразии",
+        "description": "Конвенция о биологическом разнообразии (CBD) является первым глобальным соглашением, охватывающим все аспекты биологического разнообразия: сохранение биологического разнообразия, устойчивое использование его компонентов и справедливое и равноправное распределение выгод, возникающих в результате использования генетических ресурсов."
+    },
+    "zh": {
+        "title": "生物多样性公约",
+        "description": "《生物多样性公约》（CBD）是首个涵盖生物多样性所有方面的全球性协议：包括生物多样性的保护、其组成部分的可持续利用，以及公平合理地分享利用遗传资源所产生的惠益。"
+    },
+    "ar": {
+        "title": "اتفاقية التنوع البيولوجي",
+        "description": "اتفاقية التنوع البيولوجي (CBD) هي أول اتفاقية عالمية تغطي جميع جوانب التنوع البيولوجي: الحفاظ على التنوع البيولوجي، والاستخدام المستدام لمكوناته، والتقاسم العادل والمنصف للمنافع الناشئة عن استخدام الموارد الجينية."
+    }
+}
