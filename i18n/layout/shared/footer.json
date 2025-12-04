@@ -1,0 +1,32 @@
+{
+    "en": {
+        "a_part_of": "A part of",
+        "un_logo": "UN Logo",
+        "unep_logo": "UNEP Logo"
+    },
+    "fr": {
+        "a_part_of": "Une partie de",
+        "un_logo": "Logo de l'ONU",
+        "unep_logo": "Logo du PNUE"
+    },
+    "es": {
+        "a_part_of": "Una parte de",
+        "un_logo": "Logotipo de la ONU",
+        "unep_logo": "Logotipo del PNUMA"
+    },
+    "ru": {
+        "a_part_of": "Часть",
+        "un_logo": "Логотип ООН",
+        "unep_logo": "Логотип ЮНЕП"
+    },
+    "zh": {
+        "a_part_of": "一部分",
+        "un_logo": "联合国标志",
+        "unep_logo": "联合国环境规划署徽标"
+    },
+    "ar": {
+        "a_part_of": "جزء من",
+        "un_logo": "شعار الأمم المتحدة",
+        "unep_logo": "شعار برنامج الأمم المتحدة للبيئة"
+    }
+}

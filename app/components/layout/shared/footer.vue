@@ -45,7 +45,7 @@
       </nav>
 
       <nav class="a-part-of">
-        <div class="nav-title">A part of</div>
+        <div class="nav-title">{{ t('a_part_of') }}</div>
         <ul>
           <li>
             <NuxtLink
@@ -55,7 +55,7 @@
               ><NuxtImg
                 src="/images/logo-un-negative.svg"
                 class="logo-footer-un"
-                alt="UN Logo"
+                alt="t('un_logo')"
             /></NuxtLink>
           </li>
           <li>
@@ -64,10 +64,10 @@
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                :src="unepLogoUrl"
+              <NuxtImg
+                src="unepLogoUrl"
                 class="logo-footer-unep"
-                alt="UNEP Logo"
+                alt="t('unep_logo')"
               />
             </NuxtLink>
           </li>
@@ -76,6 +76,7 @@
     </div>
   </footer>
 </template>
+<i18n src="~~/i18n/layout/shared/footer.json"></i18n>
 
 <script setup lang="ts">
 import type { Menu } from '~~/types/menu';
