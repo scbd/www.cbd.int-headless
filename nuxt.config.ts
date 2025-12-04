@@ -16,12 +16,12 @@ export default defineNuxtConfig({
   site: { indexable: false },
   i18n: {
     locales: [
-      { code: 'ar', iso: 'ar-SA', file: 'ar.json', dir: 'rtl' },
-      { code: 'en', iso: 'en-GB', file: 'en.json' },
-      { code: 'es', iso: 'es-ES', file: 'es.json' },
-      { code: 'fr', iso: 'fr-FR', file: 'fr.json' },
-      { code: 'ru', iso: 'ru-RU', file: 'ru.json' },
-      { code: 'zh', iso: 'zh-CN', file: 'zh.json' }
+      { code: 'ar', iso: 'ar-SA', dir: 'rtl' },
+      { code: 'en', iso: 'en-GB' },
+      { code: 'es', iso: 'es-ES' },
+      { code: 'fr', iso: 'fr-FR' },
+      { code: 'ru', iso: 'ru-RU' },
+      { code: 'zh', iso: 'zh-CN' }
     ],
     defaultLocale: 'en',
     detectBrowserLanguage: {

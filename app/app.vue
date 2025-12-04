@@ -6,12 +6,35 @@
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n();
+const { locale, t } = useI18n();
 
-useSeoMeta({
-  title: () => t("page.title"),
-  ogTitle: () => t("page.title"),
-  description: () => t("page.description"),
-  ogDescription: () => t("page.description"),
+useHead({
+  htmlAttrs: {
+    lang: () => locale.value,
+    dir: () =>  locale.value === 'ar' ? 'rtl' : 'ltr'
+  },
+  title: () => t('title'),
+  meta: [
+    {
+      name: 'description',
+      content: () => t('description')
+    },
+    {
+      property: 'og:title',
+      content: () => t('title')
+    },
+    {
+      property: 'og:description',
+      content: () => t('description')
+    },
+    {
+      property: 'og:image',
+      content: () => 'https://www.cbd.int/images/cbd-social-card.png'
+    },
+    {
+      property: 'og:twitterCard',
+      content: 'summary_large_image'
+    }
+  ]
 });
 </script>
