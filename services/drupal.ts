@@ -94,7 +94,17 @@ export async function getMenu (id: string): Promise<Menu[]> {
     }
   })
 
-  return menus
+  const modMenus = menus.map((menu) => {
+    if (menu.children !== undefined && menu.children.length !== 0) {
+      menu.children.map((child) => ({
+        ...child,
+        parents: child.parents !== undefined ? child.parents.push({ title: menu.title, url: menu.url }) : [{ title: menu.title, url: menu.url }]
+      }))
+    }
+    return menu
+  })
+
+  return modMenus
 };
 
 export async function getPortal (id: string): Promise<Portal[]> {
