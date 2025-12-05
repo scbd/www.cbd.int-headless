@@ -1,0 +1,20 @@
+{
+    "en": { 
+        "warning": "Warning"
+    },
+    "fr": {
+        "warning": "Alerte"
+    },
+    "es": {
+        "warning": "Aviso"
+    },
+    "ru": {
+        "warning": "Предупреждение"
+    },
+    "zh": {
+        "warning": "警告"
+    },
+    "ar": {
+        "warning": "تحذير"
+    }
+}
