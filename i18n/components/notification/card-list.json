@@ -1,0 +1,26 @@
+{
+    "en" : {
+        "notifications": "Notifications",
+        "moreNotifications": "More notifications"
+    },
+    "fr" : {
+        "notifications": "Notifications",
+        "moreNotifications": "Plus de notifications"
+    },
+    "es" : {
+        "notifications": "Notificaciones",
+        "moreNotifications": "Más notificaciones"
+    },
+    "ru" : {
+        "notifications": "Уведомления",
+        "moreNotifications": "Дополнительные уведомления"
+    },
+    "zh" : {
+        "notifications": "通知",
+        "moreNotifications": "更多通知"
+    },
+    "ar" : {
+        "notifications": "عرض الاجتماع",
+        "moreNotifications": "المزيد من الإشعارات"
+    }
+}

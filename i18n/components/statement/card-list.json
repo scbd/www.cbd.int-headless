@@ -1,0 +1,26 @@
+{
+    "en": {
+        "statements": "Statements",
+        "moreStatements": "More statements"
+    },
+    "fr": {
+        "statements": "Déclarations",
+        "moreStatements": "Plus de déclarations"
+    },
+    "es": {
+        "statements": "Declaraciones",
+        "moreStatements": "Más declaraciones"
+    },
+    "ru": {
+        "statements": "Заявления",
+        "moreStatements": "Дополнительные заявления"
+    },
+    "zh": {
+        "statements": "声明",
+        "moreStatements": "更多声明"
+    },
+    "ar": {
+        "statements": "البيانات",
+        "moreStatements": "المزيد من التصريحات"
+    }
+}

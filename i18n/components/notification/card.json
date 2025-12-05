@@ -1,0 +1,20 @@
+{
+    "en" : {
+        "viewNotification": "View notification"
+    },
+    "fr" : {
+        "viewNotification": "Afficher la notification"
+    },
+    "es" : {
+        "viewNotification": "Ver notificación"
+    },
+    "ru" : {
+        "viewNotification": "Просмотреть уведомление"
+    },
+    "zh" : {
+        "viewNotification": "查看通知"
+    },
+    "ar" : {
+        "viewNotification": "عرض الإشعار"
+    }
+}
