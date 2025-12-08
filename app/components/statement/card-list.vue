@@ -13,10 +13,11 @@
       <status v-else :error="isError" />
     </div>
     <NuxtLink :to="STATEMENTS" class="btn cbd-btn cbd-btn-outline-more-content">
-      More statements
+      {{ t('moreStatements') }}
     </NuxtLink>
   </section>
 </template>
+<i18n src="~~/i18n/dist/app/components/statement/card-list.json"></i18n>
 
 <script lang="ts" setup>
 import useStatementsApi from '~/composables/api/use-statements';

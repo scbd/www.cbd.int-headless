@@ -6,5 +6,6 @@
     </nav>
   </header>
 </template>
+<i18n src="~~/i18n/dist/app/components/layout/shared/header.json"></i18n>
 
 <script setup lang="ts"></script>

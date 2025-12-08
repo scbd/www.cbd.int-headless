@@ -19,10 +19,11 @@
       {{ `${meeting.city[locale]}, ${meeting.country[locale]}` }}
     </div>
     <div class="read-on-wrapper">
-      <NuxtLink :to="meeting.url" class="read-on">View meeting</NuxtLink>
+      <NuxtLink :to="meeting.url" class="read-on">{{ t('viewMeeting') }}</NuxtLink>
     </div>
   </div>
 </template>
+<i18n src="~~/i18n/dist/app/components/meeting/card.json"></i18n>
 
 <script lang="ts" setup>
 import type { Meeting } from '~~/types/meeting';

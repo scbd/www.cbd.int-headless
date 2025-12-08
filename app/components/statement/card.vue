@@ -23,10 +23,11 @@
     </div>
 
     <div class="read-on-wrapper">
-      <NuxtLink :to="statement.url" class="read-on">View statement</NuxtLink>
+      <NuxtLink :to="statement.url" class="read-on">{{ t('viewStatement') }}</NuxtLink>
     </div>
   </div>
 </template>
+<i18n src="~~/i18n/dist/app/components/statement/card.json"></i18n>
 
 <script lang="ts" setup>
 import type { Statement } from '~~/types/statement'
@@ -34,7 +35,8 @@ import { formatDate } from '~~/utils/date'
 import { useLString } from '~~/utils/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { locale } = useI18n()
+const { t, locale } = useI18n()
+
 const getLocalizedText = useLString(locale.value)
 
 const props = defineProps<{

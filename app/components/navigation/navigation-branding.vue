@@ -3,10 +3,11 @@
     <NuxtImg
       class="cus-logo"
       :src="cbdLogoUrl"
-      alt="Convention of Biological Diversity Logo"
+      :alt="t('conventionBiologicalDiversityLogo')"
     />
   </NuxtLink>
 </template>
+<i18n src="~~/i18n/dist/app/components/navigation/navigation-branding.json"></i18n>
 
 <script setup lang="ts">
 const { t, locale } = useI18n();
