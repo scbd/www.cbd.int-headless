@@ -4,7 +4,7 @@
     <NuxtLayout />
   </div>
 </template>
-<i18n src="~~/i18n/app.json"></i18n>
+<i18n src="~~/i18n/dist/app/app.json"></i18n>
 
 <script setup lang="ts">
 const { locale, t } = useI18n();
