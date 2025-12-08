@@ -6,4 +6,8 @@ export interface Menu {
   component?: string
   icon?: string
   children?: Menu[]
+  parents?: Array<{
+    title: string
+    url: string
+  }>
 }

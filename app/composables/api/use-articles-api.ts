@@ -2,20 +2,7 @@ import type { Article } from '~~/types/content'
 import type { QueryParams } from '~~/types/api/query-params'
 import { ARTICLES } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
-
-const handleErrorState = ({
-  error,
-  ...rest
-}: {
-  [key: string]: any
-  error: any
-}): { [key: string]: any } => {
-  if (error.value === null || error.value === undefined) {
-    return rest
-  } else {
-    throw error.value
-  }
-}
+import { handleErrorState } from '~~/utils/api-error-handler'
 
 export default function useArticlesApi (): { getArticles: (options?: QueryParams) => Promise<Article[]> } {
   const getArticles = async (options?: QueryParams): Promise<Article[]> => {
