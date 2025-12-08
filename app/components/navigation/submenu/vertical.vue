@@ -1,8 +1,5 @@
 <template>
-  <aside
-    class="cus-aside aside-nav"
-    :class="{ 'aside-collapsed': handleVerticalNavigation }"
-  >
+  <aside class="cus-aside aside-nav" :class="{ 'aside-collapsed': isVisible }">
     <ul class="nav">
       <li class="aside-nav-header nav-item">
         <NuxtLink :to="menu.url">
@@ -40,7 +37,7 @@
     <div class="aside-collapse-controls">
       <button
         class="cbd-btn-aside-collapse btn"
-        @click="handleVerticalNavigation = !handleVerticalNavigation"
+        @click="isVisible = !isVisible"
       >
         <svg
           width="72"
@@ -60,7 +57,7 @@
 
 <script setup lang="ts">
 import type { Menu } from '~~/types/menu'
-const handleVerticalNavigation = ref(false)
+const isVisible = ref(false)
 
 const props = defineProps<{
   menu: Menu
