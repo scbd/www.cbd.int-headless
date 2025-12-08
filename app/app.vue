@@ -7,12 +7,12 @@
 <i18n src="~~/i18n/dist/app/app.json"></i18n>
 
 <script setup lang="ts">
-const { locale, t } = useI18n();
+const { locale, localeProperties, t } = useI18n();
 
 useHead({
   htmlAttrs: {
     lang: () => locale.value,
-    dir: () =>  locale.value === 'ar' ? 'rtl' : 'ltr'
+    dir: () =>  localeProperties.value.dir || 'ltr'
   },
   title: () => t('title'),
   meta: [
