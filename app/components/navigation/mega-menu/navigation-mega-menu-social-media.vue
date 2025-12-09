@@ -1,40 +1,41 @@
 <template>
   <div class="social-media-follow">
-    <div class="social-media-title">Follow us on social media</div>
+    <div class="social-media-title">{{ t('followUs') }}</div>
     <div class="social-media-icons">
       <NuxtLink to="#" target="_blank"
         ><NuxtImg
           src="/images/icons/icon-social-yt.svg"
-          alt="Follow us on YouTube"
+          :alt="t('youtube')"
           class="social-media-icon"
       /></NuxtLink>
       <NuxtLink to="#" target="_blank"
         ><NuxtImg
           src="/images/icons/icon-social-fb.svg"
-          alt="Follow us on Facebook"
+          :alt="t('facebook')"
           class="social-media-icon"
       /></NuxtLink>
       <NuxtLink to="#" target="_blank"
         ><NuxtImg
           src="/images/icons/icon-social-x.svg"
-          alt="Follow us on X"
+          :alt="t('x')"
           class="social-media-icon"
       /></NuxtLink>
       <NuxtLink to="#" target="_blank"
         ><NuxtImg
           src="/images/icons/icon-social-li.svg"
-          alt="Follow us on LinkedIn"
+          :alt="t('linkedin')"
           class="social-media-icon"
       /></NuxtLink>
       <NuxtLink to="#" target="_blank"
         ><NuxtImg
           src="/images/icons/icon-social-ig.svg"
-          alt="Follow us on Instagram"
+          :alt="t('instagram')"
           class="social-media-icon"
       /></NuxtLink>
     </div>
   </div>
 </template>
+<i18n src="~~/i18n/dist/app/components/navigation/navigation-mega-menu-social-media.json"></i18n>
 
 <script setup lang="ts">
 const { t } = useI18n();

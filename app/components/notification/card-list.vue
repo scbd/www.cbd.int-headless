@@ -16,16 +16,17 @@
       :to="NOTIFICATIONS"
       class="btn cbd-btn cbd-btn-outline-more-content"
     >
-      More notifications
+      {{ t('moreNotifications') }}
     </NuxtLink>
   </section>
 </template>
+<i18n src="~~/i18n/dist/app/components/notification/card-list.json"></i18n>
 
 <script lang="ts" setup>
 import useNotificationsApi from '~/composables/api/use-notifications';
 import { NOTIFICATIONS } from '~~/constants/api-paths';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const isError = ref<Error>();
 const { getNotifications } = useNotificationsApi();

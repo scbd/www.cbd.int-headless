@@ -29,11 +29,12 @@
 
     <div class="read-on-wrapper">
       <NuxtLink :to="notification.url" class="read-on"
-        >View notification</NuxtLink
+        >{{ t('viewNotification') }}</NuxtLink
       >
     </div>
   </div>
 </template>
+<i18n src="~~/i18n/dist/app/components/notification/card.json"></i18n>
 
 <script lang="ts" setup>
 import type { Notification } from '~~/types/notification';

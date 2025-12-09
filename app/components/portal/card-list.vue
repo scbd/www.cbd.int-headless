@@ -9,6 +9,7 @@
         </div>
     </section>
 </template>
+<i18n src="~~/i18n/dist/app/components/portal/card-list.json"></i18n>
 
 <script lang="ts" setup>
 import usePortalsApi from '~/composables/api/use-portals-api';

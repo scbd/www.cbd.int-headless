@@ -13,16 +13,17 @@
       <status v-else :error="isError" />
     </div>
     <NuxtLink :to="MEETINGS" class="btn cbd-btn cbd-btn-outline-more-content">
-      More meetings
+      {{ t('moreMeetings') }}
     </NuxtLink>
   </section>
 </template>
+<i18n src="~~/i18n/dist/app/components/meeting/card-list.json"></i18n>
 
 <script lang="ts" setup>
 import useMeetingsApi from '~/composables/api/use-meetings';
 import { MEETINGS } from '~~/constants/api-paths';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const isError = ref<Error>();
 const { getMeetings } = useMeetingsApi();

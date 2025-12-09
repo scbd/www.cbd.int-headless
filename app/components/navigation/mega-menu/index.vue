@@ -9,7 +9,7 @@
       data-bs-target="#mainNavigation"
       aria-controls="mainNavigation"
       aria-expanded="false"
-      aria-label="Toggle navigation"
+      :aria-label="t('toggleNavigation')"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,7 +21,7 @@
           type="button"
           class="btn-close"
           data-bs-dismiss="offcanvas"
-          aria-label="Close"
+          :aria-label="t('close')"
         ></button>
       </div>
 
@@ -32,7 +32,7 @@
             to="#"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            >Options</NuxtLink
+            >{{ t('options') }}</NuxtLink
           >
 
           <nav class="mega-menu-drawer dropdown-menu container-fluid">
@@ -41,9 +41,9 @@
                 <NuxtLink class="nav-link" to="#" role="button">
                   <NuxtImg
                     src="/images/icons/icon-nav-search-outline.svg"
-                    alt="Search Icon"
+                    :alt="t('searchIcon')"
                   />
-                  <span class="nav-options-search-slot">Search</span>
+                  <span class="nav-options-search-slot">{{ t('search') }}</span>
                 </NuxtLink>
               </li>
 
@@ -57,7 +57,7 @@
                 >
                   <NuxtImg
                     src="/images/icons/icon-nav-language-outline.svg"
-                    :alt="'Language Icon'"
+                    :alt="t('languageIcon')"
                   />
                   <span class="nav-options-current-lang-slot"> English </span>
                 </NuxtLink>
@@ -78,9 +78,9 @@
                 <NuxtLink class="nav-link" to="#" role="button">
                   <NuxtImg
                     src="/images/icons/icon-nav-account-outline.svg"
-                    alt="Login Icon"
+                    :alt="t('loginIcon')"
                   />
-                  <span class="nav-options-login-slot">Login</span>
+                  <span class="nav-options-login-slot">{{ t('login') }}</span>
                 </NuxtLink>
               </li>
 
@@ -88,9 +88,9 @@
                 <NuxtLink class="nav-link" to="#" role="button">
                   <NuxtImg
                     src="/images/icons/icon-nav-settings-outline.svg"
-                    alt="Settings Icon"
+                    :alt="t('settingsIcon')"
                   />
-                  <span class="nav-options-settings-slot">Settings</span>
+                  <span class="nav-options-settings-slot">{{ t('settings') }}</span>
                 </NuxtLink>
               </li>
             </ul>
@@ -114,6 +114,7 @@
     </div>
   </div>
 </template>
+<i18n src="~~/i18n/dist/app/components/navigation/mega-menu/index.json"></i18n>
 
 <script setup lang="ts">
 import type { Menu } from '~~/types/menu';
