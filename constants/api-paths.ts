@@ -1,3 +1,5 @@
+export const MENUS = '/api/menus'
+export const ARTICLE = '/api/content'
 export const ARTICLES = '/api/articles'
 export const MEETINGS = '/api/meetings'
 export const NOTIFICATIONS = '/api/notifications'
