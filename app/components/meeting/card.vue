@@ -1,9 +1,10 @@
 <template>
   <div class="content-object meeting">
     <div class="date">
-      {{ formatDate(meeting.startOn, locale) }}
+      {{ formatDate(meeting.startOn) }}
       <template v-if="meeting.endOn">
-        <span class="dash">&ndash;</span> {{ formatDate(meeting.endOn) }}
+        <span class="dash">&ndash;</span>
+        {{ formatDate(meeting.endOn) }}
       </template>
     </div>
 
@@ -44,7 +45,7 @@ const props = defineProps<{
 const meeting = computed(() => {
   return {
     ...props.meeting,
-    url: props.meeting.urls[0] ?? '#',
+    url: props.meeting.urls[0],
     /**
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON

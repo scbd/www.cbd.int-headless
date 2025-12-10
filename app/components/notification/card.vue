@@ -1,7 +1,7 @@
 <template>
   <div class="content-object notification">
     <div class="date">
-      {{ formatDate(notification.createdOn, locale) }}
+      {{ formatDate(notification.createdOn) }}
     </div>
 
     <NuxtImg
@@ -14,24 +14,22 @@
 
     <div class="title"
       >{{ notification.code }} &ndash;
-      {{ getLocalizedText(notification.title, locale) }}</div
+      {{ getLocalizedText(notification.title) }}</div
     >
 
     <div v-if="notification.actionOn" class="action-required">
-      Action required: {{ formatDate(notification.actionOn, locale) }}
+      Action required: {{ formatDate(notification.actionOn) }}
     </div>
 
     <div class="subjects">
       Subjects:
       <template v-for="theme of notification.themes">
-        {{ getLocalizedText(theme, locale) }}
+        {{ getLocalizedText(theme) }}
       </template>
     </div>
 
     <div
-      v-dompurify-html:plaintext="
-        getLocalizedText(notification.fulltext, locale)
-      "
+      v-dompurify-html:plaintext="getLocalizedText(notification.fulltext)"
       class="description"
     ></div>
 
