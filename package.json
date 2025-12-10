@@ -31,7 +31,6 @@
     "@types/jsonapi-serializer": "^3.6.8",
     "api-client": "git+https://github.com/scbd/api-client.git",
     "bootstrap": "5.3.7",
-    "fs-extra": "^11.3.2",
     "isomorphic-dompurify": "^2.30.1",
     "jsonapi-serializer": "^3.6.9",
     "jwt-decode": "^4.0.0",
@@ -49,6 +48,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/lodash": "^4.17.20",
     "@types/node": "^24.9.2",
+    "fs-extra": "^11.3.2",
     "ts-standard": "^12.0.2",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.1.3"
