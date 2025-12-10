@@ -15,7 +15,7 @@
     />
 
     <div class="title">{{ meeting.title[locale] }}</div>
-    <div v-show="meeting.location" class="location">
+    <div v-show="meeting?.location" class="location">
       {{ meeting.location }}
     </div>
     <div class="read-on-wrapper">
