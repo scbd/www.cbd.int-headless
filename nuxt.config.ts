@@ -1,3 +1,4 @@
+import { viteSyncI18nFiles } from './i18n/sync-i18n'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -14,14 +15,20 @@ export default defineNuxtConfig({
     '@nuxt/image'
   ],
   site: { indexable: false },
+  vite: {
+    plugins: [
+      // @ts-expect-error
+      viteSyncI18nFiles({})
+    ]
+  },
   i18n: {
     locales: [
-      { code: 'ar', iso: 'ar-SA', file: 'ar.json', dir: 'rtl' },
-      { code: 'en', iso: 'en-GB', file: 'en.json' },
-      { code: 'es', iso: 'es-ES', file: 'es.json' },
-      { code: 'fr', iso: 'fr-FR', file: 'fr.json' },
-      { code: 'ru', iso: 'ru-RU', file: 'ru.json' },
-      { code: 'zh', iso: 'zh-CN', file: 'zh.json' }
+      { code: 'ar', iso: 'ar-SA', dir: 'rtl' },
+      { code: 'en', iso: 'en-GB' },
+      { code: 'es', iso: 'es-ES' },
+      { code: 'fr', iso: 'fr-FR' },
+      { code: 'ru', iso: 'ru-RU' },
+      { code: 'zh', iso: 'zh-CN' }
     ],
     defaultLocale: 'en',
     detectBrowserLanguage: {
