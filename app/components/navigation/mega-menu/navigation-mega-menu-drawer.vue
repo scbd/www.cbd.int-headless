@@ -21,7 +21,7 @@
     <navigation-mega-menu-social-media />
   </nav>
 </template>
-<i18n src="~~/i18n/dist/app/components/navigation/navigation-mega-menu-drawer.json"></i18n>
+<i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-drawer.json"></i18n>
 
 <script setup lang="ts">
 import type { Menu } from '~~/types/menu';
