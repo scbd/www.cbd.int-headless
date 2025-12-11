@@ -62,7 +62,8 @@ async function createLocaleFile (enFile: string): Promise<any> {
   try {
     await mkdir(path.dirname(`${rootDirname}${distFilePath}`), { recursive: true })
     await writeFile(`${rootDirname}${distFilePath}`, JSON.stringify(flatData, null, 4), { encoding: 'utf8' })
-  } catch (e) {
+  } catch (error) {
+    console.error('Error writing locale dist file:', error)
   }
 
   return JSON.parse(JSON.stringify(flatData))
@@ -85,8 +86,8 @@ async function readJsonFile (filePath: string): Promise<any> {
       const parsedData = await readJson(`${rootDirname}${filePath}`, { encoding: 'utf8' })
       return parsedData
     }
-  } catch (e) {
-    console.log(e)
+  } catch (error) {
+    console.error('Error reading JSON file:', error)
   }
 }
 // Remove from existing & valid keys in the localizedVersion from the base version;
@@ -140,8 +141,8 @@ async function getAllDirectoryFiles (dir: string, options?: any): Promise <strin
       } else if (filePath !== '') {
         fileList.push(filePath)
       }
-    } catch (e) {
-      console.log(e)
+    } catch (error) {
+      console.error('Error reading directory file:', error)
       // useLogger().error(e, file)
     }
   }))
