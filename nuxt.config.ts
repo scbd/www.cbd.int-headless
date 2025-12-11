@@ -17,7 +17,6 @@ export default defineNuxtConfig({
   site: { indexable: false },
   vite: {
     plugins: [
-      // @ts-expect-error
       viteSyncI18nFiles({})
     ]
   },
