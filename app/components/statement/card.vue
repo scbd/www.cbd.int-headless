@@ -1,7 +1,7 @@
 <template>
   <div class="content-object statement">
     <div class="date">
-      {{ statement.createdOn }}
+      {{ formatDate(statement.createdOn) }}
     </div>
 
     <NuxtImg
@@ -12,13 +12,12 @@
     />
 
     <div class="title"
-      >{{ statement.code }} -
-      {{ getLocalizedText(statement.title, locale) }}</div
+      >{{ statement.code }} - {{ getLocalizedText(statement.title) }}</div
     >
 
     <div class="subjects">
       <template v-for="theme of statement.themes">
-        {{ getLocalizedText(theme, locale) }}
+        {{ getLocalizedText(theme) }}
       </template>
     </div>
 
@@ -46,13 +45,12 @@ const props = defineProps<{
 const statement = computed(() => {
   return {
     ...props.statement,
-    createdOn: formatDate(props.statement.createdOn, locale.value),
-    url: props.statement.urls[0] ?? '#',
+    url: props.statement.urls[0],
     /**
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    imageUrl: `/content/images/notifications/${encodeURIComponent(
+    imageUrl: `/content/images/statements/${encodeURIComponent(
       props.statement.code
     )}.jpg`
   }

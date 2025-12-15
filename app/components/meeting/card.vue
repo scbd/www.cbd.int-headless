@@ -1,9 +1,10 @@
 <template>
   <div class="content-object meeting">
     <div class="date">
-      {{ meeting.startOn }}
+      {{ formatDate(meeting.startOn) }}
       <template v-if="meeting.endOn">
-        <span class="dash">&ndash;</span> {{ meeting.endOn }}
+        <span class="dash">&ndash;</span>
+        {{ formatDate(meeting.endOn) }}
       </template>
     </div>
 
@@ -14,9 +15,13 @@
       :placeholder="IMAGE_FALLBACK"
     />
 
-    <div class="title">{{ meeting.title[locale] }}</div>
-    <div v-show="meeting.city || meeting.country" class="location">
-      {{ `${meeting.city[locale]}, ${meeting.country[locale]}` }}
+    <div class="title">{{ getLocalizedText(meeting.title) }}</div>
+    <div v-if="meeting.city || meeting.country" class="location">
+      {{
+        `${getLocalizedText(meeting.city)}, ${getLocalizedText(
+          meeting.country
+        )}`
+      }}
     </div>
     <div class="read-on-wrapper">
       <NuxtLink :to="meeting.url" class="read-on">{{ t('viewMeeting') }}</NuxtLink>
@@ -26,31 +31,29 @@
 <i18n src="~~/i18n/dist/app/components/meeting/card.json"></i18n>
 
 <script lang="ts" setup>
-import type { Meeting } from '~~/types/meeting';
-import { formatDate } from '~~/utils/date';
-import { IMAGE_FALLBACK } from '~~/constants/image-paths';
+import type { Meeting } from '~~/types/meeting'
+import { formatDate } from '~~/utils/date'
+import { useLString } from '~~/utils/use-lstring'
+import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t, locale } = useI18n();
+const { locale } = useI18n()
+const getLocalizedText = useLString(locale.value)
 
 const props = defineProps<{
-  meeting: Meeting;
-}>();
+  meeting: Meeting
+}>()
 
 const meeting = computed(() => {
   return {
     ...props.meeting,
-    startOn: formatDate(props.meeting.startOn, locale.value),
-    endOn: props.meeting.endOn
-      ? formatDate(props.meeting.endOn, locale.value)
-      : props.meeting.endOn,
-    url: props.meeting.urls[0] ?? '#',
+    url: props.meeting.urls[0],
     /**
      * To be replaced with proper image handling when available;
      * WILL BE REMOVED SOON
      */
-    imageUrl: `/content/images/notifications/${encodeURIComponent(
+    imageUrl: `/content/images/meetings/${encodeURIComponent(
       props.meeting.code
     )}.jpg`
-  };
-});
+  }
+})
 </script>
