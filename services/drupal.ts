@@ -171,13 +171,18 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
   const now = Date.now()
   const cached = menuCache.get(code)
 
-  // Return cached data if valid
+  // Return cached data if valid (not expired)
   if (cached != null && (now - cached.timestamp) < MENU_CACHE_DURATION_MS) {
     return cached.data
   }
 
-  // If there's an in-flight request, await it (concurrent request handling)
+  // If there's an in-flight request, handle stale-while-revalidate pattern
   if (cached?.promise != null) {
+    // Return stale/expired data immediately if we have it and it's not empty
+    if (cached.data != null && cached.data.length > 0) {
+      return cached.data
+    }
+    // Otherwise, wait for the in-flight request to complete
     return await cached.promise
   }
 
@@ -255,11 +260,17 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
   })()
 
   // Store promise to prevent concurrent requests
+  // Preserve existing stale data if available
   menuCache.set(code, {
-    data: [],
-    timestamp: 0,
+    data: cached?.data ?? [],
+    timestamp: cached?.timestamp ?? 0,
     promise: loadPromise
   })
+
+  // Return stale data immediately if available, otherwise wait for fresh data
+  if (cached?.data != null && cached.data.length > 0) {
+    return cached.data
+  }
 
   return await loadPromise
 }
