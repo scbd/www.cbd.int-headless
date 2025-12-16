@@ -35,8 +35,10 @@
     </div>
   </div>
 </template>
-<i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-social-media.json"></i18n>
+<i18n
+  src="~~/i18n/dist/app/components/navigation/mega-menu/social-media.json"
+></i18n>
 
 <script setup lang="ts">
-const { t } = useI18n();
+const { t } = useI18n()
 </script>

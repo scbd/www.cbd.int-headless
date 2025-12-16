@@ -16,41 +16,40 @@
     </li>
   </div>
 </template>
-<i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-list.json"></i18n>
+<i18n src="~~/i18n/dist/app/components/navigation/mega-menu/list.json"></i18n>
 
 <script setup lang="ts">
-import useMenuApi from '~/composables/api/use-menu-api';
+import useMenuApi from '~/composables/api/use-menu-api'
 
 const props = defineProps<{
-  submenu: string;
-}>();
+  submenu: string
+}>()
 
-const { getMenu } = useMenuApi();
-const menu = await getMenu(props.submenu);
+const { getMenu } = useMenuApi()
+const menu = await getMenu(props.submenu)
 
 const level2MenuColumnCount = computed(() => {
-  const classes: string[] = [];
-  const styles: { [key: string]: string | number } = {};
+  const classes: string[] = []
+  const styles: { [key: string]: string | number } = {}
 
   if (menu.length < 5) {
-    styles['--level2-column-count'] = menu.length;
+    styles['--level2-column-count'] = menu.length
   }
 
-  return { classes, styles };
-});
+  return { classes, styles }
+})
 
 const level3MenuColumns = computed(() =>
   menu.map((menuItem, index) => {
-    const classes: string[] = [];
-    const styles: { [key: string]: string | number } = {};
+    const classes: string[] = []
+    const styles: { [key: string]: string | number } = {}
 
     if (menuItem.children) {
-      if (menuItem.children.length > 8) classes.push('level-3-items-multi-col');
-
-      styles['--level3-column-count'] = Math.ceil(menuItem.children.length / 8);
+      if (menuItem.children.length > 8) classes.push('level-3-items-multi-col')
+      styles['--level3-column-count'] = Math.ceil(menuItem.children.length / 8)
     }
 
-    return { classes, styles };
+    return { classes, styles }
   })
-);
+)
 </script>

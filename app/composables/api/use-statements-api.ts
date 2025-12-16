@@ -1,9 +1,9 @@
 import type { Statement } from '~~/types/statement'
 import type { QueryParams } from '~~/types/api/query-params'
-import { STATEMENTS } from '~~/constants/api-paths'
-import normalizeObjectDates from '~~/utils/normalize-object-dates'
-import { handleErrorState } from '~~/utils/api-error-handler'
 import type { SearchResult } from '~~/types/api/search-result'
+import { STATEMENTS } from '~~/constants/api-paths'
+import normalizeObjectDates from '~/utils/normalize-object-dates'
+import { handleErrorState } from '~/utils/api-error-handler'
 
 export default function useStatementsApi (): { getStatements: (options?: QueryParams) => Promise<SearchResult<Statement>> } {
   const getStatements = async (

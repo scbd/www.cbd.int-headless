@@ -1,9 +1,9 @@
 import type { Notification } from '~~/types/notification'
 import type { QueryParams } from '~~/types/api/query-params'
-import { NOTIFICATIONS } from '~~/constants/api-paths'
-import normalizeObjectDates from '~~/utils/normalize-object-dates'
-import { handleErrorState } from '~~/utils/api-error-handler'
 import type { SearchResult } from '~~/types/api/search-result'
+import { NOTIFICATIONS } from '~~/constants/api-paths'
+import normalizeObjectDates from '~/utils/normalize-object-dates'
+import { handleErrorState } from '~/utils/api-error-handler'
 
 export default function useNotificationsApi (): { getNotifications: (options?: QueryParams) => Promise<SearchResult<Notification>> } {
   const getNotifications = async (

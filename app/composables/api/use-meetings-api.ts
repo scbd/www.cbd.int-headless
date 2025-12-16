@@ -2,8 +2,8 @@ import type { Meeting } from '~~/types/meeting'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
 import { MEETINGS } from '~~/constants/api-paths'
-import normalizeObjectDates from '~~/utils/normalize-object-dates'
-import { handleErrorState } from '~~/utils/api-error-handler'
+import normalizeObjectDates from '~/utils/normalize-object-dates'
+import { handleErrorState } from '~/utils/api-error-handler'
 
 export default function useMeetingsApi (): { getMeetings: (options?: QueryParams) => Promise<SearchResult<Meeting>> } {
   const getMeetings = async (

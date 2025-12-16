@@ -1,6 +1,7 @@
 <template>
   <div class="cus-hero" :class="heroClasses">
-    <div v-if="!error" class="featured-items">
+    <status v-if="error" :error="error" />
+    <div v-else class="featured-items">
       <hero-content-featured-item
         v-if="primaryArticle"
         :article="primaryArticle"
@@ -15,19 +16,20 @@
         />
       </div>
     </div>
-    <status v-else :error="error" />
   </div>
 </template>
+<i18n src="~~/i18n/dist/app/components/hero/index.json"></i18n>
 
 <script setup lang="ts">
+import type { NuxtError } from 'nuxt/app'
 import useArticlesApi from '~/composables/api/use-articles-api'
 
-const error = ref<Error>()
+const error = ref<NuxtError>()
 
 const { getArticles } = useArticlesApi()
 
-const items = await getArticles({ limit: 3 }).catch((error) => {
-  error.value = error
+const items = await getArticles({ limit: 3 }).catch((nuxtError: NuxtError) => {
+  error.value = nuxtError
   return []
 })
 
