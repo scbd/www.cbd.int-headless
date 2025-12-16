@@ -1,11 +1,17 @@
 import type { Menu } from '~~/types/menu'
 
-export default function useMenuApi (): { getMenu: (menuName: string) => Promise<Menu[]> } {
-  const getMenu = async (menuName: string): Promise<Menu[]> => {
-    const response = await useFetch('/api/menus', {
+export default function useMenuApi (): {
+  getMenu: (code: string, options?: { depth?: number, branch?: string }) => Promise<Menu[]>
+} {
+  const getMenu = async (
+    code: string,
+    options?: { depth?: number, branch?: string }
+  ): Promise<Menu[]> => {
+    const response = await useFetch(`/api/menus/${code}`, {
       method: 'GET',
       params: {
-        menu: menuName
+        depth: options?.depth,
+        branch: options?.branch
       }
     })
 
