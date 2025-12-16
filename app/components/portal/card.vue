@@ -15,7 +15,7 @@
 import type { Menu as Portal } from '~~/types/menu'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t } = useI18n({ useScope: 'local' })
+const { t } = useI18n()
 
 const props = defineProps<{
   portal: Portal
