@@ -1,3 +1,5 @@
 {
-    "viewNotification": "Afficher la notification"
+    "viewNotification": "Afficher la notification",
+    "actionRequired": "Action requise",
+    "subjects": "Sujets"
 }
