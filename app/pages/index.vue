@@ -1,9 +1,10 @@
 <template>
   <main class="cus-main cus-landing-page d-flex flex-column" role="main">
     <hero />
-    <article class="cus-article container-xxl d-flex flex-column">      
+    <article class="cus-article container-xxl d-flex flex-column">
       <meeting-card-list />
       <notification-card-list />
+      <gbf-target-card-list />
       <statement-card-list />
       <portal-card-list portal="cbd-portals" />
     </article>
@@ -13,5 +14,5 @@
 <script setup lang="ts">
 definePageMeta({
   layout: 'home'
-});
+})
 </script>
