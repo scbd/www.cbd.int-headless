@@ -1,0 +1,10 @@
+{
+    "target": "Target { number }",
+    "quickLinksImportant": "Why is the target important?",
+    "quickLinksExplanation": "Target explanation",
+    "quickLinksGuidingQuestions": "Guiding questions",
+    "quickLinksLinks": "Links to other elements",
+    "quickLinksRelevantResources": "Relevant resources",
+    "quickLinksIndicators": "Indicators",
+    "viewGbfTarget": "View GBF Target"
+}

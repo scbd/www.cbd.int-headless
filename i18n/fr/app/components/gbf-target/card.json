@@ -1,0 +1,10 @@
+{
+    "target": "Objectif { number }",
+    "quickLinksImportant": "Pourquoi cet objectif est-il important?",
+    "quickLinksExplanation": "Explication de l'objectif",
+    "quickLinksGuidingQuestions": "Questions directrices",
+    "quickLinksLinks": "Liens vers d'autres éléments",
+    "quickLinksRelevantResources": "Ressources pertinentes",
+    "quickLinksIndicators": "Indicateurs",
+    "viewGbfTarget": "Voir l'objectif de GBF"
+}
