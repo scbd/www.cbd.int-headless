@@ -47,7 +47,6 @@ const props = defineProps<{
 
 const gbfTarget = computed(() => {
   const identifier = props.gbfTarget.identifier.slice(-2)
-  const index = props.gbfTarget.identifier.slice(-2)
   return {
     ...props.gbfTarget,
     number: identifier,

@@ -1,4 +1,6 @@
 {
     "gbfTargets": "GBF目标",
-    "allGbfTargets": "所有GBF目标"
+    "allGbfTargets": "所有GBF目标",
+    "previous": "以前的",
+    "next": "下一个"
 }

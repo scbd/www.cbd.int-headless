@@ -1,4 +1,6 @@
 {
     "gbfTargets": "GBF Targets",
-    "allGbfTargets": "All GBF Targets"
+    "allGbfTargets": "All GBF Targets",
+    "previous": "Previous",
+    "next": "Next"
 }
