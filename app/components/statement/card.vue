@@ -16,13 +16,15 @@
     >
 
     <div class="subjects">
-      <template v-for="theme of statement.themes">
+      <template v-for="theme of statement.themes" :key="theme">
         {{ getLocalizedText(theme) }}
       </template>
     </div>
 
     <div class="read-on-wrapper">
-      <NuxtLink :to="statement.url" class="read-on">{{ t('viewStatement') }}</NuxtLink>
+      <NuxtLink :to="statement.url" class="read-on">{{
+        t('viewStatement')
+      }}</NuxtLink>
     </div>
   </div>
 </template>
@@ -30,8 +32,8 @@
 
 <script lang="ts" setup>
 import type { Statement } from '~~/types/statement'
-import { formatDate } from '~~/utils/date'
-import { useLString } from '~~/utils/use-lstring'
+import { formatDate } from '~/utils/date'
+import { useLString } from '~/utils/lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t, locale } = useI18n()

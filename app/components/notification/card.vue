@@ -18,12 +18,12 @@
     >
 
     <div v-if="notification.actionOn" class="action-required">
-      Action required: {{ formatDate(notification.actionOn) }}
+      {{ t('actionRequired') }}: {{ formatDate(notification.actionOn) }}
     </div>
 
     <div class="subjects">
-      Subjects:
-      <template v-for="theme of notification.themes">
+      {{ t('subjects') }}:
+      <template v-for="theme of notification.themes" :key="theme">
         {{ getLocalizedText(theme) }}
       </template>
     </div>
@@ -34,9 +34,9 @@
     ></div>
 
     <div class="read-on-wrapper">
-      <NuxtLink :to="notification.url" class="read-on"
-        >{{ t('viewNotification') }}</NuxtLink
-      >
+      <NuxtLink :to="notification.url" class="read-on">{{
+        t('viewNotification')
+      }}</NuxtLink>
     </div>
   </div>
 </template>
@@ -44,11 +44,11 @@
 
 <script lang="ts" setup>
 import type { Notification } from '~~/types/notification'
-import { formatDate } from '~~/utils/date'
-import { useLString } from '~~/utils/use-lstring'
+import { formatDate } from '~/utils/date'
+import { useLString } from '~/utils/lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 const getLocalizedText = useLString(locale.value)
 
 const props = defineProps<{

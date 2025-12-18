@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
-import { solrEscape, andOr, toLString, toLStringArray } from '../utils/solr'
+import { solrEscape, andOr, toLString, toLStringArray } from '../app/utils/solr'
 import type { SolrQuery } from '../types/api/solr'
 import type { Statement } from '../types/statement'
 import type { QueryParams } from '~~/types/api/query-params'

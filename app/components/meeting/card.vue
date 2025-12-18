@@ -24,7 +24,9 @@
       }}
     </div>
     <div class="read-on-wrapper">
-      <NuxtLink :to="meeting.url" class="read-on">{{ t('viewMeeting') }}</NuxtLink>
+      <NuxtLink :to="meeting.url" class="read-on">{{
+        t('viewMeeting')
+      }}</NuxtLink>
     </div>
   </div>
 </template>
@@ -32,11 +34,11 @@
 
 <script lang="ts" setup>
 import type { Meeting } from '~~/types/meeting'
-import { formatDate } from '~~/utils/date'
-import { useLString } from '~~/utils/use-lstring'
+import { formatDate } from '~/utils/date'
+import { useLString } from '~/utils/lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { locale } = useI18n()
+const { t, locale } = useI18n({ useScope: 'local' })
 const getLocalizedText = useLString(locale.value)
 
 const props = defineProps<{

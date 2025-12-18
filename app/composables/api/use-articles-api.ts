@@ -1,7 +1,7 @@
 import type { Article } from '~~/types/content'
 import type { QueryParams } from '~~/types/api/query-params'
 import { ARTICLES } from '~~/constants/api-paths'
-import normalizeObjectDates from '~~/utils/normalize-object-dates'
+import normalizeObjectDates from '~/utils/normalize-object-dates'
 
 const handleErrorState = ({
   error,

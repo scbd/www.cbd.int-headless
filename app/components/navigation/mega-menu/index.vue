@@ -90,7 +90,9 @@
                     src="/images/icons/icon-nav-settings-outline.svg"
                     :alt="t('settingsIcon')"
                   />
-                  <span class="nav-options-settings-slot">{{ t('settings') }}</span>
+                  <span class="nav-options-settings-slot">{{
+                    t('settings')
+                  }}</span>
                 </NuxtLink>
               </li>
             </ul>
@@ -117,23 +119,23 @@
 <i18n src="~~/i18n/dist/app/components/navigation/mega-menu/index.json"></i18n>
 
 <script setup lang="ts">
-import type { Menu } from '~~/types/menu';
-import { languages } from '~~/data/un-languages';
-import useMenuApi from '~/composables/api/use-menu-api';
+import type { Menu } from '~~/types/menu'
+import { languages } from '~~/data/un-languages'
+import useMenuApi from '~/composables/api/use-menu-api'
 
-const { t, locale } = useI18n();
+const { t, locale } = useI18n()
 
 const languagesWithLabel = computed(() =>
   languages.map((l) => {
     const label =
       l.locale !== locale.value
         ? `${l.name[l.locale]} (${l.name?.[locale.value]})`
-        : l.name[locale.value];
+        : l.name[locale.value]
 
-    return { ...l, label };
+    return { ...l, label }
   })
-);
+)
 
-const { getMenu } = useMenuApi();
-const menu: Menu[] = await getMenu('cbd-header');
+const { getMenu } = useMenuApi()
+const menu: Menu[] = await getMenu('cbd-header')
 </script>
