@@ -1,8 +1,7 @@
 <template>
   <section class="content-row d-flex flex-column gbf-targets">
     <div class="row-title">{{ t('gbfTargets') }}</div>
-    <div class="content-wrapper">
-      <!-- d-flex -->
+    <div class="content-wrapper d-flex" ref="gbfTargetWrapperRef">
       <status v-if="error" :error="error" />
       <gbf-target-card
         v-else
@@ -10,9 +9,16 @@
         :key="gbfTarget.id"
         :gbf-target="gbfTarget"
     /></div>
-    <div class="controls" style="color: white">
-      <div>prev</div>
-      <div>next</div>
+    <div v-if="!error" class="controls">
+      <button class="btn cbd-btn previous" @click="scrollToTarget('previous')"
+        ><NuxtImg src="images/icons/icon-btn-arrow-circle-right-full.svg" />{{
+          t('previous')
+        }}</button
+      >
+      <button class="btn cbd-btn next" @click="scrollToTarget('next')"
+        >{{ t('next')
+        }}<NuxtImg src="images/icons/icon-btn-arrow-circle-right-full.svg" />
+      </button>
     </div>
 
     <NuxtLink
@@ -38,21 +44,23 @@ const items = await getGbfTargets().catch((nuxtError: NuxtError) => {
 })
 
 const gbfTargets = computed(() => items)
-</script>
+const gbfTargetWrapper = useTemplateRef<HTMLDivElement>('gbfTargetWrapperRef')
 
-<style lang="scss" scoped>
-.gbf-targets .content-wrapper {
-  width: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  scroll-snap-type: x mandatory;
-  // display: grid;
-  // grid-template-columns: (repeat(23, 30%));
-  overflow-x: scroll;
-  .content-object {
-    width: 33%;
-    flex: none;
-    scroll-snap-align: start;
-  }
+const scrollToTarget = (to: 'previous' | 'next') => {
+  const list = gbfTargetWrapper.value?.children
+  const width = (list?.[0] as HTMLElement).offsetWidth ?? 300
+
+  if (to === 'next')
+    gbfTargetWrapper.value?.scrollBy({
+      left: width * 3,
+      top: 0,
+      behavior: 'smooth'
+    })
+  if (to === 'previous')
+    gbfTargetWrapper.value?.scrollBy({
+      left: -width * 3,
+      top: 0,
+      behavior: 'smooth'
+    })
 }
-</style>
+</script>
