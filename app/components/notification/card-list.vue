@@ -23,17 +23,17 @@
 <i18n src="~~/i18n/dist/app/components/notification/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useNotificationsApi from '~/composables/api/use-notifications';
-import { NOTIFICATIONS } from '~~/constants/api-paths';
+import useNotificationsApi from '~/composables/api/use-notifications-api'
+import { NOTIFICATIONS } from '~~/constants/api-paths'
 
 const { t } = useI18n();
 
-const isError = ref<Error>();
-const { getNotifications } = useNotificationsApi();
+const isError = ref<Error>()
+const { getNotifications } = useNotificationsApi()
 const { rows: items } = await getNotifications({ limit: 4 }).catch(
   (error: Error) => {
-    isError.value = error;
-    return { rows: [] };
+    isError.value = error
+    return { rows: [] }
   }
-);
+)
 </script>
