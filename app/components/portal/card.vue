@@ -12,8 +12,8 @@
 <i18n src="~~/i18n/dist/app/components/portal/card.json"></i18n>
 
 <script lang="ts" setup>
-import type { Menu as Portal } from '~~/types/menu'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
+import type { Portal } from '~~/types/portal';
+import { IMAGE_FALLBACK } from '~~/constants/image-paths';
 
 const { t } = useI18n()
 
