@@ -1,3 +1,5 @@
 {
-    "viewNotification": "查看通知"
+    "viewNotification": "查看通知",
+    "actionRequired": "需要采取行动",
+    "subjects": "科目"
 }
