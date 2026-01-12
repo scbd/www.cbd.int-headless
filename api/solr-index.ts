@@ -35,4 +35,9 @@ export default class SolrIndexApi extends ApiBase {
     const data = await this.fetch('/api/v2013/index/select', { method: 'POST', body: queryListParameters })
     return data
   };
+
+  async queryGbfTargets (): Promise<any> {
+    const data = await this.fetch('/api/v2013/thesaurus/domains/GBF-TARGETS/terms', { method: 'GET' })
+    return data
+  }
 };
