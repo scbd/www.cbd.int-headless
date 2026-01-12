@@ -1,3 +1,5 @@
 {
-    "viewNotification": "Просмотреть уведомление"
+    "viewNotification": "Просмотреть уведомление",
+    "actionRequired": "Требуемые действия",
+    "subjects": "темы"
 }
