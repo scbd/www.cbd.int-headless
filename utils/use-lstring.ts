@@ -6,6 +6,9 @@ export const useLString = (): ((ltext: LString | string, localeOverride?: Locale
   const { locale } = useI18n()
 
   return (ltext: LString | string, localeOverride?: Locale): string => {
+    if (typeof ltext === 'string') {
+      return ltext
+    }
     return lstring(ltext, localeOverride ?? locale.value)
   }
 }
