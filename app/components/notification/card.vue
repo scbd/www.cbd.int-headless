@@ -18,11 +18,11 @@
     >
 
     <div v-if="notification.actionOn" class="action-required">
-      Action required: {{ formatDate(notification.actionOn) }}
+      {{ t('actionRequired') }}: {{ formatDate(notification.actionOn) }}
     </div>
 
     <div class="subjects">
-      Subjects:
+      {{ t('subjects') }}:
       <template v-for="theme of notification.themes">
         {{ getLocalizedText(theme) }}
       </template>
