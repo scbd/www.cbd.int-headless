@@ -39,7 +39,7 @@ import type { GbfTarget } from '~~/types/gbf-target'
 import { useLString } from '~~/utils/use-lstring'
 
 const { t, locale } = useI18n()
-const getLocalizedText = useLString(locale.value)
+const getLocalizedText = useLString()
 
 const props = defineProps<{
   gbfTarget: GbfTarget
