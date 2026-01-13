@@ -34,7 +34,7 @@ import { useFormatDate } from '~/composables/use-format-date'
 import { useLString } from '~~/utils/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 const getLocalizedText = useLString()
 const formatDate = useFormatDate()
