@@ -79,7 +79,7 @@ export async function getContent (url: string): Promise<Content | Page | Article
     if (media !== null) {
       article.coverImage = {
         ...article.coverImage,
-        path: media?.data?.attributes?.uri?.url
+        path: imagePathNormalizer(media?.data?.attributes?.uri?.url)
       }
     };
   };
