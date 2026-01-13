@@ -44,12 +44,13 @@
 
 <script lang="ts" setup>
 import type { Notification } from '~~/types/notification'
-import { formatDate } from '~~/utils/date'
+import { useFormatDate } from '~~/utils/date'
 import { useLString } from '~~/utils/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t, locale } = useI18n()
 const getLocalizedText = useLString()
+const formatDate = useFormatDate()
 
 const props = defineProps<{
   notification: Notification
