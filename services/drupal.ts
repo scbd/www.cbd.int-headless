@@ -87,6 +87,7 @@ export async function getContent (url: string): Promise<Content | Page | Article
   return content
 };
 
+/*
 export async function getMenu (id: string): Promise<Menu[]> {
   const data = await drupalApi.getMenu(id)
 
@@ -132,6 +133,7 @@ export async function getMenu (id: string): Promise<Menu[]> {
 
   return modMenus
 };
+*/
 
 export async function getPortal (id: string): Promise<Portal[]> {
   const data = await drupalApi.getMenu(id)
