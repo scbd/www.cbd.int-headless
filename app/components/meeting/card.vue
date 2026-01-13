@@ -32,11 +32,12 @@
 
 <script lang="ts" setup>
 import type { Meeting } from '~~/types/meeting'
-import { formatDate } from '~~/utils/date'
+import { useFormatDate } from '~~/utils/date'
 import { useLString } from '~~/utils/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t, locale } = useI18n()
+const formatDate = useFormatDate()
 const getLocalizedText = useLString()
 
 const props = defineProps<{
