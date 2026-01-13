@@ -32,7 +32,7 @@
 
 <script lang="ts" setup>
 import type { Meeting } from '~~/types/meeting'
-import { useFormatDate } from '~~/utils/date'
+import { useFormatDate } from '~/composables/use-format-date'
 import { useLString } from '~~/utils/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 

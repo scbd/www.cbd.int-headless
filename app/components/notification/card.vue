@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
 import type { Notification } from '~~/types/notification'
-import { useFormatDate } from '~~/utils/date'
+import { useFormatDate } from '~/composables/use-format-date'
 import { useLString } from '~~/utils/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
