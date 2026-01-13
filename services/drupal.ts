@@ -87,6 +87,52 @@ export async function getContent (url: string): Promise<Content | Page | Article
   return content
 };
 
+export async function getMenu (id: string): Promise<Menu[]> {
+  const data = await drupalApi.getMenu(id)
+
+  if (data === null || data === '') throw notFound('No menu found.')
+
+  const menus: Menu[] = []
+  const items: { [ key: string ]: Menu } = {}
+
+  data.forEach((item: any) => {
+    const { title, url, weight, options } = item?.attributes
+    const parentId = item.attributes.parent
+
+    const menuItem: Menu = {
+      title,
+      url,
+      position: weight,
+      submenu: options?.attributes?.submenu,
+      icon: options?.attributes?.icon,
+      component: options?.attributes?.component,
+      children: []
+    }
+
+    items[item.id] = menuItem
+
+    if (parentId !== '' && parentId !== null) {
+      const parent = items[parentId]
+
+      parent?.children?.push(menuItem)
+    } else {
+      menus.push(menuItem)
+    }
+  })
+
+  const modMenus = menus.map((menu) => {
+    if (menu.children !== undefined && menu.children.length !== 0) {
+      menu.children.map((child) => ({
+        ...child,
+        parents: child.parents !== undefined ? child.parents.push({ title: menu.title, url: menu.url }) : [{ title: menu.title, url: menu.url }]
+      }))
+    }
+    return menu
+  })
+
+  return modMenus
+};
+
 export async function getPortal (id: string): Promise<Portal[]> {
   const data = await drupalApi.getMenu(id)
 
