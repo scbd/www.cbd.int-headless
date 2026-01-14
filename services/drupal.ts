@@ -7,7 +7,7 @@ import type { Portal } from '../types/portal'
 import { MENU_CACHE_DURATION_MS } from '../constants/cache'
 
 const drupalApi = new DrupalApi({
-  baseURL: useRuntimeConfig().drupalBaseUrl
+  baseURL: useRuntimeConfig().public.drupalBaseUrl
 })
 
 // Cache structure

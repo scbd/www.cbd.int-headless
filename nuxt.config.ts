@@ -38,17 +38,13 @@ export default defineNuxtConfig({
     vueI18n: './config/i18n.config.ts'
   },
   runtimeConfig: {
-    drupalBaseUrl: '',
     drupalClientId: '',
     drupalClientSecret: '',
     drupalScope: '',
     apiBaseUrl: '',
-    ortUrl: ''
-  },
-  routeRules: {
-    '/content/images/**': {
-      // NOTE: runtimeConfig not accessible from defineNuxt config.  we need to test use of process.env in the context or use build-time config. TO BE TESTED
-      proxy: `${String(process.env.NUXT_DRUPAL_BASE_URL)}/sites/default/files/**`
+    ortUrl: '',
+    public: {
+      drupalBaseUrl: process.env.NUXT_DRUPAL_BASE_URL
     }
   },
   css: ['~/assets/scss/styles.scss']
