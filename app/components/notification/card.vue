@@ -14,7 +14,7 @@
 
     <div class="title"
       >{{ notification.code }} &ndash;
-      {{ getLocalizedText(notification.title) }}</div
+      {{ lstring(notification.title, locale) }}</div
     >
 
     <div v-if="notification.actionOn" class="action-required">
@@ -24,12 +24,12 @@
     <div class="subjects">
       {{ t('subjects') }}:
       <template v-for="theme of notification.themes">
-        {{ getLocalizedText(theme) }}
+        {{ lstring(theme, locale) }}
       </template>
     </div>
 
     <div
-      v-dompurify-html:plaintext="getLocalizedText(notification.fulltext)"
+      v-dompurify-html:plaintext="lstring(notification.fulltext, locale)"
       class="description"
     ></div>
 
@@ -45,11 +45,10 @@
 <script lang="ts" setup>
 import type { Notification } from '~~/types/notification'
 import { formatDate } from '~~/utils/date'
-import { useLString } from '~~/utils/use-lstring'
+import { lstring } from '@scbd/vue-components'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t } = useI18n()
-const getLocalizedText = useLString()
+const { t, locale } = useI18n()
 
 const props = defineProps<{
   notification: Notification
