@@ -22,7 +22,7 @@
     </div>
 
     <div class="subjects">
-      {{ t('subjects')}}:
+      {{ t('subjects') }}:
       <template v-for="theme of notification.themes">
         {{ getLocalizedText(theme) }}
       </template>
