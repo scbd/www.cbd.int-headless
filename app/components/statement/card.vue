@@ -34,9 +34,9 @@ import { formatDate } from '~~/utils/date'
 import { useLString } from '~~/utils/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
-const getLocalizedText = useLString(locale.value)
+const getLocalizedText = useLString()
 
 const props = defineProps<{
   statement: Statement
