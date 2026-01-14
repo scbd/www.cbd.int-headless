@@ -47,5 +47,10 @@ export default defineNuxtConfig({
       drupalBaseUrl: process.env.NUXT_DRUPAL_BASE_URL
     }
   },
+  routeRules: {
+    '/content/images/**': {
+      proxy: `${String(process.env.NUXT_DRUPAL_BASE_URL)}/sites/default/files/**`
+    }
+  },
   css: ['~/assets/scss/styles.scss']
 })
