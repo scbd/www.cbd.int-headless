@@ -8,6 +8,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(
     VueDOMPurifyHTML,
     {
+      default: {
+        ADD_TAGS: ['iframe']
+      },
       namedConfigurations: {
         plaintext: {
           USE_PROFILES: { html: false }
