@@ -18,11 +18,11 @@
     >
 
     <div v-if="notification.actionOn" class="action-required">
-      Action required: {{ formatDate(notification.actionOn) }}
+      {{ t('actionRequired') }}: {{ formatDate(notification.actionOn) }}
     </div>
 
     <div class="subjects">
-      Subjects:
+      {{ t('subjects') }}:
       <template v-for="theme of notification.themes">
         {{ getLocalizedText(theme) }}
       </template>
@@ -48,7 +48,7 @@ import { formatDate } from '~~/utils/date'
 import { useLString } from '~~/utils/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 const getLocalizedText = useLString(locale.value)
 
 const props = defineProps<{
