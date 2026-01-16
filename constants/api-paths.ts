@@ -1,5 +1,6 @@
 export const ARTICLES = '/api/articles'
 export const MEETINGS = '/api/meetings'
 export const NOTIFICATIONS = '/api/notifications'
+export const NBSAPS = '/api/nbsaps'
 export const STATEMENTS = '/api/statements'
 export const PORTALS = '/api/portals'
