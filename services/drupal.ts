@@ -452,7 +452,30 @@ export async function getMenu (
         childrenCount: item.childrenCount
       }
 
-      // Only include children if we haven't reached max depth
+      // Recursively include parent ancestors (applies when requested branch/url not at the root)
+      if (currentDepth === 0) {
+        const findParent = (item: ProcessedMenuItem): Menu | undefined => {
+          const parent = processedItems.find((i) => i.id === item.parentId)
+
+          if (parent !== undefined) {
+            return {
+              branchId: parent.id,
+              title: parent.title,
+              url: parent.url,
+              position: parent.position,
+              submenu: parent.submenu,
+              component: parent.component,
+              icon: parent.icon,
+              childrenCount: parent.childrenCount,
+              parent: findParent(parent)
+            }
+          }
+        }
+
+        menu.parent = findParent(item)
+      }
+
+      // Include children if we haven't reached max depth
       if (maxDepth === undefined || currentDepth < maxDepth) {
         const children = buildHierarchy(item.id, currentDepth + 1)
         if (children.length > 0) {
