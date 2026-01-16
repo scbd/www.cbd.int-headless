@@ -9,7 +9,7 @@ export const useLString = (): { toLocaleText: (ltext: LString | string, localeOv
     if (typeof ltext === 'string') {
       return ltext
     }
-    return lstring(ltext, localeOverride ?? locale.value)
+    return lstring(ltext, localeOverride ?? locale.value, locale.value)
   }
 
   return { toLocaleText }
