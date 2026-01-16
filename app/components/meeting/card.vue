@@ -15,12 +15,10 @@
       :placeholder="IMAGE_FALLBACK"
     />
 
-    <div class="title">{{ getLocalizedText(meeting.title) }}</div>
+    <div class="title">{{ toLocaleText(meeting.title) }}</div>
     <div v-if="meeting.city || meeting.country" class="location">
       {{
-        `${getLocalizedText(meeting.city)}, ${getLocalizedText(
-          meeting.country
-        )}`
+        `${toLocaleText(meeting.city)}, ${toLocaleText(meeting.country)}`
       }}
     </div>
     <div class="read-on-wrapper">
@@ -33,11 +31,11 @@
 <script lang="ts" setup>
 import type { Meeting } from '~~/types/meeting'
 import { formatDate } from '~~/utils/date'
-import { useLString } from '~~/utils/use-lstring'
+import { useLString } from '../../composables/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t, locale } = useI18n()
-const getLocalizedText = useLString(locale.value)
+const { t } = useI18n()
+const { toLocaleText } = useLString()
 
 const props = defineProps<{
   meeting: Meeting

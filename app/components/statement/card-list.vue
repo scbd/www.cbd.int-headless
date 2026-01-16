@@ -23,7 +23,7 @@
 import useStatementsApi from '~/composables/api/use-statements';
 import { STATEMENTS } from '~~/constants/api-paths';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const isError = ref<Error>();
 const { getStatements } = useStatementsApi();
