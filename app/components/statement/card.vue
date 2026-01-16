@@ -12,12 +12,12 @@
     />
 
     <div class="title"
-      >{{ statement.code }} - {{ lstring(statement.title, locale) }}</div
+      >{{ statement.code }} - {{ toLocaleText(statement.title) }}</div
     >
 
     <div class="subjects">
       <template v-for="theme of statement.themes">
-        {{ lstring(theme, locale) }}
+        {{ toLocaleText(theme) }}
       </template>
     </div>
 
@@ -31,10 +31,11 @@
 <script lang="ts" setup>
 import type { Statement } from '~~/types/statement'
 import { formatDate } from '~~/utils/date'
-import { lstring } from '@scbd/vue-components'
+import { useLString } from '../../composables/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
+const { toLocaleText } = useLString()
 
 const props = defineProps<{
   statement: Statement
