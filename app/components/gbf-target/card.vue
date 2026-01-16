@@ -9,7 +9,7 @@
         </div>
         <div class="description">
           <NuxtLink :to="gbfTarget.url">{{
-            getLocalizedText(gbfTarget.description)
+            toLocaleText(gbfTarget.description)
           }}</NuxtLink>
         </div>
       </div>
@@ -36,10 +36,10 @@
 
 <script setup lang="ts">
 import type { GbfTarget } from '~~/types/gbf-target'
-import { useLString } from '~~/utils/use-lstring'
+import { useLString } from '~/composables/use-lstring'
 
-const { t, locale } = useI18n()
-const getLocalizedText = useLString()
+const { t } = useI18n()
+const { toLocaleText } = useLString()
 
 const props = defineProps<{
   gbfTarget: GbfTarget
