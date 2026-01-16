@@ -1,4 +1,4 @@
-import { notFound } from 'api-client/api-error'
+import { notFound, internalServerError } from 'api-client/api-error'
 import DrupalApi from '../api/drupal'
 import type { Content, Article, Page } from '../types/content'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -370,38 +370,48 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
  */
 export async function getMenu (
   code: string,
-  options?: { depth?: number, branch?: string }
+  options?: { depth?: number, branch?: string, url?: string }
 ): Promise<Menu[]> {
   // Load preprocessed menu data
   const processedItems = await loadCachedMenu(code)
-
   // Filter based on options
   let itemsToInclude: ProcessedMenuItem[]
 
-  if (options?.branch != null) {
-    // Start from specific branch
-    const branchItem = processedItems.find(item => item.id === options.branch)
-    if (branchItem == null) {
-      throw notFound(`Branch ${options.branch} not found in menu.`)
+  // Get all descendants using precomputed childrenIds
+  const getDescendants = (itemId: string): string[] => {
+    const item = processedItems.find(i => i.id === itemId)
+    if (item == null) return []
+
+    const descendants = [item.id]
+    item.childrenIds.forEach(childId => {
+      descendants.push(...getDescendants(childId))
+    })
+    return descendants
+  }
+
+  if (options?.branch != null || options?.url != null) {
+    // Start from specific branch or url
+    let item
+
+    if (options?.branch != null) {
+      item = processedItems.find(item => item.id === options.branch)
+      if (item == null) {
+        throw notFound(`Branch ${options.branch} not found in menu.`)
+      }
+    } else if (options?.url != null) {
+      item = processedItems.find(item => item.url === options.url)
+      if (item == null) {
+        throw notFound(`URL ${options.url} not found in menu.`)
+      }
+    } else {
+      throw internalServerError('Invalid code path')
     }
 
-    // Get all descendants of branch using precomputed childrenIds
-    const getDescendants = (itemId: string): string[] => {
-      const item = processedItems.find(i => i.id === itemId)
-      if (item == null) return []
-
-      const descendants = [itemId]
-      item.childrenIds.forEach(childId => {
-        descendants.push(...getDescendants(childId))
-      })
-      return descendants
-    }
-
-    const descendantIds = new Set(getDescendants(options.branch))
+    const descendantIds = new Set(getDescendants(item.id))
     itemsToInclude = processedItems.filter(item => descendantIds.has(item.id))
 
     // Adjust depths relative to branch (branch becomes depth 0)
-    const branchDepth = branchItem.depth
+    const branchDepth = item.depth
     itemsToInclude = itemsToInclude.map(item => ({
       ...item,
       depth: item.depth - branchDepth
@@ -421,9 +431,9 @@ export async function getMenu (
   const buildHierarchy = (parentId: string | null, currentDepth: number): Menu[] => {
     const items = itemsToInclude
       .filter(item => {
-        // For branch filtering, the branch item itself has depth 0 but parentId is still its original parent
-        // So we need to match by id for the root branch item
-        if (options?.branch != null && currentDepth === 0 && item.id === options.branch) {
+        // For branch/url filtering, the item itself has depth 0 but parentId is still its original parent
+        // So we need to match by id for the root item
+        if (currentDepth === 0 && ((options?.branch != null && item.id === options.branch) || (options?.url != null && item.url === options.url))) {
           return true
         }
         return item.parentId === parentId && item.depth === currentDepth
