@@ -38,12 +38,12 @@ const { t } = useI18n()
 
 const error = ref<NuxtError>()
 const { getGbfTargets } = useGbfTargetsApi()
-const items = await getGbfTargets().catch((nuxtError: NuxtError) => {
+
+const gbfTargets = await getGbfTargets().catch((nuxtError: NuxtError) => {
   error.value = nuxtError
   return []
 })
 
-const gbfTargets = computed(() => items)
 const gbfTargetWrapper = useTemplateRef<HTMLDivElement>('gbfTargetWrapperRef')
 
 const scrollToTarget = (to: 'previous' | 'next') => {
