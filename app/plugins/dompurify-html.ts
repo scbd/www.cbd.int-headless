@@ -22,6 +22,9 @@ export default defineNuxtPlugin((nuxtApp) => {
           if (currentNode.nodeName === 'IMG' && matchDrupalImgSrc.test(currentNode.src)) {
             currentNode.src = currentNode.src.replace(matchDrupalImgSrc, `${String(drupalBaseUrl)}/sites/default/files/`)
           }
+          if (currentNode.className === 'wp-block-columns') {
+            currentNode.setAttribute('class', 'wp-block-columns d-flex')
+          }
         }
       }
     },
