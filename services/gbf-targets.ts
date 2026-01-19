@@ -9,7 +9,7 @@ const api = new SolrIndexApi({
 export async function getGbfTargets (): Promise<GbfTarget[]> {
   const response = await api.queryGbfTargets()
 
-  if (response === undefined || response === null) throw notFound(response) // throw notFound('GBF Targets not found.')
+  if (response === undefined || response === null) throw notFound(response) // TODO: revise the error throw and ensure a standard response: 'GBF Targets not found.'
 
   const gbfTargetList: GbfTarget[] = response.map((item: any): GbfTarget => ({
     id: item.termId,
