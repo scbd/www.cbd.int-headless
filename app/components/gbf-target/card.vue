@@ -9,7 +9,7 @@
         </div>
         <div class="description">
           <NuxtLink :to="gbfTarget.url">{{
-            toLocaleText(gbfTarget.description)
+            toLocaleText(gbfTarget.shortTitle)
           }}</NuxtLink>
         </div>
       </div>
