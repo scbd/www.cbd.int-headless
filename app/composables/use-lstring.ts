@@ -1,6 +1,5 @@
 import { lstring } from '@scbd/vue-components'
-import type { LString } from '@scbd/vue-components'
-import type { Locale } from '~~/types/lstring' // TODO vue-components does not expose this
+import type { LString, Locale } from '@scbd/vue-components'
 
 export const useLString = (): { toLocaleText: (ltext: LString | string, localeOverride?: Locale) => string } => {
   const { locale } = useI18n()

@@ -1746,9 +1746,9 @@
   resolved "https://registry.yarnpkg.com/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
-"@scbd/vue-components@https://github.com/scbd/vue-components":
+"@scbd/vue-components@git+https://github.com/scbd/vue-components.git":
   version "0.0.1"
-  resolved "https://github.com/scbd/vue-components#ea5370c131c51111741bda860d32ed519ce4b08e"
+  resolved "git+https://github.com/scbd/vue-components.git#91dffb03bc20adad26e0161eb16bcaf6c30b754b"
   dependencies:
     lodash-es "^4.17.21"
     luxon "^3.7.2"

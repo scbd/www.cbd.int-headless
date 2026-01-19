@@ -45,7 +45,7 @@
 <script lang="ts" setup>
 import type { Notification } from '~~/types/notification'
 import { formatDate } from '~~/utils/date'
-import { useLString } from '../../composables/use-lstring'
+import { useLString } from '~/composables/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t } = useI18n()
