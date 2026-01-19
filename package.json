@@ -26,7 +26,7 @@
     "@nuxtjs/robots": "5.4.0",
     "@pinia/nuxt": "0.11.2",
     "@popperjs/core": "^2.11.8",
-    "@scbd/vue-components": "https://github.com/scbd/vue-components",
+    "@scbd/vue-components": "git+https://github.com/scbd/vue-components.git",
     "@types/bootstrap": "^5.2.10",
     "@types/jsonapi-serializer": "^3.6.8",
     "api-client": "git+https://github.com/scbd/api-client.git",
