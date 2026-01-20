@@ -1,4 +1,4 @@
-import type LString from 'api-client/types/lstring'
+import type { LString } from '@scbd/vue-components'
 export interface Statement {
   id: string
   code: string

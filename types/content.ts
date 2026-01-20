@@ -1,11 +1,11 @@
-import type lstring from 'api-client/types/lstring'
+import type { LString } from '@scbd/vue-components'
 export interface Content {
   title: string
   bundle: string
   createdOn: Date
   updatedOn: Date
   alias: string
-  locale: lstring
+  locale: LString
   body: string
   summary: string
 };
