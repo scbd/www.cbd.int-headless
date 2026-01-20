@@ -1,10 +1,10 @@
 <template>
   <div class="content-object meeting">
     <div class="date">
-      {{ formatDate(meeting.startOn) }}
+      {{ toFormatDate(meeting.startOn) }}
       <template v-if="meeting.endOn">
         <span class="dash">&ndash;</span>
-        {{ formatDate(meeting.endOn) }}
+        {{ toFormatDate(meeting.endOn) }}
       </template>
     </div>
 
@@ -30,12 +30,13 @@
 
 <script lang="ts" setup>
 import type { Meeting } from '~~/types/meeting'
-import { formatDate } from '~~/utils/date'
+import { useFormatDate } from '~/composables/use-format-date'
 import { useLString } from '~/composables/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t } = useI18n()
 const { toLocaleText } = useLString()
+const { toFormatDate } = useFormatDate()
 
 const props = defineProps<{
   meeting: Meeting
