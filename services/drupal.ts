@@ -429,6 +429,17 @@ export async function getMenu (
 
   // Build hierarchical structure
   const buildHierarchy = (parentId: string | null, currentDepth: number): Menu[] => {
+    const itemToMenu = (item: ProcessedMenuItem): Menu => ({
+      branchId: item.id,
+      title: item.title,
+      url: item.url,
+      position: item.position,
+      submenu: item.submenu,
+      component: item.component,
+      icon: item.icon,
+      childrenCount: item.childrenCount
+    })
+
     const items = itemsToInclude
       .filter(item => {
         // For branch/url filtering, the item itself has depth 0 but parentId is still its original parent
@@ -441,37 +452,31 @@ export async function getMenu (
       .sort((a, b) => a.position - b.position)
 
     return items.map(item => {
-      const menu: Menu = {
-        branchId: item.id,
-        title: item.title,
-        url: item.url,
-        position: item.position,
-        submenu: item.submenu,
-        component: item.component,
-        icon: item.icon,
-        childrenCount: item.childrenCount
-      }
+      const menu: Menu = itemToMenu(item)
 
-      // Recursively include parent ancestors (applies when requested branch/url not at the root)
+      // Recursively include parent ancestors and their siblings (applies when requested branch/url not at the root)
       if (currentDepth === 0) {
+        const findSiblings = (item: ProcessedMenuItem): Menu[] => {
+          const siblings = processedItems
+            .filter(i => i.parentId === item.parentId && i.id !== item.id)
+            .sort((a, b) => a.position - b.position)
+
+          return siblings.map(itemToMenu)
+        }
+
         const findParent = (item: ProcessedMenuItem): Menu | undefined => {
           const parent = processedItems.find((i) => i.id === item.parentId)
 
           if (parent !== undefined) {
             return {
-              branchId: parent.id,
-              title: parent.title,
-              url: parent.url,
-              position: parent.position,
-              submenu: parent.submenu,
-              component: parent.component,
-              icon: parent.icon,
-              childrenCount: parent.childrenCount,
+              ...itemToMenu(parent),
+              siblings: findSiblings(parent),
               parent: findParent(parent)
             }
           }
         }
 
+        menu.siblings = findSiblings(item)
         menu.parent = findParent(item)
       }
 
