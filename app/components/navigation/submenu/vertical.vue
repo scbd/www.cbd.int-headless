@@ -1,39 +1,34 @@
 <template>
   <aside class="cus-aside aside-nav" :class="{ 'aside-collapsed': isVisible }">
-    <ul class="nav">
-      <li class="aside-nav-header nav-item">
+    <!-- <ul class="nav">
+      <li
+        class=" nav-item"
+        :class="{ 'aside-nav-header': menu.url === path.at(0)?.url }"
+      >
         <NuxtLink :to="menu.url">
           {{ menu.title }}
         </NuxtLink>
       </li>
-      <li v-for="child of menu.children" :key="child.position" class="nav-item">
-        <NuxtLink
-          :to="child.url"
-          class="nav-link"
-          :class="{ 'current-page': child.url === currentPage.child }"
-        >
-          {{ child.title }}
-        </NuxtLink>
-
-        <ul v-if="child.children && child.children?.length > 0" class="nav">
-          <li
-            v-for="grandchild of child.children"
-            :key="grandchild.position"
-            class="nav-item"
-          >
-            <NuxtLink
-              :to="grandchild.url"
-              class="nav-link"
-              :class="{
-                'current-page': grandchild.url === currentPage.grandchild
-              }"
-            >
-              {{ grandchild.title }}
-            </NuxtLink>
-          </li>
-        </ul>
+      <li
+        v-for="child of menu.children?.sort((a, b) => a.position - b.position)"
+        :key="child.position"
+        class="nav-item"
+      >
+        <NavigationSubmenuVerticalItems
+          :menu="child"
+          :path="path"
+          :level="4"
+        /> 
       </li>
-    </ul>
+    </ul>     -->
+    <div style="background: pink; border: red solid 0.5px; padding: 0.5rem 1rem;">
+      <NavigationSubmenuVerticalItems
+        :menu="submenu"
+        :url="url"
+        :level="3"
+      />
+    </div>
+
     <div class="aside-collapse-controls">
       <button
         class="cbd-btn-aside-collapse btn"
@@ -61,10 +56,11 @@ const isVisible = ref(false)
 
 const props = defineProps<{
   menu: Menu
-  path: Array<{ title: string; url: string }>
+  url: string,
 }>()
 
-const currentPage = computed(() => {
-  return { child: props.path.at(1)?.url, grandchild: props.path.at(2)?.url }
+// only show the menu starting at the 3rd level
+const submenu = computed(() => {
+  return props.menu.children?.find((item: any) => props.url.startsWith(item.url)) as Menu
 })
 </script>
