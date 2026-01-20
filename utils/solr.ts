@@ -1,6 +1,6 @@
 import { Locales } from '../types/api/locales'
 import { LTypeString, LTypeArray } from '../types/api/ltypes'
-import type Lstring from 'api-client/types/lstring'
+import type { LString } from '@scbd/vue-components'
 import _ from 'lodash'
 
 export function localizeFields (fields: string, locale?: string): string | undefined {
@@ -45,19 +45,19 @@ export function solrEscape (value: string | number | Date): string {
   return value
 };
 
-export function toLString (item: any, field: string, type: LTypeString = LTypeString.t, locales: Locales[] = Object.values(Locales)): Lstring {
-  return locales.reduce<Lstring>((ltext: Lstring, locale) => {
+export function toLString (item: any, field: string, type: LTypeString = LTypeString.t, locales: Locales[] = Object.values(Locales)): LString {
+  return locales.reduce<LString>((ltext: LString, locale) => {
     const localeField = `${field}_${locale.toUpperCase()}_${type}`
     const value = item[localeField]
 
     if (value === undefined || value === null) return ltext
 
-    ltext[locale as keyof Lstring] = item[localeField]
+    ltext[locale as keyof LString] = item[localeField]
     return ltext
   }, {})
 };
 
-export function toLStringArray (item: any, field: string, type: LTypeArray = LTypeArray.txt, locales: Locales[] = Object.values(Locales)): Lstring[] {
+export function toLStringArray (item: any, field: string, type: LTypeArray = LTypeArray.txt, locales: Locales[] = Object.values(Locales)): LString[] {
   let maxEntries = 0
 
   for (const locale of locales) {
@@ -70,11 +70,11 @@ export function toLStringArray (item: any, field: string, type: LTypeArray = LTy
     return []
   };
 
-  const result: Lstring[] = []
+  const result: LString[] = []
 
   for (let i = 0; i < maxEntries; i++) {
-    const lstring = locales.reduce<Lstring>((ltext: Lstring, locale) => {
-      ltext[locale as keyof Lstring] = item[`${field}_${locale.toUpperCase()}_${type}`][i]
+    const lstring = locales.reduce<LString>((ltext: LString, locale) => {
+      ltext[locale as keyof LString] = item[`${field}_${locale.toUpperCase()}_${type}`][i]
       return ltext
     }, {})
 

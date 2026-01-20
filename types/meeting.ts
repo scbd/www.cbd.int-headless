@@ -1,13 +1,13 @@
-import type lstring from 'api-client/types/lstring'
+import type { LString } from '@scbd/vue-components'
 export interface Meeting {
   id: string
   code: string
-  title: lstring
+  title: LString
   urls: string[]
-  themes: lstring[]
+  themes: LString[]
   startOn: Date
   endOn: Date
   updatedOn: Date
-  country: lstring
-  city: lstring
+  country: LString
+  city: LString
 };

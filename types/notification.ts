@@ -1,18 +1,18 @@
-import type lstring from 'api-client/types/lstring'
+import type { LString } from '@scbd/vue-components'
 export interface Notification {
   id: string
   code: string
-  title: lstring
+  title: LString
   urls: string[]
-  themes: lstring[]
+  themes: LString[]
   createdOn: Date
   endOn?: Date
   updatedOn: Date
   actionOn?: Date
   deadlineOn?: Date
   reference: string
-  fulltext: lstring
-  from: lstring
+  fulltext: LString
+  from: LString
   sender: string
   recipients: string[]
 }

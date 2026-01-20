@@ -1,5 +1,5 @@
-import { Locales as localeCodes } from '../types/api/locales'
-import type LString from 'api-client/types/lstring'
+import { Locales as localeCodes } from '~~/types/api/locales'
+import type { LString } from '@scbd/vue-components'
 
 export interface Language {
   locale: localeCodes
