@@ -23,7 +23,6 @@
           :url="page.alias"
         />
         <article class="cus-article container-fluid d-flex flex-column">
-          <!-- Breadcrumbs -->
           <navigation-breadcrumbs
             v-if="breadcrumbMenu"
             :items="breadcrumbMenu"
