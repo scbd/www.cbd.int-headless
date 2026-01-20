@@ -1,27 +1,23 @@
-import type { GbfTarget } from '~~/types/gbf-target'
+import ThesaurusApi from '~~/api/thesaurus'
+import { toLString } from '~~/utils/solr'
 import { notFound } from 'api-client/api-error'
-import SolrIndexApi from '~~/api/solr-index'
+import type { GbfTarget } from '~~/types/gbf-target'
+import type { ThesaurusQuery } from '~~/types/api/thesaurus'
 
-const api = new SolrIndexApi({
+const api = new ThesaurusApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
 export async function getGbfTargets (): Promise<GbfTarget[]> {
-  const response = await api.queryGbfTargets()
+  const domain = 'GBF-TARGETS'
+  const response = await api.queryThesaurus(domain)
 
   if (response === undefined || response === null) throw notFound(response) // TODO: revise the error throw and ensure a standard response: 'GBF Targets not found.'
 
-  const gbfTargetList: GbfTarget[] = response.map((item: any): GbfTarget => ({
-    id: item.termId,
+  const gbfTargetList: GbfTarget[] = response.map((item: ThesaurusQuery): GbfTarget => ({
     identifier: item.identifier,
-    title: item.title,
-    shortTitle: item.shortTitle,
-    description: item.description,
-    source: item.source,
-    broaderTerms: item.broaderTerms,
-    narrowerTerms: item.narrowerTerms,
-    relatedTerms: item.relatedTerms,
-    nonPreferredTerms: item.nonPreferredTerms
+    title: toLString(item, 'title'),
+    shortTitle: toLString(item, 'shortTitle')
   }))
 
   return gbfTargetList

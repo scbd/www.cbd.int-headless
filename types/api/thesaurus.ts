@@ -1,9 +1,10 @@
 import type { LString } from '@scbd/vue-components'
-export interface GbfTarget {
+export interface ThesaurusQuery {
   termId?: number
   identifier: string
-  title: LString
-  shortTitle: LString
+  name: string
+  title?: LString
+  shortTitle?: LString
   description?: string
   longDescription?: LString
   source?: string

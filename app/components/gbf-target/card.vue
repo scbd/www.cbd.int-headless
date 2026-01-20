@@ -46,7 +46,7 @@ const props = defineProps<{
 }>()
 
 const gbfTarget = computed(() => {
-  const identifier = props.gbfTarget.identifier.slice(-2)
+  const identifier = props.gbfTarget.identifier.match(/GBF-TARGET-(\d{2})$/)?.[1]
   return {
     ...props.gbfTarget,
     number: identifier,
