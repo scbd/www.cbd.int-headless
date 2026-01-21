@@ -1,4 +1,4 @@
-import { notFound } from 'api-client/api-error'
+import { notFound, badRequest } from 'api-client/api-error'
 import DrupalApi from '../api/drupal'
 import type { Content, Article, Page } from '../types/content'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -372,7 +372,7 @@ export async function getMenu (
   code: string,
   options: { depth?: number, branch?: string, url?: string, child?: Menu } = {}
 ): Promise<Menu[]> {
-  if (options?.branch != null && options?.url != null) throw Error('Can only get menu with branch or url at once')
+  if (options?.branch != null && options?.url != null) throw badRequest('Can only get menu with branch or url at once')
 
   // Load preprocessed menu data
   const processedItems = await loadCachedMenu(code)
