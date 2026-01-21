@@ -1,4 +1,4 @@
-import { notFound, internalServerError } from 'api-client/api-error'
+import { notFound } from 'api-client/api-error'
 import DrupalApi from '../api/drupal'
 import type { Content, Article, Page } from '../types/content'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -370,8 +370,10 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
  */
 export async function getMenu (
   code: string,
-  options?: { depth?: number, branch?: string, url?: string }
+  options: { depth?: number, branch?: string, url?: string } = {}
 ): Promise<Menu[]> {
+  if (options?.branch != null && options?.url != null) throw Error('Can only get menu with branch or url at once')
+
   // Load preprocessed menu data
   const processedItems = await loadCachedMenu(code)
   // Filter based on options
@@ -389,22 +391,17 @@ export async function getMenu (
     return descendants
   }
 
-  if (options?.branch != null || options?.url != null) {
-    // Start from specific branch or url
-    let item
+  if (options?.url != null) {
+    options.branch = processedItems.find(item => item.url === options.url)?.id
+    delete options.url
+  }
 
-    if (options?.branch != null) {
-      item = processedItems.find(item => item.id === options.branch)
-      if (item == null) {
-        throw notFound(`Branch ${options.branch} not found in menu.`)
-      }
-    } else if (options?.url != null) {
-      item = processedItems.find(item => item.url === options.url)
-      if (item == null) {
-        throw notFound(`URL ${options.url} not found in menu.`)
-      }
-    } else {
-      throw internalServerError('Invalid code path')
+  if (options?.branch != null) {
+    // Start from specific branch or url
+    const item = processedItems.find(item => item.id === options.branch)
+
+    if (item == null) {
+      throw notFound(`Branch ${options.branch} not found in menu.`)
     }
 
     const descendantIds = new Set(getDescendants(item.id))
@@ -442,9 +439,9 @@ export async function getMenu (
 
     const items = itemsToInclude
       .filter(item => {
-        // For branch/url filtering, the item itself has depth 0 but parentId is still its original parent
+        // For branch filtering, the item itself has depth 0 but parentId is still its original parent
         // So we need to match by id for the root item
-        if (currentDepth === 0 && ((options?.branch != null && item.id === options.branch) || (options?.url != null && item.url === options.url))) {
+        if (currentDepth === 0 && options?.branch != null && item.id === options.branch) {
           return true
         }
         return item.parentId === parentId && item.depth === currentDepth
