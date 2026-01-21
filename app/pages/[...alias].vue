@@ -70,9 +70,9 @@ const buildPath = (item: any, url: string): any => {
   ]
 }
 
-console.log('app.pages', { menu: menu.at(0), page })
+console.log('app.pages', { menu, page })
 
-// note: just return single node with its children (not array)
+// since we're pulling at a specific branch there's only one root menu item
 const menuTree = computed(() => menu.at(0));
 
 const breadcrumbMenu = computed(() => {
