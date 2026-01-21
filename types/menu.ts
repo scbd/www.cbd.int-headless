@@ -8,4 +8,8 @@ export interface Menu {
   icon?: string
   childrenCount: number
   children?: Menu[]
+  parents?: Array<{
+    title: string
+    url: string
+  }>
 }
