@@ -1,30 +1,12 @@
 <template>
-  <aside class="cus-aside aside-nav" :class="{ 'aside-collapsed': isVisible }">
-    <!-- <ul class="nav">
-      <li
-        class=" nav-item"
-        :class="{ 'aside-nav-header': menu.url === path.at(0)?.url }"
-      >
-        <NuxtLink :to="menu.url">
-          {{ menu.title }}
-        </NuxtLink>
-      </li>
-      <li
-        v-for="child of menu.children?.sort((a, b) => a.position - b.position)"
-        :key="child.position"
-        class="nav-item"
-      >
-        <NavigationSubmenuVerticalItems
-          :menu="child"
-          :path="path"
-          :level="4"
-        /> 
-      </li>
-    </ul>     -->
-    <div style="background: pink; border: red solid 0.5px; padding: 0.5rem 1rem;">
+  <aside
+    v-if="submenu"
+    class="cus-aside aside-nav"
+    :class="{ 'aside-collapsed': isVisible }"
+  >
+    <div class="nav">
       <NavigationSubmenuVerticalItems
         :menu="submenu"
-        :url="url"
         :level="3"
       />
     </div>
@@ -50,17 +32,19 @@
   </aside>
 </template>
 
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+>
 import type { Menu } from '~~/types/menu'
 const isVisible = ref(false)
 
 const props = defineProps<{
   menu: Menu
-  url: string,
 }>()
 
 // only show the menu starting at the 3rd level
 const submenu = computed(() => {
-  return props.menu.children?.find((item: any) => props.url.startsWith(item.url)) as Menu
+  return props.menu.children?.find((item: any) => item.activeBranch) as Menu
 })
 </script>

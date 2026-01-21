@@ -4,23 +4,42 @@
     role="main"
   >
     <div class="main-wrapper">
-      <div class="d-flex flex-column gap-2">
-        <navigation-submenu-horizontal
-          v-if="horizontalMenu1"
-          :items="horizontalMenu1"
-          :url="page.alias"
-        />
-        <navigation-submenu-horizontal
-          v-if="horizontalMenu2"
-          :items="horizontalMenu2"
-          :url="page.alias"
-        />
+      <div class="protocol-subnavigation accent-cbd">
+        <nav class="navbar container-xxl">
+          <ul class="nav">
+            <div class="subnav-header">
+              <li class="nav-item">
+                <button
+                  class="btn cbd-btn-subnavigation"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseSubnav"
+                  aria-expanded="true"
+                  aria-controls="collapseSubnav"
+                >                  
+                </button>
+              </li>
+            </div>
+            <navigation-top-menu
+              v-if="megaMenu"
+              :menu="megaMenu"
+              class="level-2-items"
+              id="collapseSubnav"
+            />
+            <div class="subnav-level-3-items nav">
+              <navigation-top-menu-item
+                v-if="megaSubMenu"
+                :menu="megaSubMenu"
+              />
+            </div>
+          </ul>
+        </nav>
       </div>
+
       <div class="container-xxl d-flex">
         <navigation-submenu-vertical
           v-if="verticalMenu"
           :menu="verticalMenu"
-          :url="page.alias"
         />
         <article class="cus-article container-fluid d-flex flex-column">
           <navigation-breadcrumbs
@@ -50,56 +69,35 @@ const { getPage } = useContentApi()
 const { getMenu } = useMenuApi()
 
 const page = await getPage(route.path)
-// console.log('pages [...alias].vue', { page })
 
 // The logic below should be probably be moved to a utility and middleware
-// @ts-ignore
-const menu = await getMenu(page.value.menu, {
-  // @ts-ignore
-  url: page.value.alias,
+const menu = await getMenu(page.menu, {
+  url: page.alias,
   depth: 1
 })
 
-const buildTree = (item: any) => {
-  // const depth = item.url?.split('/')?.length;
-  // console.log('buildTree', { item, depth })
-
-  if (item.parent) {
-    return buildTree({
-      ...item.parent,
-      children: [...item.siblings, item]
-    })
-  }
-
-  return item
-}
-
 const buildPath = (item: any): any => {
-  if (item.parent) {
-    return [
-      ...buildPath(item.parent),
-      { title: item.title, url: item.url }
-    ]
-  }
+  if (!item) return []
 
-  return [{ title: item.title, url: item.url }]
+  return [
+    { title: item.title, url: item.url, activeBranch: item.activeBranch },
+    ...buildPath(item.children?.find((i: Menu) => i.activeBranch))
+  ]
 }
 
-const menuTree = computed(() => buildTree(menu.at(0)));
+const menuRoot = computed(() => menu?.find((i) => i.activeBranch))
 
-const breadcrumbMenu = computed(() => buildPath(menu.at(0)));
+const megaMenu = computed(() => menuRoot.value?.children)
 
-const horizontalMenu1 = computed(() => {
-  if (menuTree.value) {
-    return [menuTree.value, ...(menuTree.value?.siblings || [])].sort((a, b) => a.position - b.position);
+const megaSubMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch))
+
+const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch))
+
+const breadcrumbMenu = computed(() => {
+  if (page.alias && menuRoot.value) {
+    return buildPath(menuRoot.value)
   }
 });
-
-const horizontalMenu2 = computed(() => {
-  return menuTree.value?.children?.sort((a: any, b: any) => a.position - b.position);
-});
-
-const verticalMenu = computed(() => menuTree.value);
 
 definePageMeta({
   layout: 'home'

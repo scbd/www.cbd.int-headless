@@ -1,25 +1,25 @@
 <template>
-  <div
-    style="background: pink; border: red 0.5px solid; padding: 0.5rem 1rem;"
-    class="d-flex flex-horizontal gap-2"
-  >
-    <div>
-      <NuxtLink
-        :to="`/${items[0]?.url.split('/')[1]}`"
-        class="_nav-link"
+  <div class="breadcrumbs">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <NuxtLink to="/">
+          {{ t('home') }}
+        </NuxtLink>
+      </li class="breadcrumb-item">
+      <li
+        v-for="item of items"
+        class="breadcrumb-item"
       >
-        {{ items[0]?.url.split('/')[1] }}
-      </NuxtLink>
-    </div>
-    <div v-for="item of items">
-      >
-      <NuxtLink
-        :to="item.url"
-        class="_nav-link"
-      >
-        {{ item.url.split('/').slice(-1)[0] }}
-      </NuxtLink>
-    </div>
+        <NuxtLink
+          :to="item.url"
+          :class="{
+            'router-link-active router-link-exact-active': item.activeBranch
+          }"
+        >
+          {{ item.title }}
+        </NuxtLink>
+      </li>
+    </ol>
   </div>
 </template>
 
@@ -27,7 +27,9 @@
   setup
   lang="ts"
 >
+const { t } = useI18n();
+
 const props = defineProps<{
-  items: Array<{ title: string; url: string }>
+  items: Array<{ title: string; url: string, activeBranch: boolean }>
 }>()
 </script>

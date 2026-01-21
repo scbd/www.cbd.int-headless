@@ -13,37 +13,63 @@
 }
 
 .aside-nav {
-  .aside-nav-header {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--bs-secondary-bg);
-    box-shadow: none;
-    background-color: var(--cbd-content-accent);
-    cursor: default;
-    a {
-      color: var(--bs-secondary-bg);
-    }
-  }
-  .nav-item:not(:first-of-type) {
-    box-shadow: 0 1px var(--bs-secondary-bg);
-    .nav-link {
-      &:hover,
-      &:focus {
-        text-decoration: underline;
-      }
-      &:active {
-        font-weight: 600;
-      }
-      &.current-page {
-        font-weight: 600;
-        box-shadow: 6px 0 inset var(--bs-body-color);
-      }
-    }
-  }
   .nav-link {
     font-size: 0.8rem;
     color: var(--bs-body-color);
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+
+    &:active {
+      font-weight: 600;
+    }
+  }
+
+  .nav-item:not(.aside-nav-header) {
+    box-shadow: 0 1px var(--bs-secondary-bg);
+  }
+
+  .current-page.nav-link {
+    _background: pink !important;
+    font-weight: 600;
+  }
+
+  .level-3-item {
+    background-color: var(--cbd-content-accent);
+    box-shadow: none;
+    color: var(--bs-secondary-bg);
+    cursor: default;
+    _padding: .5rem 1rem;
+
+    a {
+      color: var(--bs-secondary-bg);
+      font-size: 1rem !important;
+      font-weight: 600;
+    }
+  }
+
+  .level-4-item {
+    _background: pink;
+
+    &.current-page {
+      font-weight: 600;
+      box-shadow: 6px 0 inset var(--bs-body-color);
+      border-bottom: solid 1.5px var(--bs-body-color);
+    }
+  }
+
+  .level-5-items>.nav-item,
+  .level-5-item>.current-page {
+    background-color: var(--bs-secondary-bg);
+    box-shadow: 0 1px var(--bs-secondary-bg);
+    padding-left: 1rem;
+  }
+
+  .level-6-item.nav-item.current-page>.nav-link {
+    _background: pink !important;
+    box-shadow: 6px 0 inset var(--bs-body-color);
   }
 }
 
@@ -61,14 +87,17 @@
 
 .aside-related-content {
   padding-top: 1rem;
+
   .nav {
     gap: 0.5rem;
   }
+
   &.mobile-inline {
     padding-top: 0;
     flex: 1 1 auto;
     position: static;
     display: none;
+
     .nav {
       flex: 1 1 auto;
       flex-direction: row;
