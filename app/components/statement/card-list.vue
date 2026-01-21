@@ -1,7 +1,7 @@
 <template>
   <section class="content-row d-flex flex-column">
     <div class="row-title">
-      {{ t('statements') }}
+      {{ $t('statements') }}
     </div>
     <div class="content-wrapper d-flex">
       <statement-card
@@ -13,7 +13,7 @@
       <status v-else :error="isError" />
     </div>
     <NuxtLink :to="STATEMENTS" class="btn cbd-btn cbd-btn-outline-more-content">
-      {{ t('moreStatements') }}
+      {{ $t('moreStatements') }}
     </NuxtLink>
   </section>
 </template>
@@ -22,8 +22,6 @@
 <script lang="ts" setup>
 import useStatementsApi from '~/composables/api/use-statements';
 import { STATEMENTS } from '~~/constants/api-paths';
-
-const { t } = useI18n();
 
 const isError = ref<Error>();
 const { getStatements } = useStatementsApi();

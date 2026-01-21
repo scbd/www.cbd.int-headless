@@ -45,7 +45,7 @@
       </nav>
 
       <nav class="a-part-of">
-        <div class="nav-title">{{ t('aPartOf') }}</div>
+        <div class="nav-title">{{ $t('aPartOf') }}</div>
         <ul>
           <li>
             <NuxtLink
@@ -55,7 +55,7 @@
               ><NuxtImg
                 src="/images/logo-un-negative.svg"
                 class="logo-footer-un"
-                :alt="t('unLogo')"
+                :alt="$t('unLogo')"
             /></NuxtLink>
           </li>
           <li>
@@ -67,7 +67,7 @@
               <img
                 :src="unepLogoUrl"
                 class="logo-footer-unep"
-                :alt="t('unepLogo')"
+                :alt="$t('unepLogo')"
               />
             </NuxtLink>
           </li>
@@ -82,7 +82,7 @@
 import type { Menu } from '~~/types/menu';
 import useMenuApi from '~/composables/api/use-menu-api';
 
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 
 const { getMenu } = useMenuApi();
 const menu: Menu[] = await getMenu('cbd-footer');

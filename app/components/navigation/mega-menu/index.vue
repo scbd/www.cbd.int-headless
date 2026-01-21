@@ -9,7 +9,7 @@
       data-bs-target="#mainNavigation"
       aria-controls="mainNavigation"
       aria-expanded="false"
-      :aria-label="t('toggleNavigation')"
+      :aria-label="$t('toggleNavigation')"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,7 +21,7 @@
           type="button"
           class="btn-close"
           data-bs-dismiss="offcanvas"
-          :aria-label="t('close')"
+          :aria-label="$t('close')"
         ></button>
       </div>
 
@@ -32,7 +32,7 @@
             to="#"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            >{{ t('options') }}</NuxtLink
+            >{{ $t('options') }}</NuxtLink
           >
 
           <nav class="mega-menu-drawer dropdown-menu container-fluid">
@@ -41,9 +41,9 @@
                 <NuxtLink class="nav-link" to="#" role="button">
                   <NuxtImg
                     src="/images/icons/icon-nav-search-outline.svg"
-                    :alt="t('searchIcon')"
+                    :alt="$t('searchIcon')"
                   />
-                  <span class="nav-options-search-slot">{{ t('search') }}</span>
+                  <span class="nav-options-search-slot">{{ $t('search') }}</span>
                 </NuxtLink>
               </li>
 
@@ -57,7 +57,7 @@
                 >
                   <NuxtImg
                     src="/images/icons/icon-nav-language-outline.svg"
-                    :alt="t('languageIcon')"
+                    :alt="$t('languageIcon')"
                   />
                   <span class="nav-options-current-lang-slot"> English </span>
                 </NuxtLink>
@@ -78,9 +78,9 @@
                 <NuxtLink class="nav-link" to="#" role="button">
                   <NuxtImg
                     src="/images/icons/icon-nav-account-outline.svg"
-                    :alt="t('loginIcon')"
+                    :alt="$t('loginIcon')"
                   />
-                  <span class="nav-options-login-slot">{{ t('login') }}</span>
+                  <span class="nav-options-login-slot">{{ $t('login') }}</span>
                 </NuxtLink>
               </li>
 
@@ -88,9 +88,9 @@
                 <NuxtLink class="nav-link" to="#" role="button">
                   <NuxtImg
                     src="/images/icons/icon-nav-settings-outline.svg"
-                    :alt="t('settingsIcon')"
+                    :alt="$t('settingsIcon')"
                   />
-                  <span class="nav-options-settings-slot">{{ t('settings') }}</span>
+                  <span class="nav-options-settings-slot">{{ $t('settings') }}</span>
                 </NuxtLink>
               </li>
             </ul>
@@ -121,7 +121,7 @@ import type { Menu } from '~~/types/menu';
 import { languages } from '~~/data/un-languages';
 import useMenuApi from '~/composables/api/use-menu-api';
 
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 
 const languagesWithLabel = computed(() =>
   languages.map((l) => {

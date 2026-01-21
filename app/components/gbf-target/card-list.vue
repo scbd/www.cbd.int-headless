@@ -1,6 +1,6 @@
 <template>
   <section class="content-row d-flex flex-column gbf-targets">
-    <div class="row-title">{{ t('gbfTargets') }}</div>
+    <div class="row-title">{{ $t('gbfTargets') }}</div>
     <div class="content-wrapper d-flex" ref="gbfTargetWrapperRef">
       <status v-if="isLoading" />
       <status v-if="error" :error="error" />
@@ -14,11 +14,11 @@
     <div v-if="!error" class="controls">
       <button class="btn cbd-btn previous" @click="scrollToTarget('previous')"
         ><NuxtImg src="images/icons/icon-btn-arrow-circle-right-full.svg" />{{
-          t('previous')
+          $t('previous')
         }}</button
       >
       <button class="btn cbd-btn next" @click="scrollToTarget('next')"
-        >{{ t('next')
+        >{{ $t('next')
         }}<NuxtImg src="images/icons/icon-btn-arrow-circle-right-full.svg" />
       </button>
     </div>
@@ -26,7 +26,7 @@
     <NuxtLink
       to="/gbf/targets"
       class="btn cbd-btn cbd-btn-outline-more-content"
-      >{{ t('allGbfTargets') }}</NuxtLink
+      >{{ $t('allGbfTargets') }}</NuxtLink
     >
   </section>
 </template>
@@ -35,8 +35,6 @@
 <script setup lang="ts">
 import type { NuxtError } from '#app'
 import useGbfTargetsApi from '~/composables/api/use-gbf-targets-api'
-
-const { t } = useI18n()
 
 const error = ref<NuxtError>()
 const { getGbfTargets } = useGbfTargetsApi()

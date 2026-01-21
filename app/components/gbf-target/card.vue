@@ -4,7 +4,7 @@
       <div class="information">
         <div class="title">
           <NuxtLink :to="gbfTarget.url">{{
-            t('target', { number: gbfTarget.number })
+            $t('target', { number: gbfTarget.number })
           }}</NuxtLink>
         </div>
         <div class="description">
@@ -16,19 +16,19 @@
     </div>
     <div class="resources"></div>
     <div class="links">
-      <NuxtLink :to="gbfTarget.url">{{ t('quickLinksImportant') }}</NuxtLink>
-      <NuxtLink :to="gbfTarget.url">{{ t('quickLinksExplanation') }}</NuxtLink>
+      <NuxtLink :to="gbfTarget.url">{{ $t('quickLinksImportant') }}</NuxtLink>
+      <NuxtLink :to="gbfTarget.url">{{ $t('quickLinksExplanation') }}</NuxtLink>
       <NuxtLink :to="gbfTarget.url">{{
-        t('quickLinksGuidingQuestions')
+        $t('quickLinksGuidingQuestions')
       }}</NuxtLink>
-      <NuxtLink :to="gbfTarget.url">{{ t('quickLinksLinks') }}</NuxtLink>
+      <NuxtLink :to="gbfTarget.url">{{ $t('quickLinksLinks') }}</NuxtLink>
       <NuxtLink :to="gbfTarget.url">{{
-        t('quickLinksRelevantResources')
+        $t('quickLinksRelevantResources')
       }}</NuxtLink>
-      <NuxtLink :to="gbfTarget.url">{{ t('quickLinksIndicators') }}</NuxtLink>
+      <NuxtLink :to="gbfTarget.url">{{ $t('quickLinksIndicators') }}</NuxtLink>
     </div>
     <NuxtLink :to="gbfTarget.url" class="view-target">{{
-      t('viewGbfTarget')
+      $t('viewGbfTarget')
     }}</NuxtLink>
   </div>
 </template>
@@ -38,7 +38,6 @@
 import type { GbfTarget } from '~~/types/gbf-target'
 import { useLString } from '~/composables/use-lstring'
 
-const { t } = useI18n()
 const { toLocaleText } = useLString()
 
 const props = defineProps<{

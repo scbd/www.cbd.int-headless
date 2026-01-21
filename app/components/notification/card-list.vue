@@ -1,7 +1,7 @@
 <template>
   <section class="content-row d-flex flex-column">
     <div class="row-title">
-      {{ t('notifications') }}
+      {{ $t('notifications') }}
     </div>
     <div class="content-wrapper d-flex">
       <notification-card
@@ -16,7 +16,7 @@
       :to="NOTIFICATIONS"
       class="btn cbd-btn cbd-btn-outline-more-content"
     >
-      {{ t('moreNotifications') }}
+      {{ $t('moreNotifications') }}
     </NuxtLink>
   </section>
 </template>
@@ -25,8 +25,6 @@
 <script lang="ts" setup>
 import useNotificationsApi from '~/composables/api/use-notifications';
 import { NOTIFICATIONS } from '~~/constants/api-paths';
-
-const { t } = useI18n();
 
 const isError = ref<Error>();
 const { getNotifications } = useNotificationsApi();

@@ -22,7 +22,7 @@
       }}
     </div>
     <div class="read-on-wrapper">
-      <NuxtLink :to="meeting.url" class="read-on">{{ t('viewMeeting') }}</NuxtLink>
+      <NuxtLink :to="meeting.url" class="read-on">{{ $t('viewMeeting') }}</NuxtLink>
     </div>
   </div>
 </template>
@@ -34,7 +34,6 @@ import { useFormatDate } from '~/composables/use-format-date'
 import { useLString } from '~/composables/use-lstring'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 

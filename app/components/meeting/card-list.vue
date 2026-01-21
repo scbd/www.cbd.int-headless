@@ -1,7 +1,7 @@
 <template>
   <section class="content-row d-flex flex-column">
     <div class="row-title">
-      {{ t('meetings') }}
+      {{ $t('meetings') }}
     </div>
     <div class="content-wrapper d-flex">
       <meeting-card
@@ -13,7 +13,7 @@
       <status v-else :error="isError" />
     </div>
     <NuxtLink :to="MEETINGS" class="btn cbd-btn cbd-btn-outline-more-content">
-      {{ t('moreMeetings') }}
+      {{ $t('moreMeetings') }}
     </NuxtLink>
   </section>
 </template>
@@ -22,8 +22,6 @@
 <script lang="ts" setup>
 import useMeetingsApi from '~/composables/api/use-meetings';
 import { MEETINGS } from '~~/constants/api-paths';
-
-const { t } = useI18n();
 
 const isError = ref<Error>();
 const { getMeetings } = useMeetingsApi();

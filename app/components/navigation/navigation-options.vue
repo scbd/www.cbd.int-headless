@@ -5,9 +5,9 @@
         <NuxtLink class="nav-link" :to="''" role="button">
           <NuxtImg
             src="/images/icons/icon-nav-search-outline.svg"
-            :alt="t('searchIcon')"
+            :alt="$t('searchIcon')"
           />
-          <span class="nav-options-search-slot">{{ t('search') }}</span>
+          <span class="nav-options-search-slot">{{ $t('search') }}</span>
         </NuxtLink>
       </li>
       <li class="nav-item">
@@ -20,7 +20,7 @@
         >
           <NuxtImg
             src="/images/icons/icon-nav-language-outline.svg"
-            :alt="t('languageIcon')"
+            :alt="$t('languageIcon')"
           />
           <span class="nav-options-current-lang-slot"> English </span>
         </NuxtLink>
@@ -40,18 +40,18 @@
         <NuxtLink class="nav-link" to="#" role="button">
           <NuxtImg
             src="/images/icons/icon-nav-account-outline.svg"
-            :alt="t('loginIcon')"
+            :alt="$t('loginIcon')"
           />
-          <span class="nav-options-login-slot">{{ t('login') }}</span>
+          <span class="nav-options-login-slot">{{ $t('login') }}</span>
         </NuxtLink>
       </li>
       <li class="nav-item">
         <NuxtLink class="nav-link" to="#" role="button">
           <NuxtImg
             src="/images/icons/icon-nav-settings-outline.svg"
-            :alt="t('settingsIcon')"
+            :alt="$t('settingsIcon')"
           />
-          <span class="nav-options-settings-slot">{{ t('settings') }}</span>
+          <span class="nav-options-settings-slot">{{ $t('settings') }}</span>
         </NuxtLink>
       </li>
     </ul>
@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import { languages } from '~~/data/un-languages';
 
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 
 const languagesWithLabel = computed(() =>
   languages.map((l) => {

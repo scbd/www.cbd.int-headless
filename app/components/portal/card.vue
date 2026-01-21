@@ -3,7 +3,7 @@
         <NuxtImg :src="portal.imageUrl" class="content-image" loading="lazy" />
         <div class="title">{{ portal.title }}</div>
         <div class="read-on-wrapper">
-            <NuxtLink :to="portal.url" class="read-on">{{ t('viewPortal') }}</NuxtLink>
+            <NuxtLink :to="portal.url" class="read-on">{{ $t('viewPortal') }}</NuxtLink>
         </div>
     </div>
 </template>
@@ -12,8 +12,6 @@
 <script lang="ts" setup>
 import type { Portal } from '~~/types/portal';
 import { IMAGE_FALLBACK } from '~~/constants/image-paths';
-
-const { t } = useI18n();
 
 const props = defineProps<{
     portal: Portal;

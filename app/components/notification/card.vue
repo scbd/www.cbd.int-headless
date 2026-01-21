@@ -18,11 +18,11 @@
     >
 
     <div v-if="notification.actionOn" class="action-required">
-      {{ t('actionRequired') }}: {{ toFormatDate(notification.actionOn) }}
+      {{ $t('actionRequired') }}: {{ toFormatDate(notification.actionOn) }}
     </div>
 
     <div class="subjects">
-      {{ t('subjects') }}:
+      {{ $t('subjects') }}:
       <template v-for="theme of notification.themes">
         {{ toLocaleText(theme) }}
       </template>
@@ -35,7 +35,7 @@
 
     <div class="read-on-wrapper">
       <NuxtLink :to="notification.url" class="read-on"
-        >{{ t('viewNotification') }}</NuxtLink
+        >{{ $t('viewNotification') }}</NuxtLink
       >
     </div>
   </div>
@@ -48,7 +48,6 @@ import { useLString } from '~/composables/use-lstring'
 import { useFormatDate } from '~/composables/use-format-date'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
-const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
