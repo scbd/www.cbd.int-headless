@@ -1,7 +1,7 @@
 <template>
   <div class="content-object statement">
     <div class="date">
-      {{ formatDate(statement.createdOn) }}
+      {{ toFormatDate(statement.createdOn) }}
     </div>
 
     <NuxtImg
@@ -30,12 +30,13 @@
 
 <script lang="ts" setup>
 import type { Statement } from '~~/types/statement'
-import { formatDate } from '~~/utils/date'
 import { useLString } from '~/composables/use-lstring'
+import { useFormatDate } from '~/composables/use-format-date'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t } = useI18n()
 const { toLocaleText } = useLString()
+const { toFormatDate } = useFormatDate()
 
 const props = defineProps<{
   statement: Statement

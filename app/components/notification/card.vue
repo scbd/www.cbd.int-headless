@@ -1,7 +1,7 @@
 <template>
   <div class="content-object notification">
     <div class="date">
-      {{ formatDate(notification.createdOn) }}
+      {{ toFormatDate(notification.createdOn) }}
     </div>
 
     <NuxtImg
@@ -18,7 +18,7 @@
     >
 
     <div v-if="notification.actionOn" class="action-required">
-      {{ t('actionRequired') }}: {{ formatDate(notification.actionOn) }}
+      {{ t('actionRequired') }}: {{ toFormatDate(notification.actionOn) }}
     </div>
 
     <div class="subjects">
@@ -44,12 +44,13 @@
 
 <script lang="ts" setup>
 import type { Notification } from '~~/types/notification'
-import { formatDate } from '~~/utils/date'
 import { useLString } from '~/composables/use-lstring'
+import { useFormatDate } from '~/composables/use-format-date'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t } = useI18n()
 const { toLocaleText } = useLString()
+const { toFormatDate } = useFormatDate()
 
 const props = defineProps<{
   notification: Notification
