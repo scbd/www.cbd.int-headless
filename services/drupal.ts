@@ -5,6 +5,7 @@ import type { QueryParams } from '~~/types/api/query-params'
 import type { Menu } from '../types/menu'
 import type { Portal } from '../types/portal'
 import { MENU_CACHE_DURATION_MS } from '../constants/cache'
+import { DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
 
 const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
@@ -79,7 +80,7 @@ export async function getContent (url: string): Promise<Content | Page | Article
     if (media !== null) {
       article.coverImage = {
         ...article.coverImage,
-        path: media?.data?.attributes?.uri?.url
+        path: imagePathNormalizer(media?.data?.attributes?.uri?.url)
       }
     };
   };
@@ -415,7 +416,7 @@ function imagePathNormalizer (value: string): string {
   if (value === null) throw new Error('Value is null')
   if (value === '') throw new Error('Value is empty')
 
-  value = value.replace(/^\/sites\/default\/files\//, '/content/images/')
+  value = value.replace(/^\/sites\/default\/files\//, DRUPAL_IMAGE_PATH)
 
   return value
 }

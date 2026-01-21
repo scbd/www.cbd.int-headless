@@ -24,9 +24,9 @@ import useArticlesApi from '~/composables/api/use-articles-api'
 
 const error = ref<Error>()
 
-const { getArticles } = useArticlesApi()
+const { listArticles } = useArticlesApi()
 
-const items = await getArticles({ limit: 3 }).catch((error) => {
+const items = await listArticles({ limit: 3 }).catch((error) => {
   error.value = error
   return []
 })
