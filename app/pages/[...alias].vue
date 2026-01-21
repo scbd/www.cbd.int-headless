@@ -4,17 +4,23 @@
     role="main"
   >
     <div class="main-wrapper">
-      <div class="d-flex flex-column gap-2">
-        <navigation-submenu-horizontal
-          v-if="horizontalMenu1"
-          :items="horizontalMenu1"
-          :url="page.alias"
-        />
-        <navigation-submenu-horizontal
-          v-if="horizontalMenu2"
-          :items="horizontalMenu2"
-          :url="page.alias"
-        />
+      <div class="d-flex flex-column gap-2 protocol-subnavigation accent-cbd">
+        <div class="nav">
+          <div class="subnav-level-2-items">
+            <navigation-submenu-horizontal
+              v-if="horizontalMenu1"
+              :items="horizontalMenu1"
+              :url="page.alias"
+            />
+          </div>
+        </div>
+        <div class="subnav-level-3-items nav">
+          <navigation-submenu-horizontal
+            v-if="horizontalMenu2"
+            :items="horizontalMenu2"
+            :url="page.alias"
+          />
+        </div>
       </div>
       <div class="container-xxl d-flex">
         <navigation-submenu-vertical
@@ -66,7 +72,7 @@ const buildPath = (item: any, url: string): any => {
 
   return [
     { title: item.title, url: item.url },
-    ...buildPath(item.children?.find((i: Menu) => url.startsWith(i.url)), url)
+    ...buildPath(item.children?.find((i: Menu) => i.url && url.startsWith(i.url)), url)
   ]
 }
 

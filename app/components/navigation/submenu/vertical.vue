@@ -1,27 +1,6 @@
 <template>
-  <aside class="cus-aside aside-nav" :class="{ 'aside-collapsed': isVisible }">
-    <!-- <ul class="nav">
-      <li
-        class=" nav-item"
-        :class="{ 'aside-nav-header': menu.url === path.at(0)?.url }"
-      >
-        <NuxtLink :to="menu.url">
-          {{ menu.title }}
-        </NuxtLink>
-      </li>
-      <li
-        v-for="child of menu.children?.sort((a, b) => a.position - b.position)"
-        :key="child.position"
-        class="nav-item"
-      >
-        <NavigationSubmenuVerticalItems
-          :menu="child"
-          :path="path"
-          :level="4"
-        /> 
-      </li>
-    </ul>     -->
-    <div style="background: pink; border: red solid 0.5px; padding: 0.5rem 1rem;">
+  <aside class="cus-aside aside-nav" :class="{ 'aside-collapsed': isVisible }">    
+    <div class="nav">
       <NavigationSubmenuVerticalItems
         :menu="submenu"
         :url="url"

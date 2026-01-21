@@ -1,30 +1,34 @@
 <template>
-  <NuxtLink
-    :to="menu.url"
-    class="_nav-link"
-    :class="{ 'fw-bold': url.startsWith(menu.url) }"
+  <li
+    class="nav-item"
+    :class="`level-${level}-item ${menu.url && url.startsWith(menu.url) ? 'current-page' : ''}`"
   >
-    {{ menu.title }}
-  </NuxtLink>
+    <NuxtLink
+      :to="menu.url"
+      class="nav-link"
+      :class="{ '_bg-warning selected current-page': menu.url && url.startsWith(menu.url) }"
+    >
+      {{ menu.title }}
+    </NuxtLink>
+  </li>
 
   <ul
     v-if="menu.children && menu.children?.length > 0"
-    :class="`_nav _level-${level}-items`"
-    style="margin-left: 0.5rem;"
+    :class="`nav level-${level}-items ${menu.url && url.startsWith(menu.url) ? 'current-page' : ''}`"
+    _style="margin-left: 0.5rem;"
   >
-    <li
+    <template
       v-for="child of menu.children?.sort((a, b) => a.position - b.position)"
       :key="child.position"
-      class="_nav-item"
     >
       <NavigationSubmenuVerticalItems
         :menu="child"
         :url="url"
         :level="level + 1"
       />
-    </li>
+    </template>
   </ul>
-  </template>
+</template>
 
 <script
   setup
