@@ -1,0 +1,10 @@
+{
+    "target": "Цель { number }",
+    "quickLinksImportant": "Почему эта цель важна?",
+    "quickLinksExplanation": "Объяснение цели",
+    "quickLinksGuidingQuestions": "Наводящие вопросы",
+    "quickLinksLinks": "Ссылки на другие элементы",
+    "quickLinksRelevantResources": "Соответствующие ресурсы",
+    "quickLinksIndicators": "Индикаторы",
+    "viewGbfTarget": "Просмотр цели GBF"
+}

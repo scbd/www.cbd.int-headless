@@ -1,0 +1,10 @@
+{
+    "target": "目标 { number }",
+    "quickLinksImportant": "为什么这个目标很重要？",
+    "quickLinksExplanation": "目标解释",
+    "quickLinksGuidingQuestions": "指导性问题",
+    "quickLinksLinks": "与其他元素的链接",
+    "quickLinksRelevantResources": "相关资源",
+    "quickLinksIndicators": "指标",
+    "viewGbfTarget": "查看 GBF 目标"
+}

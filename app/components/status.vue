@@ -31,6 +31,9 @@
             </template>
           </div>
         </template>
+        <template v-if="isLoading">
+          <div class="loader"></div>
+        </template>
       </div>
     </template>
     <span class="loader"></span>
@@ -46,6 +49,7 @@ const props = defineProps<{
 }>();
 
 const isAdmin = ref(false);
+const isLoading = ref(false);
 
 /**
  * TODO: Add other states

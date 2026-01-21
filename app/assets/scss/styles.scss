@@ -287,27 +287,6 @@ p + h2 {
       }
     }
   }
-
-  .gbf-targets {
-    .content-wrapper {
-      .gbf-target {
-        flex: 1 1 100%;
-        // Hide others for demo purposes
-        &:not(:first-of-type) {
-          display: none;
-        }
-      }
-    }
-  }
-  .related-content {
-    .gbf-targets {
-      .content-wrapper {
-        .gbf-target {
-          display: flex;
-        }
-      }
-    }
-  }
 }
 
 @media (max-width: 539px) {
