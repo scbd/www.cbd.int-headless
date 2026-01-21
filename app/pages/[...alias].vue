@@ -60,38 +60,32 @@ const menu = await getMenu(page.value.menu, {
   depth: 1
 })
 
-const buildTree = (item: any) => {
-  // const depth = item.url?.split('/')?.length;
-  // console.log('buildTree', { item, depth })
+const buildPath = (item: any, url: string): any => {
+  // console.log('buildPath', { item, src: url })
+  if (!item) return []
 
-  if (item.parent) {
-    return buildTree({
-      ...item.parent,
-      children: [...item.siblings, item]
-    })
-  }
-
-  return item
+  return [
+    { title: item.title, url: item.url },
+    ...buildPath(item.children?.find((i: Menu) => url.startsWith(i.url)), url)
+  ]
 }
 
-const buildPath = (item: any): any => {
-  if (item.parent) {
-    return [
-      ...buildPath(item.parent),
-      { title: item.title, url: item.url }
-    ]
+console.log('app.pages', { menu: menu.at(0), page })
+
+// note: just return single node with its children (not array)
+const menuTree = computed(() => menu.at(0));
+
+const breadcrumbMenu = computed(() => {
+  // @ts-ignore
+  if (page.value.alias && menuTree.value) {
+    // @ts-ignore
+    return buildPath(menuTree.value, page.value.alias)
   }
-
-  return [{ title: item.title, url: item.url }]
-}
-
-const menuTree = computed(() => buildTree(menu.at(0)));
-
-const breadcrumbMenu = computed(() => buildPath(menu.at(0)));
+});
 
 const horizontalMenu1 = computed(() => {
   if (menuTree.value) {
-    return [menuTree.value, ...(menuTree.value?.siblings || [])].sort((a, b) => a.position - b.position);
+    return [menuTree.value]
   }
 });
 

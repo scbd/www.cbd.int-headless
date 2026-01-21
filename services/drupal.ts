@@ -370,8 +370,9 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
  */
 export async function getMenu (
   code: string,
-  options: { depth?: number, branch?: string, url?: string } = {}
+  options: { depth?: number, branch?: string, url?: string, child?: Menu } = {}
 ): Promise<Menu[]> {
+  code === 'cbd-convention' && console.log('services.drupal.getMenu', { code, options })
   if (options?.branch != null && options?.url != null) throw Error('Can only get menu with branch or url at once')
 
   // Load preprocessed menu data
@@ -424,19 +425,20 @@ export async function getMenu (
     maxDepth = options.depth
   }
 
+  const itemToMenu = (item: ProcessedMenuItem): Menu => ({
+    branchId: item.id,
+    parentId: item.parentId,
+    title: item.title,
+    url: item.url,
+    position: item.position,
+    submenu: item.submenu,
+    component: item.component,
+    icon: item.icon,
+    childrenCount: item.childrenCount
+  })
+
   // Build hierarchical structure
   const buildHierarchy = (parentId: string | null, currentDepth: number): Menu[] => {
-    const itemToMenu = (item: ProcessedMenuItem): Menu => ({
-      branchId: item.id,
-      title: item.title,
-      url: item.url,
-      position: item.position,
-      submenu: item.submenu,
-      component: item.component,
-      icon: item.icon,
-      childrenCount: item.childrenCount
-    })
-
     const items = itemsToInclude
       .filter(item => {
         // For branch filtering, the item itself has depth 0 but parentId is still its original parent
@@ -452,30 +454,30 @@ export async function getMenu (
       const menu: Menu = itemToMenu(item)
 
       // Recursively include parent ancestors and their siblings (applies when requested branch/url not at the root)
-      if (currentDepth === 0) {
-        const findSiblings = (item: ProcessedMenuItem): Menu[] => {
-          const siblings = processedItems
-            .filter(i => i.parentId === item.parentId && i.id !== item.id)
-            .sort((a, b) => a.position - b.position)
+      // if (currentDepth === 0) {
+      //   const findSiblings = (item: ProcessedMenuItem): Menu[] => {
+      //     const siblings = processedItems
+      //       .filter(i => i.parentId === item.parentId && i.id !== item.id)
+      //       .sort((a, b) => a.position - b.position)
 
-          return siblings.map(itemToMenu)
-        }
+      //     return siblings.map(itemToMenu)
+      //   }
 
-        const findParent = (item: ProcessedMenuItem): Menu | undefined => {
-          const parent = processedItems.find((i) => i.id === item.parentId)
+      //   const findParent = (item: ProcessedMenuItem): Menu | undefined => {
+      //     const parent = processedItems.find((i) => i.id === item.parentId)
 
-          if (parent !== undefined) {
-            return {
-              ...itemToMenu(parent),
-              siblings: findSiblings(parent),
-              parent: findParent(parent)
-            }
-          }
-        }
+      //     if (parent !== undefined) {
+      //       return {
+      //         ...itemToMenu(parent),
+      //         siblings: findSiblings(parent),
+      //         parent: findParent(parent)
+      //       }
+      //     }
+      //   }
 
-        menu.siblings = findSiblings(item)
-        menu.parent = findParent(item)
-      }
+      //   menu.siblings = findSiblings(item)
+      //   menu.parent = findParent(item)
+      // }
 
       // Include children if we haven't reached max depth
       if (maxDepth === undefined || currentDepth < maxDepth) {
@@ -485,15 +487,55 @@ export async function getMenu (
         }
       }
 
+      if (currentDepth === 0 && options.child != null) {
+        const child = menu.children?.find((i) => i.branchId === options.child?.branchId)
+
+        if (child != null) {
+          Object.assign(child, options.child)
+        } else {
+          // menu.child = options.child
+          menu.children = [
+            options.child,
+            ...(menu.children || [])
+          ]
+        }
+      }
+
       return menu
     })
   }
 
   // Start building from root
-  return buildHierarchy(null, 0)
+  const menus = buildHierarchy(null, 0)
+  const menu = menus[0]
+
+  code === 'cbd-convention' && console.log('services.drupal.getMenu', { code, options, menu })
+
+  // if we pulled from a specific branch traverse ancestors
+  if (menu?.parentId != null) {
+    const parentMenus = await getMenu(code, { depth: options.depth, branch: menu.parentId, child: menu })
+    const parentMenu = parentMenus[0]
+    code === 'cbd-convention' && console.log('services.drupal.getMenu', { code, options, parentMenu, menu })
+
+    if (parentMenu != null) {
+      const ret = [{
+        ...parentMenu,
+        // children: [
+        //   menu,
+        //   ...(menu.children || [])
+        // ]
+        // children: parentMenu.children,
+        // menu: menu.url //JSON.stringify(menu)
+      }]
+      code === 'cbd-convention' && console.log('services.drupal.getMenu', { code, options, ret })
+      return ret
+    }
+  }
+
+  return menus
 };
 
-function imagePathNormalizer (value: string): string {
+function imagePathNormalizer(value: string): string {
   if (value === undefined) throw new Error('Value is undefined')
   if (value === null) throw new Error('Value is null')
   if (value === '') throw new Error('Value is empty')

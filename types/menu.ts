@@ -1,5 +1,6 @@
 export interface Menu {
   branchId: string
+  parentId?: string | null
   title: string
   url: string // TODO this is in fact optional
   position: number
