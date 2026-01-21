@@ -8,7 +8,6 @@
       />
       <div class="featured-wrapper">
         <h1 class="featured-information">{{ article.title }}</h1>
-        {{ article.coverImage.path }}
       </div>
     </div>
   </div>
