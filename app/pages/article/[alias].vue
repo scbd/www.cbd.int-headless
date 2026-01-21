@@ -1,5 +1,6 @@
 <template>
   <main class="cus-main cus-internal-page d-flex flex-column" role="main">
+    <status v-if="isLoading" />
     <!-- Breadcrumbs -->
     <hero-item-page :article="article" />
     <div class="container-xxl d-flex">
@@ -19,8 +20,10 @@ import useArticlesApi from '~/composables/api/use-articles-api'
 const route = useRoute()
 const { getArticle } = useArticlesApi()
 
-const article = await getArticle(route.path).catch((error) => {
-  throw error
+const isLoading = ref(true)
+
+const article = await getArticle(route.path).finally(() => {
+  isLoading.value = false
 })
 
 definePageMeta({

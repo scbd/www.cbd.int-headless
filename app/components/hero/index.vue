@@ -1,6 +1,7 @@
 <template>
   <div class="cus-hero" :class="heroClasses">
-    <div v-if="!error" class="featured-items">
+    <!-- <div v-if="!error" class="featured-items"> // TO-DO: to be fixed with CIR-234 -->
+      <div class="featured-items">
       <hero-content-featured-item
         v-if="primaryArticle"
         :article="primaryArticle"
@@ -15,21 +16,21 @@
         />
       </div>
     </div>
-    <status v-else :error="error" />
+    <!-- <status v-else :error="error" /> // TO-DO: to be fixed with CIR-234 -->
   </div>
 </template>
 
 <script setup lang="ts">
 import useArticlesApi from '~/composables/api/use-articles-api'
 
-const error = ref<Error>()
+// const error = ref<Error>() // TO-DO: to be fixed with CIR-234
 
 const { listArticles } = useArticlesApi()
 
-const items = await listArticles({ limit: 3 }).catch((error) => {
-  error.value = error
-  return []
-})
+const items = await listArticles({ limit: 3 }) // .catch((error) => {
+  // error.value = error
+  // return []
+  // })  // TO-DO: to be fixed with CIR-234
 
 const primaryArticle = computed(() => items.at(0))
 const secondaryArticles = computed(() => items.slice(1))
