@@ -54,7 +54,7 @@ export async function getContent (url: string): Promise<Content | Page | Article
     updatedOn: attributes?.changed,
     alias: attributes?.path?.alias,
     locale: attributes?.path?.langcode,
-    body: attributes?.body?.processed,
+    body: contentNormalizer(attributes?.body?.processed),
     summary: attributes?.body?.summary
   }
 
@@ -80,7 +80,7 @@ export async function getContent (url: string): Promise<Content | Page | Article
     if (media !== null) {
       article.coverImage = {
         ...article.coverImage,
-        path: imagePathNormalizer(media?.data?.attributes?.uri?.url)
+        path: contentNormalizer(media?.data?.attributes?.uri?.url)
       }
     };
   };
@@ -139,7 +139,7 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
         updatedOn: attributes?.changed,
         alias: attributes?.path?.alias,
         locale: attributes?.path?.langcode,
-        body: attributes?.body?.processed,
+        body: contentNormalizer(attributes?.body?.processed),
         summary: attributes?.body?.summary
       }
 
@@ -157,7 +157,7 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
       if (media !== null) {
         article.coverImage = {
           ...article.coverImage,
-          path: imagePathNormalizer(media?.data?.attributes?.uri?.url)
+          path: contentNormalizer(media?.data?.attributes?.uri?.url)
         }
       }
 
@@ -411,12 +411,15 @@ export async function getMenu (
   return buildHierarchy(null, 0)
 };
 
-function imagePathNormalizer (value: string): string {
+function contentNormalizer (value: string): string {
   if (value === undefined) throw new Error('Value is undefined')
   if (value === null) throw new Error('Value is null')
   if (value === '') throw new Error('Value is empty')
 
+  // Convert Drupal image paths to use the path defined on the nuxt.config.ts
   value = value.replace(/^\/sites\/default\/files\//, DRUPAL_IMAGE_PATH)
+  // Add Bootstrap flex class to WP columns block to allow three columns display to work on the front-end
+  value = value.replace(/^wp-block-columns/, 'wp-block-columns d-flex')
 
   return value
 }
