@@ -417,9 +417,9 @@ function contentNormalizer (value: string): string {
   if (value === '') throw new Error('Value is empty')
 
   // Convert Drupal image paths to use the path defined on the nuxt.config.ts
-  value = value.replace(/^\/sites\/default\/files\//, DRUPAL_IMAGE_PATH)
+  value = value.replace(/\/sites\/default\/files\//, DRUPAL_IMAGE_PATH)
   // Add Bootstrap flex class to WP columns block to allow three columns display to work on the front-end
-  value = value.replace(/^wp-block-columns/, 'wp-block-columns d-flex')
+  value = value.replace(/wp-block-columns/, 'wp-block-columns d-flex')
 
   return value
 }
