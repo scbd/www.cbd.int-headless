@@ -1,6 +1,5 @@
 <template>
   <div class="cus-hero" :class="heroClasses">
-    <!-- <div v-if="!error" class="featured-items"> // TO-DO: to be fixed with CIR-234 -->
       <div class="featured-items">
       <hero-content-featured-item
         v-if="primaryArticle"
@@ -16,14 +15,11 @@
         />
       </div>
     </div>
-    <!-- <status v-else :error="error" /> // TO-DO: to be fixed with CIR-234 -->
   </div>
 </template>
 
 <script setup lang="ts">
 import useArticlesApi from '~/composables/api/use-articles-api'
-
-// const error = ref<Error>() // TO-DO: to be fixed with CIR-234
 
 const { listArticles } = useArticlesApi()
 

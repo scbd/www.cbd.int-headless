@@ -15,10 +15,8 @@
 
 <script setup lang="ts">
 import type { Article } from '~~/types/content'
-// import type { NuxtError } from '#app'  // TO-DO: to be fixed with CIR-234
 
 const props = defineProps<{
   article: Article
-  // error?: NuxtError  // TO-DO: to be fixed with CIR-234
 }>()
 </script>
