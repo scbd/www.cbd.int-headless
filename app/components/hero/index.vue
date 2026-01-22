@@ -27,10 +27,7 @@ import useArticlesApi from '~/composables/api/use-articles-api'
 
 const { listArticles } = useArticlesApi()
 
-const items = await listArticles({ limit: 3 }) // .catch((error) => {
-  // error.value = error
-  // return []
-  // })  // TO-DO: to be fixed with CIR-234
+const items = await listArticles({ limit: 3 })
 
 const primaryArticle = computed(() => items.at(0))
 const secondaryArticles = computed(() => items.slice(1))
