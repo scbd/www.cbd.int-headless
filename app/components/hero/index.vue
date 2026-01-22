@@ -1,6 +1,6 @@
 <template>
   <div class="cus-hero" :class="heroClasses">
-    <div v-if="!error" class="featured-items">
+      <div class="featured-items">
       <hero-content-featured-item
         v-if="primaryArticle"
         :article="primaryArticle"
@@ -15,21 +15,15 @@
         />
       </div>
     </div>
-    <status v-else :error="error" />
   </div>
 </template>
 
 <script setup lang="ts">
 import useArticlesApi from '~/composables/api/use-articles-api'
 
-const error = ref<Error>()
+const { listArticles } = useArticlesApi()
 
-const { getArticles } = useArticlesApi()
-
-const items = await getArticles({ limit: 3 }).catch((error) => {
-  error.value = error
-  return []
-})
+const items = await listArticles({ limit: 3 })
 
 const primaryArticle = computed(() => items.at(0))
 const secondaryArticles = computed(() => items.slice(1))

@@ -5,6 +5,7 @@ import type { QueryParams } from '~~/types/api/query-params'
 import type { Menu } from '../types/menu'
 import type { Portal } from '../types/portal'
 import { MENU_CACHE_DURATION_MS } from '../constants/cache'
+import { DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
 
 const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
@@ -53,7 +54,7 @@ export async function getContent (url: string): Promise<Content | Page | Article
     updatedOn: attributes?.changed,
     alias: attributes?.path?.alias,
     locale: attributes?.path?.langcode,
-    body: attributes?.body?.processed,
+    body: contentNormalizer(attributes?.body?.processed),
     summary: attributes?.body?.summary
   }
 
@@ -79,7 +80,7 @@ export async function getContent (url: string): Promise<Content | Page | Article
     if (media !== null) {
       article.coverImage = {
         ...article.coverImage,
-        path: media?.data?.attributes?.uri?.url
+        path: contentNormalizer(media?.data?.attributes?.uri?.url)
       }
     };
   };
@@ -138,7 +139,7 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
         updatedOn: attributes?.changed,
         alias: attributes?.path?.alias,
         locale: attributes?.path?.langcode,
-        body: attributes?.body?.processed,
+        body: contentNormalizer(attributes?.body?.processed),
         summary: attributes?.body?.summary
       }
 
@@ -156,7 +157,7 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
       if (media !== null) {
         article.coverImage = {
           ...article.coverImage,
-          path: imagePathNormalizer(media?.data?.attributes?.uri?.url)
+          path: contentNormalizer(media?.data?.attributes?.uri?.url)
         }
       }
 
@@ -410,12 +411,15 @@ export async function getMenu (
   return buildHierarchy(null, 0)
 };
 
-function imagePathNormalizer (value: string): string {
+function contentNormalizer (value: string): string {
   if (value === undefined) throw new Error('Value is undefined')
   if (value === null) throw new Error('Value is null')
   if (value === '') throw new Error('Value is empty')
 
-  value = value.replace(/^\/sites\/default\/files\//, '/content/images/')
+  // Convert Drupal image paths to use the path defined on the nuxt.config.ts
+  value = value.replace(/\/sites\/default\/files\//g, DRUPAL_IMAGE_PATH)
+  // Add Bootstrap flex class to WP columns block to allow three columns display to work on the front-end
+  value = value.replace(/wp-block-columns/g, 'wp-block-columns d-flex')
 
   return value
 }
