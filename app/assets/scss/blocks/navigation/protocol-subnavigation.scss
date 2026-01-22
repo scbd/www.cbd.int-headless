@@ -16,8 +16,7 @@
   .nav-item {
     transition: box-shadow 0.25s ease-in;
     .nav-link {
-      // color: var(--bs-body-color);
-      color: #5c5a5a; // TODO: WHY ^^^ NO WORK?!
+      color: var(--bs-body-color);
       transition:
         color 0.25s ease-in,
         padding-top 0.25s ease-in;

@@ -32,6 +32,7 @@
           <navigation-breadcrumbs
             v-if="breadcrumbMenu"
             :items="breadcrumbMenu"
+            :url="page.alias"
           />
           <section
             v-dompurify-html="page.body"
