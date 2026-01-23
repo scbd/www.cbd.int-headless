@@ -1,46 +1,58 @@
 <template>
-  <div v-if="menu" :style="level2MenuColumnCount.styles">
+  <div
+    v-if="menu"
+    :style="level2MenuColumnCount.styles"
+    class="subnav-level-2-items collapse show"
+  >
     <li
       v-for="(menuItem, index) in menu"
-      class="level-2-item nav-item"
+      class="subnav-level-2-item nav-item"
       :class="level3MenuColumns?.[index]?.classes"
       :style="level3MenuColumns?.[index]?.styles"
     >
-      <NuxtLink class="nav-link" :to="menuItem.url">
+      <NuxtLink
+        class="nav-link"
+        :to="menuItem.url"
+      >
         {{ menuItem.title }}
       </NuxtLink>
 
-      <ul v-if="menuItem.children" class="level-3-items nav">
-        <navigation-mega-menu-list-item :menu="menuItem" />
+      <ul
+        v-if="menuItem.children"
+        class="subnav-level-3-items nav"
+      >
+        <navigation-top-menu-item
+          :menu="menuItem"
+          :url="url"
+        />
       </ul>
     </li>
   </div>
 </template>
 <i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-list.json"></i18n>
 
-<script setup lang="ts">
-import useMenuApi from '~/composables/api/use-menu-api';
-
+<script
+  setup
+  lang="ts"
+>
 const props = defineProps<{
-  submenu: string;
+  menu?: any[],
+  url?: string,
 }>();
-
-const { getMenu } = useMenuApi();
-const menu = await getMenu(props.submenu);
 
 const level2MenuColumnCount = computed(() => {
   const classes: string[] = [];
   const styles: { [key: string]: string | number } = {};
 
-  if (menu.length < 5) {
-    styles['--level2-column-count'] = menu.length;
+  if (props.menu?.length && props.menu?.length < 5) {
+    styles['--level2-column-count'] = props.menu.length;
   }
 
   return { classes, styles };
 });
 
 const level3MenuColumns = computed(() =>
-  menu.map((menuItem, index) => {
+  props.menu?.map((menuItem, index) => {
     const classes: string[] = [];
     const styles: { [key: string]: string | number } = {};
 
@@ -48,6 +60,11 @@ const level3MenuColumns = computed(() =>
       if (menuItem.children.length > 8) classes.push('level-3-items-multi-col');
 
       styles['--level3-column-count'] = Math.ceil(menuItem.children.length / 8);
+    }
+
+    if (menuItem.url && props.url?.startsWith(menuItem.url)) {
+      classes.push('current-page')
+      classes.push('show')
     }
 
     return { classes, styles };

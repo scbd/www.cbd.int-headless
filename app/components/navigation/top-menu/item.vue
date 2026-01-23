@@ -1,5 +1,9 @@
 <template>
-  <li v-for="childMenuItem in menu.children" class="nav-item">
+  <li 
+  v-for="childMenuItem in menu?.children" 
+  class="nav-item" 
+   :class="{ 'current-page': childMenuItem.url && url?.startsWith(childMenuItem.url) }"
+  >
     <NuxtLink class="nav-link" :to="childMenuItem.url">
       {{ childMenuItem.title }}
     </NuxtLink>
@@ -11,6 +15,8 @@
 import type { Menu } from "~~/types/menu";
 
 const props = defineProps<{
-  menu: Menu,
+  menu?: Menu,
+  url?: string
 }>();
+
 </script>

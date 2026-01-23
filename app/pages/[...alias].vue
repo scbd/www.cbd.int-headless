@@ -33,7 +33,7 @@
                 </button>
               </li>
             </div>
-            <navigation-mega-menu-list
+            <navigation-top-menu
               v-if="megaMenu"
               :menu="megaMenu"
               :url="page.alias"
@@ -41,7 +41,7 @@
               id="collapseSubnav"
             />
             <div class="subnav-level-3-items nav">
-              <navigation-mega-menu-list-item
+              <navigation-top-menu-item
                 v-if="megaSubMenu"
                 :menu="megaSubMenu"
                 :url="page.alias"
