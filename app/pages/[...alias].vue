@@ -89,7 +89,7 @@ const page = await getPage(route.path) as any // TODO why is .value required her
 
 // TODO The logic below should be probably be moved to a utility and middleware
 // @ts-ignore
-const menu = await getMenu('menu-convention', {
+const menu = await getMenu(page.value.menu, {
   // @ts-ignore
   url: page.value.alias,
   depth: 1
