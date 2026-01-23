@@ -34,6 +34,7 @@
               </li>
             </div>
             <navigation-mega-menu-list
+              v-if="megaMenu"
               :menu="megaMenu"
               :url="page.alias"
               class="level-2-items"
@@ -41,6 +42,7 @@
             />
             <div class="subnav-level-3-items nav">
               <navigation-mega-menu-list-item
+                v-if="megaSubMenu"
                 :menu="megaSubMenu"
                 :url="page.alias"
               />
@@ -94,7 +96,7 @@ const menu = await getMenu('menu-convention', {
 })
 
 const buildPath = (item: any, url: string): any => {
-  console.log('buildPath', { item, src: url })
+  // console.log('buildPath', { item, src: url })
   if (!item) return []
 
   return [
@@ -119,7 +121,7 @@ const breadcrumbMenu = computed(() => {
   }
 });
 
-// console.log('app.pages', { breadcrumbMenu: breadcrumbMenu.value })
+// console.log('app.pages', { breadcrumbMenu: breadcrumbMenu.value, verticalMenu: verticalMenu.value })
 
 definePageMeta({
   layout: 'home'

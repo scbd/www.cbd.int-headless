@@ -1,5 +1,9 @@
 <template>
-  <aside class="cus-aside aside-nav" :class="{ 'aside-collapsed': isVisible }">    
+  <aside
+    v-if="submenu"
+    class="cus-aside aside-nav"
+    :class="{ 'aside-collapsed': isVisible }"
+  >
     <div class="nav">
       <NavigationSubmenuVerticalItems
         :menu="submenu"
@@ -29,7 +33,10 @@
   </aside>
 </template>
 
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+>
 import type { Menu } from '~~/types/menu'
 const isVisible = ref(false)
 
