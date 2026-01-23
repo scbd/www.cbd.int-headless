@@ -3,8 +3,9 @@
         <div class="main-wrapper">
             <div class="container-xxl d-flex">
                 <article class="cus-article container-fluid d-flex flex-column">
+                    <status v-if="isLoading" />
                     <section
-                        v-dompurify-html="page.body"
+                        v-dompurify-html="content.body"
                         class="rendered-content"
                     ></section>
                 </article>
@@ -17,9 +18,12 @@
 import useContentApi from '~/composables/api/use-content-api'
 
 const route = useRoute()
-const { getPage } = useContentApi()
+const { getContent } = useContentApi()
+const isLoading = ref(true)
 
-const page = await getPage(route.path)
+const content = await getContent(route.path).finally(() => {
+  isLoading.value = false
+})
 
 definePageMeta({
   layout: 'home'
