@@ -6,11 +6,6 @@
           Home
         </NuxtLink>
       </li class="breadcrumb-item">
-      <li class="breadcrumb-item">
-        <NuxtLink :to="`/${items[0]?.url.split('/')[1]}`">
-          Bioliersity Convention
-        </NuxtLink>
-      </li>
       <li
         v-for="item of items"
         class="breadcrumb-item"
