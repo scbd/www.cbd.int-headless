@@ -87,7 +87,7 @@ const { getMenu } = useMenuApi()
 
 const page = await getPage(route.path) as any // TODO why is .value required here?
 
-// TODO The logic below should be probably be moved to a utility and middleware
+// The logic below should be probably be moved to a utility and middleware
 // @ts-ignore
 const menu = await getMenu(page.value.menu, {
   // @ts-ignore
@@ -105,8 +105,6 @@ const buildPath = (item: any, url: string): any => {
   ]
 }
 
-// console.log('app.pages', { menu, page })
-
 const menuRoot = computed(() => menu?.find((i) => page.value.alias.startsWith(i.url)));
 
 const megaMenu = computed(() => menuRoot.value?.children)
@@ -120,8 +118,6 @@ const breadcrumbMenu = computed(() => {
     return buildPath(menuRoot.value, page.value.alias)
   }
 });
-
-// console.log('app.pages', { breadcrumbMenu: breadcrumbMenu.value, verticalMenu: verticalMenu.value })
 
 definePageMeta({
   layout: 'home'
