@@ -3,13 +3,13 @@
     class="nav-item"
     :class="{
       [`level-${level}-item`]: true,
-      'current-page': menu.url && url.startsWith(menu.url)
+      'current-page': menu.activeBranch
     }"
   >
     <NuxtLink
       :to="menu.url"
       class="nav-link"
-      :class="{ '_bg-warning selected current-page': menu.url && url.startsWith(menu.url) }"
+      :class="{ '_bg-warning selected current-page': menu.activeBranch }"
     >
       {{ menu.title }}
     </NuxtLink>
@@ -20,7 +20,7 @@
     class="nav"
     :class="{
       [`level-${level}-items`]: true,
-      'current-page': menu.url && url.startsWith(menu.url)
+      'current-page': menu.activeBranch
     }"
   >
     <template
@@ -29,7 +29,6 @@
     >
       <NavigationSubmenuVerticalItems
         :menu="child"
-        :url="url"
         :level="level + 1"
       />
     </template>
@@ -44,7 +43,6 @@ import type { Menu } from '~~/types/menu'
 
 const props = defineProps<{
   menu: Menu,
-  url: string,
   level: number,
 }>()
 </script>

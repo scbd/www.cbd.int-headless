@@ -7,7 +7,6 @@
     <div class="nav">
       <NavigationSubmenuVerticalItems
         :menu="submenu"
-        :url="url"
         :level="3"
       />
     </div>
@@ -42,11 +41,10 @@ const isVisible = ref(false)
 
 const props = defineProps<{
   menu: Menu
-  url: string,
 }>()
 
 // only show the menu starting at the 3rd level
 const submenu = computed(() => {
-  return props.menu.children?.find((item: any) => props.url.startsWith(item.url)) as Menu
+  return props.menu.children?.find((item: any) => item.activeBranch) as Menu
 })
 </script>

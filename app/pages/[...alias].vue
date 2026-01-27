@@ -36,7 +36,6 @@
             <navigation-top-menu
               v-if="megaMenu"
               :menu="megaMenu"
-              :url="page.alias"
               class="level-2-items"
               id="collapseSubnav"
             />
@@ -44,7 +43,6 @@
               <navigation-top-menu-item
                 v-if="megaSubMenu"
                 :menu="megaSubMenu"
-                :url="page.alias"
               />
             </div>
           </ul>
@@ -55,13 +53,11 @@
         <navigation-submenu-vertical
           v-if="verticalMenu"
           :menu="verticalMenu"
-          :url="page.alias"
         />
         <article class="cus-article container-fluid d-flex flex-column">
           <navigation-breadcrumbs
             v-if="breadcrumbMenu"
             :items="breadcrumbMenu"
-            :url="page.alias"
           />
           <section
             v-dompurify-html="page.body"
@@ -93,26 +89,26 @@ const menu = await getMenu(page.menu, {
   depth: 1
 })
 
-const buildPath = (item: any, url: string): any => {
+const buildPath = (item: any): any => {
   if (!item) return []
 
   return [
-    { title: item.title, url: item.url },
-    ...buildPath(item.children?.find((i: Menu) => i.url && url.startsWith(i.url)), url)
+    { title: item.title, url: item.url, activeBranch: item.activeBranch },
+    ...buildPath(item.children?.find((i: Menu) => i.activeBranch))
   ]
 }
 
-const menuRoot = computed(() => menu?.find((i) => i.url && page.alias.startsWith(i.url)));
+const menuRoot = computed(() => menu?.find((i) => i.activeBranch))
 
 const megaMenu = computed(() => menuRoot.value?.children)
 
-const megaSubMenu = computed(() => menuRoot.value?.children?.find((i) => i.url && page.alias.startsWith(i.url)))
+const megaSubMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch))
 
-const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.url && page.alias.startsWith(i.url)))
+const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch))
 
 const breadcrumbMenu = computed(() => {
   if (page.alias && menuRoot.value) {
-    return buildPath(menuRoot.value, page.alias)
+    return buildPath(menuRoot.value)
   }
 });
 

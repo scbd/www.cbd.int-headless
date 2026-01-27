@@ -23,7 +23,6 @@
       >
         <navigation-top-menu-item
           :menu="menuItem"
-          :url="url"
         />
       </ul>
     </li>
@@ -36,8 +35,7 @@
   lang="ts"
 >
 const props = defineProps<{
-  menu?: any[],
-  url?: string,
+  menu?: any[]
 }>();
 
 const level2MenuColumnCount = computed(() => {
@@ -62,7 +60,7 @@ const level3MenuColumns = computed(() =>
       styles['--level3-column-count'] = Math.ceil(menuItem.children.length / 8);
     }
 
-    if (menuItem.url && props.url?.startsWith(menuItem.url)) {
+    if (menuItem.activeBranch) {
       classes.push('current-page')
       classes.push('show')
     }

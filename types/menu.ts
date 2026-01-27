@@ -9,5 +9,5 @@ export interface Menu {
   icon?: string
   childrenCount: number
   children?: Menu[]
-  siblings?: Menu[]
+  activeBranch?: boolean
 }

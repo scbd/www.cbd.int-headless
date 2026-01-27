@@ -13,7 +13,7 @@
         <NuxtLink
           :to="item.url"
           :class="{
-            'router-link-active router-link-exact-active': item.url === url
+            'router-link-active router-link-exact-active': item.activeBranch
           }"
         >
           {{ item.title }}
@@ -30,7 +30,6 @@
 const { t } = useI18n();
 
 const props = defineProps<{
-  items: Array<{ title: string; url: string }>,
-  url: string
+  items: Array<{ title: string; url: string, activeBranch: boolean }>
 }>()
 </script>

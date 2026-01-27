@@ -410,7 +410,10 @@ export async function getMenu (
         .sort((a, b) => a.position - b.position)
 
     return items.map(item => {
-      const menu: Menu = itemToMenu(item)
+      const menu: Menu = {
+        ...itemToMenu(item),
+        ...branchId != null && { activeBranch: true }
+      }
 
       // Include children if we haven't reached max depth
       if (maxDepth === undefined || currentDepth < maxDepth) {
