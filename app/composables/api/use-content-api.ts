@@ -1,15 +1,15 @@
-import type { Content } from '~~/types/content'
+import type { Page } from '~~/types/content'
 import { handleErrorState } from '~~/utils/api-error-handler'
 
-export default function usePageApi (): { getPage: (url: string) => Promise<Content> } {
-  const getPage = async (url: string): Promise<Content> => {
-    const { data } = await useFetch<Content>('/api/content/', {
+export default function usePageApi (): { getPage: (url: string) => Promise<Page> } {
+  const getPage = async (url: string): Promise<Page> => {
+    const { data } = await useFetch<Page>('/api/content/', {
       params: {
         url
       }
     }).then(handleErrorState)
 
-    return data
+    return data?.value
   }
 
   return { getPage }

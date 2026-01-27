@@ -85,13 +85,11 @@ const route = useRoute()
 const { getPage } = useContentApi()
 const { getMenu } = useMenuApi()
 
-const page = await getPage(route.path) as any // TODO why is .value required here?
+const page = await getPage(route.path)
 
 // The logic below should be probably be moved to a utility and middleware
-// @ts-ignore
-const menu = await getMenu(page.value.menu, {
-  // @ts-ignore
-  url: page.value.alias,
+const menu = await getMenu(page.menu, {
+  url: page.alias,
   depth: 1
 })
 
@@ -104,17 +102,17 @@ const buildPath = (item: any, url: string): any => {
   ]
 }
 
-const menuRoot = computed(() => menu?.find((i) => page.value.alias.startsWith(i.url)));
+const menuRoot = computed(() => menu?.find((i) => i.url && page.alias.startsWith(i.url)));
 
 const megaMenu = computed(() => menuRoot.value?.children)
 
-const megaSubMenu = computed(() => menuRoot.value?.children?.find((i) => page.value.alias.startsWith(i.url)))
+const megaSubMenu = computed(() => menuRoot.value?.children?.find((i) => i.url && page.alias.startsWith(i.url)))
 
-const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => page.value.alias.startsWith(i.url)))
+const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.url && page.alias.startsWith(i.url)))
 
 const breadcrumbMenu = computed(() => {
-  if (page.value.alias && menuRoot.value) {
-    return buildPath(menuRoot.value, page.value.alias)
+  if (page.alias && menuRoot.value) {
+    return buildPath(menuRoot.value, page.alias)
   }
 });
 
