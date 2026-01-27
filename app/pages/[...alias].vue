@@ -96,7 +96,6 @@ const menu = await getMenu(page.value.menu, {
 })
 
 const buildPath = (item: any, url: string): any => {
-  // console.log('buildPath', { item, src: url })
   if (!item) return []
 
   return [

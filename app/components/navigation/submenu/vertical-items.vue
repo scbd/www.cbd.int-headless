@@ -1,7 +1,10 @@
 <template>
   <li
     class="nav-item"
-    :class="`level-${level}-item ${menu.url && url.startsWith(menu.url) ? 'current-page' : ''}`"
+    :class="{
+      [`level-${level}-item`]: true,
+      'current-page': menu.url && url.startsWith(menu.url)
+    }"
   >
     <NuxtLink
       :to="menu.url"
@@ -14,8 +17,11 @@
 
   <ul
     v-if="menu.children && menu.children?.length > 0"
-    :class="`nav level-${level}-items ${menu.url && url.startsWith(menu.url) ? 'current-page' : ''}`"
-    _style="margin-left: 0.5rem;"
+    class="nav"
+    :class="{
+      [`level-${level}-items`]: true,
+      'current-page': menu.url && url.startsWith(menu.url)
+    }"
   >
     <template
       v-for="child of menu.children?.sort((a, b) => a.position - b.position)"
