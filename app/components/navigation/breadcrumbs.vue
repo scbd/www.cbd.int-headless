@@ -3,7 +3,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <NuxtLink to="/">
-          Home
+          {{ t('home') }}
         </NuxtLink>
       </li class="breadcrumb-item">
       <li
@@ -27,6 +27,8 @@
   setup
   lang="ts"
 >
+const { t } = useI18n();
+
 const props = defineProps<{
   items: Array<{ title: string; url: string }>,
   url: string
