@@ -70,7 +70,6 @@ const { getMenu } = useMenuApi()
 
 const page = await getContent(route.path)
 
-// The logic below should be probably be moved to a utility and middleware
 const menu = page.menu
   ? await getMenu(page.menu, {
     url: page.alias,
