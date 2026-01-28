@@ -82,17 +82,14 @@
 
 .aside-related-content {
   padding-top: 1rem;
-
   .nav {
     gap: 0.5rem;
   }
-
   &.mobile-inline {
     padding-top: 0;
     flex: 1 1 auto;
     position: static;
     display: none;
-
     .nav {
       flex: 1 1 auto;
       flex-direction: row;
