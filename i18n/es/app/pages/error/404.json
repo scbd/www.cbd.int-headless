@@ -1,0 +1,6 @@
+{
+    "errorCode": "404",
+    "errorCodeMessage": "No Encontrado",
+    "errorMessage": "No se ha encontrado la página {path} a la que está intentando acceder.",
+    "homeButton": "Ir a la página de inicio"
+}
