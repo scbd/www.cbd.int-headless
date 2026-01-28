@@ -13,7 +13,7 @@
         />
       </svg>
     </div>
-    <component :is="errorPage" :error="props.error" />
+    <component :is="errorPage" />
   </div>
 </template>
 
