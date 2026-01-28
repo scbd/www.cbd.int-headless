@@ -1,1 +1,6 @@
-{}
+{
+    "errorCode": "404",
+    "errorCodeMessage": "未找到",
+    "errorMessage": "您尝试访问的页面 {path} 无法找到。",
+    "homeButton": "前往主页"
+}

@@ -1,1 +1,6 @@
-{}
+{
+    "errorCode": "403",
+    "errorCodeMessage": "访问被拒绝",
+    "errorMessage": "您没有权限访问页面 {path}。",
+    "homeButton": "前往主页"
+}
