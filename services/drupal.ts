@@ -39,7 +39,7 @@ const menuCache = new Map<string, MenuCacheEntry>()
 export async function getContent (url: string): Promise<Content | Page | Article> {
   const route = await drupalApi.getRoute(url)
 
-  if (route.entity.uuid === null) throw notFound('Route not found.')
+  if (route?.entity?.uuid === null) throw notFound('Route not found.')
 
   const drupalContent = await drupalApi.getContent(route.entity.uuid, route.entity.bundle)
 
