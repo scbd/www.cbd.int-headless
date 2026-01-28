@@ -215,15 +215,21 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
   &:hover {
     filter: brightness(90%);
   }
-
   &[aria-expanded="true"] {
-    svg {
-      transform: rotate(180deg);
-    }
+    transform: rotate(180deg);
   }
-
-  svg {
-    fill: var(--bs-tertiary-color);
+  &::after {
+  content: '';
+    display: inline-block;
+    vertical-align: middle;
+    width: 14px;
+    height: 8px;
+    background-color: var(--bs-tertiary-color);
+    -webkit-mask-image: url('/images/icons/icon-nav-arrow.svg');
+    mask-image: url('/images/icons/icon-nav-arrow.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: cover;
   }
 }
 
