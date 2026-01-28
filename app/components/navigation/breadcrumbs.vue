@@ -5,9 +5,10 @@
         <NuxtLink to="/">
           {{ t('home') }}
         </NuxtLink>
-      </li class="breadcrumb-item">
+      </li>
       <li
         v-for="item of items"
+        :key="item.url"
         class="breadcrumb-item"
       >
         <NuxtLink

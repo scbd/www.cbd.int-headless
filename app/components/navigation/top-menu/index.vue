@@ -1,11 +1,11 @@
 <template>
   <div
-    v-if="menu"
     :style="level2MenuColumnCount.styles"
     class="subnav-level-2-items collapse show"
   >
     <li
-      v-for="(menuItem, index) in menu"
+      v-for="(menuItem, index) in menus"
+      :key="menuItem.branchId"
       class="subnav-level-2-item nav-item"
       :class="level3MenuColumns?.[index]?.classes"
       :style="level3MenuColumns?.[index]?.styles"
@@ -34,23 +34,25 @@
   setup
   lang="ts"
 >
+import type { Menu } from '~~/types/menu';
+
 const props = defineProps<{
-  menu?: any[]
+  menus?: Menu[]
 }>();
 
 const level2MenuColumnCount = computed(() => {
   const classes: string[] = [];
   const styles: { [key: string]: string | number } = {};
 
-  if (props.menu?.length && props.menu?.length < 5) {
-    styles['--level2-column-count'] = props.menu.length;
+  if (props.menus?.length && props.menus?.length < 5) {
+    styles['--level2-column-count'] = props.menus.length;
   }
 
   return { classes, styles };
 });
 
 const level3MenuColumns = computed(() =>
-  props.menu?.map((menuItem, index) => {
+  props.menus?.map((menuItem, index) => {
     const classes: string[] = [];
     const styles: { [key: string]: string | number } = {};
 

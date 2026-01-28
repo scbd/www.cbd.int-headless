@@ -24,8 +24,8 @@
     }"
   >
     <template
-      v-for="child of menu.children?.sort((a, b) => a.position - b.position)"
-      :key="child.position"
+      v-for="child of menu.children"
+      :key="child.branchId"
     >
       <NavigationSubmenuVerticalItems
         :menu="child"

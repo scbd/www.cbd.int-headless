@@ -1,6 +1,7 @@
 <template>
   <li
     v-for="childMenuItem in menu?.children"
+    :key="childMenuItem.branchId"
     class="nav-item"
     :class="{ 'current-page': childMenuItem.activeBranch }"
   >
