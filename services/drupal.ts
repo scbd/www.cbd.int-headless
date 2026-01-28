@@ -323,7 +323,7 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
  */
 export async function getMenu (
   code: string,
-  options: { depth?: number, branch?: string, url?: string, child?: Menu } = {}
+  options: { depth?: number, branch?: string, url?: string } = {}
 ): Promise<Menu[]> {
   if (options?.branch != null && options?.url != null) throw badRequest('Can only get menu with branch or url at once')
 
@@ -333,6 +333,12 @@ export async function getMenu (
   // loading a branch via its url
   if (options?.url != null) {
     options.branch = processedItems.find(item => item.url === options.url)?.id
+
+    // If a specific url was requested but not found, signal this explicitly
+    if (options.branch == null) {
+      throw notFound(`Menu url '${options.url}' not found`)
+    }
+
     delete options.url
   }
 
@@ -382,6 +388,11 @@ export async function getMenu (
 
   // Start building from root
   const menus = buildHierarchy(options.branch)
+
+  // If a specific branch was requested but not found, signal this explicitly
+  if (options.branch != null && menus.length === 0) {
+    throw notFound(`Menu branch '${options.branch}' not found`)
+  }
 
   // if we pulled from a specific branch traverse ancestors
   // note that in this case we only have one root menu item
