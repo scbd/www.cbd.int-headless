@@ -11,6 +11,6 @@
 import type { Menu } from "~~/types/menu";
 
 const props = defineProps<{
-  menu: Menu,
+  menu: Menu;
 }>();
 </script>
