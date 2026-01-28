@@ -8,6 +8,7 @@ export interface Content {
   locale: LString
   body: string
   summary: string
+  menu: string
 };
 
 export interface Article extends Content {
@@ -17,8 +18,4 @@ export interface Article extends Content {
     width: number
     height: number
   }
-};
-
-export interface Page extends Content {
-  menu: string
 };

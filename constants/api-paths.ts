@@ -1,3 +1,5 @@
+export const MENUS = '/api/menus'
+export const ARTICLE = '/api/content'
 export const ARTICLES = '/api/articles'
 export const CONTENT = '/api/content'
 export const GBF_TARGETS = '/api/gbf-targets'

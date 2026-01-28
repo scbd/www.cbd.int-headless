@@ -1,4 +1,4 @@
-import { notFound } from 'api-client/api-error'
+import { notFound, badRequest } from 'api-client/api-error'
 import DrupalApi from '../api/drupal'
 import type { Content, Article, Page } from '../types/content'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -323,45 +323,17 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
  */
 export async function getMenu (
   code: string,
-  options?: { depth?: number, branch?: string }
+  options: { depth?: number, branch?: string, url?: string, child?: Menu } = {}
 ): Promise<Menu[]> {
+  if (options?.branch != null && options?.url != null) throw badRequest('Can only get menu with branch or url at once')
+
   // Load preprocessed menu data
   const processedItems = await loadCachedMenu(code)
 
-  // Filter based on options
-  let itemsToInclude: ProcessedMenuItem[]
-
-  if (options?.branch != null) {
-    // Start from specific branch
-    const branchItem = processedItems.find(item => item.id === options.branch)
-    if (branchItem == null) {
-      throw notFound(`Branch ${options.branch} not found in menu.`)
-    }
-
-    // Get all descendants of branch using precomputed childrenIds
-    const getDescendants = (itemId: string): string[] => {
-      const item = processedItems.find(i => i.id === itemId)
-      if (item == null) return []
-
-      const descendants = [itemId]
-      item.childrenIds.forEach(childId => {
-        descendants.push(...getDescendants(childId))
-      })
-      return descendants
-    }
-
-    const descendantIds = new Set(getDescendants(options.branch))
-    itemsToInclude = processedItems.filter(item => descendantIds.has(item.id))
-
-    // Adjust depths relative to branch (branch becomes depth 0)
-    const branchDepth = branchItem.depth
-    itemsToInclude = itemsToInclude.map(item => ({
-      ...item,
-      depth: item.depth - branchDepth
-    }))
-  } else {
-    // Include all items
-    itemsToInclude = processedItems
+  // loading a branch via its url
+  if (options?.url != null) {
+    options.branch = processedItems.find(item => item.url === options.url)?.id
+    delete options.url
   }
 
   // Apply depth filtering if specified
@@ -370,34 +342,35 @@ export async function getMenu (
     maxDepth = options.depth
   }
 
+  const itemToMenu = (item: ProcessedMenuItem): Menu => ({
+    branchId: item.id,
+    parentId: item.parentId,
+    title: item.title,
+    url: item.url,
+    position: item.position,
+    submenu: item.submenu,
+    component: item.component,
+    icon: item.icon,
+    childrenCount: item.childrenCount
+  })
+
   // Build hierarchical structure
-  const buildHierarchy = (parentId: string | null, currentDepth: number): Menu[] => {
-    const items = itemsToInclude
-      .filter(item => {
-        // For branch filtering, the branch item itself has depth 0 but parentId is still its original parent
-        // So we need to match by id for the root branch item
-        if (options?.branch != null && currentDepth === 0 && item.id === options.branch) {
-          return true
-        }
-        return item.parentId === parentId && item.depth === currentDepth
-      })
-      .sort((a, b) => a.position - b.position)
+  const buildHierarchy = (branchId: string | null = null, parentId: string | null = null, currentDepth: number = 0): Menu[] => {
+    const items = branchId != null
+      ? processedItems.filter(item => item.id === branchId)
+      : processedItems
+        .filter(item => item.parentId === parentId)
+        .sort((a, b) => a.position - b.position)
 
     return items.map(item => {
       const menu: Menu = {
-        branchId: item.id,
-        title: item.title,
-        url: item.url,
-        position: item.position,
-        submenu: item.submenu,
-        component: item.component,
-        icon: item.icon,
-        childrenCount: item.childrenCount
+        ...itemToMenu(item),
+        ...branchId != null && { activeBranch: true }
       }
 
-      // Only include children if we haven't reached max depth
+      // Include children if we haven't reached max depth
       if (maxDepth === undefined || currentDepth < maxDepth) {
-        const children = buildHierarchy(item.id, currentDepth + 1)
+        const children = buildHierarchy(null, item.id, currentDepth + 1)
         if (children.length > 0) {
           menu.children = children
         }
@@ -408,7 +381,28 @@ export async function getMenu (
   }
 
   // Start building from root
-  return buildHierarchy(null, 0)
+  const menus = buildHierarchy(options.branch)
+
+  // if we pulled from a specific branch traverse ancestors
+  // note that in this case we only have one root menu item
+  while (options.branch != null && menus[0] !== undefined && menus[0] != null && menus[0]?.parentId != null) {
+    const parentMenus = buildHierarchy(menus[0].parentId)
+    const parentMenu = parentMenus[0]
+    const branchId = menus[0].branchId
+
+    if (parentMenu?.children !== undefined && menus[0] !== undefined) {
+      // replace current menu to make sure we build the hierarchy
+      const child = parentMenu?.children.find(item => item.branchId === branchId)
+      if (child !== undefined) Object.assign(child, menus[0])
+
+      menus[0] = {
+        ...parentMenu,
+        children: parentMenu?.children
+      }
+    }
+  }
+
+  return menus
 };
 
 function contentNormalizer (value: string): string {
