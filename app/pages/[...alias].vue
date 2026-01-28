@@ -16,7 +16,7 @@
                   data-bs-target="#collapseSubnav"
                   aria-expanded="true"
                   aria-controls="collapseSubnav"
-                >                  
+                >
                 </button>
               </li>
             </div>
@@ -71,10 +71,12 @@ const { getMenu } = useMenuApi()
 const page = await getContent(route.path)
 
 // The logic below should be probably be moved to a utility and middleware
-const menu = await getMenu(page.menu, {
-  url: page.alias,
-  depth: 1
-})
+const menu = page.menu
+  ? await getMenu(page.menu, {
+    url: page.alias,
+    depth: 1
+  })
+  : undefined
 
 const buildPath = (item: any): any => {
   if (!item) return []

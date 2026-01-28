@@ -8,7 +8,7 @@ export interface Content {
   locale: LString
   body: string
   summary: string
-  menu: string
+  menu?: string
 };
 
 export interface Article extends Content {
