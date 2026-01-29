@@ -1,0 +1,98 @@
+# Environment Variables (configured in CircleCI project settings):
+#
+# Docker Hub Authentication:
+# - DOCKERHUB_USERNAME: Docker Hub username for pushing images
+# - DOCKERHUB_PASSWORD: Docker Hub password or access token
+#
+# Deployment Webhooks (Optional):
+# - DEPLOY_WEBHOOK_URL_master: Webhook URL(s) for master branch deployments (comma-separated for multiple)
+# - DEPLOY_WEBHOOK_URL_dev:    Webhook URL(s) for dev branch deployments (comma-separated for multiple)
+
+version: 2.1
+
+jobs:
+  build-only:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build www-nuxt image
+          command: |
+            docker buildx create --use
+            docker buildx build --platform linux/amd64 \
+              -t scbd/www-nuxt:$CIRCLE_BRANCH --load .
+      - run:
+          name: Build www-router image
+          command: |
+            docker buildx build --platform linux/amd64 \
+              -t scbd/www-router:$CIRCLE_BRANCH --load ./nginx
+
+  build-and-push:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Determine image tag
+          command: |
+            if [ -n "$CIRCLE_TAG" ]; then
+              echo "export IMAGE_TAG=$CIRCLE_TAG" >> $BASH_ENV
+            else
+              echo "export IMAGE_TAG=$CIRCLE_BRANCH" >> $BASH_ENV
+            fi
+      - run:
+          name: Build www-nuxt image
+          command: |
+            docker buildx create --use
+            docker buildx build --platform linux/amd64 \
+              -t scbd/www-nuxt:$IMAGE_TAG --load .
+      - run:
+          name: Build www-router image
+          command: |
+            docker buildx build --platform linux/amd64 \
+              -t scbd/www-router:$IMAGE_TAG --load ./nginx
+      - run:
+          name: Push images to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push scbd/www-nuxt:$IMAGE_TAG
+            docker push scbd/www-router:$IMAGE_TAG
+      - run:
+          name: Trigger Portainer webhooks
+          command: |
+            WEBHOOK_VAR="DEPLOY_WEBHOOK_URL_${CIRCLE_BRANCH}"
+            WEBHOOK_URL=$(eval echo \$$WEBHOOK_VAR)
+            if [ -n "$WEBHOOK_URL" ]; then
+              echo "Triggering Portainer webhook(s) for branch: $CIRCLE_BRANCH"
+              IFS=',' read -ra URLS <<< "$WEBHOOK_URL"
+              for url in "${URLS[@]}"; do
+                url=$(echo "$url" | xargs)
+                echo "  Triggering: $url"
+                docker run --rm curlimages/curl:latest -X POST "$url" || echo "Webhook call to $url failed (non-critical)"
+              done
+            else
+              echo "No webhook configured for branch: $CIRCLE_BRANCH (${WEBHOOK_VAR} not set)"
+            fi
+
+workflows:
+  build-deploy:
+    jobs:
+      - build-only:
+          filters:
+            branches:
+              ignore:
+                - dev
+                - master
+      - build-and-push:
+          filters:
+            branches:
+              only:
+                - dev
+                - master
+            tags:
+              only: /^\d{4}\.\d+\.\d+$/
