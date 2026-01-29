@@ -22,7 +22,7 @@
             </div>
             <navigation-top-menu
               v-if="megaMenu"
-              :menu="megaMenu"
+              :menus="megaMenu"
               class="level-2-items"
               id="collapseSubnav"
             />
