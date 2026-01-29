@@ -44,7 +44,6 @@ WORKDIR /app
 RUN apk add --no-cache wget
 
 # Set production environment
-ENV NODE_ENV=production
 
 # Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs && \
