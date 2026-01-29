@@ -1,5 +1,5 @@
 <template>
-  <div class="under-construction">
+  <div class="error-container">
     <div class="graphic">
       <svg
         class="cbd-logo"
@@ -37,10 +37,10 @@ const statusCode = computed(() => props.error?.statusCode)
 const { errorCodeMessage, errorMessage, homeButton, handleError } = useErrorContent(statusCode.value)
 </script>
 
-<style>
+<style scoped>
 @import "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap";
 
-:root {
+.error-container {
   --cbd-green: #009c48;
   --gradient-green: #004e24;
   --white: #fff;
@@ -48,17 +48,10 @@ const { errorCodeMessage, errorMessage, homeButton, handleError } = useErrorCont
   font-size: 16px;
   font-family: "Noto Sans", sans-serif;
   scroll-behavior: smooth;
-}
-
-body {
-  padding: 0;
-  margin: 0;
-}
-
-.under-construction {
   width: 100%;
   height: 100vh;
   padding: 0;
+  margin: 0;
   display: flex;
   overflow: hidden;
 }
