@@ -43,8 +43,6 @@ WORKDIR /app
 
 RUN apk add --no-cache wget
 
-# Set production environment
-
 # Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nuxtjs
