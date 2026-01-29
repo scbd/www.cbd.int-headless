@@ -1,0 +1,137 @@
+upstream www-nuxt    { server ${NUXT_HOST}:${NUXT_PORT};             }
+upstream drupal      { server ${DRUPAL_HOST}:${DRUPAL_PORT};         }
+upstream webgateway  { server ${WEBGATEWAY_HOST}:${WEBGATEWAY_PORT}; }
+upstream legacy-cms  { server ${LEGACY_CMS_HOST}:${LEGACY_CMS_PORT}; }
+upstream gaia-docs   { server ${GAIA_DOCS_S3_ENDPOINT}:443; }
+upstream api         { server ${API_HOST}:${API_PORT}; }
+
+server {
+    listen 80 default_server;
+
+    # Logging
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    # ===========================================
+    # Drupal Management Interfaces
+    # ===========================================
+    location ^~ /admin                   { proxy_pass https://drupal; include /etc/nginx/conf.d/snippets/drupal-dev-proxy.conf; }
+    location ^~ /user                    { proxy_pass https://drupal; include /etc/nginx/conf.d/snippets/drupal-dev-proxy.conf; }
+    location ^~ /themes/                 { proxy_pass https://drupal; include /etc/nginx/conf.d/snippets/drupal-dev-proxy.conf; }
+    location ^~ /modules/                { proxy_pass https://drupal; include /etc/nginx/conf.d/snippets/drupal-dev-proxy.conf; }
+    location ^~ /sites/default/files     { proxy_pass https://drupal; include /etc/nginx/conf.d/snippets/drupal-dev-proxy.conf; }
+    location ~* "^/[a-z]{2}/node/"       { proxy_pass https://drupal; include /etc/nginx/conf.d/snippets/drupal-dev-proxy.conf; }
+    location ~* "^/[a-z]{2}/history/"    { proxy_pass https://drupal; include /etc/nginx/conf.d/snippets/drupal-dev-proxy.conf; }
+    location ~* "^/[a-z]{2}/contextual/" { proxy_pass https://drupal; include /etc/nginx/conf.d/snippets/drupal-dev-proxy.conf; }
+    location ~* "^/[a-z]{2}/editor/"     { proxy_pass https://drupal; include /etc/nginx/conf.d/snippets/drupal-dev-proxy.conf; }
+
+    # ===========================================
+    # Portal Routes
+    # ===========================================
+
+    #required for angular app to work (/meetings /conferences)
+    location ^~ /app/                             { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
+    
+    # /meetings/* but NOT /meetings
+    location ~ ^/meetings/.+                   { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf;  }
+    location /conferences                      { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
+    # DOCUMENTS / NOTIFICATIONS / DECISIONS
+    # location ~ ^/notifications/.+              { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
+    location /documents                        { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
+    location ~ ^/decisions/cop/.+              { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
+    location /decisions/search                 { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
+    location /management/decisions             { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
+
+    # --- TRAEFIK PORTAL ROUTES (dev/preview only) ---
+    # These routes should normally be handled by Traefik route definitions.
+    # Included here temporarily for dev/preview environments.
+    # Be maybe i'm wrong and they should be here permanently? (moved from scbd-nginx to here)
+
+    include /etc/nginx/conf.d/snippets/traefik-portal-routes.conf;
+
+    # ===========================================
+    # Static Documents Routing
+    # ===========================================
+    # Files under /content/files/* -> Drupal sites/default/files
+    location ~* ^/content/(files|images)/ {
+        rewrite ^/content/(files|images)/(.*)$ /sites/default/files/$2 break;
+        proxy_pass https://drupal;
+        include /etc/nginx/conf.d/snippets/drupal-dev-proxy.conf;
+        proxy_intercept_errors on;
+        error_page 301 = @convert_301_to_302;
+    }
+    
+    # ===========================================
+    # Document Routes (/doc)
+    # ===========================================
+
+    # /doc/no-cache -> Webgateway (disabled for now - don't remember why this is in use)
+    # location /doc/no-cache                     { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
+
+    # /doc/c/* 
+    # /doc/interventions/* -> S3 (gaia documents)
+    location ~* ^/doc/(c|interventions)/ {
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${GAIA_DOCS_S3_ENDPOINT};
+        proxy_pass https://gaia-docs/gaia.documents$request_uri;
+    }
+
+    # /doc/* (all other doc routes) -> Legacy CMS (via CloudFront)
+    location ^~ /doc {
+        include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf;
+        proxy_pass https://legacy-cms;
+        include /etc/nginx/conf.d/proxy-params.conf;
+        proxy_intercept_errors on;
+        error_page 301 = @convert_301_to_302;
+    }
+
+    # Static documents -> Nuxt first, fallback to Legacy CMS on 404
+    location ~* \.(avi|bmp|css|docx?|dot[mx]?|eot|eps|geojson|gif|htc|html?|ico|jpe?g|js|json|km[lz]|mov|mp[34g]|ogv|otf|pdf|png|ppsx?|pptx?|psd|pub|rar|rtf|svg|swf|tiff?|ttf|txt|wav|web[mp]|wmv|woff2?|wpd|wri|xap|xls[mx]?|xml|xsd|zip)$ {
+        proxy_pass http://www-nuxt;
+        include /etc/nginx/conf.d/proxy-params.conf;
+        proxy_intercept_errors on;
+        error_page 404 = @static_docs_legacy_fallback;
+    }
+
+    location @static_docs_legacy_fallback {
+        include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf;
+        proxy_pass https://legacy-cms;
+        include /etc/nginx/conf.d/proxy-params.conf;
+        proxy_intercept_errors on;
+        error_page 301 = @convert_301_to_302;
+    }
+
+    # ===========================================
+    # API -> api.cbd.int
+    # ===========================================
+    location /api/v {
+        proxy_ssl_server_name on;
+        proxy_ssl_name api.cbd.int;
+        proxy_set_header Host api.cbd.int;
+        proxy_pass https://api;
+        include /etc/nginx/conf.d/proxy-params.conf;
+    }
+
+    # ===========================================
+    # Default: Everything else -> Nuxt App
+    # Fallback to legacy-cms on 404
+    # ===========================================
+    location / {
+        proxy_pass http://www-nuxt;
+        include /etc/nginx/conf.d/proxy-params.conf;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_intercept_errors on;
+        error_page 301 = @convert_301_to_302;
+        error_page 404 = @legacy_fallback;
+    }
+
+    # Convert 301 redirects from backends to 302
+    location @convert_301_to_302 {
+        return 302 $upstream_http_location;
+    }
+
+    location @legacy_fallback {
+        return 302 ${LEGACY_WWW_FALLBACK_URL}$request_uri;
+    }
+}

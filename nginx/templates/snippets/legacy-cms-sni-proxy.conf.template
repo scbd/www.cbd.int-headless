@@ -1,0 +1,5 @@
+# NOTE: This snippet must be included BEFORE proxy_pass so that
+# the SNI name is set before the upstream connection is established.
+proxy_ssl_server_name on;
+proxy_ssl_name ${LEGACY_CMS_HOST};
+proxy_set_header Host ${LEGACY_CMS_HOST};

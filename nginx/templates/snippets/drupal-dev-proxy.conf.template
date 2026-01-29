@@ -1,0 +1,6 @@
+# Temp for localhost testing - remove when DRUPAL_HOST matches $host
+proxy_set_header Host ${DRUPAL_HOST};
+proxy_redirect https://${DRUPAL_HOST}/ $scheme://$http_host/;
+proxy_redirect http://${DRUPAL_HOST}/ $scheme://$http_host/;
+proxy_cookie_flags ~ nosecure;
+proxy_cookie_domain ${DRUPAL_HOST} $host;
