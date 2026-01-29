@@ -5,6 +5,7 @@
         class="cbd-logo"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 819.25 1044"
+        aria-hidden="true"
       >
         <path
           class="leaf"
@@ -108,7 +109,7 @@ h2.error-heading {
 }
 
 @media (max-width: 900px) {
-  .under-construction {
+  .error-container {
     flex-direction: column-reverse;
     overflow: auto;
   }

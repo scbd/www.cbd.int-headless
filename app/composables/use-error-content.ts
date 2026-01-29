@@ -34,8 +34,7 @@ export const useErrorContent = (statusCode: number): ErrorContent => {
     errorCodeMessage,
     errorMessage,
     homeButton,
-    handleError,
-    route
+    handleError
   }
 }
 
@@ -44,5 +43,4 @@ interface ErrorContent {
   errorMessage: ComputedRef<string>
   homeButton: ComputedRef<string>
   handleError: () => Promise<void>
-  route: ReturnType<typeof useRoute>
 }
