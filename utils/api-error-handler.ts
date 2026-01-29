@@ -1,6 +1,3 @@
-/**
- * TODO: https://scbd.atlassian.net/browse/CIR-139
- */
 export const handleErrorState = ({
   error,
   ...rest
@@ -11,6 +8,10 @@ export const handleErrorState = ({
   if (error.value === null || error.value === undefined) {
     return rest
   } else {
-    throw error.value
+    throw createError({
+      statusCode: error.value.statusCode,
+      statusMessage: error.value.statusMessage,
+      fatal: true
+    })
   }
 }
