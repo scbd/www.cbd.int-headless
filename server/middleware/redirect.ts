@@ -6,8 +6,8 @@ export default defineEventHandler(async (event) => {
 
   // ignore paths
   if (path == null) return
-  if(/^\/api\//i.test(path)) return
-  if(/^\/_/.test(path)) return
+  if (/^\/api\//i.test(path)) return
+  if (/^\/_/.test(path)) return
 
   try {
     const route = await getRoute(path)
