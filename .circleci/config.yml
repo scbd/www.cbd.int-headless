@@ -69,7 +69,7 @@ jobs:
             WEBHOOK_URL=$(eval echo \$$WEBHOOK_VAR)
             if [ -n "$WEBHOOK_URL" ]; then
               echo "Triggering Portainer webhook(s) for branch: $CIRCLE_BRANCH"
-              IFS=',' read -ra URLS <<< "$WEBHOOK_URL"
+              IFS=',' read -ra URLS \<<< "$WEBHOOK_URL"
               for url in "${URLS[@]}"; do
                 url=$(echo "$url" | xargs)
                 echo "  Triggering: $url"
