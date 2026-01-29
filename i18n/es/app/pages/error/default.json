@@ -1,0 +1,5 @@
+{
+    "errorCodeMessage": "Error Genérico",
+    "errorMessage": "Hubo un error al intentar acceder a la página {path}.",
+    "homeButton": "Ir a la página principal"
+}
