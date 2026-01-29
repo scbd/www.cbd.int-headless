@@ -36,8 +36,14 @@ interface ProcessedMenuItem {
 // In-memory cache: Map<menuCode, MenuCacheEntry>
 const menuCache = new Map<string, MenuCacheEntry>()
 
-export async function getContent (url: string): Promise<Content | Article> {
+export async function getRoute (url: string): Promise<any> {
   const route = await drupalApi.getRoute(url)
+
+  return route
+}
+
+export async function getContent (url: string): Promise<Content | Article> {
+  const route = await getRoute(url)
 
   if (route === null) throw notFound('Route not found.')
 
