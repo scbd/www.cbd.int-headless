@@ -15,7 +15,7 @@
     </div>
     <div class="info">
       <hgroup class="titles">
-        <h1 class="error-heading">{{ errorCode }} - {{ errorCodeMessage }}</h1>
+        <h1 class="error-heading">{{ statusCode }} - {{ errorCodeMessage }}</h1>
         <h2 class="error-msg">{{ errorMessage }}</h2>
         <br />
         <button class="btn btn-secondary" @click="handleError">{{ homeButton }}</button>
@@ -34,7 +34,7 @@ const props = defineProps<{
 
 const statusCode = computed(() => props.error?.statusCode)
 
-const { errorCode, errorCodeMessage, errorMessage, homeButton, handleError } = useErrorContent(statusCode.value)
+const { errorCodeMessage, errorMessage, homeButton, handleError } = useErrorContent(statusCode.value)
 </script>
 
 <style>
