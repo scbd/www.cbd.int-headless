@@ -1,5 +1,4 @@
 {
-    "errorCode": "403",
     "errorCodeMessage": "Acceso Denegado",
     "errorMessage": "No tienes permiso para acceder a la página {path}.",
     "homeButton": "Ir a la página de inicio"

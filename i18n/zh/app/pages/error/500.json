@@ -1,5 +1,4 @@
 {
-    "errorCode": "500",
     "errorCodeMessage": "内部服务器错误",
     "errorMessage": "访问页面 {path} 时发生意外错误。",
     "homeButton": "前往主页"

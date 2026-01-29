@@ -1,5 +1,4 @@
 {
-    "errorCode": "403",
     "errorCodeMessage": "Доступ запрещен",
     "errorMessage": "У вас нет разрешения на доступ к странице {path}.",
     "homeButton": "Перейти на главную страницу"

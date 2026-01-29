@@ -1,5 +1,4 @@
 {
-    "errorCode": "500",
     "errorCodeMessage": "Internal Server Error",
     "errorMessage": "An unexpected error occurred while trying to access the page {path}.",
     "homeButton": "Go to the Home Page"

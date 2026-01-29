@@ -1,5 +1,4 @@
 {
-    "errorCode": "404",
     "errorCodeMessage": "غير موجود",
     "errorMessage": "لم يتم العثور على الصفحة {path} التي تحاول الوصول إليها.",
     "homeButton": "انتقل إلى الصفحة الرئيسية"

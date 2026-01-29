@@ -1,5 +1,4 @@
 {
-    "errorCode": "500",
     "errorCodeMessage": "Erreur Interne du Serveur",
     "errorMessage": "Une erreur inattendue s'est produite lors de l'accès à la page {path}.",
     "homeButton": "Accéder à la page d'accueil"
