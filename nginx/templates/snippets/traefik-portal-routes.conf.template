@@ -11,7 +11,6 @@ location /coral-reefs            { include /etc/nginx/conf.d/snippets/legacy-cms
 location /portals/action-agenda  { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
 location /biobridge              { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
 location /side-events            { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
-# location /aichi-targets          { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
 
 # CCTV / KRONOS
 location /cctv                   { include /etc/nginx/conf.d/snippets/legacy-cms-sni-proxy.conf; proxy_pass https://legacy-cms; include /etc/nginx/conf.d/proxy-params.conf; }
