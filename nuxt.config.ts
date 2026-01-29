@@ -39,9 +39,6 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     drupalBaseUrl: '',
-    drupalClientId: '',
-    drupalClientSecret: '',
-    drupalScope: '',
     apiBaseUrl: '',
     ortUrl: ''
   },
