@@ -39,9 +39,6 @@ Create a `.env` file in the root directory with the following variables:
 | Variable                      | Description                                              | Required |
 |-------------------------------|----------------------------------------------------------|----------|
 | `NUXT_DRUPAL_BASE_URL`        | Base URL for Drupal CMS API                              | Yes      |
-| `NUXT_DRUPAL_CLIENT_ID`       | OAuth client ID for Drupal authentication                | Yes      |
-| `NUXT_DRUPAL_CLIENT_SECRET`   | OAuth client secret for Drupal authentication            | Yes      |
-| `NUXT_DRUPAL_SCOPE`           | OAuth scope for Drupal API access (default: `api_scope`) | No       |
 | `NUXT_API_BASE_URL`           | Base URL for CBD API (Solr, Thesaurus)                   | Yes      |
 | `NUXT_ORT_URL`                | Base URL for ORT service                                 | Yes      |
 | `NUXT_PUBLIC_GTAG_ID`         | Google Analytics tracking ID                             | No       |
