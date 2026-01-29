@@ -3,7 +3,7 @@ import error404 from '~~/i18n/dist/app/pages/error/404.json'
 import error500 from '~~/i18n/dist/app/pages/error/500.json'
 import errorDefault from '~~/i18n/dist/app/pages/error/default.json'
 
-const getMessages = (code: number): Record<string, any> => {
+const getMessages = (code: number): any => {
   switch (code) {
     case 403:
       return error403
@@ -21,9 +21,10 @@ export const useErrorContent = (statusCode: number): ErrorContent => {
     useScope: 'local',
     messages: getMessages(statusCode)
   })
+  const localePath = useLocalePath()
   const route = useRoute()
 
-  const handleError = async (): Promise<void> => clearError({ redirect: '/' })
+  const handleError = async (): Promise<void> => clearError({ redirect: localePath('/') })
 
   const errorCode = computed(() => t('errorCode'))
   const errorCodeMessage = computed(() => t('errorCodeMessage'))
