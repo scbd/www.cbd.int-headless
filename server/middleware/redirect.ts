@@ -5,7 +5,9 @@ export default defineEventHandler(async (event) => {
   const path = getRequestURL(event)?.href?.replace(/https?:\/\/[^/]*/, '')
 
   // ignore paths
-  if (path == null || /\/api\/|\/_/.test(path)) return
+  if (path == null) return
+  if(/^\/api\//i.test(path)) return
+  if(/^\/_/.test(path)) return
 
   try {
     const route = await getRoute(path)
