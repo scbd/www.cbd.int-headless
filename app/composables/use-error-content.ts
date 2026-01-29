@@ -26,13 +26,11 @@ export const useErrorContent = (statusCode: number): ErrorContent => {
 
   const handleError = async (): Promise<void> => clearError({ redirect: localePath('/') })
 
-  const errorCode = computed(() => t('errorCode'))
   const errorCodeMessage = computed(() => t('errorCodeMessage'))
   const errorMessage = computed(() => t('errorMessage', { path: route.path }))
   const homeButton = computed(() => t('homeButton'))
 
   return {
-    errorCode,
     errorCodeMessage,
     errorMessage,
     homeButton,
@@ -42,7 +40,6 @@ export const useErrorContent = (statusCode: number): ErrorContent => {
 }
 
 interface ErrorContent {
-  errorCode: ComputedRef<string>
   errorCodeMessage: ComputedRef<string>
   errorMessage: ComputedRef<string>
   homeButton: ComputedRef<string>
