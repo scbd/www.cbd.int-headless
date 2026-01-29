@@ -13,28 +13,28 @@
         />
       </svg>
     </div>
-    <component :is="errorPage" />
+    <div class="info">
+      <hgroup class="titles">
+        <h1 class="error-heading">{{ errorCode }} - {{ errorCodeMessage }}</h1>
+        <h2 class="error-msg">{{ errorMessage }}</h2>
+        <br />
+        <button class="btn btn-secondary" @click="handleError">{{ homeButton }}</button>
+      </hgroup>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Error403 from "~~/app/pages/error/403.vue"
-import Error404 from "~~/app/pages/error/404.vue"
-import Error500 from "~~/app/pages/error/500.vue"
+import { useErrorContent } from "~/composables/use-error-content"
 import type { NuxtError } from "nuxt/app"
 
 const props = defineProps<{
   error: NuxtError;
 }>();
 
-const errorPage = computed(()=> {
-  if (props?.error?.statusCode === 404) {
-    return Error404;
-  } else if (props?.error?.statusCode === 403) {
-    return Error403;
-  }
-  return Error500;
-})
+const statusCode = computed(() => props.error?.statusCode)
+
+const { errorCode, errorCodeMessage, errorMessage, homeButton, handleError } = useErrorContent(statusCode.value)
 </script>
 
 <style>
