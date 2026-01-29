@@ -89,6 +89,7 @@ workflows:
                 - dev
                 - master
       - build-and-push:
+          context: docker-hub
           filters:
             branches:
               only:
