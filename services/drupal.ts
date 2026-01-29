@@ -1,6 +1,7 @@
 import { notFound, badRequest } from 'api-client/api-error'
 import DrupalApi from '../api/drupal'
 import type { Content, Article } from '../types/content'
+import type { DrupalRouterResponse } from '../types/api/drupal'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { Menu } from '../types/menu'
 import type { Portal } from '../types/portal'
@@ -36,7 +37,7 @@ interface ProcessedMenuItem {
 // In-memory cache: Map<menuCode, MenuCacheEntry>
 const menuCache = new Map<string, MenuCacheEntry>()
 
-export async function getRoute (url: string): Promise<any> {
+export async function getRoute (url: string): Promise<DrupalRouterResponse> {
   const route = await drupalApi.getRoute(url)
 
   return route
