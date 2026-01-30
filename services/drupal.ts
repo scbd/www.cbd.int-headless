@@ -5,6 +5,7 @@ import type { DrupalRouterResponse } from '../types/api/drupal'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { Menu } from '../types/menu'
 import type { Portal } from '../types/portal'
+import type { Image } from '~~/types/image'
 import { MENU_CACHE_DURATION_MS } from '../constants/cache'
 import { DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
 
@@ -130,6 +131,29 @@ export async function getPortal (id: string): Promise<Portal[]> {
 
   return portals
 };
+
+export async function getImage (id: string, category: string): Promise<Image> {
+  const data = await drupalApi.getImage(id, category)
+
+  const image: Image = {
+    category,
+    path: '',
+    alt: '',
+    width: 0,
+    height: 0
+  }
+
+  if (data?.data.id === null) return image
+
+  const { attributes } = data?.data
+
+  image.path = contentNormalizer(attributes?.uri?.url)
+  image.alt = attributes?.alt
+  image.width = attributes?.width
+  image.height = attributes?.height
+
+  return image
+}
 
 export async function listArticles (options?: QueryParams): Promise<Article[]> {
   const data = await drupalApi.listArticles(options)

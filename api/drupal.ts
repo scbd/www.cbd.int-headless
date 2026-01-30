@@ -31,6 +31,14 @@ export default class DrupalApi extends ApiBase {
     return data
   };
 
+  async getImage (id: string, category: string): Promise<any> {
+    if (id === null || id === '') throw mandatory('id', 'Parameter id is required.')
+    if (category === null || category === '') throw mandatory('category', 'Parameter category is required.')
+
+    const data = await this.fetch(`/jsonapi/media/${encodeURIComponent(category)}?filter[name][value]=${encodeURIComponent(id)}`)
+    return data
+  }
+
   async getMenu (menu: string): Promise<any> {
     if (menu === null || menu === '') throw mandatory('menu', 'Parameter menu is required.')
 
