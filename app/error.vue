@@ -66,11 +66,6 @@ h1.error-heading {
   margin: 0 0 0.5rem;
 }
 
-h2.error-heading {
-  font-size: 1.8rem;
-  margin: 0;
-}
-
 .graphic {
   flex: 1 1 60%;
   display: flex;
