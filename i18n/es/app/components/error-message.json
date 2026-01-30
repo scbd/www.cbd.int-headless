@@ -1,0 +1,11 @@
+{
+    "errorCodeMessage-403": "Acceso Denegado",
+    "errorCodeMessage-404": "No Encontrado",
+    "errorCodeMessage-500": "Error Interno del Servidor",
+    "errorCodeMessage-default": "Error Genérico",
+    "errorMessage-403": "No tienes permiso para acceder a la página {path}.",
+    "errorMessage-404": "La página {path} que intentas acceder no se pudo encontrar.",
+    "errorMessage-500": "Ocurrió un error inesperado al intentar acceder a la página {path}.",
+    "errorMessage-default": "Ocurrió un error al acceder a la página {path}.",
+    "homeButton": "Ir a la página principal"
+}

@@ -1,5 +1,0 @@
-{
-    "errorCodeMessage": "Accès Refusé",
-    "errorMessage": "Vous n'avez pas l'autorisation d'accéder à la page {path}.",
-    "homeButton": "Accéder à la page d'accueil"
-}

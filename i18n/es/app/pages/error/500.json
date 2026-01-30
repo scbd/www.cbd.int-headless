@@ -1,5 +1,0 @@
-{
-    "errorCodeMessage": "Error Interno del Servidor",
-    "errorMessage": "Se ha producido un error inesperado al intentar acceder a la página {path}.",
-    "homeButton": "Ir a la página de inicio"
-}

@@ -1,0 +1,11 @@
+{
+    "errorCodeMessage-403": "Accès Refusé",
+    "errorCodeMessage-404": "Non Trouvé",
+    "errorCodeMessage-500": "Erreur Interne du Serveur",
+    "errorCodeMessage-default": "Erreur Générique",
+    "errorMessage-403": "Vous n'avez pas la permission d'accéder à la page {path}.",
+    "errorMessage-404": "La page {path} que vous essayez d'accéder est introuvable.",
+    "errorMessage-500": "Une erreur inattendue s'est produite lors de la tentative d'accès à la page {path}.",
+    "errorMessage-default": "Une erreur s'est produite lors de l'accès à la page {path}.",
+    "homeButton": "Aller à la page d'accueil"
+}
