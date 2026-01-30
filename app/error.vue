@@ -14,28 +14,19 @@
         />
       </svg>
     </div>
-    <div class="info">
-      <hgroup class="titles">
-        <h1 class="error-heading">{{ statusCode }} - {{ errorCodeMessage }}</h1>
-        <h2 class="error-msg">{{ errorMessage }}</h2>
-        <br />
-        <button class="btn btn-secondary" @click="handleError">{{ homeButton }}</button>
-      </hgroup>
-    </div>
+    <ErrorMessage :statusCode="statusCode" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useErrorContent } from "~/composables/use-error-content"
 import type { NuxtError } from "nuxt/app"
+import ErrorMessage from "./components/error-message.vue";
 
 const props = defineProps<{
   error: NuxtError;
 }>();
 
 const statusCode = computed(() => props.error?.statusCode)
-
-const { errorCodeMessage, errorMessage, homeButton, handleError } = useErrorContent(statusCode.value)
 </script>
 
 <style scoped>
@@ -79,38 +70,10 @@ h1.error-heading {
   }
 }
 
-.info {
-  flex: 1 1 calc(40% - 4rem);
-  flex-direction: column;
-  padding: 0 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .titles {
-    flex: 2 1 calc(100% - 1rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .error-msg {
-    flex-basis: 1rem;
-    align-self: flex-end;
-    color: lightgrey;
-    font-size: 1.0rem;
-  }
-}
-
 @media (max-width: 900px) {
   .error-container {
     flex-direction: column-reverse;
     overflow: auto;
-  }
-  .info {
-    height: 50%;
-    flex: 1 1 auto;
   }
   .graphic {
     height: 50%;
