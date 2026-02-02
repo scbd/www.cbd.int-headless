@@ -3,8 +3,10 @@ import { getRoute } from '../../services/drupal'
 
 export default defineEventHandler(async (event) => {
   const path = getRequestURL(event).pathname
+
   // ignore paths
   if (path == null) return
+  if (path === '/') return
   if (/^\/api\//i.test(path)) return
   if (/^\/_/.test(path)) return
 
