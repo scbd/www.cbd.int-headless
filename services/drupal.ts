@@ -144,6 +144,7 @@ export async function getImage (id: string, category: Image['category']): Promis
   }
 
   const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
+
   if (attributes?.id === null || attributes?.id === undefined) return image
 
   image.category = category
