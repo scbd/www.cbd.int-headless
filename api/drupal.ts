@@ -1,4 +1,5 @@
 import ApiBase from 'api-client/api-base'
+import type { Image } from '../types/image'
 import { mandatory, handleError } from 'api-client/api-error'
 export default class DrupalApi extends ApiBase {
   constructor (options: { baseURL: string }) {
@@ -31,9 +32,9 @@ export default class DrupalApi extends ApiBase {
     return data
   };
 
-  async getImage (id: string, category: string): Promise<any> {
+  async getImage (id: string, category: Image['category']): Promise<any> {
     if (id === null || id === '') throw mandatory('id', 'Parameter id is required.')
-    if (category === null || category === '') throw mandatory('category', 'Parameter category is required.')
+    if (category === null) throw mandatory('category', 'Parameter category is required.')
 
     const data = await this.fetch(`/jsonapi/media/${encodeURIComponent(category)}?filter[name][value]=${encodeURIComponent(id)}`)
     return data

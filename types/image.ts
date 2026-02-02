@@ -1,5 +1,5 @@
 export interface Image {
-  category: string
+  category: 'meetings' | 'notifications' | 'statements' | 'portals' | 'boilerplate'
   path: string
   alt: string
   width: number

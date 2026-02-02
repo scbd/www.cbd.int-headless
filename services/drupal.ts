@@ -2,12 +2,12 @@ import { notFound, badRequest } from 'api-client/api-error'
 import DrupalApi from '../api/drupal'
 import type { Content, Article } from '../types/content'
 import type { DrupalRouterResponse } from '../types/api/drupal'
-import type { QueryParams } from '~~/types/api/query-params'
+import type { QueryParams } from '../types/api/query-params'
 import type { Menu } from '../types/menu'
 import type { Portal } from '../types/portal'
-import type { Image } from '~~/types/image'
+import type { Image } from '../types/image'
 import { MENU_CACHE_DURATION_MS } from '../constants/cache'
-import { DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
+import { DRUPAL_IMAGE_PATH, IMAGE_FALLBACK, IMAGE_FALLBACK_CATEGORY, IMAGE_FALLBACK_ALT, IMAGE_FALLBACK_WIDTH, IMAGE_FALLBACK_HEIGHT } from '../constants/image-paths'
 
 const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
@@ -132,25 +132,31 @@ export async function getPortal (id: string): Promise<Portal[]> {
   return portals
 };
 
-export async function getImage (id: string, category: string): Promise<Image> {
+export async function getImage (id: string, category: Image['category']): Promise<Image> {
   const data = await drupalApi.getImage(id, category)
 
   const image: Image = {
-    category,
-    path: '',
-    alt: '',
-    width: 0,
-    height: 0
+    category: IMAGE_FALLBACK_CATEGORY,
+    path: IMAGE_FALLBACK,
+    alt: IMAGE_FALLBACK_ALT,
+    width: IMAGE_FALLBACK_WIDTH,
+    height: IMAGE_FALLBACK_HEIGHT
   }
 
-  if (data?.data.id === null) return image
+  const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
 
-  const { attributes } = data?.data
+  if (attributes?.id === null || attributes?.id === undefined) return image
 
-  image.path = contentNormalizer(attributes?.uri?.url)
-  image.alt = attributes?.alt
-  image.width = attributes?.width
-  image.height = attributes?.height
+  image.category = category
+  image.alt = attributes?.meta?.alt
+  image.width = attributes?.meta?.width
+  image.height = attributes?.meta?.height
+
+  const media = await drupalApi.getMedia(attributes?.id)
+
+  if (media?.data?.id !== null || media?.data?.id !== undefined) {
+    image.path = contentNormalizer(media?.data?.attributes?.uri?.url)
+  }
 
   return image
 }
