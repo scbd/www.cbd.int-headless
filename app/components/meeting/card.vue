@@ -46,4 +46,6 @@ const meeting = computed(() => {
     url: props.meeting.urls[0],
   }
 })
+
+console.log('meeting', props.meeting)
 </script>
