@@ -9,10 +9,9 @@
     </div>
 
     <NuxtImg
-      :src="meeting.imageUrl"
+      :src="meeting?.image?.path"
       class="content-image"
       loading="lazy"
-      :placeholder="IMAGE_FALLBACK"
     />
 
     <div class="title">{{ toLocaleText(meeting.title) }}</div>
@@ -32,7 +31,6 @@
 import type { Meeting } from '~~/types/meeting'
 import { useFormatDate } from '~/composables/use-format-date'
 import { useLString } from '~/composables/use-lstring'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t } = useI18n()
 const { toLocaleText } = useLString()
@@ -46,13 +44,8 @@ const meeting = computed(() => {
   return {
     ...props.meeting,
     url: props.meeting.urls[0],
-    /**
-     * To be replaced with proper image handling when available;
-     * WILL BE REMOVED SOON
-     */
-    imageUrl: `/content/images/meetings/${encodeURIComponent(
-      props.meeting.code
-    )}.jpg`
   }
 })
+
+console.log('meeting', props.meeting)
 </script>
