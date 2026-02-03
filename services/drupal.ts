@@ -332,7 +332,6 @@ export async function getMenu (
   code: string,
   options: { depth?: number, branch?: string, url?: string } = {}
 ): Promise<Menu[]> {
-  console.log('services.drupal.getMenu', { code, options })
   if (options?.branch != null && options?.url != null) throw badRequest('Can only get menu with branch or url at once')
 
   // Load preprocessed menu data
@@ -370,7 +369,6 @@ export async function getMenu (
 
   // Build hierarchical structure
   const buildHierarchy = (branchId: string | null = null, parentId: string | null = null, currentDepth: number = 0): Menu[] => {
-    console.log('services.drupal.getMenu buildHierarchy', { branchId, parentId, currentDepth })
     const items = branchId != null
       ? processedItems.filter(item => item.id === branchId)
       : processedItems
