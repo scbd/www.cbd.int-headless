@@ -7,5 +7,5 @@
     "errorMessage-404": "La page {path} que vous essayez d'accéder est introuvable.",
     "errorMessage-500": "Une erreur inattendue s'est produite lors de la tentative d'accès à la page {path}.",
     "errorMessage-default": "Une erreur s'est produite lors de l'accès à la page {path}.",
-    "homeButton": "Aller à la page d'accueil"
+    "backButton": "Retour"
 }

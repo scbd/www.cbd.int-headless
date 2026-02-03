@@ -7,5 +7,5 @@
     "errorMessage-404": "您尝试访问的页面 {path} 未找到。",
     "errorMessage-500": "尝试访问页面 {path} 时发生意外错误。",
     "errorMessage-default": "访问页面 {path} 时发生错误。",
-    "homeButton": "转到主页"
+    "backButton": "返回"
 }

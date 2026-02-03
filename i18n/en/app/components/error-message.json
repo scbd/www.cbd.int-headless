@@ -7,5 +7,5 @@
     "errorMessage-404": "The page {path} you are trying to access could not be found.",
     "errorMessage-500": "An unexpected error occurred while trying to access the page {path}.",
     "errorMessage-default": "An error has occurred while accessing the page {path}.",
-    "homeButton": "Go to the Home Page"
+    "backButton": "Go back"
 }
