@@ -1,4 +1,5 @@
 import type { LString } from '@scbd/vue-components'
+import type { Image } from '~~/types/image'
 export interface Meeting {
   id: string
   code: string
@@ -10,4 +11,11 @@ export interface Meeting {
   updatedOn: Date
   country: LString
   city: LString
-};
+  image?: {
+    category: Image['category']
+    path: string
+    alt: string
+    width: number
+    height: number
+  }
+}
