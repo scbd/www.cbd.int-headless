@@ -1,6 +1,7 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
 import { solrEscape, toLString, toLStringArray } from '../utils/solr'
+import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '../types/api/solr'
 import type { Meeting } from '../types/meeting'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -39,7 +40,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
         }
   const { response } = await api.querySolr(params)
 
-  const meetingList: Meeting[] = response.docs.map((item: any): Meeting => ({
+  const meetingList: Meeting[] = await Promise.all(response.docs.map(async (item: any): Promise<Meeting> => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
@@ -49,22 +50,12 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
     endOn: new Date(item.endDate_dt),
     updatedOn: new Date(item.updatedDate_dt),
     country: toLString(item, 'eventCountry'),
-    city: toLString(item, 'eventCity')
-    // imageUrl: MeetingService.getImageUrl(item),
-    /**
-      * FOR @DevDrupal ONLY; WILL BE REMOVED SOON
-      *  TODO: implement image handling when available
-    */
-  }))
+    city: toLString(item, 'eventCity'),
+    image: await getImage(item.symbol_s, 'meetings')
+  })))
 
   return {
     total: response.numFound,
     rows: meetingList
   }
-};
-
-/**
-     * TODO: implement image handling when available
-  * FOR @DevDrupal ONLY; WILL BE REMOVED SOON
-  * @see https://github.com/scbd/www.cbd.int-headless/pull/10#discussion_r2437169504
-*/
+}
