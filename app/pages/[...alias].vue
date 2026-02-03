@@ -38,7 +38,7 @@
 
       <div class="container-xxl d-flex">
         <navigation-submenu-vertical
-          v-if="verticalMenu"
+          v-if="verticalMenu?.children?.length"
           :menu="verticalMenu"
         />
         <article class="cus-article container-fluid d-flex flex-column">
