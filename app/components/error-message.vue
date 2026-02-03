@@ -4,7 +4,7 @@
             <h1 class="error-heading">{{ statusCode }} - {{ errorCodeMessage }}</h1>
             <h2 class="error-msg">{{ errorMessage }}</h2>
             <br />
-            <button class="btn btn-secondary" @click="handleError">{{ t('homeButton') }}</button>
+            <button class="btn btn-secondary" @click="handleError">{{ t('backButton') }}</button>
         </hgroup>
     </div>
 </template>
@@ -14,14 +14,15 @@
 const { t } = useI18n()
 const localePath = useLocalePath()
 const route = useRoute()
+const router = useRouter()
 
 const props = defineProps({
     statusCode: Number
 })
 
-const errorCodeMessage = computed(() => t(`errorCodeMessage-${props.statusCode}`) || t('errorCodeMessage-default'))
-const errorMessage = computed(() => t(`errorMessage-${props.statusCode}`, { path: route.path }) || t('errorMessage-default'))
-const handleError = () => clearError({ redirect: localePath('/') })
+const errorCodeMessage = t(`errorCodeMessage-${props.statusCode}`) || t('errorCodeMessage-default')
+const errorMessage = t(`errorMessage-${props.statusCode}`, { path: route.path }) || t('errorMessage-default')
+const handleError = () => clearError({ redirect: localePath(router.back) })
 </script>
 
 <style scoped>
