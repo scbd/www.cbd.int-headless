@@ -20,6 +20,9 @@ export default defineNuxtConfig({
       viteSyncI18nFiles({})
     ]
   },
+  image: {
+    provider: 'none'
+  },
   i18n: {
     locales: [
       { code: 'ar', iso: 'ar-SA', dir: 'rtl' },
