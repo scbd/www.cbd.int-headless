@@ -1,12 +1,12 @@
 <template>
   <aside
-    v-if="submenu"
+    v-if="menu"
     class="cus-aside aside-nav"
     :class="{ 'aside-collapsed': isVisible }"
   >
     <div class="nav">
       <NavigationSubmenuVerticalItems
-        :menu="submenu"
+        :menu="menu"
         :level="3"
       />
     </div>
@@ -42,9 +42,4 @@ const isVisible = ref(false)
 const props = defineProps<{
   menu: Menu
 }>()
-
-// only show the menu starting at the 3rd level
-const submenu = computed(() => {
-  return props.menu.children?.find((item: any) => item.activeBranch) as Menu
-})
 </script>

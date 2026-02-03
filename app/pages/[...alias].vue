@@ -92,7 +92,7 @@ const megaMenu = computed(() => menuRoot.value?.children)
 
 const megaSubMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch))
 
-const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch))
+const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch)?.children?.find((item: Menu) => item.activeBranch))
 
 const breadcrumbMenu = computed(() => {
   if (page.alias && menuRoot.value) {
