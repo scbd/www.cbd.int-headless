@@ -22,7 +22,14 @@ const props = defineProps({
 
 const errorCodeMessage = t(`errorCodeMessage-${props.statusCode}`) || t('errorCodeMessage-default')
 const errorMessage = t(`errorMessage-${props.statusCode}`, { path: route.path }) || t('errorMessage-default')
-const handleError = () => clearError({ redirect: localePath(router.back) })
+const handleError = () => {
+  clearError()
+  if (import.meta.client && window.history.length > 1) {
+    navigateTo(localePath(router.back))
+  } else {
+    navigateTo(localePath('/'))
+  }
+}
 </script>
 
 <style scoped>

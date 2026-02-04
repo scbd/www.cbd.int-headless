@@ -5,13 +5,11 @@ export const handleErrorState = ({
   error: any
   [key: string]: any
 }): { [key: string]: any } => {
-  if (error.value === null || error.value === undefined) {
-    return rest
-  } else {
-    throw createError({
+  if (error.value != null) {
+    showError({
       statusCode: error.value.statusCode,
-      statusMessage: error.value.statusMessage,
-      fatal: true
+      statusMessage: error.value.statusMessage
     })
   }
+  return rest
 }
