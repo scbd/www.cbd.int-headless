@@ -1,0 +1,11 @@
+{
+    "errorCodeMessage-403": "رفض الوصول",
+    "errorCodeMessage-404": "غير موجود",
+    "errorCodeMessage-500": "خطأ داخلي في الخادم",
+    "errorCodeMessage-default": "خطأ عام",
+    "errorMessage-403": "ليس لديك إذن للوصول إلى الصفحة {path}.",
+    "errorMessage-404": "الصفحة {path} التي تحاول الوصول إليها غير موجودة.",
+    "errorMessage-500": "حدث خطأ غير متوقع أثناء محاولة الوصول إلى الصفحة {path}.",
+    "errorMessage-default": "حدث خطأ أثناء الوصول إلى الصفحة {path}.",
+    "backButton": "العودة"
+}
