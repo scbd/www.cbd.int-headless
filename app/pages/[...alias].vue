@@ -38,7 +38,7 @@
 
       <div class="container-xxl d-flex">
         <navigation-submenu-vertical
-          v-if="verticalMenu"
+          v-if="verticalMenu?.children?.length"
           :menu="verticalMenu"
         />
         <article class="cus-article container-fluid d-flex flex-column">
@@ -92,7 +92,7 @@ const megaMenu = computed(() => menuRoot.value?.children)
 
 const megaSubMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch))
 
-const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch))
+const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch)?.children?.find((i) => i.activeBranch))
 
 const breadcrumbMenu = computed(() => {
   if (page.alias && menuRoot.value) {

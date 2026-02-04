@@ -417,6 +417,10 @@ export async function getMenu (
         ...parentMenu,
         children: parentMenu?.children
       }
+    } else {
+      // parent not found: menu is likely miss-configured
+      console.warn(`Error building menu hiearchy: parent not found: ${menus[0].parentId}`, { code, options })
+      break
     }
   }
 
