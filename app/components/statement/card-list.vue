@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import useStatementsApi from '~/composables/api/use-statements';
-import { STATEMENTS } from '~~/constants/api-paths';
+import { STATEMENTS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 

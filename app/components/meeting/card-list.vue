@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import useMeetingsApi from '~/composables/api/use-meetings';
-import { MEETINGS } from '~~/constants/api-paths';
+import { MEETINGS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 

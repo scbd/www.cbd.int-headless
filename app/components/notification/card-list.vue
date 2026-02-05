@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import useNotificationsApi from '~/composables/api/use-notifications';
-import { NOTIFICATIONS } from '~~/constants/api-paths';
+import { NOTIFICATIONS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 
