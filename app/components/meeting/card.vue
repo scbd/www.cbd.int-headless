@@ -10,6 +10,7 @@
 
     <NuxtImg
       :src="meeting?.image?.path"
+      :alt="meeting?.image?.alt"
       class="content-image"
       loading="lazy"
     />

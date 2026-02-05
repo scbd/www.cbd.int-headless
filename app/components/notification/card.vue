@@ -5,11 +5,10 @@
     </div>
 
     <NuxtImg
-      :src="notification.imageUrl"
-      alt=""
+      :src="notification?.image?.path"
+      :alt="notification?.image?.alt"
       class="content-image"
       loading="lazy"
-      :placeholder="IMAGE_FALLBACK"
     />
 
     <div class="title"
@@ -46,7 +45,6 @@
 import type { Notification } from '~~/types/notification'
 import { useLString } from '~/composables/use-lstring'
 import { useFormatDate } from '~/composables/use-format-date'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t } = useI18n()
 const { toLocaleText } = useLString()
@@ -60,13 +58,6 @@ const notification = computed(() => {
   return {
     ...props.notification,
     url: props.notification.urls[0],
-    /**
-     * To be replaced with proper image handling when available;
-     * WILL BE REMOVED SOON
-     */
-    imageUrl: `/content/images/notifications/${encodeURIComponent(
-      props.notification.code
-    )}.jpg`
   }
 })
 </script>
