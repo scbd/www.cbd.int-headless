@@ -1,6 +1,3 @@
-/**
- * TODO: https://scbd.atlassian.net/browse/CIR-139
- */
 export const handleErrorState = ({
   error,
   ...rest
@@ -8,9 +5,11 @@ export const handleErrorState = ({
   error: any
   [key: string]: any
 }): { [key: string]: any } => {
-  if (error.value === null || error.value === undefined) {
-    return rest
-  } else {
-    throw error.value
+  if (error.value != null) {
+    showError({
+      statusCode: error.value.statusCode,
+      statusMessage: error.value.statusMessage
+    })
   }
+  return rest
 }
