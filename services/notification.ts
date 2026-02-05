@@ -1,6 +1,7 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
 import { solrEscape, toLString, toLStringArray } from '../utils/solr'
+import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '../types/api/solr'
 import type { Notification } from '../types/notification'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -36,7 +37,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     }
   const { response } = await api.querySolr(params)
 
-  const notificationList: Notification[] = response.docs.map((item: any): Notification => ({
+  const notificationList: Notification[] = await Promise.all(response.docs.map(async (item: any): Promise<Notification> => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
@@ -51,8 +52,9 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     fulltext: toLString(item, 'fulltext'),
     from: toLString(item, 'from'),
     recipients: item.recipient_txt,
-    sender: item.sender_t
-  }))
+    sender: item.sender_t,
+    image: await getImage(item.symbol_s, 'notifications')
+  })))
 
   return {
     total: response.numFound,

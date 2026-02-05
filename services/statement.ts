@@ -1,6 +1,7 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
 import { solrEscape, andOr, toLString, toLStringArray } from '../utils/solr'
+import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '../types/api/solr'
 import type { Statement } from '../types/statement'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -44,15 +45,16 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
         }
   const { response } = await api.querySolr(params)
 
-  const statementList: Statement[] = response.docs.map((item: any): Statement => ({
+  const statementList: Statement[] = await Promise.all(response.docs.map(async (item: any): Promise<Statement> => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
     urls: item.url_ss,
     themes: toLStringArray(item, 'themes'),
     createdOn: new Date(item.createdDate_dt),
-    updatedOn: new Date(item.updatedDate_dt)
-  }))
+    updatedOn: new Date(item.updatedDate_dt),
+    image: await getImage(item.symbol_s, 'statements')
+  })))
 
   return {
     total: response.numFound,
