@@ -86,7 +86,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
   align-self: flex-end;
 
   &::after {
-    content: url(/images/icons/icon-btn-arrow-circle-right_full.svg);
+    content: url(/images/icons/icon-btn-arrow-circle-right-full.svg);
     display: flex;
   }
 
@@ -143,7 +143,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
   }
 
   &.more-content::after {
-    content: url(/images/icons/icon_btn-arrow-circle-right_outline.svg);
+    content: url(/images/icons/icon-btn-arrow-circle-right-outline.svg);
   }
 
   &.related-content {
@@ -152,7 +152,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
     border-width: 1px;
     border-style: solid;
     &::after {
-      content: url(/images/icons/icon_btn-info.svg);
+      content: url(/images/icons/icon-btn-info.svg);
     }
   }
 
@@ -162,7 +162,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
     --bs-btn-active-color: var(--bs-body-color);
     font-weight: 600;
     &::after {
-      content: url(/images/icons/icon_filter-and-sort.svg);
+      content: url(/images/icons/icon-filter-and-sort.svg);
     }
     &:hover {
       opacity: 0.75;
