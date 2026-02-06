@@ -217,12 +217,6 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
     filter: brightness(90%);
   }
 
-  &[aria-expanded="true"] {
-    svg {
-      transform: rotate(180deg);
-    }
-  }
-
   svg {
     fill: var(--bs-tertiary-color);
   }
