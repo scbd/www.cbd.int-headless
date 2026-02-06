@@ -224,7 +224,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
 
 .results-pagination {
   .search-results-control {
-    --bs-form-select-bg-img: url(/images/icons/icon_nav-arrow.svg);
+    --bs-form-select-bg-img: url(/images/icons/icon-nav-arrow.svg);
     background: var(--bs-form-select-bg-img) no-repeat center;
 
     &.prev-page {
