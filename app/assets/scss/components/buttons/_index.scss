@@ -186,6 +186,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
   --bs-btn-active-color: var(--cbd-content-accent);
   --bs-btn-active-border-color: var(--cbd-content-accent);
 
+  // background-color: var(--bs-btn-bg);
   background: linear-gradient(
     $bd-secondary 42%,
     color.scale($bd-secondary, $lightness: -9.5%)
@@ -215,21 +216,9 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
   &:hover {
     filter: brightness(90%);
   }
-  &[aria-expanded="true"] {
-    transform: rotate(180deg);
-  }
-  &::after {
-  content: '';
-    display: inline-block;
-    vertical-align: middle;
-    width: 14px;
-    height: 8px;
-    background-color: var(--bs-tertiary-color);
-    -webkit-mask-image: url('/images/icons/icon-nav-arrow.svg');
-    mask-image: url('/images/icons/icon-nav-arrow.svg');
-    mask-repeat: no-repeat;
-    mask-position: center;
-    mask-size: cover;
+
+  svg {
+    fill: var(--bs-tertiary-color);
   }
 }
 
