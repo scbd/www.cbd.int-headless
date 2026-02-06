@@ -19,10 +19,7 @@ server {
     location ^~ /themes/                 { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /modules/                { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /sites/default/files     { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ~* "^/[a-z]{2}/node/"       { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ~* "^/[a-z]{2}/history/"    { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ~* "^/[a-z]{2}/contextual/" { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ~* "^/[a-z]{2}/editor/"     { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ~* "^/([a-z]{2}(-[a-z]+)?/)?(?:node|history|contextual|editor)/" { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
 
     # For missing routes
     # Refer to https://github.com/scbd/scbd-nginx/blob/master/conf.d/www/phoenix/routes.inc
