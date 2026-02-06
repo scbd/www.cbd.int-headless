@@ -99,8 +99,7 @@
       box-shadow: 0.33rem 0 inset var(--cbd-content-accent);
       .featured-taxonomy {
         display: flex;
-        font-size: 1rem;
-        line-height: 1;
+        line-height: 1.25;
         font-weight: 600;
         .featured-type {
           text-transform: capitalize;
@@ -108,13 +107,11 @@
         .featured-source:not(:empty) {
           margin-right: 0.5rem;
           padding-right: 0.5rem;
-          box-shadow: -2px 0 inset black;
+          box-shadow: -2px 0 inset var(--bs-secondary-color);
         }
       }
       .featured-description {
-        font-size: 1.778rem;
         line-height: 1.25;
-        font-weight: 600;
       }
     }
     .featured-buttons {
@@ -155,13 +152,6 @@
       }
       .featured-buttons {
         display: none;
-      }
-    }
-    .featured-item {
-      .featured-information {
-        .featured-description {
-          font-size: 1.167rem;
-        }
       }
     }
   }
