@@ -14,15 +14,12 @@ server {
     # ===========================================
     # Drupal Management Interfaces
     # ===========================================
-    location ^~ /admin                                { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ^~ /user                                 { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ^~ /themes/                              { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ^~ /modules/                             { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ^~ /sites/default/files                  { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ~* "^(/[a-z]{2}(-[a-z]+)?)?/node/"       { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ~* "^(/[a-z]{2}(-[a-z]+)?)?/history/"    { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ~* "^(/[a-z]{2}(-[a-z]+)?)?/contextual/" { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-    location ~* "^(/[a-z]{2}(-[a-z]+)?)?/editor/"     { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ^~ /admin                  { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ^~ /user                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ^~ /themes/                { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ^~ /modules/               { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ^~ /sites/default/files    { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ~* "^/(?:[a-z]{2}(?:-[a-z]+)?)?/(?:node|history|contextual|editor)/" { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
 
     # For missing routes
     # Refer to https://github.com/scbd/scbd-nginx/blob/master/conf.d/www/phoenix/routes.inc
