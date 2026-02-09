@@ -133,7 +133,7 @@ export async function getPortal (id: string): Promise<Portal[]> {
 };
 
 export async function getImage (id: string, category: Image['category']): Promise<Image> {
-  const image: Image = {
+  const defaultImage: Image = {
     category: IMAGE_FALLBACK_CATEGORY,
     path: IMAGE_FALLBACK,
     alt: IMAGE_FALLBACK_ALT,
@@ -147,17 +147,19 @@ export async function getImage (id: string, category: Image['category']): Promis
     const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
     const path = data?.included?.[0]?.attributes?.uri?.url
 
-    if (attributes?.id === null || attributes?.id === undefined) return image
+    if (attributes?.id === null || attributes?.id === undefined) return defaultImage
 
-    image.category = category
-    image.alt = attributes?.meta?.alt
-    image.width = attributes?.meta?.width
-    image.height = attributes?.meta?.height
-    image.path = contentNormalizer(path)
+    const contentImage = {
+      category,
+      alt: attributes?.meta?.alt,
+      width: attributes?.meta?.width,
+      height: attributes?.meta?.height,
+      path: contentNormalizer(path)
+    }
 
-    return image
-  } catch {
-    return image
+    return contentImage
+  } catch (error) {
+    throw badRequest(`Error fetching ${id}.`)
   }
 }
 
