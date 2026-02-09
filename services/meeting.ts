@@ -36,7 +36,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
           sort: options?.sort ?? 'updatedDate_dt DESC',
           fields: 'id,symbol_s,title_*_t,eventCountry_*_t,eventCity_*_t,url_ss,themes_*_txt,startDate_dt,endDate_dt,updatedDate_dt',
           start: options?.skip ?? 0,
-          rowsPerPage: options?.limit ?? 25
+          rowsPerPage: options?.limit ?? 10
         }
   const { response } = await api.querySolr(params)
 

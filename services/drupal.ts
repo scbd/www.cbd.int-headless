@@ -454,9 +454,7 @@ export async function getMenu (
 };
 
 function contentNormalizer (value: string): string {
-  if (value === undefined) throw new Error('Value is undefined')
-  if (value === null) throw new Error('Value is null')
-  if (value === '') throw new Error('Value is empty')
+  if (value === undefined || value === null || value === '') return ''
 
   // Convert Drupal image paths to use the path defined on the nuxt.config.ts
   value = value.replace(/\/sites\/default\/files\//g, DRUPAL_IMAGE_PATH)

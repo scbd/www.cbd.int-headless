@@ -33,7 +33,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
       sort: options?.sort ?? 'updatedDate_dt DESC',
       fields: 'id,symbol_s,title_*_t,url_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
       start: options?.skip ?? 0,
-      rowsPerPage: options?.limit ?? 25
+      rowsPerPage: options?.limit ?? 10
     }
   const { response } = await api.querySolr(params)
 
