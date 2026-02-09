@@ -6,6 +6,7 @@ import type { SolrQuery } from '../types/api/solr'
 import type { Meeting } from '../types/meeting'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
+import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 
 function normalizeMeetingCode (code: string): string {
   return code.toUpperCase()
@@ -51,7 +52,13 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
     updatedOn: new Date(item.updatedDate_dt),
     country: toLString(item, 'eventCountry'),
     city: toLString(item, 'eventCity'),
-    image: await getImage(item.symbol_s, 'meetings')
+    image: await (async () => {
+      try {
+        return await getImage(item.symbol_s, 'meetings')
+      } catch {
+        return DEFAULT_IMAGE
+      }
+    })()
   })))
 
   return {

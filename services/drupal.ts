@@ -7,7 +7,7 @@ import type { Menu } from '../types/menu'
 import type { Portal } from '../types/portal'
 import type { Image } from '../types/image'
 import { MENU_CACHE_DURATION_MS } from '../constants/cache'
-import { DRUPAL_IMAGE_PATH, IMAGE_FALLBACK, IMAGE_FALLBACK_CATEGORY, IMAGE_FALLBACK_ALT, IMAGE_FALLBACK_WIDTH, IMAGE_FALLBACK_HEIGHT } from '../constants/image-paths'
+import { DEFAULT_IMAGE, DRUPAL_IMAGE_PATH } from '../constants/image-paths'
 
 const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
@@ -133,21 +133,13 @@ export async function getPortal (id: string): Promise<Portal[]> {
 };
 
 export async function getImage (id: string, category: Image['category']): Promise<Image> {
-  const defaultImage: Image = {
-    category: IMAGE_FALLBACK_CATEGORY,
-    path: IMAGE_FALLBACK,
-    alt: IMAGE_FALLBACK_ALT,
-    width: IMAGE_FALLBACK_WIDTH,
-    height: IMAGE_FALLBACK_HEIGHT
-  }
-
   try {
     const data = await drupalApi.getImage(id, category)
 
     const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
     const path = data?.included?.[0]?.attributes?.uri?.url
 
-    if (attributes?.id === null || attributes?.id === undefined) return defaultImage
+    if (attributes?.id === null || attributes?.id === undefined) return DEFAULT_IMAGE
 
     const contentImage = {
       category,

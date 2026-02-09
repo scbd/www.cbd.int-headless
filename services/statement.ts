@@ -6,6 +6,7 @@ import type { SolrQuery } from '../types/api/solr'
 import type { Statement } from '../types/statement'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
+import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 
 function normalizeStatementCode (code: string): string {
   return code.toUpperCase()
@@ -53,7 +54,13 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
     themes: toLStringArray(item, 'themes'),
     createdOn: new Date(item.createdDate_dt),
     updatedOn: new Date(item.updatedDate_dt),
-    image: await getImage(item.symbol_s, 'statements')
+    image: await (async () => {
+      try {
+        return await getImage(item.symbol_s, 'statements')
+      } catch {
+        return DEFAULT_IMAGE
+      }
+    })()
   })))
 
   return {

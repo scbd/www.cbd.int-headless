@@ -6,6 +6,7 @@ import type { SolrQuery } from '../types/api/solr'
 import type { Notification } from '../types/notification'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
+import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
@@ -53,7 +54,13 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     from: toLString(item, 'from'),
     recipients: item.recipient_txt,
     sender: item.sender_t,
-    image: await getImage(item.symbol_s, 'notifications')
+    image: await (async () => {
+      try {
+        return await getImage(item.symbol_s, 'notifications')
+      } catch {
+        return DEFAULT_IMAGE
+      }
+    })()
   })))
 
   return {
