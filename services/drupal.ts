@@ -144,18 +144,15 @@ export async function getImage (id: string, category: Image['category']): Promis
   }
 
   const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
+  const path = data?.included?.[0]?.attributes?.uri?.url
+
   if (attributes?.id === null || attributes?.id === undefined) return image
 
   image.category = category
   image.alt = attributes?.meta?.alt
   image.width = attributes?.meta?.width
   image.height = attributes?.meta?.height
-
-  const media = await drupalApi.getMedia(attributes?.id)
-
-  if (media?.data?.id !== null || media?.data?.id !== undefined) {
-    image.path = contentNormalizer(media?.data?.attributes?.uri?.url)
-  }
+  image.path = contentNormalizer(path)
 
   return image
 }

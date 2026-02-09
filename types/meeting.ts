@@ -11,11 +11,5 @@ export interface Meeting {
   updatedOn: Date
   country: LString
   city: LString
-  image?: {
-    category: Image['category']
-    path: string
-    alt: string
-    width: number
-    height: number
-  }
+  image: Image
 }

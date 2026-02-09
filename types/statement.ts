@@ -8,11 +8,5 @@ export interface Statement {
   themes: LString[]
   createdOn: Date
   updatedOn: Date
-  image?: {
-    category: Image['category']
-    path: string
-    alt: string
-    width: number
-    height: number
-  }
+  image: Image
 }

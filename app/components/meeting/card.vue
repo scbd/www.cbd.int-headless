@@ -13,6 +13,7 @@
       :alt="meeting?.image?.alt"
       class="content-image"
       loading="lazy"
+      :placeholder="IMAGE_FALLBACK"
     />
 
     <div class="title">{{ toLocaleText(meeting.title) }}</div>
@@ -32,6 +33,7 @@
 import type { Meeting } from '~~/types/meeting'
 import { useFormatDate } from '~/composables/use-format-date'
 import { useLString } from '~/composables/use-lstring'
+import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t } = useI18n()
 const { toLocaleText } = useLString()

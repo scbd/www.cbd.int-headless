@@ -9,6 +9,7 @@
       :alt="notification?.image?.alt"
       class="content-image"
       loading="lazy"
+      :placeholder="IMAGE_FALLBACK"
     />
 
     <div class="title"
@@ -45,6 +46,7 @@
 import type { Notification } from '~~/types/notification'
 import { useLString } from '~/composables/use-lstring'
 import { useFormatDate } from '~/composables/use-format-date'
+import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 
 const { t } = useI18n()
 const { toLocaleText } = useLString()

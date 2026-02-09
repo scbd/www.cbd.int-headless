@@ -16,11 +16,5 @@ export interface Notification {
   from: LString
   sender: string
   recipients: string[]
-  image?: {
-    category: Image['category']
-    path: string
-    alt: string
-    width: number
-    height: number
-  }
+  image: Image
 }

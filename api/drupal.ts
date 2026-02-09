@@ -36,7 +36,7 @@ export default class DrupalApi extends ApiBase {
     if (id === null || id === '') throw mandatory('id', 'Parameter id is required.')
     if (category === null) throw mandatory('category', 'Parameter category is required.')
 
-    const data = await this.fetch(`/jsonapi/media/${encodeURIComponent(category)}?filter[name][value]=${encodeURIComponent(id)}`)
+    const data = await this.fetch(`/jsonapi/media/${encodeURIComponent(category)}?filter[name][value]=${encodeURIComponent(id)}&include=field_media_image`)
     return data
   }
 

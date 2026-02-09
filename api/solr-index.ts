@@ -16,7 +16,7 @@ export default class SolrIndexApi extends ApiBase {
       fieldQueries: '',
       searchField: 'text_EN_txt',
       start: 0,
-      rowsPerPage: 25
+      rowsPerPage: 10
     }
 
     params = { ...defaults, ...params }
