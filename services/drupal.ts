@@ -133,8 +133,6 @@ export async function getPortal (id: string): Promise<Portal[]> {
 };
 
 export async function getImage (id: string, category: Image['category']): Promise<Image> {
-  const data = await drupalApi.getImage(id, category)
-
   const image: Image = {
     category: IMAGE_FALLBACK_CATEGORY,
     path: IMAGE_FALLBACK,
@@ -143,18 +141,24 @@ export async function getImage (id: string, category: Image['category']): Promis
     height: IMAGE_FALLBACK_HEIGHT
   }
 
-  const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
-  const path = data?.included?.[0]?.attributes?.uri?.url
+  try {
+    const data = await drupalApi.getImage(id, category)
 
-  if (attributes?.id === null || attributes?.id === undefined) return image
+    const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
+    const path = data?.included?.[0]?.attributes?.uri?.url
 
-  image.category = category
-  image.alt = attributes?.meta?.alt
-  image.width = attributes?.meta?.width
-  image.height = attributes?.meta?.height
-  image.path = contentNormalizer(path)
+    if (attributes?.id === null || attributes?.id === undefined) return image
 
-  return image
+    image.category = category
+    image.alt = attributes?.meta?.alt
+    image.width = attributes?.meta?.width
+    image.height = attributes?.meta?.height
+    image.path = contentNormalizer(path)
+
+    return image
+  } catch {
+    return image
+  }
 }
 
 export async function listArticles (options?: QueryParams): Promise<Article[]> {
