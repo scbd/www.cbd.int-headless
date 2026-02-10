@@ -15,8 +15,10 @@ server {
     # Drupal Management Interfaces
     # ===========================================
     location ^~ /admin                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ^~ /batch                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /user                    { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /themes/                 { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ^~ /media                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /modules/                { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /sites/default/files     { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /core/                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
