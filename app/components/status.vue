@@ -76,13 +76,13 @@ const error = computed(() => {
       statusMessage: string;
       message: string;
       stack: string;
-    };
+    } | undefined;
 
     return {
       name: props.error.name,
       message: props.error.message,
-      statusCode: cause.statusCode,
-      statusMessage: cause.statusMessage,
+      statusCode: cause?.statusCode,
+      statusMessage: cause?.statusMessage,
       cause: props.error.cause,
       stack: props.error.stack
     };
