@@ -1,4 +1,5 @@
 import type { LString } from '@scbd/vue-components'
+import type { Image } from '~~/types/image'
 export interface Statement {
   id: string
   code: string
@@ -7,4 +8,5 @@ export interface Statement {
   themes: LString[]
   createdOn: Date
   updatedOn: Date
-};
+  image: Image
+}

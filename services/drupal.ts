@@ -2,11 +2,12 @@ import { notFound, badRequest } from 'api-client/api-error'
 import DrupalApi from '../api/drupal'
 import type { Content, Article } from '../types/content'
 import type { DrupalRouterResponse } from '../types/api/drupal'
-import type { QueryParams } from '~~/types/api/query-params'
+import type { QueryParams } from '../types/api/query-params'
 import type { Menu } from '../types/menu'
 import type { Portal } from '../types/portal'
+import type { Image } from '../types/image'
 import { MENU_CACHE_DURATION_MS } from '../constants/cache'
-import { DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
+import { DEFAULT_IMAGE, DRUPAL_IMAGE_PATH } from '../constants/image-paths'
 
 const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
@@ -130,6 +131,29 @@ export async function getPortal (id: string): Promise<Portal[]> {
 
   return portals
 };
+
+export async function getImage (id: string, category: Image['category']): Promise<Image> {
+  try {
+    const data = await drupalApi.getImage(id, category)
+
+    const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
+    const path = data?.included?.[0]?.attributes?.uri?.url
+
+    if (attributes?.id === null || attributes?.id === undefined) return DEFAULT_IMAGE
+
+    const contentImage = {
+      category,
+      alt: attributes?.meta?.alt,
+      width: attributes?.meta?.width,
+      height: attributes?.meta?.height,
+      path: contentNormalizer(path)
+    }
+
+    return contentImage
+  } catch (error) {
+    throw badRequest(`Error fetching ${id}.`)
+  }
+}
 
 export async function listArticles (options?: QueryParams): Promise<Article[]> {
   const data = await drupalApi.listArticles(options)
@@ -428,9 +452,7 @@ export async function getMenu (
 };
 
 function contentNormalizer (value: string): string {
-  if (value === undefined) throw new Error('Value is undefined')
-  if (value === null) throw new Error('Value is null')
-  if (value === '') throw new Error('Value is empty')
+  if (value === undefined || value === null || value === '') return ''
 
   // Convert Drupal image paths to use the path defined on the nuxt.config.ts
   value = value.replace(/\/sites\/default\/files\//g, DRUPAL_IMAGE_PATH)

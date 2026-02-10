@@ -5,7 +5,8 @@
     </div>
 
     <NuxtImg
-      :src="statement.imageUrl"
+      :src="statement?.image?.path"
+      :alt="statement?.image?.alt"
       class="content-image"
       loading="lazy"
       :placeholder="IMAGE_FALLBACK"
@@ -46,13 +47,6 @@ const statement = computed(() => {
   return {
     ...props.statement,
     url: props.statement.urls[0],
-    /**
-     * To be replaced with proper image handling when available;
-     * WILL BE REMOVED SOON
-     */
-    imageUrl: `/content/images/statements/${encodeURIComponent(
-      props.statement.code
-    )}.jpg`
   }
 })
 </script>

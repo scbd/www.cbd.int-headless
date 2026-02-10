@@ -1,10 +1,12 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
 import { solrEscape, toLString, toLStringArray } from '../utils/solr'
+import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '../types/api/solr'
 import type { Notification } from '../types/notification'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
+import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
@@ -32,11 +34,11 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
       sort: options?.sort ?? 'updatedDate_dt DESC',
       fields: 'id,symbol_s,title_*_t,url_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
       start: options?.skip ?? 0,
-      rowsPerPage: options?.limit ?? 25
+      rowsPerPage: options?.limit ?? 10
     }
   const { response } = await api.querySolr(params)
 
-  const notificationList: Notification[] = response.docs.map((item: any): Notification => ({
+  const notificationList: Notification[] = await Promise.all(response.docs.map(async (item: any): Promise<Notification> => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
@@ -51,8 +53,15 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     fulltext: toLString(item, 'fulltext'),
     from: toLString(item, 'from'),
     recipients: item.recipient_txt,
-    sender: item.sender_t
-  }))
+    sender: item.sender_t,
+    image: await (async () => {
+      try {
+        return await getImage(item.symbol_s, 'notifications')
+      } catch {
+        return DEFAULT_IMAGE
+      }
+    })()
+  })))
 
   return {
     total: response.numFound,

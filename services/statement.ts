@@ -1,10 +1,12 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
 import { solrEscape, andOr, toLString, toLStringArray } from '../utils/solr'
+import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '../types/api/solr'
 import type { Statement } from '../types/statement'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
+import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 
 function normalizeStatementCode (code: string): string {
   return code.toUpperCase()
@@ -40,19 +42,26 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
           sort: options?.sort ?? 'updatedDate_dt DESC',
           fields: 'id,symbol_s,title_*_t,url_ss,themes_*_txt,createdDate_dt,updatedDate_dt',
           start: options?.skip ?? 0,
-          rowsPerPage: options?.limit ?? 25
+          rowsPerPage: options?.limit ?? 10
         }
   const { response } = await api.querySolr(params)
 
-  const statementList: Statement[] = response.docs.map((item: any): Statement => ({
+  const statementList: Statement[] = await Promise.all(response.docs.map(async (item: any): Promise<Statement> => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
     urls: item.url_ss,
     themes: toLStringArray(item, 'themes'),
     createdOn: new Date(item.createdDate_dt),
-    updatedOn: new Date(item.updatedDate_dt)
-  }))
+    updatedOn: new Date(item.updatedDate_dt),
+    image: await (async () => {
+      try {
+        return await getImage(item.symbol_s, 'statements')
+      } catch {
+        return DEFAULT_IMAGE
+      }
+    })()
+  })))
 
   return {
     total: response.numFound,

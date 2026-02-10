@@ -1,4 +1,5 @@
 import type { LString } from '@scbd/vue-components'
+import type { Image } from '~~/types/image'
 export interface Notification {
   id: string
   code: string
@@ -15,4 +16,5 @@ export interface Notification {
   from: LString
   sender: string
   recipients: string[]
+  image: Image
 }

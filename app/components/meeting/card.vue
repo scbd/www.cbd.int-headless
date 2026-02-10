@@ -9,7 +9,8 @@
     </div>
 
     <NuxtImg
-      :src="meeting.imageUrl"
+      :src="meeting?.image?.path"
+      :alt="meeting?.image?.alt"
       class="content-image"
       loading="lazy"
       :placeholder="IMAGE_FALLBACK"
@@ -46,13 +47,6 @@ const meeting = computed(() => {
   return {
     ...props.meeting,
     url: props.meeting.urls[0],
-    /**
-     * To be replaced with proper image handling when available;
-     * WILL BE REMOVED SOON
-     */
-    imageUrl: `/content/images/meetings/${encodeURIComponent(
-      props.meeting.code
-    )}.jpg`
   }
 })
 </script>

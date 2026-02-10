@@ -1,4 +1,5 @@
 import ApiBase from 'api-client/api-base'
+import type { Image } from '../types/image'
 import { mandatory, handleError } from 'api-client/api-error'
 export default class DrupalApi extends ApiBase {
   constructor (options: { baseURL: string }) {
@@ -30,6 +31,14 @@ export default class DrupalApi extends ApiBase {
     const data = await this.fetch(`/jsonapi/file/file/${encodeURIComponent(id)}`)
     return data
   };
+
+  async getImage (id: string, category: Image['category']): Promise<any> {
+    if (id === null || id === '') throw mandatory('id', 'Parameter id is required.')
+    if (category === null) throw mandatory('category', 'Parameter category is required.')
+
+    const data = await this.fetch(`/jsonapi/media/${encodeURIComponent(category)}?filter[name][value]=${encodeURIComponent(id)}&include=field_media_image`)
+    return data
+  }
 
   async getMenu (menu: string): Promise<any> {
     if (menu === null || menu === '') throw mandatory('menu', 'Parameter menu is required.')
