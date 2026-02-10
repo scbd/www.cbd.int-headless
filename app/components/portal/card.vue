@@ -22,7 +22,7 @@ const props = defineProps<{
 const portal = computed(() => {
     return {
         ...props.portal,
-        imageUrl: props.portal.icon ? `/images/${encodeURIComponent(props.portal.icon)}` : IMAGE_FALLBACK
+        imageUrl: props.portal.icon ? `/images/${encodeURI(props.portal.icon)}` : IMAGE_FALLBACK
     };
 });
 </script>
