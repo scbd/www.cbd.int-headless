@@ -3,7 +3,7 @@
     <div class="row-title">{{ t('gbfTargets') }}</div>
     <div class="content-wrapper d-flex" ref="gbfTargetWrapperRef">
       <status v-if="isLoading" />
-      <status v-if="error" :error="error" />
+      <status v-else-if="error" :error="error" />
       <gbf-target-card
         v-else
         v-for="gbfTarget of gbfTargets"
@@ -33,21 +33,13 @@
 <i18n src="~~/i18n/dist/app/components/gbf-target/card-list.json"></i18n>
 
 <script setup lang="ts">
-import type { NuxtError } from '#app'
-import useGbfTargetsApi from '~/composables/api/use-gbf-targets-api'
+import { GBF_TARGETS } from '~~/constants/api-paths'
+import type { GbfTarget } from '~~/types/gbf-target'
 
 const { t } = useI18n()
 
-const error = ref<NuxtError>()
-const { getGbfTargets } = useGbfTargetsApi()
-
-const isLoading = ref(true)
-
-const gbfTargets = await getGbfTargets().catch((nuxtError: NuxtError) => {
-  error.value = nuxtError
-  return []
-}).finally(() => {
-  isLoading.value = false
+const { data: gbfTargets, pending: isLoading, error } = useLazyFetch<GbfTarget[]>(GBF_TARGETS, {
+  default: () => []
 })
 
 const gbfTargetWrapper = useTemplateRef<HTMLDivElement>('gbfTargetWrapperRef')
