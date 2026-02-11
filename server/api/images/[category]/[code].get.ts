@@ -1,7 +1,8 @@
-import { getImage } from '../../../../services/drupal'
+import { getImage } from '~~/services/drupal'
+import { fetchHandler } from '~~/server/utils/fetch-handler'
 import type { Image } from '~~/types/image'
 
-export default defineEventHandler(async (event) => {
+export default fetchHandler(async (event) => {
   const code = getRouterParam(event, 'code') ?? ''
   const category = (getRouterParam(event, 'category') ?? '') as Image['category']
 
