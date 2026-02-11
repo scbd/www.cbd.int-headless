@@ -1,7 +1,7 @@
 import { getMenu } from '~~/services/drupal'
 import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
-export default fetchHandler(async (event) => {
+export default apiFetchHandler(async (event) => {
   const code = getRouterParam(event, 'code') ?? ''
 
   const query = getQuery(event)

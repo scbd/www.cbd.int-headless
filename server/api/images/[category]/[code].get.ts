@@ -2,7 +2,7 @@ import { getImage } from '~~/services/drupal'
 import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 import type { Image } from '~~/types/image'
 
-export default fetchHandler(async (event) => {
+export default apiFetchHandler(async (event) => {
   const code = getRouterParam(event, 'code') ?? ''
   const category = (getRouterParam(event, 'category') ?? '') as Image['category']
 
