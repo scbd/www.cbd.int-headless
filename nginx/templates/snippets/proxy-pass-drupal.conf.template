@@ -6,3 +6,4 @@ proxy_redirect https://${DRUPAL_HOST}/ $scheme://$http_host/;
 proxy_redirect http://${DRUPAL_HOST}/ $scheme://$http_host/;
 proxy_cookie_flags ~ nosecure;
 proxy_cookie_domain ${DRUPAL_HOST} $host;
+client_max_body_size 64M;
