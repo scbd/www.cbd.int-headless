@@ -31,17 +31,20 @@
             </template>
           </div>
         </template>
-        <template v-if="isLoading">
-          <div class="loader"></div>
-        </template>
       </div>
     </template>
-    <span class="loader"></span>
+
+    <template v-else>
+      <div class="loader"></div>
+    </template>
+  
   </div>
 </template>
 <i18n src="~~/i18n/dist/app/components/status.json"></i18n>
 
 <script lang="ts" setup>
+import type { NuxtError } from '#app'
+
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -49,12 +52,7 @@ const props = defineProps<{
 }>();
 
 const isAdmin = ref(false);
-const isLoading = ref(false);
 
-/**
- * TODO: Add other states
- * eg. loading
- */
 const templateProperties = computed(() => {
   const classes = [];
 
@@ -67,25 +65,16 @@ const templateProperties = computed(() => {
 
 const error = computed(() => {
   if (props.error) {
-    const params = { ...props.error };
-
-    const cause = props.error.cause as {
-      error: string;
-      url: string;
-      statusCode: number;
-      statusMessage: string;
-      message: string;
-      stack: string;
-    };
+    const error = props.error as NuxtError
+    const cause = error.cause as Record<string, unknown> | undefined
 
     return {
-      name: props.error.name,
-      message: props.error.message,
-      statusCode: cause.statusCode,
-      statusMessage: cause.statusMessage,
-      cause: props.error.cause,
-      stack: props.error.stack
-    };
+      name: error.name,
+      message: error.message || error.statusMessage,
+      statusCode: error.statusCode || cause?.statusCode,
+      statusMessage: error.statusMessage || cause?.statusMessage,
+      stack: error.stack
+    }
   }
-});
+})
 </script>
