@@ -1,13 +1,13 @@
 import { notFound, badRequest } from 'api-client/api-error'
-import DrupalApi from '../api/drupal'
-import type { Content, Article } from '../types/content'
-import type { DrupalRouterResponse } from '../types/api/drupal'
-import type { QueryParams } from '../types/api/query-params'
-import type { Menu } from '../types/menu'
-import type { Portal } from '../types/portal'
-import type { Image } from '../types/image'
-import { MENU_CACHE_DURATION_MS } from '../constants/cache'
-import { DEFAULT_IMAGE, DRUPAL_IMAGE_PATH } from '../constants/image-paths'
+import DrupalApi from '~~/api/drupal'
+import type { Content, Article } from '~~/types/content'
+import type { DrupalRouterResponse } from '~~/types/api/drupal'
+import type { QueryParams } from '~~/types/api/query-params'
+import type { Menu } from '~~/types/menu'
+import type { Portal } from '~~/types/portal'
+import type { Image } from '~~/types/image'
+import { MENU_CACHE_DURATION_MS } from '~~/constants/cache'
+import { DEFAULT_IMAGE, DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
 
 const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
