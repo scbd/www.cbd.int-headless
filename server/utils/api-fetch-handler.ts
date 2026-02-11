@@ -5,7 +5,7 @@ import type { EventHandler, EventHandlerRequest, H3Event } from 'h3'
  * Catches service-layer errors and re-throws them as H3 errors
  * so Nitro produces clean error responses instead of [unhandled] logs.
  */
-export const fetchHandler = <T>(
+export const apiFetchHandler = <T>(
   handler: (event: H3Event) => T | Promise<T>
 ): EventHandler<EventHandlerRequest, Promise<T>> => {
   return defineEventHandler(async (event) => {
