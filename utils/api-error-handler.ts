@@ -6,7 +6,7 @@ export const handleErrorState = ({
   [key: string]: any
 }): { [key: string]: any } => {
   if (error.value !== null && error.value !== undefined) {
-    throw createError({
+    showError({
       statusCode: error.value.statusCode,
       statusMessage: error.value.statusMessage,
       message: error.value.message
