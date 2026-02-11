@@ -1,7 +1,7 @@
 import { getPortal } from '~~/services/drupal'
 import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
-export default defineEventHandler(async (event) => {
+export default fetchHandler(async (event) => {
   const { portal } = getQuery(event) as { portal: string }
   return await getPortal(portal).catch(apiErrorHandler)
 })
