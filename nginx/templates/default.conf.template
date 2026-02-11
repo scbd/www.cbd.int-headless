@@ -7,6 +7,7 @@ upstream api         { server ${API_HOST}:${API_PORT}; }
 server {
     listen 80 default_server;
     client_max_body_size 64M;
+
     # Logging
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;
@@ -21,6 +22,7 @@ server {
     location ^~ /media                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /modules/                { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /sites/default/files     { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ^~ /views/                  { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /core/                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ~* "^/([a-z]{2}(-[a-z]+)?/)?(?:node|history|contextual|editor)/" { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
 
