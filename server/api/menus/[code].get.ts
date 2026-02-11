@@ -1,6 +1,7 @@
-import { getMenu } from '../../../services/drupal'
+import { getMenu } from '~~/services/drupal'
+import { fetchHandler } from '~~/server/utils/fetch-handler'
 
-export default defineEventHandler(async (event) => {
+export default fetchHandler(async (event) => {
   const code = getRouterParam(event, 'code') ?? ''
 
   const query = getQuery(event)
