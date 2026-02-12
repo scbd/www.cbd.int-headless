@@ -4,8 +4,13 @@
             {{ t('portals') }}
         </div>
         <div class="content-wrapper d-flex">
-            <portal-card v-if="!isError" v-for="portal in items" :portal="portal" :key="portal.position" />
-            <status v-else :error="isError" />
+            <status v-if="isLoading" />
+            <status v-else-if="error" :error="error" />
+            <portal-card
+                v-else
+                v-for="portal in portals"
+                :portal="portal"
+                :key="portal.position" />
         </div>
     </section>
 </template>
@@ -20,10 +25,5 @@ const props = defineProps<{
     portal: string;
 }>();
 
-const isError = ref<Error>();
-const { getPortals } = usePortalsApi();
-const items = await getPortals(encodeURIComponent(props.portal)).catch((error) => {
-    isError.value = error;
-    return [];
-});
+const { portals, pending: isLoading, error } = usePortalsApi(props.portal)
 </script>
