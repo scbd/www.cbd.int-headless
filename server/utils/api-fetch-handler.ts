@@ -12,10 +12,15 @@ export const apiFetchHandler = <T>(
     try {
       return await handler(event)
     } catch (err: unknown) {
-      const error = err as { statusCode?: number, status?: number, message?: string }
+      if (err instanceof Error && 'statusCode' in err && '__h3_error__' in err) {
+        throw err
+      }
+
+      const error = err as { statusCode?: number, status?: number, statusMessage?: string, message?: string }
       throw createError({
-        statusCode: error.statusCode ?? error.status,
-        statusMessage: error.message
+        statusCode: error.statusCode ?? error.status ?? 500,
+        statusMessage: error.statusMessage ?? error.message,
+        cause: err
       })
     }
   })
