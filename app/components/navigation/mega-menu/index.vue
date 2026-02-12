@@ -97,7 +97,9 @@
           </nav>
         </li>
       </ul>
-      <ul class="navbar-nav">
+      <status v-if="pending" />
+      <status v-else-if="error" :error="error" />
+      <ul v-else class="navbar-nav">
         <li v-for="childMenu in menu" class="mega-menu-item nav-item dropdown">
           <NuxtLink
             class="nav-link dropdown-toggle"
@@ -117,7 +119,6 @@
 <i18n src="~~/i18n/dist/app/components/navigation/mega-menu/index.json"></i18n>
 
 <script setup lang="ts">
-import type { Menu } from '~~/types/menu';
 import { languages } from '~~/data/un-languages';
 import useMenuApi from '~/composables/api/use-menu-api';
 
@@ -134,6 +135,5 @@ const languagesWithLabel = computed(() =>
   })
 );
 
-const { getMenu } = useMenuApi();
-const menu: Menu[] = await getMenu('cbd-header');
+const { menu, pending, error } = useMenuApi('cbd-header');
 </script>
