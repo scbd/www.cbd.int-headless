@@ -4,13 +4,14 @@
       {{ t('meetings') }}
     </div>
     <div class="content-wrapper d-flex">
+      <status v-if="isLoading" />
+      <status v-else-if="error" :error="error" />
       <meeting-card
-        v-if="!isError"
-        v-for="meeting in items"
+        v-else
+        v-for="meeting in meetings"
         :meeting="meeting"
         :key="meeting.id"
       />
-      <status v-else :error="isError" />
     </div>
     <NuxtLink :to="MEETINGS" class="btn cbd-btn cbd-btn-outline-more-content">
       {{ t('moreMeetings') }}
@@ -20,15 +21,10 @@
 <i18n src="~~/i18n/dist/app/components/meeting/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useMeetingsApi from '~/composables/api/use-meetings';
-import { MEETINGS } from '~~/constants/url-paths';
+import useMeetingsApi from '~/composables/api/use-meetings'
+import { MEETINGS } from '~~/constants/url-paths'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const isError = ref<Error>();
-const { getMeetings } = useMeetingsApi();
-const { rows: items } = await getMeetings({ limit: 4 }).catch((error) => {
-  isError.value = error;
-  return { rows: [] };
-});
+const { meetings, pending: isLoading, error } = useMeetingsApi({ limit: 4 })
 </script>
