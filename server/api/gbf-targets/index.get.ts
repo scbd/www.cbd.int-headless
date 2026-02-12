@@ -1,6 +1,6 @@
 import { getGbfTargets } from '~~/services/gbf-targets'
-import { apiFetchHandler } from '~~/server/utils/api-fetch-handler'
+import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
-export default apiFetchHandler(async (event) => {
-  return await getGbfTargets()
+export default defineEventHandler(async (event) => {
+  return await getGbfTargets().catch(apiErrorHandler)
 })

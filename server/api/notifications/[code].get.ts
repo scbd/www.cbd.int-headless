@@ -1,7 +1,7 @@
 import { getNotification } from '~~/services/notification'
-import { apiFetchHandler } from '~~/server/utils/api-fetch-handler'
+import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
-export default apiFetchHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const code = getRouterParam(event, 'code') ?? ''
-  return await getNotification(code)
+  return await getNotification(code).catch(apiErrorHandler)
 })

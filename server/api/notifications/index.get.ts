@@ -1,8 +1,8 @@
 import type { QueryParams } from '~~/types/api/query-params'
 import { listNotifications } from '~~/services/notification'
-import { apiFetchHandler } from '~~/server/utils/api-fetch-handler'
+import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
-export default apiFetchHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const { sort, limit, skip } = getQuery(event) as QueryParams
-  return await listNotifications({ sort, limit, skip })
+  return await listNotifications({ sort, limit, skip }).catch(apiErrorHandler)
 })

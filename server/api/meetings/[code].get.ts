@@ -1,7 +1,7 @@
 import { getMeeting } from '~~/services/meeting'
-import { apiFetchHandler } from '~~/server/utils/api-fetch-handler'
+import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
-export default apiFetchHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const code = getRouterParam(event, 'code') ?? ''
-  return await getMeeting(code)
+  return await getMeeting(code).catch(apiErrorHandler)
 })

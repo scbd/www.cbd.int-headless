@@ -1,7 +1,7 @@
 import { getStatement } from '~~/services/statement'
-import { apiFetchHandler } from '~~/server/utils/api-fetch-handler'
+import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
-export default apiFetchHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const code = getRouterParam(event, 'code') ?? ''
-  return await getStatement(code)
+  return await getStatement(code).catch(apiErrorHandler)
 })

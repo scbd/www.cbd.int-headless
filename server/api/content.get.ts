@@ -1,7 +1,7 @@
 import { getContent } from '~~/services/drupal'
-import { apiFetchHandler } from '~~/server/utils/api-fetch-handler'
+import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
-export default apiFetchHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   const { url } = getQuery(event) as { url: string }
-  return await getContent(url)
+  return await getContent(url).catch(apiErrorHandler)
 })
