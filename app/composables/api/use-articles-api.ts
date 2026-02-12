@@ -2,36 +2,28 @@ import type { Article } from '~~/types/content'
 import type { QueryParams } from '~~/types/api/query-params'
 import { CONTENT, ARTICLES } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
-import { handleErrorState } from '~~/utils/api-error-handler'
 
-export default function useArticlesApi (): {
-  getArticle: (alias: string) => Promise<Article>
-  listArticles: (options?: QueryParams) => Promise<Article[]> } {
-  const getArticle = async (url: string): Promise<Article> => {
-    const { data } = await useFetch<Article>(CONTENT, {
-      params: {
-        url
-      }
-    }).then(handleErrorState)
+export function useArticleApi (url: string): { article: ComputedRef<Article | undefined>, pending: Ref<boolean>, error: Ref<Error | undefined> } {
+  const { data, pending, error } = useLazyFetch<Article>(CONTENT, {
+    params: { url }
+  })
 
-    const response: Article = data.value
+  const article = computed(() => data.value !== undefined ? normalizeObjectDates(data.value) : undefined)
 
-    return normalizeObjectDates(response)
-  }
+  return { article, pending, error }
+}
 
-  const listArticles = async (options?: QueryParams): Promise<Article[]> => {
-    const { data } = await useFetch<Article[]>(ARTICLES, {
-      params: {
-        sort: options?.sort,
-        limit: options?.limit,
-        skip: options?.skip
-      }
-    }).then(handleErrorState)
+export default function useArticleListApi (options?: QueryParams): { articles: ComputedRef<Article[]>, pending: Ref<boolean>, error: Ref<Error | undefined> } {
+  const { data, pending, error } = useLazyFetch<Article[]>(ARTICLES, {
+    params: {
+      sort: options?.sort,
+      limit: options?.limit,
+      skip: options?.skip
+    },
+    default: () => []
+  })
 
-    const response: Article[] = data.value
+  const articles = computed(() => data.value.map((a) => normalizeObjectDates(a)))
 
-    return response.map((article) => normalizeObjectDates(article))
-  }
-
-  return { getArticle, listArticles }
+  return { articles, pending, error }
 }
