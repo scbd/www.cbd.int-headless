@@ -46,7 +46,7 @@ export async function getRoute (url: string): Promise<DrupalRouterResponse> {
 
 export async function getContent (url: string): Promise<Content | Article> {
   const route = await getRoute(url)
-  if (route === null || route?.entity?.uuid === null) throw notFound('Route not found.')
+  if (route?.entity?.uuid == null || route.entity.uuid === '' || route.entity.bundle == null || route.entity.bundle === '') throw notFound('Route not found.')
 
   const drupalContent = await drupalApi.getContent(route.entity.uuid, route.entity.bundle)
   if (drupalContent === null) throw notFound('Content not found.')
