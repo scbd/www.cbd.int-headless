@@ -1,31 +1,19 @@
 import type { Notification } from '~~/types/notification'
 import type { QueryParams } from '~~/types/api/query-params'
-import { NOTIFICATIONS } from '~~/constants/api-paths'
-import normalizeObjectDates from '~~/utils/normalize-object-dates'
-import { handleErrorState } from '~~/utils/api-error-handler'
 import type { SearchResult } from '~~/types/api/search-result'
+import { NOTIFICATIONS } from '~~/constants/api-paths'
 
-export default function useNotificationsApi (): { getNotifications: (options?: QueryParams) => Promise<SearchResult<Notification>> } {
-  const getNotifications = async (
-    options?: QueryParams
-  ): Promise<SearchResult<Notification>> => {
-    const { data } = await useFetch<SearchResult<Notification>>(NOTIFICATIONS, {
-      params: {
-        sort: options?.sort,
-        limit: options?.limit,
-        skip: options?.skip
-      }
-    }).then(handleErrorState)
+export default function useNotificationsApi (options?: QueryParams): { notifications: ComputedRef<Notification[]>, pending: Ref<boolean>, error: Ref<Error | undefined> } {
+  const { data, pending, error } = useLazyFetch<SearchResult<Notification>>(NOTIFICATIONS, {
+    params: {
+      sort: options?.sort,
+      limit: options?.limit,
+      skip: options?.skip
+    },
+    default: () => ({ total: 0, rows: [] })
+  })
 
-    const response: SearchResult<Notification> = data.value
+  const notifications = computed(() => data.value.rows)
 
-    return {
-      total: response.total,
-      rows: response.rows.map((notification: Notification) =>
-        normalizeObjectDates(notification)
-      )
-    }
-  }
-
-  return { getNotifications }
+  return { notifications, pending, error }
 }

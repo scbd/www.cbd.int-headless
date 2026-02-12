@@ -1,31 +1,19 @@
 import type { Statement } from '~~/types/statement'
 import type { QueryParams } from '~~/types/api/query-params'
-import { STATEMENTS } from '~~/constants/api-paths'
-import normalizeObjectDates from '~~/utils/normalize-object-dates'
-import { handleErrorState } from '~~/utils/api-error-handler'
 import type { SearchResult } from '~~/types/api/search-result'
+import { STATEMENTS } from '~~/constants/api-paths'
 
-export default function useStatementsApi (): { getStatements: (options?: QueryParams) => Promise<SearchResult<Statement>> } {
-  const getStatements = async (
-    options?: QueryParams
-  ): Promise<SearchResult<Statement>> => {
-    const { data } = await useFetch<SearchResult<Statement>>(STATEMENTS, {
-      params: {
-        sort: options?.sort,
-        limit: options?.limit,
-        skip: options?.skip
-      }
-    }).then(handleErrorState)
+export default function useStatementsApi (options?: QueryParams): { statements: ComputedRef<Statement[]>, pending: Ref<boolean>, error: Ref<Error | undefined> } {
+  const { data, pending, error } = useLazyFetch<SearchResult<Statement>>(STATEMENTS, {
+    params: {
+      sort: options?.sort,
+      limit: options?.limit,
+      skip: options?.skip
+    },
+    default: () => ({ total: 0, rows: [] })
+  })
 
-    const response: SearchResult<Statement> = data.value
+  const statements = computed(() => data.value.rows)
 
-    return {
-      total: response.total,
-      rows: response.rows.map((statement: Statement) =>
-        normalizeObjectDates(statement)
-      )
-    }
-  }
-
-  return { getStatements }
+  return { statements, pending, error }
 }
