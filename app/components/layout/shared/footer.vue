@@ -1,5 +1,8 @@
 <template>
-  <footer class="cus-footer d-flex flex-column" v-if="menu">
+  <footer class="cus-footer d-flex flex-column">
+    <status v-if="pending" />
+    <status v-else-if="error" :error="error" />
+    <template v-else-if="menu.length">
     <div class="footer-row footer-navigation">
       <nav v-for="menuItem in menu" :key="menuItem.title">
         <div class="nav-title">
@@ -74,18 +77,17 @@
         </ul>
       </nav>
     </div>
+    </template>
   </footer>
 </template>
 <i18n src="~~/i18n/dist/app/components/layout/shared/footer.json"></i18n>
 
 <script setup lang="ts">
-import type { Menu } from '~~/types/menu';
 import useMenuApi from '~/composables/api/use-menu-api';
 
 const { t, locale } = useI18n();
 
-const { getMenu } = useMenuApi();
-const menu: Menu[] = await getMenu('cbd-footer');
+const { menu, pending, error } = useMenuApi('cbd-footer');
 
 const unepLogoUrl = computed(
   () => `/images/unep-logo-${encodeURIComponent(locale.value)}.svg`

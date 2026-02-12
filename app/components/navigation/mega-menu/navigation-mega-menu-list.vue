@@ -1,19 +1,23 @@
 <template>
-  <div v-if="menu" :style="level2MenuColumnCount.styles">
-    <li
-      v-for="(menuItem, index) in menu"
-      class="level-2-item nav-item"
-      :class="level3MenuColumns?.[index]?.classes"
-      :style="level3MenuColumns?.[index]?.styles"
-    >
-      <NuxtLink class="nav-link" :to="menuItem.url">
-        {{ menuItem.title }}
-      </NuxtLink>
+  <div :style="level2MenuColumnCount.styles">
+    <status v-if="pending" />
+    <status v-else-if="error" :error="error" />
+    <template v-else>
+      <li
+        v-for="(menuItem, index) in menu"
+        class="level-2-item nav-item"
+        :class="level3MenuColumns?.[index]?.classes"
+        :style="level3MenuColumns?.[index]?.styles"
+      >
+        <NuxtLink class="nav-link" :to="menuItem.url">
+          {{ menuItem.title }}
+        </NuxtLink>
 
-      <ul v-if="menuItem.children" class="level-3-items nav">
-        <navigation-mega-menu-list-item :menu="menuItem" />
-      </ul>
-    </li>
+        <ul v-if="menuItem.children" class="level-3-items nav">
+          <navigation-mega-menu-list-item :menu="menuItem" />
+        </ul>
+      </li>
+    </template>
   </div>
 </template>
 <i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-list.json"></i18n>
@@ -25,22 +29,21 @@ const props = defineProps<{
   submenu: string;
 }>();
 
-const { getMenu } = useMenuApi();
-const menu = await getMenu(props.submenu);
+const { menu, pending, error } = useMenuApi(props.submenu);
 
 const level2MenuColumnCount = computed(() => {
   const classes: string[] = [];
   const styles: { [key: string]: string | number } = {};
 
-  if (menu.length < 5) {
-    styles['--level2-column-count'] = menu.length;
+  if (menu.value.length < 5) {
+    styles['--level2-column-count'] = menu.value.length;
   }
 
   return { classes, styles };
 });
 
 const level3MenuColumns = computed(() =>
-  menu.map((menuItem, index) => {
+  menu.value.map((menuItem) => {
     const classes: string[] = [];
     const styles: { [key: string]: string | number } = {};
 

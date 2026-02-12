@@ -46,10 +46,15 @@
             v-if="breadcrumbMenu"
             :items="breadcrumbMenu"
           />
-          <section
-            v-dompurify-html="page.body"
-            class="rendered-content"
-          ></section>
+          <status v-if="pending" />
+          <status v-else-if="error" :error="error" />
+
+          <template v-else>
+            <section
+              v-dompurify-html="page!.body"
+              class="rendered-content"
+              ></section>
+          </template>
         </article>
       </div>
     </div>
@@ -62,20 +67,25 @@
 >
 import type { Menu } from '~~/types/menu'
 import useContentApi from '~~/app/composables/api/use-content-api'
-import useMenuApi from '~/composables/api/use-menu-api'
 
 const route = useRoute()
-const { getContent } = useContentApi()
-const { getMenu } = useMenuApi()
 
-const page = await getContent(route.path)
+const { content: page, pending, error } = useContentApi(route.path)
 
-const menu = page.menu
-  ? await getMenu(page.menu, {
-    url: page.alias,
-    depth: 1
-  })
-  : undefined
+const { data: menu, pending: menuPending } = useLazyAsyncData<Menu[]>(
+  `menu-${route.path}`,
+  async () => {
+    if (!page.value?.menu) return []
+
+    return $fetch<Menu[]>(`/api/menus/${page.value.menu}`, {
+      params: { url: page.value.alias, depth: 1 }
+    })
+  },
+  {
+    watch: [() => page.value?.menu],
+    default: () => []
+  }
+)
 
 const buildPath = (item: any): any => {
   if (!item) return []
@@ -86,7 +96,7 @@ const buildPath = (item: any): any => {
   ]
 }
 
-const menuRoot = computed(() => menu?.find((i) => i.activeBranch))
+const menuRoot = computed(() => menu.value?.find((i) => i.activeBranch))
 
 const megaMenu = computed(() => menuRoot.value?.children)
 
@@ -95,7 +105,7 @@ const megaSubMenu = computed(() => menuRoot.value?.children?.find((i) => i.activ
 const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch)?.children?.find((i) => i.activeBranch))
 
 const breadcrumbMenu = computed(() => {
-  if (page.alias && menuRoot.value) {
+  if (page.value?.alias && menuRoot.value) {
     return buildPath(menuRoot.value)
   }
 });
