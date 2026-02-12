@@ -4,13 +4,14 @@
       {{ t('statements') }}
     </div>
     <div class="content-wrapper d-flex">
+      <status v-if="isLoading" />
+      <status v-else-if="error" :error="error" />
       <statement-card
-        v-if="!isError"
-        v-for="statement in items"
+        v-else
+        v-for="statement in statements"
         :statement="statement"
         :key="statement.id"
       />
-      <status v-else :error="isError" />
     </div>
     <NuxtLink :to="STATEMENTS" class="btn cbd-btn cbd-btn-outline-more-content">
       {{ t('moreStatements') }}
@@ -25,10 +26,5 @@ import { STATEMENTS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 
-const isError = ref<Error>();
-const { getStatements } = useStatementsApi();
-const { rows: items } = await getStatements({ limit: 4 }).catch((error) => {
-  isError.value = error;
-  return { rows: [] };
-});
+const { statements, pending: isLoading, error } = useStatementsApi({ limit: 4 })
 </script>

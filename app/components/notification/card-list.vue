@@ -4,13 +4,14 @@
       {{ t('notifications') }}
     </div>
     <div class="content-wrapper d-flex">
+      <status v-if="isLoading" />
+      <status v-else-if="error" :error="error" />
       <notification-card
-        v-if="!isError"
-        v-for="notification in items"
+        v-else
+        v-for="notification in notifications"
         :notification="notification"
         :key="notification.id"
       />
-      <status v-else :error="isError" />
     </div>
     <NuxtLink
       :to="NOTIFICATIONS"
@@ -28,12 +29,5 @@ import { NOTIFICATIONS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 
-const isError = ref<Error>();
-const { getNotifications } = useNotificationsApi();
-const { rows: items } = await getNotifications({ limit: 4 }).catch(
-  (error: Error) => {
-    isError.value = error;
-    return { rows: [] };
-  }
-);
+const { notifications, pending: isLoading, error } = useNotificationsApi({ limit: 4 });
 </script>

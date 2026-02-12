@@ -33,14 +33,11 @@
 <i18n src="~~/i18n/dist/app/components/gbf-target/card-list.json"></i18n>
 
 <script setup lang="ts">
-import { GBF_TARGETS } from '~~/constants/api-paths'
-import type { GbfTarget } from '~~/types/gbf-target'
+import useGbfTargetsApi from '~/composables/api/use-gbf-targets-api'
 
 const { t } = useI18n()
 
-const { data: gbfTargets, pending: isLoading, error } = useLazyFetch<GbfTarget[]>(GBF_TARGETS, {
-  default: () => []
-})
+const { gbfTargets, pending: isLoading, error } = useGbfTargetsApi()
 
 const gbfTargetWrapper = useTemplateRef<HTMLDivElement>('gbfTargetWrapperRef')
 
