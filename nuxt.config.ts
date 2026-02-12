@@ -51,5 +51,5 @@ export default defineNuxtConfig({
       proxy: `${String(process.env.NUXT_DRUPAL_BASE_URL)}/sites/default/files/**`
     }
   },
-  css: ['~/assets/scss/styles.scss']
+  css: ['vue-multiselect/dist/vue-multiselect.css', '~/assets/scss/styles.scss']
 })
