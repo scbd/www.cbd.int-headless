@@ -25,5 +25,5 @@ const props = defineProps<{
     portal: string;
 }>();
 
-const { portals, pending: isLoading, error } = usePortalsApi(props.portal)
+const { portals, pending: isLoading, error } = usePortalsApi(encodeURIComponent(props.portal))
 </script>

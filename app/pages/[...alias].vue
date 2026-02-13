@@ -69,8 +69,9 @@
   setup
   lang="ts"
 >
-import type { Menu } from '~~/types/menu'
+import type { Breadcrumb, Menu } from '~~/types/menu'
 import useContentApi from '~~/app/composables/api/use-content-api'
+import useMenuApi from '~~/app/composables/api/use-menu-api'
 
 const route = useRoute()
 
@@ -80,26 +81,15 @@ if (error.value !== undefined && 'statusCode' in error.value && error.value.stat
   showError(error.value)
 }
 
-const { data: menu, pending: menuPending, error: menuError } = useLazyAsyncData<Menu[]>(
-  `menu-${route.path}`,
-  async () => {
-    if (!page.value?.menu) return []
+const { menu, pending: menuPending, error: menuError } = page.value?.menu
+  ? useMenuApi(page.value.menu, { url: route.path, depth: 1 })
+  : { menu: ref<Menu[]>([]), pending: ref(false), error: ref<Error | undefined>() }
 
-    return $fetch<Menu[]>(`/api/menus/${page.value.menu}`, {
-      params: { url: page.value.alias, depth: 1 }
-    })
-  },
-  {
-    watch: [() => page.value?.menu],
-    default: () => []
-  }
-)
-
-const buildPath = (item: any): any => {
+const buildPath = (item: Menu | undefined): Breadcrumb[] => {
   if (!item) return []
 
   return [
-    { title: item.title, url: item.url, activeBranch: item.activeBranch },
+    { title: item.title, url: item.url ?? '', activeBranch: item.activeBranch ?? false },
     ...buildPath(item.children?.find((i: Menu) => i.activeBranch))
   ]
 }
