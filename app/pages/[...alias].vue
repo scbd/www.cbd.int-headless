@@ -76,12 +76,9 @@ const route = useRoute()
 
 const { content: page, pending, error } = await useContentApi(route.path)
 
-// Show error page if path doesn't exist in Drupal backend.
-watch(error, () => {
-  if (error.value && (error.value as Error & { statusCode?: number })?.statusCode === 404) {
-    showError(error.value)
-  }
-})
+if (error.value !== undefined && 'statusCode' in error.value && error.value.statusCode === 404) {
+  showError(error.value)
+}
 
 const { data: menu, pending: menuPending, error: menuError } = useLazyAsyncData<Menu[]>(
   `menu-${route.path}`,
