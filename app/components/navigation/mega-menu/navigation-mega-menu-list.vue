@@ -12,11 +12,14 @@
           {{ menuItem.title }}
         </NuxtLink>
 
-        <ul v-if="menuItem.children" class="level-3-items nav">
-          <navigation-mega-menu-list-item :menu="menuItem" />
-        </ul>
-      </li>
-    </template>
+      <ul v-if="menuItem.component" class="level-3-items nav">
+        <navigation-mega-menu-dynamic-content :component="menuItem.component" />
+      </ul>
+
+      <ul v-if="menuItem.children" class="level-3-items nav">
+        <navigation-mega-menu-list-item :menu="menuItem" />
+      </ul>
+    </li>
   </div>
 </template>
 <i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-list.json"></i18n>
