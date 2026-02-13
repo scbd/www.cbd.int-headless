@@ -110,6 +110,8 @@ const breadcrumbMenu = computed(() => {
   if (page.value?.alias && menuRoot.value) {
     return buildPath(menuRoot.value)
   }
+
+  return undefined
 });
 
 definePageMeta({
