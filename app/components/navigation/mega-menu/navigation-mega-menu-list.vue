@@ -20,6 +20,7 @@
         <navigation-mega-menu-list-item :menu="menuItem" />
       </ul>
     </li>
+    </template>
   </div>
 </template>
 <i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-list.json"></i18n>
