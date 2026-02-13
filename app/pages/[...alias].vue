@@ -20,18 +20,22 @@
                 </button>
               </li>
             </div>
-            <navigation-top-menu
-              v-if="megaMenu"
-              :menus="megaMenu"
-              class="level-2-items"
-              id="collapseSubnav"
-            />
-            <div class="subnav-level-3-items nav">
-              <navigation-top-menu-item
-                v-if="megaSubMenu"
-                :menu="megaSubMenu"
+            <status v-if="menuPending" />
+            <status v-else-if="menuError" :error="menuError" />
+            <template v-else>
+              <navigation-top-menu
+                v-if="megaMenu"
+                :menus="megaMenu"
+                class="level-2-items"
+                id="collapseSubnav"
               />
-            </div>
+              <div class="subnav-level-3-items nav">
+                <navigation-top-menu-item
+                  v-if="megaSubMenu"
+                  :menu="megaSubMenu"
+                />
+              </div>
+            </template>
           </ul>
         </nav>
       </div>
@@ -70,7 +74,7 @@ import useContentApi from '~~/app/composables/api/use-content-api'
 
 const route = useRoute()
 
-const { content: page, pending, error } = useContentApi(route.path)
+const { content: page, pending, error } = await useContentApi(route.path)
 
 // Show error page if path doesn't exist in Drupal backend.
 watch(error, () => {
@@ -79,7 +83,7 @@ watch(error, () => {
   }
 })
 
-const { data: menu, pending: menuPending } = useLazyAsyncData<Menu[]>(
+const { data: menu, pending: menuPending, error: menuError } = useLazyAsyncData<Menu[]>(
   `menu-${route.path}`,
   async () => {
     if (!page.value?.menu) return []
