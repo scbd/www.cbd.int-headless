@@ -1,15 +1,11 @@
 import type { Portal } from '~~/types/portal'
 import { PORTALS } from '~~/constants/api-paths'
-import { handleErrorState } from '~~/utils/api-error-handler'
 
-export default function usePortalsApi (): { getPortals: (portal: string) => Promise<Portal[]> } {
-  const getPortals = async (portal: string): Promise<Portal[]> => {
-    const { data } = await useFetch<Portal[]>(PORTALS, {
-      params: { portal }
-    }).then(handleErrorState)
+export default function usePortalsApi (portal: string): { portals: Ref<Portal[]>, pending: Ref<boolean>, error: Ref<Error | undefined> } {
+  const { data: portals, pending, error } = useLazyFetch<Portal[]>(PORTALS, {
+    params: { portal },
+    default: () => []
+  })
 
-    return data.value
-  }
-
-  return { getPortals }
+  return { portals, pending, error }
 }

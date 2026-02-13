@@ -20,18 +20,22 @@
                 </button>
               </li>
             </div>
-            <navigation-top-menu
-              v-if="megaMenu"
-              :menus="megaMenu"
-              class="level-2-items"
-              id="collapseSubnav"
-            />
-            <div class="subnav-level-3-items nav">
-              <navigation-top-menu-item
-                v-if="megaSubMenu"
-                :menu="megaSubMenu"
+            <status v-if="menuPending" />
+            <status v-else-if="menuError" :error="menuError" />
+            <template v-else>
+              <navigation-top-menu
+                v-if="megaMenu"
+                :menus="megaMenu"
+                class="level-2-items"
+                id="collapseSubnav"
               />
-            </div>
+              <div class="subnav-level-3-items nav">
+                <navigation-top-menu-item
+                  v-if="megaSubMenu"
+                  :menu="megaSubMenu"
+                />
+              </div>
+            </template>
           </ul>
         </nav>
       </div>
@@ -46,10 +50,15 @@
             v-if="breadcrumbMenu"
             :items="breadcrumbMenu"
           />
-          <section
-            v-dompurify-html="page.body"
-            class="rendered-content"
-          ></section>
+          <status v-if="pending" />
+          <status v-else-if="error" :error="error" />
+
+          <template v-else>
+            <section
+              v-dompurify-html="page!.body"
+              class="rendered-content"
+              ></section>
+          </template>
         </article>
       </div>
     </div>
@@ -60,33 +69,36 @@
   setup
   lang="ts"
 >
-import type { Menu } from '~~/types/menu'
+import type { Breadcrumb, Menu } from '~~/types/menu'
 import useContentApi from '~~/app/composables/api/use-content-api'
-import useMenuApi from '~/composables/api/use-menu-api'
+import useMenuApi from '~~/app/composables/api/use-menu-api'
 
 const route = useRoute()
-const { getContent } = useContentApi()
-const { getMenu } = useMenuApi()
 
-const page = await getContent(route.path)
+const { content: page, pending, error } = await useContentApi(route.path)
 
-const menu = page?.menu
-  ? await getMenu(page.menu, {
-    url: page.alias,
+if (error.value !== undefined && 'statusCode' in error.value && error.value.statusCode === 404) {
+  showError(error.value)
+}
+
+const { menu, pending: menuPending, error: menuError } =
+  useMenuApi(page.value?.menu, 
+  { 
+    url: route.path,
     depth: 1
-  })
-  : undefined
+  }
+)
 
-const buildPath = (item: any): any => {
+const buildPath = (item: Menu | undefined): Breadcrumb[] => {
   if (!item) return []
 
   return [
-    { title: item.title, url: item.url, activeBranch: item.activeBranch },
+    { title: item.title, url: item.url ?? '', activeBranch: item.activeBranch ?? false },
     ...buildPath(item.children?.find((i: Menu) => i.activeBranch))
   ]
 }
 
-const menuRoot = computed(() => menu?.find((i) => i.activeBranch))
+const menuRoot = computed(() => menu.value?.find((i) => i.activeBranch))
 
 const megaMenu = computed(() => menuRoot.value?.children)
 
@@ -95,9 +107,11 @@ const megaSubMenu = computed(() => menuRoot.value?.children?.find((i) => i.activ
 const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch)?.children?.find((i) => i.activeBranch))
 
 const breadcrumbMenu = computed(() => {
-  if (page?.alias && menuRoot.value) {
+  if (page.value?.alias && menuRoot.value) {
     return buildPath(menuRoot.value)
   }
+
+  return undefined
 });
 
 definePageMeta({
