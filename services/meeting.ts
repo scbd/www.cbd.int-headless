@@ -49,6 +49,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
     themes: toLStringArray(item, 'themes'),
     startOn: new Date(item.startDate_dt),
     endOn: new Date(item.endDate_dt),
+    createdOn: new Date(item.createdDate_dt),
     updatedOn: new Date(item.updatedDate_dt),
     country: toLString(item, 'eventCountry'),
     city: toLString(item, 'eventCity'),
