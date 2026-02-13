@@ -7,8 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import type { SearchResult } from '~~/types/api/search-result';
-import type { LString } from '@scbd/vue-components';
 import useMeetingsApi from '~/composables/api/use-meetings';
 import useNotificationsApi from '~/composables/api/use-notifications';
 import useStatementsApi from '~/composables/api/use-statements';
@@ -20,23 +18,21 @@ const props = defineProps<{
 
 const { toLocaleText } = useLString();
 
-const contents: Record<string, () => Promise<SearchResult<{ id: string; title: LString; urls: string[] }>>> = {
-  meetings: () => useMeetingsApi().getMeetings({ limit: 4 }),
-  notifications: () => useNotificationsApi().getNotifications({ limit: 4 }),
-  statements: () => useStatementsApi().getStatements({ limit: 4 })
-};
+function getContent(component: string) {
+  switch (component) {
+    case 'meetings':       return useMeetingsApi({ limit: 4 }).meetings;
+    case 'notifications':  return useNotificationsApi({ limit: 4 }).notifications;
+    case 'statements':     return useStatementsApi({ limit: 4 }).statements;
+  }
+}
 
-const items = ref<{ id: string; title: LString; url: string }[]>([]);
+const rows = getContent(props.component);
 
-const content = contents[props.component];
-
-if (content) {
-  const { rows } = await content().catch(() => ({ rows: [] }));
-
-  items.value = rows.map((row) => ({
+const items = computed(() =>
+  (rows?.value ?? []).map((row) => ({
     id: row.id,
     title: row.title,
     url: row.urls?.[0] ?? '#',
-  }));
-}
+  }))
+);
 </script>
