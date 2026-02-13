@@ -70,7 +70,7 @@ const { getMenu } = useMenuApi()
 
 const page = await getContent(route.path)
 
-const menu = page.menu
+const menu = page?.menu
   ? await getMenu(page.menu, {
     url: page.alias,
     depth: 1
@@ -95,7 +95,7 @@ const megaSubMenu = computed(() => menuRoot.value?.children?.find((i) => i.activ
 const verticalMenu = computed(() => menuRoot.value?.children?.find((i) => i.activeBranch)?.children?.find((i) => i.activeBranch))
 
 const breadcrumbMenu = computed(() => {
-  if (page.alias && menuRoot.value) {
+  if (page?.alias && menuRoot.value) {
     return buildPath(menuRoot.value)
   }
 });

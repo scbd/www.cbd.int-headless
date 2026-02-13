@@ -1,4 +1,5 @@
-import { getMenu } from '../../../services/drupal'
+import { getMenu } from '~~/services/drupal'
+import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
 export default defineEventHandler(async (event) => {
   const code = getRouterParam(event, 'code') ?? ''
@@ -8,5 +9,5 @@ export default defineEventHandler(async (event) => {
   const branch = query.branch as string | undefined
   const url = query.url as string | undefined
 
-  return await getMenu(code, { depth, branch, url })
+  return await getMenu(code, { depth, branch, url }).catch(apiErrorHandler)
 })

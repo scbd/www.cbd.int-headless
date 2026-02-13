@@ -1,7 +1,8 @@
-import type { QueryParams } from '../../../types/api/query-params'
-import { listMeetings } from '../../../services/meeting'
+import type { QueryParams } from '~~/types/api/query-params'
+import { listMeetings } from '~~/services/meeting'
+import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
 export default defineEventHandler(async (event) => {
   const { sort, limit, skip } = getQuery(event) as QueryParams
-  return await listMeetings({ sort, limit, skip })
+  return await listMeetings({ sort, limit, skip }).catch(apiErrorHandler)
 })
