@@ -81,9 +81,13 @@ if (error.value !== undefined && 'statusCode' in error.value && error.value.stat
   showError(error.value)
 }
 
-const { menu, pending: menuPending, error: menuError } = page.value?.menu
-  ? useMenuApi(page.value.menu, { url: route.path, depth: 1 })
-  : { menu: ref<Menu[]>([]), pending: ref(false), error: ref<Error | undefined>() }
+const { menu, pending: menuPending, error: menuError } =
+  useMenuApi(page.value?.menu, 
+  { 
+    url: route.path,
+    depth: 1
+  }
+)
 
 const buildPath = (item: Menu | undefined): Breadcrumb[] => {
   if (!item) return []

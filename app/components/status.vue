@@ -33,7 +33,6 @@
         </template>
       </div>
     </template>
-
     <template v-else>
       <div class="loader"></div>
     </template>  
