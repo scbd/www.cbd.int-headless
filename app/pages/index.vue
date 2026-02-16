@@ -2,7 +2,9 @@
   <main class="cus-main cus-landing-page d-flex flex-column" role="main">
     <hero />
     <article class="cus-article container-xxl d-flex flex-column">
-      <meeting-card-list />
+      <async-block>
+        <lazy-meeting-card-list />
+      </async-block>
       <notification-card-list />
       <gbf-target-card-list />
       <statement-card-list />

@@ -4,8 +4,7 @@
       {{ t('meetings') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="isLoading" />
-      <status v-else-if="error" :error="error" />
+      <status v-if="error" :error="error" />
       <meeting-card
         v-else
         v-for="meeting in meetings"
@@ -26,5 +25,5 @@ import { MEETINGS } from '~~/constants/url-paths'
 
 const { t } = useI18n()
 
-const { meetings, pending: isLoading, error } = useMeetingsApi({ limit: 4 })
+const { meetings, error } = await useMeetingsApi({ limit: 4 })
 </script>
