@@ -1,7 +1,6 @@
 <template>
   <main class="cus-main cus-landing-page d-flex flex-column" role="main">
     <hero />
-    <article />
     <div class="cus-article container-xxl d-flex flex-column">
       <async-block>
         <meeting-card-list />

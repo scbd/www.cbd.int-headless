@@ -34,7 +34,7 @@
     </template>
     <template v-else>
       <div class="loader"></div>
-    </template>  
+    </template>
   </div>
 </template>
 <i18n src="~~/i18n/dist/app/components/status.json"></i18n>

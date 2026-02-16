@@ -53,8 +53,7 @@
             v-if="breadcrumbMenu"
             :items="breadcrumbMenu"
           />
-          <status v-if="pending" />
-          <status v-else-if="error" :error="error" />
+          <status v-if="error" :error="error" />
 
           <template v-else>
             <section
@@ -78,15 +77,15 @@ import useMenuApi from '~~/app/composables/api/use-menu-api'
 
 const route = useRoute()
 
-const { content: page, pending, error } = await useContentApi(route.path)
+const { content: page, error } = await useContentApi(route.path)
 
-if (error.value !== undefined && 'statusCode' in error.value && error.value.statusCode === 404) {
+if (error.value !== undefined && error.value !== null && 'statusCode' in error.value && error.value.statusCode === 404) {
   showError(error.value)
 }
 
 const { menu, error: menuError } =
-  await useMenuApi(page.value?.menu, 
-  { 
+  await useMenuApi(page.value?.menu ?? '',
+  {
     url: route.path,
     depth: 1
   }
