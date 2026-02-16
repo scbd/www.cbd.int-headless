@@ -22,28 +22,32 @@
             </div>
             <status v-if="menuError" :error="menuError" />
             <template v-else>
-              <navigation-top-menu
-                v-if="megaMenu"
-                :menus="megaMenu"
-                class="level-2-items"
-                id="collapseSubnav"
-              />
-              <div class="subnav-level-3-items nav">
-                <navigation-top-menu-item
-                  v-if="megaSubMenu"
-                  :menu="megaSubMenu"
+              <async-block>
+                <navigation-top-menu
+                  v-if="megaMenu"
+                  :menus="megaMenu"
+                  class="level-2-items"
+                  id="collapseSubnav"
                 />
-              </div>
+                <div class="subnav-level-3-items nav">
+                    <navigation-top-menu-item
+                      v-if="megaSubMenu"
+                      :menu="megaSubMenu"
+                    />
+                </div>
+              </async-block>
             </template>
           </ul>
         </nav>
       </div>
 
       <div class="container-xxl d-flex">
-        <navigation-submenu-vertical
-          v-if="verticalMenu?.children?.length"
-          :menu="verticalMenu"
-        />
+        <async-block>
+          <navigation-submenu-vertical
+            v-if="verticalMenu?.children?.length"
+            :menu="verticalMenu"
+          />
+        </async-block>
         <article class="cus-article container-fluid d-flex flex-column">
           <navigation-breadcrumbs
             v-if="breadcrumbMenu"
