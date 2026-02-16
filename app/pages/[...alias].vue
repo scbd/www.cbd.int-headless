@@ -20,8 +20,7 @@
                 </button>
               </li>
             </div>
-            <status v-if="menuPending" />
-            <status v-else-if="menuError" :error="menuError" />
+            <status v-if="menuError" :error="menuError" />
             <template v-else>
               <navigation-top-menu
                 v-if="megaMenu"
@@ -81,8 +80,8 @@ if (error.value !== undefined && 'statusCode' in error.value && error.value.stat
   showError(error.value)
 }
 
-const { menu, pending: menuPending, error: menuError } =
-  useMenuApi(page.value?.menu, 
+const { menu, error: menuError } =
+  await useMenuApi(page.value?.menu, 
   { 
     url: route.path,
     depth: 1

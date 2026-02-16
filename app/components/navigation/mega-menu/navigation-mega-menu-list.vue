@@ -1,7 +1,6 @@
 <template>
   <div :style="level2MenuColumnCount.styles">
-    <status v-if="pending" />
-    <status v-else-if="error" :error="error" />
+    <status v-if="error" :error="error" />
     <template v-else>
       <li
         v-for="(menuItem, index) in menu"
@@ -29,7 +28,7 @@ const props = defineProps<{
   submenu: string;
 }>();
 
-const { menu, pending, error } = useMenuApi(props.submenu);
+const { menu, error } = await useMenuApi(props.submenu);
 
 const level2MenuColumnCount = computed(() => {
   const classes: string[] = [];

@@ -4,8 +4,7 @@
             {{ t('portals') }}
         </div>
         <div class="content-wrapper d-flex">
-            <status v-if="isLoading" />
-            <status v-else-if="error" :error="error" />
+            <status v-if="error" :error="error" />
             <portal-card
                 v-else
                 v-for="portal in portals"
@@ -25,5 +24,5 @@ const props = defineProps<{
     portal: string;
 }>();
 
-const { portals, pending: isLoading, error } = usePortalsApi(encodeURIComponent(props.portal))
+const { portals, error } = await usePortalsApi(encodeURIComponent(props.portal))
 </script>

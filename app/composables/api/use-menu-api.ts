@@ -1,7 +1,7 @@
 import type { Menu } from '~~/types/menu'
 
-export default function useMenuApi (code: string | undefined, options?: { depth?: number, branch?: string, url?: string }): { menu: Ref<Menu[]>, pending: Ref<boolean>, error: Ref<Error | undefined> } {
-  const { data: menu, pending, error } = useLazyFetch<Menu[]>(
+export default async function useMenuApi (code: string | undefined, options?: { depth?: number, branch?: string, url?: string }): Promise<{ menu: Ref<Menu[]>, error: Ref<Error | undefined> }> {
+  const { data: menu, error } = await useFetch<Menu[]>(
     () => code !== undefined && code !== '' ? `/api/menus/${code}` : '',
     {
       params: {
@@ -12,5 +12,6 @@ export default function useMenuApi (code: string | undefined, options?: { depth?
       default: () => []
     }
   )
-  return { menu, pending, error }
+
+  return { menu, error }
 }

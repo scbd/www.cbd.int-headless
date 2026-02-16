@@ -1,7 +1,6 @@
 <template>
   <main class="cus-main cus-internal-page d-flex flex-column" role="main">
-    <status v-if="isLoading" />
-    <status v-else-if="error" :error="error" />
+    <status v-if="error" :error="error" />
     <template v-else>
       <!-- Breadcrumbs -->
       <hero-item-page :article="article!" />
@@ -21,7 +20,7 @@
 import { useArticleApi } from '~/composables/api/use-articles-api'
 
 const route = useRoute()
-const { article, pending: isLoading, error } = useArticleApi(route.path)
+const { article, error } = await useArticleApi(route.path)
 
 definePageMeta({
   layout: 'home',

@@ -3,18 +3,18 @@ import type { QueryParams } from '~~/types/api/query-params'
 import { CONTENT, ARTICLES } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
-export function useArticleApi (url: string): { article: ComputedRef<Article | undefined>, pending: Ref<boolean>, error: Ref<Error | undefined> } {
-  const { data, pending, error } = useLazyFetch<Article>(CONTENT, {
+export async function useArticleApi (url: string): Promise<{ article: Article | undefined, error: Ref<Error | undefined> }> {
+  const { data, error } = await useFetch<Article>(CONTENT, {
     params: { url }
   })
 
-  const article = computed(() => data.value !== undefined ? normalizeObjectDates(data.value) : undefined)
+  const article = data.value !== null ? normalizeObjectDates(data.value) : undefined
 
-  return { article, pending, error }
+  return { article, error }
 }
 
-export default function useArticleListApi (options?: QueryParams): { articles: ComputedRef<Article[]>, pending: Ref<boolean>, error: Ref<Error | undefined> } {
-  const { data, pending, error } = useLazyFetch<Article[]>(ARTICLES, {
+export default async function useArticleListApi (options?: QueryParams): Promise<{ articles: Article[], error: Ref<Error | undefined> }> {
+  const { data, error } = await useFetch<Article[]>(ARTICLES, {
     params: {
       sort: options?.sort,
       limit: options?.limit,
@@ -23,7 +23,7 @@ export default function useArticleListApi (options?: QueryParams): { articles: C
     default: () => []
   })
 
-  const articles = computed(() => data.value.map((a) => normalizeObjectDates(a)))
+  const articles = data.value.map((row) => normalizeObjectDates(row))
 
-  return { articles, pending, error }
+  return { articles, error }
 }

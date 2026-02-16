@@ -2,8 +2,7 @@
   <section class="content-row d-flex flex-column gbf-targets">
     <div class="row-title">{{ t('gbfTargets') }}</div>
     <div class="content-wrapper d-flex" ref="gbfTargetWrapperRef">
-      <status v-if="isLoading" />
-      <status v-else-if="error" :error="error" />
+      <status v-if="error" :error="error" />
       <gbf-target-card
         v-else
         v-for="gbfTarget of gbfTargets"
@@ -37,7 +36,7 @@ import useGbfTargetsApi from '~/composables/api/use-gbf-targets-api'
 
 const { t } = useI18n()
 
-const { gbfTargets, pending: isLoading, error } = useGbfTargetsApi()
+const { gbfTargets, error } = await useGbfTargetsApi()
 
 const gbfTargetWrapper = useTemplateRef<HTMLDivElement>('gbfTargetWrapperRef')
 

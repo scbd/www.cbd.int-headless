@@ -4,8 +4,7 @@
       {{ t('notifications') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="isLoading" />
-      <status v-else-if="error" :error="error" />
+      <status v-if="error" :error="error" />
       <notification-card
         v-else
         v-for="notification in notifications"
@@ -29,5 +28,5 @@ import { NOTIFICATIONS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 
-const { notifications, pending: isLoading, error } = useNotificationsApi({ limit: 4 });
+const { notifications, error } = await useNotificationsApi({ limit: 4 });
 </script>

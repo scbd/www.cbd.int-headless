@@ -97,8 +97,7 @@
           </nav>
         </li>
       </ul>
-      <status v-if="pending" />
-      <status v-else-if="error" :error="error" />
+      <status v-if="error" :error="error" />
       <ul v-else class="navbar-nav">
         <li v-for="childMenu in menu" class="mega-menu-item nav-item dropdown">
           <NuxtLink
@@ -135,5 +134,5 @@ const languagesWithLabel = computed(() =>
   })
 );
 
-const { menu, pending, error } = useMenuApi('cbd-header');
+const { menu, error } = await useMenuApi('cbd-header');
 </script>

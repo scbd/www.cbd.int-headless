@@ -1,10 +1,10 @@
 import type { GbfTarget } from '~~/types/gbf-target'
 import { GBF_TARGETS } from '~~/constants/api-paths'
 
-export default function useGbfTargetsApi (): { gbfTargets: Ref<GbfTarget[]>, pending: Ref<boolean>, error: Ref<Error | undefined> } {
-  const { data: gbfTargets, pending, error } = useLazyFetch<GbfTarget[]>(GBF_TARGETS, {
+export default async function useGbfTargetsApi (): Promise<{ gbfTargets: Ref<GbfTarget[]>, error: Ref<Error | undefined> } > {
+  const { data: gbfTargets, error } = await useFetch<GbfTarget[]>(GBF_TARGETS, {
     default: () => []
   })
 
-  return { gbfTargets, pending, error }
+  return { gbfTargets, error }
 }

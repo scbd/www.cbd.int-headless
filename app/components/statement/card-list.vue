@@ -4,8 +4,7 @@
       {{ t('statements') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="isLoading" />
-      <status v-else-if="error" :error="error" />
+      <status v-if="error" :error="error" />
       <statement-card
         v-else
         v-for="statement in statements"
@@ -26,5 +25,5 @@ import { STATEMENTS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 
-const { statements, pending: isLoading, error } = useStatementsApi({ limit: 4 })
+const { statements, error } = await useStatementsApi({ limit: 4 })
 </script>
