@@ -4,7 +4,7 @@ import type { SearchResult } from '~~/types/api/search-result'
 import { MEETINGS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
-export default async function useMeetingsApi (options?: QueryParams): Promise<{ meetings: ComputedRef<Meeting[]>, error: Ref<Error | undefined> }> {
+export default async function useMeetingsApi (options?: QueryParams): Promise<{ meetings: Meeting[], error: Ref<Error | undefined> }> {
   const { data, error } = await useFetch<SearchResult<Meeting>>(MEETINGS, {
     params: {
       sort: options?.sort,
@@ -14,7 +14,7 @@ export default async function useMeetingsApi (options?: QueryParams): Promise<{ 
     default: () => ({ total: 0, rows: [] })
   })
 
-  const meetings = computed<Meeting[]>(() => data.value.rows.map(row => normalizeObjectDates(row)))
+  const meetings = data.value.rows.map(row => normalizeObjectDates(row))
 
   return { meetings, error }
 }
