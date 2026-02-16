@@ -1,9 +1,14 @@
-import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, toLString } from '~~/utils/solr'
-import type { SolrQuery } from '~~/types/api/solr'
-import type { Decision } from '~~/types/decision'
-import type { QueryParams } from '~~/types/api/query-params'
-import type { SearchResult } from '~~/types/api/search-result'
+import SolrIndexApi from '../api/solr-index'
+import { solrEscape, toLString } from '../utils/solr'
+import { mandatory, notFound } from 'api-client/api-error'
+import type { SolrQuery } from '../types/api/solr'
+import type { Decision } from '../types/decision'
+import type { QueryParams } from '../types/api/query-params'
+import type { SearchResult } from '../types/api/search-result'
+
+function normalizeDecisionCode (code: string): string {
+  return code.toUpperCase()
+}
 
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
@@ -11,6 +16,14 @@ const api = new SolrIndexApi({
 
 export async function listDecisions (options: QueryParams): Promise<SearchResult<Decision>> {
   return await searchDecisions(options)
+};
+
+export async function getDecision (code: string): Promise<Decision> {
+  if (code === null || code === '') throw mandatory('code', 'Decision code is required.')
+  const data = await searchDecisions({ code: normalizeDecisionCode(code) })
+
+  if (data.total === 0 || data.rows[0] === null) throw notFound(`Decision '${code}' not found.`)
+  return data.rows[0] as Decision
 };
 
 async function searchDecisions (options?: QueryParams & { code?: string }): Promise<SearchResult<Decision>> {
