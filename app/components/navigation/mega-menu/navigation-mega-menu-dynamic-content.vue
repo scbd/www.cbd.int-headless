@@ -21,8 +21,19 @@ const props = defineProps<{
   component: string;
 }>();
 
-const { toLocaleText } = useLString();
+const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
+
+const rows = getContent(props.component)
+
+const items = computed(() =>
+  (rows?.value ?? []).map((row) => ({
+    id: row.id,
+    title: row.title,
+    date: getDateProperty(row),
+    url: row.urls?.[0] ?? '#',
+  }))
+)
 
 function getContent(component: string) {
   switch (component) {
@@ -37,15 +48,4 @@ function getDateProperty(row: Meeting | Notification | Statement): Date {
   if ('updatedOn' in row && row.updatedOn !== undefined && row.updatedOn !== null) return row.updatedOn;
   return row.createdOn;
 }
-
-const rows = getContent(props.component);
-
-const items = computed(() =>
-  (rows?.value ?? []).map((row) => ({
-    id: row.id,
-    title: row.title,
-    date: getDateProperty(row),
-    url: row.urls?.[0] ?? '#',
-  }))
-);
 </script>
