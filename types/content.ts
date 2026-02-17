@@ -1,10 +1,11 @@
 import type { LString } from '@scbd/vue-components'
 export interface Content {
+  id: string
   title: string
   bundle: string
   createdOn: Date
   updatedOn: Date
-  alias: string
+  url: string
   locale: LString
   body: string
   summary: string

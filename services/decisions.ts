@@ -34,7 +34,7 @@ async function searchDecisions (options?: QueryParams & { code?: string }): Prom
           query,
           fieldQueries: 'schema_s:decision',
           sort: options?.sort ?? 'updatedDate_dt DESC',
-          fields: 'id,symbol_s,code_s,title_*_t,file_*_t,eventTitle_*_t,session_i,decision_i,createdDate_dt,updatedDate_dt',
+          fields: 'id,symbol_s,code_s,title_*_t,url_ss,eventTitle_*_t,session_i,decision_i,createdDate_dt,updatedDate_dt',
           start: options?.skip ?? 0,
           rowsPerPage: options?.limit ?? 10
         }
@@ -44,7 +44,7 @@ async function searchDecisions (options?: QueryParams & { code?: string }): Prom
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
-    file: toLString(item, 'file'),
+    urls: item.url_ss,
     eventTitle: item.eventTitle,
     session: item.session_i,
     decision: item.decision_i,

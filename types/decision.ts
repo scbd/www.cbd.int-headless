@@ -4,7 +4,7 @@ export interface Decision {
   id: string
   code: string
   title: LString
-  file: LString
+  urls: string[]
   eventTitle: string
   session: number
   decision: number

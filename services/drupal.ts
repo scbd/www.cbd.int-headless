@@ -54,11 +54,12 @@ export async function getContent (url: string): Promise<Content | Article> {
   const { attributes } = drupalContent?.data
 
   const content: Content = {
+    id: attributes?.id,
     bundle: route?.entity?.bundle,
     title: attributes?.title,
     createdOn: attributes?.created,
     updatedOn: attributes?.changed,
-    alias: attributes?.path?.alias,
+    url: attributes?.path?.alias,
     locale: attributes?.path?.langcode,
     body: contentNormalizer(attributes?.body?.processed),
     summary: attributes?.body?.summary
@@ -162,11 +163,12 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
       const { meta } = item?.relationships?.field_image?.data
 
       const content: Content = {
+        id: attributes?.id,
         bundle: 'article',
         title: attributes?.title,
         createdOn: attributes?.created,
         updatedOn: attributes?.changed,
-        alias: attributes?.path?.alias,
+        url: attributes?.path?.alias,
         locale: attributes?.path?.langcode,
         body: contentNormalizer(attributes?.body?.processed),
         summary: attributes?.body?.summary

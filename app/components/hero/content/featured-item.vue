@@ -5,7 +5,7 @@
       :alt="article.coverImage.alt"
       class="featured-cover-image"
     />
-    <NuxtLink :to="article.alias" class="featured-wrapper">
+    <NuxtLink :to="article.url" class="featured-wrapper">
       <div class="featured-information">
         <div class="featured-taxonomy">
           <div class="featured-source">{{ t('cbd') }}</div>

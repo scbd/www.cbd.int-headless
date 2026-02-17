@@ -8,14 +8,19 @@
 </template>
 
 <script setup lang="ts">
+import useArticleListApi from '~/composables/api/use-articles-api';
+import useDecisionsApi from '~/composables/api/use-decisions';
 import useMeetingsApi from '~/composables/api/use-meetings';
 import useNotificationsApi from '~/composables/api/use-notifications';
 import useStatementsApi from '~/composables/api/use-statements';
 import { useLString } from '~/composables/use-lstring';
 import { useFormatDate } from '~/composables/use-format-date'
+import type { Article } from '~~/types/content';
+import type { Decision } from '~~/types/decision';
 import type { Meeting } from '~~/types/meeting';
 import type { Notification } from '~~/types/notification';
 import type { Statement } from '~~/types/statement';
+
 
 const props = defineProps<{
   component: string;
@@ -31,19 +36,24 @@ const items = computed(() =>
     id: row.id,
     title: row.title,
     date: getDateProperty(row),
-    url: row.urls?.[0] ?? '#',
+    url: 'urls' in row ? row.urls?.[0] ?? '#' : row.url ?? '#',
   }))
 )
 
+console.log(props.component)
+
 function getContent(component: string) {
   switch (component) {
+    case 'articles':       return useArticleListApi({ limit: 4 }).articles;
     case 'meetings':       return useMeetingsApi({ limit: 4 }).meetings;
     case 'notifications':  return useNotificationsApi({ limit: 4 }).notifications;
     case 'statements':     return useStatementsApi({ limit: 4 }).statements;
+    case 'decisions':      return useDecisionsApi({ limit: 4 }).decisions;
+    default:               return null;
   }
 }
 
-function getDateProperty(row: Meeting | Notification | Statement): Date {
+function getDateProperty(row: Article | Decision | Meeting | Notification | Statement): Date {
   if ('startOn' in row && row.startOn !== undefined && row.startOn !== null) return row.startOn;
   if ('updatedOn' in row && row.updatedOn !== undefined && row.updatedOn !== null) return row.updatedOn;
   return row.createdOn;
