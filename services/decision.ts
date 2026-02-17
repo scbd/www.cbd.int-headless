@@ -30,23 +30,23 @@ async function searchDecisions (options?: QueryParams & { code?: string }): Prom
           query,
           fieldQueries: 'schema_s:decision',
           sort: options?.sort ?? 'updatedDate_dt DESC',
-          fields: 'id,symbol_s,code_s,title_*_t,url_ss,eventTitle_*_t,session_i,decision_i,createdDate_dt,updatedDate_dt',
+          fields: 'id,symbol_s,code_s,title_*_t,url_ss,eventTitle_t,session_i,decision_i,createdDate_dt,updatedDate_dt',
           start: options?.skip ?? 0,
           rowsPerPage: options?.limit ?? 10
         }
   const { response } = await api.querySolr(params)
 
-  const decisionList: Decision[] = await Promise.all(response.docs.map(async (item: any): Promise<Decision> => ({
+  const decisionList: Decision[] = response.docs.map((item: any): Decision => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
     urls: item.url_ss,
-    eventTitle: item.eventTitle,
+    eventTitle: item.eventTitle_t,
     session: item.session_i,
     decision: item.decision_i,
     createdOn: new Date(item.createdDate_dt),
     updatedOn: new Date(item.updatedDate_dt)
-  })))
+  }))
 
   return {
     total: response.numFound,
