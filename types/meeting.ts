@@ -8,6 +8,7 @@ export interface Meeting {
   themes: LString[]
   startOn: Date
   endOn: Date
+  createdOn: Date
   updatedOn: Date
   country: LString
   city: LString
