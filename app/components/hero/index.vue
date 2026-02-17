@@ -1,6 +1,7 @@
 <template>
   <div class="cus-hero" :class="heroClasses">
-      <div class="featured-items">
+    <status v-if="error" :error="error" />
+    <div v-else class="featured-items">
       <hero-content-featured-item
         v-if="primaryArticle"
         :article="primaryArticle"
@@ -19,14 +20,12 @@
 </template>
 
 <script setup lang="ts">
-import useArticlesApi from '~/composables/api/use-articles-api'
+import useArticleListApi from '~/composables/api/use-articles-api'
 
-const { listArticles } = useArticlesApi()
+const { articles, error } = await useArticleListApi({ limit: 3 })
 
-const items = await listArticles({ limit: 3 })
-
-const primaryArticle = computed(() => items.at(0))
-const secondaryArticles = computed(() => items.slice(1))
+const primaryArticle = computed(() => articles.at(0))
+const secondaryArticles = computed(() => articles.slice(1))
 const isMultiple = computed(() => secondaryArticles.value.length !== 0)
 const heroClasses = computed(() =>
   isMultiple.value ? ['triple-features'] : ['']

@@ -11,3 +11,9 @@ export interface Menu {
   children?: Menu[]
   activeBranch?: boolean
 }
+
+export interface Breadcrumb {
+  title: string
+  url: string
+  activeBranch: boolean
+}

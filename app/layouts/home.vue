@@ -1,10 +1,14 @@
 <template>
   <div class="body-replace">
     <layout-shared-header>
-      <navigation-mega-menu />
+      <async-block>
+        <navigation-mega-menu />
+      </async-block>
     </layout-shared-header>
     <NuxtPage />
-    <layout-shared-footer />
+    <async-block>
+      <layout-shared-footer />
+    </async-block>
   </div>
 </template>
 

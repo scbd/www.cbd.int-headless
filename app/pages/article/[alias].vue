@@ -1,30 +1,26 @@
 <template>
   <main class="cus-main cus-internal-page d-flex flex-column" role="main">
-    <status v-if="isLoading" />
-    <!-- Breadcrumbs -->
-    <hero-item-page :article="article" />
-    <div class="container-xxl d-flex">
-      <article class="cus-article container-fluid d-flex flex-column">
-        <section
-          v-dompurify-html="article.body"
-          class="rendered-content"
-        ></section>
-      </article>
-    </div>
+    <status v-if="error" :error="error" />
+    <template v-else>
+      <!-- Breadcrumbs -->
+      <hero-item-page :article="article!" />
+      <div class="container-xxl d-flex">
+        <article class="cus-article container-fluid d-flex flex-column">
+          <section
+            v-dompurify-html="article!.body"
+            class="rendered-content"
+          ></section>
+        </article>
+      </div>
+    </template>
   </main>
 </template>
 
 <script setup lang="ts">
-import useArticlesApi from '~/composables/api/use-articles-api'
+import { useArticleApi } from '~/composables/api/use-articles-api'
 
 const route = useRoute()
-const { getArticle } = useArticlesApi()
-
-const isLoading = ref(true)
-
-const article = await getArticle(route.path).finally(() => {
-  isLoading.value = false
-})
+const { article, error } = await useArticleApi(route.path)
 
 definePageMeta({
   layout: 'home',
