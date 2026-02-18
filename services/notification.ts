@@ -32,7 +32,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
       query,
       fieldQueries: 'schema_s:notification',
       sort: options?.sort ?? 'updatedDate_dt DESC',
-      fields: 'id,symbol_s,title_*_t,url_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
+      fields: 'id,symbol_s,title_*_t,url_ss,files_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
       start: options?.skip ?? 0,
       rowsPerPage: options?.limit ?? 10
     }
@@ -43,6 +43,16 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     code: item.symbol_s,
     title: toLString(item, 'title'),
     urls: item.url_ss,
+    file: (() => {
+      try {
+        const parsed = JSON.parse(item.files_ss?.[0])
+        const f = parsed?.[0]
+        if (f === undefined || f === null) return null
+        return { url: f.url, language: f.language, type: f.type }
+      } catch {
+        return null
+      }
+    })(),
     themes: toLStringArray(item, 'themes'),
     createdOn: new Date(item.createdDate_dt),
     endOn: new Date(item.endDate_dt),

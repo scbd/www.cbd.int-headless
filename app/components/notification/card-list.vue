@@ -7,7 +7,7 @@
       <status v-if="error" :error="error" />
       <notification-card
         v-else
-        v-for="notification in notifications"
+        v-for="notification in notifications.rows"
         :notification="notification"
         :key="notification.id"
       />
@@ -23,10 +23,10 @@
 <i18n src="~~/i18n/dist/app/components/notification/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useNotificationsApi from '~/composables/api/use-notifications';
+import useNotificationsListApi from '~/composables/api/use-notifications';
 import { NOTIFICATIONS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 
-const { notifications, error } = await useNotificationsApi({ limit: 4 });
+const { notifications, error } = await useNotificationsListApi({ limit: 4 });
 </script>

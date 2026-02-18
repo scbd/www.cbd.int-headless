@@ -3,8 +3,9 @@ import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
 import { NOTIFICATIONS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
+import { mandatory } from 'api-client/api-error'
 
-export default async function useNotificationsApi (options?: QueryParams): Promise<{ notifications: Notification[], error: Ref<Error | undefined> }> {
+export default async function useNotificationsListApi (options?: QueryParams): Promise<{ notifications: ComputedRef<{ rows: Notification[], total: number }>, error: Ref<Error | undefined> }> {
   const { data, error } = await useFetch<SearchResult<Notification>>(NOTIFICATIONS, {
     params: {
       sort: options?.sort,
@@ -14,7 +15,23 @@ export default async function useNotificationsApi (options?: QueryParams): Promi
     default: () => ({ total: 0, rows: [] })
   })
 
-  const notifications = data.value.rows.map(row => normalizeObjectDates(row))
+  const notifications = computed(() => ({
+    rows: data.value.rows.map(row => normalizeObjectDates(row)),
+    total: data.value.total
+  }))
+
+  return { notifications, error }
+}
+
+export async function useNotificationsApi (code: string): Promise<{ notifications: ComputedRef<{ rows: Notification[], total: number }>, error: Ref<Error | undefined> }> {
+  if (code === undefined || code === null) { throw mandatory('code is mandatory') }
+
+  const { data, error } = await useFetch<Notification>(`${NOTIFICATIONS}/${code}`)
+
+  const notifications = computed(() => {
+    const rows = data.value != null ? [normalizeObjectDates(data.value)] : []
+    return { rows, total: rows.length }
+  })
 
   return { notifications, error }
 }
