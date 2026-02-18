@@ -5,6 +5,11 @@ export interface Notification {
   code: string
   title: LString
   urls: string[]
+  file: {
+    url: string
+    language: string
+    type: string
+  } | null
   themes: LString[]
   createdOn: Date
   endOn?: Date
