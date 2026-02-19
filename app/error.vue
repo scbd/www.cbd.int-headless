@@ -9,7 +9,7 @@
         aria-hidden="true"
         />
     </div>
-    <ErrorMessage :statusCode="statusCode" />
+    <ErrorMessage :statusCode="statusCode" :url="url" />
   </div>
 </template>
 
@@ -22,6 +22,7 @@ const props = defineProps<{
 }>();
 
 const statusCode = computed(() => props.error?.statusCode)
+const url = computed(() => (props.error as any)?.url as string | undefined)
 </script>
 
 <style scoped>
