@@ -14,6 +14,9 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxt/image'
   ],
+  nitro: {
+    sourceMap: false
+  },
   site: { indexable: false },
   vite: {
     plugins: [
