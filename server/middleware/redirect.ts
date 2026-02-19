@@ -19,8 +19,9 @@ export default defineEventHandler(async (event) => {
 
       return await sendRedirect(event, to, statusCode)
     }
-  } catch (error) {
+  } catch (error: any) {
     // suppress but log
-    console.error('Error in redirect middleware', { error })
+    if (error?.statusCode === 404) return
+    console.warn('Error in redirect middleware', { error })
   }
 })
