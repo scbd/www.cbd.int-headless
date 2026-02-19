@@ -35,7 +35,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
           query,
           fieldQueries: 'schema_s:meeting',
           sort: options?.sort ?? 'updatedDate_dt DESC',
-          fields: 'id,symbol_s,title_*_t,eventCountry_*_t,eventCity_*_t,url_ss,themes_*_txt,startDate_dt,endDate_dt,updatedDate_dt',
+          fields: 'id,symbol_s,title_*_t,eventCountry_*_t,eventCity_*_t,url_ss,themes_*_txt,startDate_dt,endDate_dt,createdDate_dt,updatedDate_dt',
           start: options?.skip ?? 0,
           rowsPerPage: options?.limit ?? 10
         }
@@ -49,6 +49,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
     themes: toLStringArray(item, 'themes'),
     startOn: new Date(item.startDate_dt),
     endOn: new Date(item.endDate_dt),
+    createdOn: new Date(item.createdDate_dt),
     updatedOn: new Date(item.updatedDate_dt),
     country: toLString(item, 'eventCountry'),
     city: toLString(item, 'eventCity'),
