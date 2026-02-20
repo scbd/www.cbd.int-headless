@@ -7,5 +7,9 @@ export default cachedEventHandler(async (event) => {
   return await listArticles({ sort, limit, skip }).catch(apiErrorHandler)
 }, {
   maxAge: 60 * 5,
-  name: 'articles-list'
+  name: 'articles-list',
+  getKey: (event) => {
+    const { sort, limit, skip } = getQuery(event) as QueryParams
+    return `${sort ?? ''}-${String(limit ?? '')}-${String(skip ?? '')}`
+  }
 })

@@ -6,5 +6,9 @@ export default cachedEventHandler(async (event) => {
   return await getPortal(portal).catch(apiErrorHandler)
 }, {
   maxAge: 60 * 5,
-  name: 'portals-item'
+  name: 'portals-item',
+  getKey: (event) => {
+    const { portal } = getQuery(event) as { portal: string }
+    return portal ?? ''
+  }
 })

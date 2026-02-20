@@ -6,5 +6,9 @@ export default cachedEventHandler(async (event) => {
   return await getContent(url).catch(apiErrorHandler)
 }, {
   maxAge: 60 * 5,
-  name: 'content-item'
+  name: 'content-item',
+  getKey: (event) => {
+    const { url } = getQuery(event) as { url: string }
+    return url ?? ''
+  }
 })

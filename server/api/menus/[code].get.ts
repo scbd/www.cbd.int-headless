@@ -12,5 +12,10 @@ export default cachedEventHandler(async (event) => {
   return await getMenu(code, { depth, branch, url }).catch(apiErrorHandler)
 }, {
   maxAge: 60 * 5,
-  name: 'menus-item'
+  name: 'menus-item',
+  getKey: (event) => {
+    const code = (getRouterParam(event, 'code') as string | undefined) ?? ''
+    const query = getQuery(event) as { depth?: string, branch?: string, url?: string }
+    return `${code}-${query.depth ?? ''}-${query.branch ?? ''}-${query.url ?? ''}`
+  }
 })

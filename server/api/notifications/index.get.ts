@@ -7,5 +7,9 @@ export default cachedEventHandler(async (event) => {
   return await listNotifications({ sort, limit, skip }).catch(apiErrorHandler)
 }, {
   maxAge: 60 * 5,
-  name: 'notifications-list'
+  name: 'notifications-list',
+  getKey: (event) => {
+    const { sort, limit, skip } = getQuery(event) as QueryParams
+    return `${sort ?? ''}-${String(limit ?? '')}-${String(skip ?? '')}`
+  }
 })
