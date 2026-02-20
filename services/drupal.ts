@@ -6,7 +6,7 @@ import type { QueryParams } from '~~/types/api/query-params'
 import type { Menu } from '~~/types/menu'
 import type { Portal } from '~~/types/portal'
 import type { Image } from '~~/types/image'
-import { MENU_CACHE_DURATION_MS } from '~~/constants/cache'
+import { CACHE_DURATION_MS } from '~~/constants/cache'
 import { DEFAULT_IMAGE, DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
 
 const drupalApi = new DrupalApi({
@@ -204,7 +204,7 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
   const cached = menuCache.get(code)
 
   // Return cached data if valid (not expired)
-  if (cached != null && (now - cached.timestamp) < MENU_CACHE_DURATION_MS) {
+  if (cached != null && (now - cached.timestamp) < CACHE_DURATION_MS) {
     return cached.data
   }
 
