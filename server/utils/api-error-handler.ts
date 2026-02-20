@@ -6,7 +6,6 @@ export function apiErrorHandler (err: unknown): never {
   const error = err as { statusCode?: number, status?: number, statusMessage?: string, message?: string }
   throw createError({
     statusCode: error.statusCode ?? error.status,
-    statusMessage: error.statusMessage ?? error.message,
-    cause: err
+    statusMessage: error.statusMessage ?? error.message
   })
 }
