@@ -54,6 +54,7 @@ export async function getContent (url: string): Promise<Content | Article> {
   const { attributes } = drupalContent?.data
 
   const content: Content = {
+    id: attributes?.id,
     bundle: route?.entity?.bundle,
     title: attributes?.title,
     createdOn: attributes?.created,
@@ -162,6 +163,7 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
       const { meta } = item?.relationships?.field_image?.data
 
       const content: Content = {
+        id: attributes?.id,
         bundle: 'article',
         title: attributes?.title,
         createdOn: attributes?.created,
