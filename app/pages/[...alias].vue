@@ -80,8 +80,7 @@ const route = useRoute()
 const { content: page, error } = await useContentApi(route.path)
 
 if (error.value !== undefined && error.value !== null && 'statusCode' in error.value && error.value.statusCode === 404) {
-  showError(error.value)          // TO-DO: this display the error page and stop processing the rest of the calls to the apis.
-  throw createError(error.value)  // Claude suggest throw error with fatal: true. Trying to find a better approach.
+  throw createError({ ...error.value, fatal: true })
 }
 
 const { menu, error: menuError } =
