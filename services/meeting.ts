@@ -10,22 +10,33 @@ import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 
 function normalizeMeetingCode (code: string): string {
   return code.toUpperCase()
-};
+}
+
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-export async function getMeeting (code: string): Promise<Meeting> {
+async function _listMeetings (options: QueryParams): Promise<SearchResult<Meeting>> {
+  return await searchMeetings(options)
+}
+
+async function _getMeeting (code: string): Promise<Meeting> {
   if (code === null || code === '') throw mandatory('code', 'Meeting code is required.')
   const data = await searchMeetings({ code: normalizeMeetingCode(code) })
 
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Meeting '${code}' not found.`)
   return data.rows[0] as Meeting
-};
+}
 
-export async function listMeetings (options: QueryParams): Promise<SearchResult<Meeting>> {
-  return await searchMeetings(options)
-};
+const listMeetings = withCache(_listMeetings, {
+  getKey: (options: QueryParams) =>
+    `${options.sort ?? ''}-${options.limit ?? ''}-${options.skip ?? ''}`,
+  isEmpty: (data) => data.rows.length === 0
+})
+
+const getMeeting = withCache(_getMeeting, {
+  getKey: (code) => code
+})
 
 async function searchMeetings (options?: QueryParams & { code?: string }): Promise<SearchResult<Meeting>> {
   const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
@@ -67,3 +78,5 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
     rows: meetingList
   }
 }
+
+export { listMeetings, getMeeting }

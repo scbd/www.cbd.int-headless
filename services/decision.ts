@@ -10,17 +10,27 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-export async function listDecisions (options: QueryParams): Promise<SearchResult<Decision>> {
+async function _listDecisions (options: QueryParams): Promise<SearchResult<Decision>> {
   return await searchDecisions(options)
 };
 
-export async function getDecision (code: string): Promise<Decision> {
+async function _getDecision (code: string): Promise<Decision> {
   if (code === null || code === '') throw mandatory('code', 'Decision code is required.')
   const data = await searchDecisions({ code: normalizeDecisionCode(code) })
 
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Decision '${code}' not found.`)
   return data.rows[0] as Decision
 };
+
+const listDecisions = withCache(_listDecisions, {
+  getKey: (options: QueryParams) =>
+    `${options.sort ?? ''}-${options.limit ?? ''}-${options.skip ?? ''}`,
+  isEmpty: (data) => data.rows.length === 0
+})
+
+const getDecision = withCache(_getDecision, {
+  getKey: (code) => code
+})
 
 async function searchDecisions (options?: QueryParams & { code?: string }): Promise<SearchResult<Decision>> {
   const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
@@ -57,3 +67,5 @@ async function searchDecisions (options?: QueryParams & { code?: string }): Prom
 function normalizeDecisionCode (code: string): string {
   return code.toUpperCase()
 }
+
+export { listDecisions, getDecision }

@@ -44,7 +44,7 @@ export async function getRoute (url: string): Promise<DrupalRouterResponse> {
   return route
 }
 
-export async function getContent (url: string): Promise<Content | Article> {
+async function _getContent (url: string): Promise<Content | Article> {
   const route = await getRoute(url)
   if (route?.entity?.uuid == null || route.entity.uuid === '' || route.entity.bundle == null || route.entity.bundle === '') throw notFound('Route not found.')
 
@@ -89,13 +89,19 @@ export async function getContent (url: string): Promise<Content | Article> {
         ...article.coverImage,
         path: contentNormalizer(media?.data?.attributes?.uri?.url)
       }
-    };
-  };
+    }
+  }
 
   return content
-};
+}
 
-export async function getPortal (id: string): Promise<Portal[]> {
+const getContent = withCache(
+  _getContent, {
+    getKey: (url) => url ?? ''
+  }
+)
+
+async function _getPortal (id: string): Promise<Portal[]> {
   const data = await drupalApi.getMenu(id)
 
   if (data === null || data === '') throw notFound('No portal found.')
@@ -129,9 +135,16 @@ export async function getPortal (id: string): Promise<Portal[]> {
   })
 
   return portals
-};
+}
 
-export async function getImage (id: string, category: Image['category']): Promise<Image> {
+const getPortal = withCache(
+  _getPortal, {
+    getKey: (id) => id,
+    isEmpty: (data) => data.length === 0
+  }
+)
+
+async function _getImage (id: string, category: Image['category']): Promise<Image> {
   try {
     const data = await drupalApi.getImage(id, category)
 
@@ -154,7 +167,13 @@ export async function getImage (id: string, category: Image['category']): Promis
   }
 }
 
-export async function listArticles (options?: QueryParams): Promise<Article[]> {
+const getImage = withCache(
+  _getImage, {
+    getKey: (id: string, category: Image['category']) => `${category}-${id}`
+  }
+)
+
+async function _listArticles (options?: QueryParams): Promise<Article[]> {
   const data = await drupalApi.listArticles(options)
 
   const articles = await Promise.all(
@@ -198,6 +217,12 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
 
   return articles
 }
+
+const listArticles = withCache(_listArticles, {
+  getKey: (options: QueryParams) =>
+    `${options?.sort ?? ''}-${options?.limit ?? ''}-${options?.skip ?? ''}`,
+  isEmpty: (data) => data.length === 0
+})
 
 async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
   const now = Date.now()
@@ -449,7 +474,7 @@ export async function getMenu (
   }
 
   return menus
-};
+}
 
 function contentNormalizer (value: string): string {
   if (value === undefined || value === null || value === '') return ''
@@ -461,3 +486,5 @@ function contentNormalizer (value: string): string {
 
   return value
 }
+
+export { getContent, getPortal, getImage, listArticles }
