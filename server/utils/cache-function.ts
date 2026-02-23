@@ -30,14 +30,14 @@ export function withCache<TArgs extends any[], TResult> (
 
     // 1. Fresh cache hit
     if (cached != null && (now - cached.timestamp) < ttl) {
-      return cached.data
+      return cached.data as TResult
     }
 
     // 2. In-flight request exists
     if (cached?.promise != null) {
       const { promise } = cached
       // SWR: return stale data immediately if available
-      if (hasStaleData(cached)) return cached.data
+      if (hasStaleData(cached)) return cached.data as TResult
       // Otherwise wait for the in-flight request
       return await promise
     }
@@ -60,7 +60,7 @@ export function withCache<TArgs extends any[], TResult> (
         if (cache.get(key) === pendingEntry) {
           if (hasStaleData(pendingEntry)) {
             // Keep stale data, clear the promise
-            cache.set(key, { data: pendingEntry.data, timestamp: pendingEntry.timestamp })
+            cache.set(key, { data: pendingEntry.data as TResult, timestamp: pendingEntry.timestamp })
           } else {
             cache.delete(key)
           }
@@ -72,7 +72,7 @@ export function withCache<TArgs extends any[], TResult> (
     pendingEntry.promise = loadPromise
 
     // SWR: return stale data immediately if available
-    if (hasStaleData(cached)) return cached.data
+    if (hasStaleData(cached)) return cached.data as TResult
     // Cold start: wait for the result
     return await loadPromise
   }

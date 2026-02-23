@@ -5,7 +5,7 @@ import { CACHE_DURATION_S } from '~~/constants/cache'
 
 export default cachedEventHandler(async (event) => {
   const { sort, limit, skip } = getQuery(event) as QueryParams
-  return await listStatements({ sort, limit, skip }).catch(apiErrorHandler)
+  return listStatements({ sort, limit, skip }).catch(apiErrorHandler)
 }, {
   maxAge: CACHE_DURATION_S,
   name: 'statements-list',

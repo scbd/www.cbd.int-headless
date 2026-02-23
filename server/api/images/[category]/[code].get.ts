@@ -7,7 +7,7 @@ export default cachedEventHandler(async (event) => {
   const code = getRouterParam(event, 'code') ?? ''
   const category = (getRouterParam(event, 'category') ?? '') as Image['category']
 
-  return await getImage(code, category).catch(apiErrorHandler)
+  return getImage(code, category).catch(apiErrorHandler)
 }, {
   maxAge: CACHE_DURATION_S,
   name: 'images-item'

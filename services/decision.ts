@@ -1,5 +1,5 @@
 import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, toLString } from '~~/utils/solr'
+import { normalizeCode, solrEscape, toLString } from '~~/utils/solr'
 import { mandatory, notFound } from 'api-client/api-error'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Decision } from '~~/types/decision'
@@ -16,20 +16,20 @@ async function _listDecisions (options: QueryParams): Promise<SearchResult<Decis
 
 async function _getDecision (code: string): Promise<Decision> {
   if (code === null || code === '') throw mandatory('code', 'Decision code is required.')
-  const data = await searchDecisions({ code: normalizeDecisionCode(code) })
+  const data = await searchDecisions({ code: normalizeCode(code) })
 
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Decision '${code}' not found.`)
   return data.rows[0] as Decision
 };
 
 const listDecisions = withCache(_listDecisions, {
-  getKey: (options: QueryParams) =>
-    `${options.sort ?? ''}-${options.limit ?? ''}-${options.skip ?? ''}`,
+  getKey: (options?: QueryParams) =>
+    `${options?.sort ?? ''}-${options?.limit ?? ''}-${options?.skip ?? ''}`,
   isEmpty: (data) => data.rows.length === 0
 })
 
 const getDecision = withCache(_getDecision, {
-  getKey: (code) => code
+  getKey: (code) => normalizeCode(code)
 })
 
 async function searchDecisions (options?: QueryParams & { code?: string }): Promise<SearchResult<Decision>> {
@@ -62,10 +62,6 @@ async function searchDecisions (options?: QueryParams & { code?: string }): Prom
     total: response.numFound,
     rows: decisionList
   }
-}
-
-function normalizeDecisionCode (code: string): string {
-  return code.toUpperCase()
 }
 
 export { listDecisions, getDecision }

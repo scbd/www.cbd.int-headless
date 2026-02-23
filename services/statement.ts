@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
-import { solrEscape, andOr, toLString, toLStringArray } from '../utils/solr'
+import { normalizeCode, solrEscape, andOr, toLString, toLStringArray } from '../utils/solr'
 import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '../types/api/solr'
 import type { Statement } from '../types/statement'
@@ -29,13 +29,13 @@ async function _getStatement (code: string): Promise<Statement> {
 }
 
 const listStatements = withCache(_listStatements, {
-  getKey: (options: QueryParams) =>
-    `${options.sort ?? ''}-${options.limit ?? ''}-${options.skip ?? ''}`,
+  getKey: (options?: QueryParams) =>
+    `${options?.sort ?? ''}-${options?.limit ?? ''}-${options?.skip ?? ''}`,
   isEmpty: (data) => data.rows.length === 0
 })
 
 const getStatement = withCache(_getStatement, {
-  getKey: (code) => code
+  getKey: (code) => normalizeCode(code)
 })
 
 async function searchStatements (options?: QueryParams & { code?: string }): Promise<SearchResult<Statement>> {
@@ -66,7 +66,7 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
     updatedOn: new Date(item.updatedDate_dt),
     image: await (async () => {
       try {
-        return await getImage(item.symbol_s, 'statements')
+        return getImage(item.symbol_s, 'statements')
       } catch {
         return DEFAULT_IMAGE
       }

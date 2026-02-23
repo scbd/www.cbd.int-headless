@@ -25,7 +25,7 @@ const errorCodeMessage = computed(() =>
 )
 const errorMessage = computed(() => {
   const path = props.url ?? requestUrl.pathname
-  return t(`errorMessage-${props.statusCode}`, { path })
+  return t(`errorMessage-${props.statusCode}`, { path }) || t('errorMessage-default', { path })
 })
 
 const handleError = async () => {

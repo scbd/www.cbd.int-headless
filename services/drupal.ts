@@ -219,7 +219,7 @@ async function _listArticles (options?: QueryParams): Promise<Article[]> {
 }
 
 const listArticles = withCache(_listArticles, {
-  getKey: (options: QueryParams) =>
+  getKey: (options?: QueryParams) =>
     `${options?.sort ?? ''}-${options?.limit ?? ''}-${options?.skip ?? ''}`,
   isEmpty: (data) => data.length === 0
 })

@@ -1,16 +1,12 @@
 import { mandatory, notFound } from 'api-client/api-error'
-import SolrIndexApi from '../api/solr-index'
-import { solrEscape, toLString, toLStringArray } from '../utils/solr'
+import SolrIndexApi from '~~/api/solr-index'
+import { normalizeCode, solrEscape, toLString, toLStringArray } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
-import type { SolrQuery } from '../types/api/solr'
-import type { Meeting } from '../types/meeting'
+import type { SolrQuery } from '~~/types/api/solr'
+import type { Meeting } from '~~/types/meeting'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
 import { DEFAULT_IMAGE } from '~~/constants/image-paths'
-
-function normalizeMeetingCode (code: string): string {
-  return code.toUpperCase()
-}
 
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
@@ -22,20 +18,20 @@ async function _listMeetings (options: QueryParams): Promise<SearchResult<Meetin
 
 async function _getMeeting (code: string): Promise<Meeting> {
   if (code === null || code === '') throw mandatory('code', 'Meeting code is required.')
-  const data = await searchMeetings({ code: normalizeMeetingCode(code) })
+  const data = await searchMeetings({ code: normalizeCode(code) })
 
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Meeting '${code}' not found.`)
   return data.rows[0] as Meeting
 }
 
 const listMeetings = withCache(_listMeetings, {
-  getKey: (options: QueryParams) =>
-    `${options.sort ?? ''}-${options.limit ?? ''}-${options.skip ?? ''}`,
+  getKey: (options?: QueryParams) =>
+    `${options?.sort ?? ''}-${options?.limit ?? ''}-${options?.skip ?? ''}`,
   isEmpty: (data) => data.rows.length === 0
 })
 
 const getMeeting = withCache(_getMeeting, {
-  getKey: (code) => code
+  getKey: (code) => normalizeCode(code)
 })
 
 async function searchMeetings (options?: QueryParams & { code?: string }): Promise<SearchResult<Meeting>> {
@@ -66,7 +62,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
     city: toLString(item, 'eventCity'),
     image: await (async () => {
       try {
-        return await getImage(item.symbol_s, 'meetings')
+        return getImage(item.symbol_s, 'meetings')
       } catch {
         return DEFAULT_IMAGE
       }
