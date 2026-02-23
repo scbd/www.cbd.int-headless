@@ -49,8 +49,8 @@
                 class="description"
               >{{ truncate(toLocaleText(notification.fulltext)) }}</div>
               <div class="read-on-wrapper">
-                <NuxtLink :to="notification.urls?.[0]" class="btn cbd-btn cbd-btn-primary read-on">
-                  View notification ›
+                <NuxtLink :to="notification.urls?.[0]" class="btn cbd-btn cbd-btn-primary btn cbd-btn-more-content read-on">
+                  View notification
                 </NuxtLink>
               </div>
             </div>
