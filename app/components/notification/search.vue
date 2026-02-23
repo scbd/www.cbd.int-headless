@@ -91,12 +91,25 @@
 
                 <input class="btn cbd-btn-primary" type="submit" value="Search" />
             </form>
+
+            <div v-if="activeFilters.length" class="search-terms">
+                <span v-for="filter in activeFilters" :key="filter.key" class="badge">
+                    {{ filter.label }}: {{ filter.displayValue }}
+                    <button
+                        type="button"
+                        class="btn-close btn-close-white ms-1"
+                        :aria-label="`Remove ${filter.label} filter`"
+                        @click="removeFilter(filter.key)"
+                    />
+                </span>
+            </div>
         </div>
     </article>
 </template>
 
 <script setup lang="ts">
 import { solrEscape } from '~~/utils/solr'
+import type { ActiveFilter } from '~~/types/api/search-result'
 
 const title = ref('')
 const themes = ref('')
@@ -105,9 +118,37 @@ const year = ref(0)
 const sortField = ref('date')
 const sortDirection = ref('desc')
 
+const activeFilters = ref<ActiveFilter[]>([])
+
 const emit = defineEmits<{
   search: [params: { fieldQueries?: string, sort?: string }]
 }>()
+
+function buildActiveFilters (): ActiveFilter[] {
+  const filters: ActiveFilter[] = []
+  if (title.value.trim()) {
+    filters.push({ key: 'title', label: 'Title', displayValue: title.value.trim() })
+  }
+  if (themes.value.trim()) {
+    filters.push({ key: 'themes', label: 'Themes', displayValue: themes.value.trim() })
+  }
+  if (recipients.value.trim()) {
+    filters.push({ key: 'recipients', label: 'Recipients', displayValue: recipients.value.trim() })
+  }
+  if (year.value) {
+    filters.push({ key: 'year', label: 'Year', displayValue: String(year.value) })
+  }
+  return filters
+}
+
+function removeFilter (key: string) {
+  const fieldMap: Record<string, Ref> = { title, themes, recipients, year }
+  const field = fieldMap[key]
+  if (field) {
+    field.value = key === 'year' ? 0 : ''
+  }
+  onSearch()
+}
 
 function buildFieldQueries (): string | undefined {
   const parts: string[] = []
@@ -137,6 +178,7 @@ function buildSort (): string {
 }
 
 function onSearch () {
+  activeFilters.value = buildActiveFilters()
   emit('search', {
     fieldQueries: buildFieldQueries(),
     sort: buildSort()
