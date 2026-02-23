@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
-import { solrEscape, andOr, toLString, toLStringArray } from '../utils/solr'
+import { normalizeCode, solrEscape, andOr, toLString, toLStringArray } from '../utils/solr'
 import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '../types/api/solr'
 import type { Statement } from '../types/statement'
@@ -16,7 +16,11 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-export async function getStatement (code: string): Promise<Statement> {
+async function _listStatements (options: QueryParams): Promise<SearchResult<Statement>> {
+  return await searchStatements(options)
+}
+
+async function _getStatement (code: string): Promise<Statement> {
   if (code === null || code === '') throw mandatory('code', 'Statement code is required.')
   const data = await searchStatements({ code: normalizeStatementCode(code) })
 
@@ -24,9 +28,15 @@ export async function getStatement (code: string): Promise<Statement> {
   return data.rows[0] as Statement
 }
 
-export async function listStatements (options: QueryParams): Promise<SearchResult<Statement>> {
-  return await searchStatements(options)
-}
+const listStatements = withCache(_listStatements, {
+  getKey: (options?: QueryParams) =>
+    `${options?.sort ?? ''}-${options?.limit ?? ''}-${options?.skip ?? ''}`,
+  isEmpty: (data) => data.rows.length === 0
+})
+
+const getStatement = withCache(_getStatement, {
+  getKey: (code) => normalizeCode(code)
+})
 
 async function searchStatements (options?: QueryParams & { code?: string }): Promise<SearchResult<Statement>> {
   const fieldQueries = andOr([
@@ -56,7 +66,7 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
     updatedOn: new Date(item.updatedDate_dt),
     image: await (async () => {
       try {
-        return await getImage(item.symbol_s, 'statements')
+        return getImage(item.symbol_s, 'statements')
       } catch {
         return DEFAULT_IMAGE
       }
@@ -68,3 +78,5 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
     rows: statementList
   }
 };
+
+export { listStatements, getStatement }

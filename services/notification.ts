@@ -1,9 +1,9 @@
 import { mandatory, notFound } from 'api-client/api-error'
-import SolrIndexApi from '../api/solr-index'
-import { solrEscape, toLString, toLStringArray } from '../utils/solr'
+import SolrIndexApi from '~~/api/solr-index'
+import { normalizeCode, solrEscape, toLString, toLStringArray } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
-import type { SolrQuery } from '../types/api/solr'
-import type { Notification } from '../types/notification'
+import type { SolrQuery } from '~~/types/api/solr'
+import type { Notification } from '~~/types/notification'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
 import { DEFAULT_IMAGE } from '~~/constants/image-paths'
@@ -12,17 +12,27 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-export async function getNotification (code: string): Promise<Notification> {
+async function _listNotifications (options: QueryParams): Promise<SearchResult<Notification>> {
+  return await searchNotification(options)
+}
+
+async function _getNotification (code: string): Promise<Notification> {
   if (code === null || code === '') throw mandatory('code', 'Notification code is required.')
-  const data = await searchNotification({ code })
+  const data = await searchNotification({ code: normalizeCode(code) })
 
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Notification '${code}' not found.`)
   return data.rows[0] as Notification
-};
-
-export async function listNotifications (options: QueryParams): Promise<SearchResult<Notification>> {
-  return await searchNotification(options)
 }
+
+const listNotifications = withCache(_listNotifications, {
+  getKey: (options?: QueryParams) =>
+    `${options?.sort ?? ''}-${options?.limit ?? ''}-${options?.skip ?? ''}`,
+  isEmpty: (data) => data.rows.length === 0
+})
+
+const getNotification = withCache(_getNotification, {
+  getKey: (code) => normalizeCode(code)
+})
 
 async function searchNotification (options?: QueryParams & { code?: string }): Promise<SearchResult<Notification>> {
   const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
@@ -56,7 +66,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     sender: item.sender_t,
     image: await (async () => {
       try {
-        return await getImage(item.symbol_s, 'notifications')
+        return getImage(item.symbol_s, 'notifications')
       } catch {
         return DEFAULT_IMAGE
       }
@@ -68,3 +78,5 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     rows: notificationList
   }
 }
+
+export { listNotifications, getNotification }

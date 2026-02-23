@@ -80,7 +80,7 @@ const route = useRoute()
 const { content: page, error } = await useContentApi(route.path)
 
 if (error.value !== undefined && error.value !== null && 'statusCode' in error.value && error.value.statusCode === 404) {
-  showError(error.value)
+  throw createError({ ...error.value, fatal: true })
 }
 
 const { menu, error: menuError } =

@@ -99,3 +99,7 @@ export function andOr (query: string | string[], sep: string): string {
 
   return query
 };
+
+export function normalizeCode (code: string): string {
+  return code.toUpperCase()
+}

@@ -1,4 +1,4 @@
-import { getRequestURL, sendRedirect, type StatusCode } from 'h3'
+import { getRequestURL, sendRedirect, type StatusCode, H3Error } from 'h3'
 import { getRoute } from '../../services/drupal'
 
 export default defineEventHandler(async (event) => {
@@ -19,8 +19,9 @@ export default defineEventHandler(async (event) => {
 
       return await sendRedirect(event, to, statusCode)
     }
-  } catch (error) {
+  } catch (error: unknown) {
     // suppress but log
-    console.error('Error in redirect middleware', { error })
+    if (error instanceof H3Error && error.statusCode === 404) return
+    console.warn('Error in redirect middleware', { error })
   }
 })
