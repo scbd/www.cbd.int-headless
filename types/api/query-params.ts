@@ -1,5 +1,6 @@
 export interface QueryParams {
-  sort?: string
+  fieldQueries?: string
   skip?: number
+  sort?: string
   limit?: number
 }

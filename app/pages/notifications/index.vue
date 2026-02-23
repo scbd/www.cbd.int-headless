@@ -1,7 +1,7 @@
 <template>
   <async-block>
-    <notification-search />
-    <notification-search-list />
+    <notification-search @search="onSearch" />
+    <notification-search-list :search-params="searchParams" />
   </async-block>
 </template>
 
@@ -9,4 +9,10 @@
 definePageMeta({
   layout: 'home'
 })
+
+const searchParams = ref<{ fieldQueries?: string; sort?: string }>()
+
+function onSearch (params: { fieldQueries?: string; sort?: string }) {
+  searchParams.value = params
+}
 </script>
