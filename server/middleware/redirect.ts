@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
   if (path == null) return
   if (path === '/') return
   if (/^\/api\//i.test(path)) return
+  if (/^\/notifications(\/|$)/i.test(path)) return // Ignore /notifications path
   if (/^\/_/.test(path)) return
 
   try {
