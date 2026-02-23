@@ -28,5 +28,5 @@ import { NOTIFICATIONS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 
-const { notifications, error } = await useNotificationsListApi({ limit: 4 });
+const { notifications, error } = await useNotificationsListApi(ref({ limit: 4 }));
 </script>

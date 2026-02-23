@@ -25,12 +25,20 @@ export async function listNotifications (options: QueryParams): Promise<SearchRe
 }
 
 async function searchNotification (options?: QueryParams & { code?: string }): Promise<SearchResult<Notification>> {
-  const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
+  const query = options?.code !== undefined && options.code !== ''
+    ? `symbol_s:${solrEscape(options.code)}`
+    : '*:*'
+
+  const fqParts: string[] = ['schema_s:notification']
+  if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
+    fqParts.push(options.fieldQueries)
+  }
+  const fieldQueries = andOr(fqParts, 'AND')
 
   const params: SolrQuery =
     {
       query,
-      fieldQueries: 'schema_s:notification',
+      fieldQueries,
       sort: options?.sort ?? 'updatedDate_dt DESC',
       fields: 'id,symbol_s,title_*_t,url_ss,files_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
       start: options?.skip ?? 0,
