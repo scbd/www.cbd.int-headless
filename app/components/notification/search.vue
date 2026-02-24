@@ -94,7 +94,7 @@
 
             <div v-if="activeFilters.length" class="search-terms">
                 <span v-for="filter in activeFilters" :key="filter.key" class="badge">
-                    {{ filter.label }}: {{ filter.displayValue }}
+                    {{ filter.label }} {{ filter.displayValue }}
                     <button
                         type="button"
                         class="btn-close btn-close-white ms-1"
