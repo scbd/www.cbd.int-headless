@@ -1,0 +1,10 @@
+{
+    "showingNotifications": "Показано {startItem}-{endItem} из {total} уведомлений",
+    "subjects": "Тема:",
+    "recipients": "Получатели:",
+    "actionRequired": "Требуется действие:",
+    "viewNotification": "Просмотр уведомления",
+    "files": "Файлы",
+    "pdf": "PDF-документ",
+    "doc": "Word-документ"
+}

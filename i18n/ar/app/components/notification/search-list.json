@@ -1,0 +1,10 @@
+{
+    "showingNotifications": "عرض {startItem}-{endItem} من {total} إشعارات",
+    "subjects": "الموضوعات:",
+    "recipients": "المستلمون:",
+    "actionRequired": "الإجراء المطلوب:",
+    "viewNotification": "عرض الإشعار",
+    "files": "الملفات",
+    "pdf": "مستند PDF",
+    "doc": "مستند Word"
+}
