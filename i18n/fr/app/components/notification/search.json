@@ -1,0 +1,15 @@
+{
+    "notifications": "Notifications",
+    "filterAndSort": "Filtrer et trier",
+    "titleContains": "Le titre contient :",
+    "themes" : "Thèmes :",
+    "recipients" : "Destinataires :",
+    "filter" : "Filtre :",
+    "anyYear" : "N'importe quelle année",
+    "sort" : "Trier",
+    "name" : "Nom",
+    "date" : "Date",
+    "ascending" : "Ascendant",
+    "descending" : "Descendant",
+    "search" : "Rechercher"
+}
