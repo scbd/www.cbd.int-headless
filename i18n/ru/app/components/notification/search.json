@@ -1,0 +1,15 @@
+{
+    "notifications": "Уведомления",
+    "filterAndSort": "Фильтр и сортировка",
+    "titleContains": "Заголовок содержит:",
+    "themes": "Темы:",
+    "recipients": "Получатели:",
+    "filter": "Фильтр:",
+    "anyYear": "Любой год",
+    "sort": "Сортировка",
+    "name": "Имя",
+    "date": "Дата",
+    "ascending": "По возрастанию",
+    "descending": "По убыванию",
+    "search": "Поиск"
+}

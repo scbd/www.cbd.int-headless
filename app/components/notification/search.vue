@@ -1,6 +1,6 @@
 <template>
     <article class="cus-article container-xxl d-flex flex-column page-component">
-        <h1>Notifications</h1>
+        <h1>{{ t('notifications')}}</h1>
         <div class="filter-and-sort-wrapper container-fluid">
             <button
                 class="btn cbd-btn-outline-icon filter-and-sort"
@@ -10,7 +10,7 @@
                 data-bs-target="#searchForm"
                 aria-controls="searchForm"
             >
-            Filter and Sort
+            {{ t('filterAndSort') }}
             </button>
 
             <form
@@ -21,7 +21,7 @@
             >
 
             <label for="fsTitle" class="w-100">
-                Title Contains:
+                {{ t('titleContains') }}
                 <input
                     v-model="title"
                     id="fsTitle"
@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col">
                     <label for="fsThemes" class="w-100">
-                        Themes:
+                        {{ t('themes') }}
                         <input
                             v-model="themes"
                             type="text"
@@ -45,7 +45,7 @@
                 </div>
                 <div class="col">
                     <label for="fsRecipients" class="w-100">
-                        Recipients:
+                        {{ t('recipients') }}
                         <input
                             v-model="recipients"
                             type="text"
@@ -58,11 +58,11 @@
             </div>
 
             <div class="filter-row row">
-                <div class="form_section-header">Filter:</div>
+                <div class="form_section-header">{{ t('filter') }}</div>
                 <div class="form_section-options">
                 <select v-model="year" class="form-select">
                     <option value="">
-                    Any year
+                    {{ t('anyYear') }}
                     </option>
                     <option
                         v-for="y of [...Array(new Date().getFullYear() + 1).keys()].slice(1991).reverse()"
@@ -76,20 +76,20 @@
             </div>
 
             <div class="form_section-options column">
-                <div class="form_section-header">Sort</div>
+                <div class="form_section-header">{{ t('sort') }}</div>
                     <div class="form_section-options">
                         <select v-model="sortField" class="form-select">
-                            <option value="title">Name</option>
-                            <option value="date">Date</option>
+                            <option value="title">{{ t('name') }}</option>
+                            <option value="date">{{ t('date') }}</option>
                         </select>
                         <select v-model="sortDirection" class="form-select">
-                            <option value="asc">&uarr; Ascending</option>
-                            <option value="desc">&darr; Descending</option>
+                            <option value="asc">&uarr; {{ t('ascending') }}</option>
+                            <option value="desc">&darr; {{ t('descending') }}</option>
                         </select>
                     </div>
                 </div>
 
-                <input class="btn cbd-btn-primary" type="submit" value="Search" />
+                <input class="btn cbd-btn-primary" type="submit" :value="t('search')" />
             </form>
 
             <div v-if="activeFilters.length" class="search-terms">
@@ -106,10 +106,13 @@
         </div>
     </article>
 </template>
+<i18n src="~~/i18n/dist/app/components/notification/search.json"></i18n>
 
 <script setup lang="ts">
 import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
+
+const { t } = useI18n()
 
 const title = ref('')
 const themes = ref('')
@@ -127,16 +130,16 @@ const emit = defineEmits<{
 function buildActiveFilters (): ActiveFilter[] {
   const filters: ActiveFilter[] = []
   if (title.value.trim()) {
-    filters.push({ key: 'title', label: 'Title', displayValue: title.value.trim() })
+    filters.push({ key: 'title', label: t('title'), displayValue: title.value.trim() })
   }
   if (themes.value.trim()) {
-    filters.push({ key: 'themes', label: 'Themes', displayValue: themes.value.trim() })
+    filters.push({ key: 'themes', label: t('themes'), displayValue: themes.value.trim() })
   }
   if (recipients.value.trim()) {
-    filters.push({ key: 'recipients', label: 'Recipients', displayValue: recipients.value.trim() })
+    filters.push({ key: 'recipients', label: t('recipients'), displayValue: recipients.value.trim() })
   }
   if (year.value) {
-    filters.push({ key: 'year', label: 'Year', displayValue: String(year.value) })
+    filters.push({ key: 'year', label: t('year'), displayValue: String(year.value) })
   }
   return filters
 }
