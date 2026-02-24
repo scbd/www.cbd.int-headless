@@ -1,0 +1,10 @@
+{
+    "showingNotifications": "显示 {startItem}-{endItem} 条通知，共 {total} 条",
+    "subjects": "主题：",
+    "recipients": "收件人：",
+    "actionRequired": "需操作：",
+    "viewNotification": "查看通知",
+    "files": "文件",
+    "pdf": "PDF文档",
+    "doc": "Word文档"
+}
