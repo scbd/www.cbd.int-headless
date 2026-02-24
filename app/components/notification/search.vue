@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { solrEscape } from '~~/utils/solr'
+import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
 
 const title = ref('')
@@ -154,20 +154,20 @@ function buildFieldQueries (): string | undefined {
   const parts: string[] = []
 
   if (title.value.trim()) {
-    parts.push(`title_EN_t:${solrEscape(title.value.trim())}`)
+    parts.push(`(title_EN_t:${solrEscape(title.value.trim())} OR title_EN_t:*${solrEscape(title.value.trim())}*)`)
   }
   if (themes.value.trim()) {
-    parts.push(`themes_EN_txt:${solrEscape(themes.value.trim())}`)
+    parts.push(`(themes_EN_txt:${solrEscape(themes.value.trim())} OR themes_EN_txt:*${solrEscape(themes.value.trim())}*)`)
   }
   if (recipients.value.trim()) {
-    parts.push(`recipient_txt:${solrEscape(recipients.value.trim())}`)
+    parts.push(`(recipient_txt:${solrEscape(recipients.value.trim())} OR recipient_txt:*${solrEscape(recipients.value.trim())}*)`)
   }
   if (year.value) {
     // Date range — NOT escaped since we control the format
     parts.push(`createdDate_dt:[${year.value}-01-01T00:00:00Z TO ${year.value}-12-31T23:59:59Z]`)
   }
 
-  return parts.length > 0 ? parts.join(' AND ') : undefined
+  return parts.length > 0 ? andOr(parts, 'AND') : undefined
 }
 
 function buildSort (): string {
