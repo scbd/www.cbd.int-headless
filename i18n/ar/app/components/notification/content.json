@@ -1,0 +1,10 @@
+{
+    "notificationNotFound": "لم يتم العثور على الإشعار {code}.",
+    "notificationTitle": "الإشعار {code}",
+    "actionRequired": "الإجراء المطلوب:",
+    "recipients": "المستلمون:",
+    "themes": "الموضوعات:",
+    "downloadNotification": "تنزيل الإشعار باللغات المتاحة:",
+    "downloadPDF": "تنزيل هذا الإشعار بتنسيق PDF.",
+    "downloadDOC": "تنزيل هذا الإشعار بتنسيق DOC."
+}

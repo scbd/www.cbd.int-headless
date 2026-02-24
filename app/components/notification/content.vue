@@ -1,21 +1,21 @@
 <template>
   <article class="cus-article container-xxl d-flex flex-column page-component">
     <template v-if="notifications.total === 0">
-        <h1>Notification {{ code }} was not found.</h1>
+        <h1>{{ t('notificationNotFound', { code: props.code }) }}</h1>
     </template>
     <section v-for="notification in notifications.rows" :key="notification.id">
-      <h1>Notification {{ notification.code }}</h1>
+      <h1>{{ t('notificationTitle', { code: notification.code }) }}</h1>
       <h2>{{ toLocaleText(notification.title) }}</h2>
       <div class="content-object">
         <div class="information">
           <div class="date">{{ toFormatDate(notification.createdOn) }}</div>
           <div v-if="notification.deadlineOn" class="action-required">
-            Action Required: {{ toFormatDate(notification.deadlineOn) }}
+            {{ t('actionRequired') }} {{ toFormatDate(notification.deadlineOn) }}
           </div>
         </div>
         <div class="subjects-recipients">
           <div v-if="notification.recipients" class="recipients-row">
-            <span class="fw-bold">Recipients:</span>
+            <span class="fw-bold">{{ t('recipients')}}</span>
             <div class="recipients">
               <span v-for="recipient in notification.recipients" :key="toLocaleText(recipient)" class="badge">
                 {{ toLocaleText(recipient) }}
@@ -23,7 +23,7 @@
             </div>
           </div>
           <div v-if="notification.themes" class="recipients-row">
-            <span class="fw-bold">Themes:</span>
+            <span class="fw-bold">{{ t('themes')}}</span>
             <div class="recipients">
               <span v-for="theme in notification.themes" :key="toLocaleText(theme)" class="badge">
                 {{ toLocaleText(theme) }}
@@ -31,7 +31,7 @@
             </div>
           </div>
           <div v-if="notification.file" class="files">
-            <div class="files-title">Download notification in available languages:</div>
+            <div class="files-title">{{ t('downloadNotification') }}</div>
             <div class="files-available">
                 <NuxtLink
                     class="file-badge"
@@ -41,12 +41,12 @@
                 <NuxtImg
                     v-show="notification.file.type.match(/application\/pdf/)"
                     src="/images/icons/icon-file-pdf.svg"
-                    alt="Download this notification as a PDF."></NuxtImg>
+                    alt="{{ t('downloadPDF') }}"></NuxtImg>
 
                 <NuxtImg
                     v-show="notification.file.type.match(/\.doc/)"
                     src="/images/icons/icon-file-doc.svg"
-                    alt="Download this notification as a DOC."></NuxtImg>
+                    alt="{{ t('downloadDOC') }}"></NuxtImg>
                 </NuxtLink>
              </div>
           </div>
@@ -57,6 +57,7 @@
     </section>
   </article>
 </template>
+<i18n src="~~/i18n/dist/app/components/notification/content.json"></i18n>
 
 <script setup lang="ts">
 import { useNotificationsApi } from '~/composables/api/use-notifications'
@@ -66,6 +67,7 @@ const props = defineProps<{
   code: string
 }>()
 
+const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 

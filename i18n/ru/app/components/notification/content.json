@@ -1,0 +1,10 @@
+{
+    "notificationNotFound": "Уведомление {code} не найдено.",
+    "notificationTitle": "Уведомление {code}",
+    "actionRequired": "Требуется действие:",
+    "recipients": "Получатели:",
+    "themes": "Темы:",
+    "downloadNotification": "Скачать уведомление на доступных языках:",
+    "downloadPDF": "Скачать это уведомление в формате PDF.",
+    "downloadDOC": "Скачать это уведомление в формате DOC."
+}

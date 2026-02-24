@@ -1,0 +1,10 @@
+{
+    "notificationNotFound": "未找到通知 {code}。",
+    "notificationTitle": "通知 {code}",
+    "actionRequired": "需要操作：",
+    "recipients": "收件人：",
+    "themes": "主题：",
+    "downloadNotification": "下载可用语言版本的通知：",
+    "downloadPDF": "下载此通知的PDF版本。",
+    "downloadDOC": "下载此通知的DOC版本。"
+}

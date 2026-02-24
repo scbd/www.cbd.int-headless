@@ -1,0 +1,10 @@
+{
+    "notificationNotFound": "La notification {code} est introuvable.",
+    "notificationTitle": "Notification {code}",
+    "actionRequired": "Action requise :",
+    "recipients": "Destinataires :",
+    "themes" : "Thèmes :",
+    "downloadNotification" : "Télécharger la notification dans les langues disponibles :",
+    "downloadPDF" : "Télécharger cette notification au format PDF.",
+    "downloadDOC" : "Télécharger cette notification au format DOC."
+}
