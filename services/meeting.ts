@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '../api/solr-index'
-import { solrEscape, toLString, toLStringArray } from '../utils/solr'
+import { solrEscape, toLString, toLStringArray, andOr } from '../utils/solr'
 import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '../types/api/solr'
 import type { Meeting } from '../types/meeting'
@@ -30,10 +30,16 @@ export async function listMeetings (options: QueryParams): Promise<SearchResult<
 async function searchMeetings (options?: QueryParams & { code?: string }): Promise<SearchResult<Meeting>> {
   const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
 
+  const fqParts: string[] = ['schema_s:meeting']
+  if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
+    fqParts.push(options.fieldQueries)
+  }
+  const fieldQueries = andOr(fqParts, 'AND')
+
   const params: SolrQuery =
         {
           query,
-          fieldQueries: 'schema_s:meeting',
+          fieldQueries,
           sort: options?.sort ?? 'updatedDate_dt DESC',
           fields: 'id,symbol_s,title_*_t,eventCountry_*_t,eventCity_*_t,url_ss,themes_*_txt,startDate_dt,endDate_dt,updatedDate_dt',
           start: options?.skip ?? 0,
