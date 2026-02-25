@@ -39,6 +39,9 @@
               <NuxtLink :to="notification.urls?.[0]" class="title">
                 {{ notification.code }} &ndash; {{ toLocaleText(notification.title) }}
               </NuxtLink>
+              <div v-if="notification.actionOn" class="action-required">
+                {{ t('actionRequired') }} {{ toFormatDate(notification.actionOn) }}
+              </div>
               <div class="subjects" v-if="notification.themes?.length">
                 {{ t('subjects') }}
                 <template v-for="(theme, i) of notification.themes" :key="i">
@@ -51,13 +54,10 @@
                   {{ toLocaleText(recipient) }}<template v-if="i < notification.recipients.length - 1">, </template>
                 </template>
               </div>
-              <div v-if="notification.actionOn" class="action-required">
-                {{ t('actionRequired') }} {{ toFormatDate(notification.actionOn) }}
-              </div>
               <div
                 v-if="toLocaleText(notification.fulltext)"
                 class="description"
-              >{{ truncate(toLocaleText(notification.fulltext)) }}</div>
+              >{{ truncate(toLocaleText(notification.fulltext), { length: 300, separator: ' ' }) }}</div>
               <div class="read-on-wrapper">
                 <NuxtLink :to="notification.urls?.[0]" class="btn cbd-btn cbd-btn-primary btn cbd-btn-more-content read-on">
                   {{ t('viewNotification') }}
@@ -100,6 +100,7 @@
 import useNotificationsListApi from '~/composables/api/use-notifications'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
+import { truncate } from 'lodash'
 
 const { t } = useI18n()
 const { toLocaleText } = useLString()
@@ -130,13 +131,6 @@ const startItem = computed(() =>
 const endItem = computed(() =>
   Math.min(currentPage.value * ITEMS_PER_PAGE, notifications.value.total)
 )
-
-function truncate (text: string, max = 300) {
-  if (text.length <= max) return text
-  const nextSpace = text.indexOf(' ', max)
-  const end = nextSpace === -1 ? text.length : nextSpace
-  return text.slice(0, end) + '…'
-}
 
 function goToPage (page: number) {
   currentPage.value = page
