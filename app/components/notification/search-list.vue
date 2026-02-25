@@ -1,6 +1,7 @@
 <template>
   <article class="cus-article container-xxl d-flex flex-column page-component">
-    <div class="cus-serp">
+    <status v-if="error" :error="error" />
+    <div v-else class="cus-serp">
       <!-- Top pagination -->
       <div class="results-info-wrapper">
         <div class="results-info">
