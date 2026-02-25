@@ -7,7 +7,7 @@
       <status v-if="error" :error="error" />
       <statement-card
         v-else
-        v-for="statement in statements"
+        v-for="statement in statements.rows"
         :statement="statement"
         :key="statement.id"
       />
@@ -25,5 +25,5 @@ import { STATEMENTS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 
-const { statements, error } = await useStatementsApi({ limit: 4 })
+const { statements, error } = await useStatementsApi(ref({ limit: 4 }))
 </script>
