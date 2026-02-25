@@ -57,7 +57,12 @@
               <div
                 v-if="toLocaleText(notification.fulltext)"
                 class="description"
-              >{{ truncate(toLocaleText(notification.fulltext), { length: 300, separator: ' ' }) }}</div>
+              >{{ truncate(
+                    toLocaleText(notification.fulltext), {
+                      length: 300,
+                      separator: ' '
+                    })
+              }}</div>
               <div class="read-on-wrapper">
                 <NuxtLink :to="notification.urls?.[0]" class="btn cbd-btn cbd-btn-primary btn cbd-btn-more-content read-on">
                   {{ t('viewNotification') }}
