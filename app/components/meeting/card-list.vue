@@ -7,7 +7,7 @@
       <status v-if="error" :error="error" />
       <meeting-card
         v-else
-        v-for="meeting in meetings"
+        v-for="meeting in meetings.rows"
         :meeting="meeting"
         :key="meeting.id"
       />
@@ -25,5 +25,5 @@ import { MEETINGS } from '~~/constants/url-paths'
 
 const { t } = useI18n()
 
-const { meetings, error } = await useMeetingsApi({ limit: 4 })
+const { meetings, error } = await useMeetingsApi(ref({ limit: 4 }))
 </script>
