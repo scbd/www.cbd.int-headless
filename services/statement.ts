@@ -29,11 +29,17 @@ export async function listStatements (options: QueryParams): Promise<SearchResul
 }
 
 async function searchStatements (options?: QueryParams & { code?: string }): Promise<SearchResult<Statement>> {
-  const fieldQueries = andOr([
+  const fqParts: string[] = [
     'schema_s:statement',
     '_state_s:public',
     ...(options?.code !== undefined && options.code !== '' ? [`symbol_s:${solrEscape(options?.code)}`] : [])
-  ], 'AND')
+  ]
+
+  if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
+    fqParts.push(options.fieldQueries)
+  }
+
+  const fieldQueries = andOr(fqParts, 'AND')
 
   const params: SolrQuery =
         {
