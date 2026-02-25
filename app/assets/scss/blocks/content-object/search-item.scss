@@ -65,23 +65,17 @@
     .notifications-to {
       order: 3;
     }
+    .action-required {
+      order: 2;
+    }
     .subjects {
       order: 3;
     }
     .recipients {
       order: 4;
     }
-    .action-required {
-      order: 5;
-    }
-    .read-on-wrapper {
-      order: 6;
-      padding-top: 0;
-      flex: 0 0 auto;
-      align-items: flex-start;
-    }
     .description {
-      order: 9;
+      order: 5;
       img,
       figure,
       iframe {
@@ -90,6 +84,12 @@
       * {
         font-size: 1rem !important;
       }
+    }
+    .read-on-wrapper {
+      order: 6;
+      padding-top: 0;
+      flex: 0 0 auto;
+      align-items: flex-start;
     }
   }
 
