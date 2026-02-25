@@ -1,0 +1,5 @@
+{
+    "showingMeetings": "显示 {startItem}-{endItem} 场会议，共 {total} 场会议",
+    "viewMeeting": "查看会议",
+    "themes": "主题："
+}
