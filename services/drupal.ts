@@ -1,5 +1,6 @@
 import { notFound, badRequest } from 'api-client/api-error'
 import DrupalApi from '~~/api/drupal'
+import { Cache } from '~~/utils/cache'
 import type { Content, Article } from '~~/types/content'
 import type { DrupalRouterResponse } from '~~/types/api/drupal'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -12,6 +13,8 @@ import { DEFAULT_IMAGE, DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
 const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
 })
+
+const drupalCache = new Cache({ name: 'drupalCache', expiry: MENU_CACHE_DURATION_MS })
 
 // Cache structure
 interface MenuCacheEntry {
@@ -133,6 +136,10 @@ export async function getPortal (id: string): Promise<Portal[]> {
 
 export async function getImage (id: string, category: Image['category']): Promise<Image> {
   try {
+    const cacheKey = `image-${category}-${id}`
+    const cached = drupalCache.get<Image>(cacheKey)
+    if (cached !== null) return cached
+
     const data = await drupalApi.getImage(id, category)
 
     const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
@@ -148,7 +155,7 @@ export async function getImage (id: string, category: Image['category']): Promis
       path: contentNormalizer(path)
     }
 
-    return contentImage
+    return drupalCache.set(cacheKey, contentImage)
   } catch (error) {
     throw badRequest(`Error fetching ${id}.`)
   }
