@@ -91,7 +91,7 @@ const { menu, error: menuError } =
         depth: 1
       }
     )
-    : { menu: ref(undefined), error: ref(undefined) }
+    : { menu: ref<Menu[]>([]), error: ref<Error | undefined>(undefined) }
 
 const buildPath = (item: Menu | undefined): Breadcrumb[] => {
   if (!item) return []
