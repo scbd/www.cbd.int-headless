@@ -13,22 +13,26 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const localePath = useLocalePath()
-const route = useRoute()
-const router = useRouter()
+const requestUrl = useRequestURL()
+
 
 const props = defineProps({
-    statusCode: Number
+    statusCode: Number,
+    url: String
 })
 
-const errorCodeMessage = t(`errorCodeMessage-${props.statusCode}`) || t('errorCodeMessage-default')
-const errorMessage = t(`errorMessage-${props.statusCode}`, { path: route.path }) || t('errorMessage-default')
-const handleError = () => {
-  clearError()
-  if (import.meta.client && window.history.length > 1) {
-    navigateTo(localePath(router.back))
-  } else {
-    navigateTo(localePath('/'))
-  }
+const errorCodeMessage = computed(() =>
+  t(`errorCodeMessage-${props.statusCode}`) || t('errorCodeMessage-default')
+)
+const errorMessage = computed(() => {
+  const path = props.url ?? requestUrl.pathname
+    return t(`errorMessage-${props.statusCode}`, { path }) || t('errorMessage-default', { path })
+})
+
+const handleError = async () => {
+  const back = import.meta.client ? window.history.state?.back as string : undefined
+
+  await clearError({ redirect: back ?? localePath('/') })
 }
 </script>
 
