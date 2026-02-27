@@ -457,7 +457,7 @@ function contentNormalizer (value: string): string {
   // Convert Drupal image paths to use the path defined on the nuxt.config.ts
   value = value.replace(/\/sites\/default\/files\//g, DRUPAL_IMAGE_PATH)
   // Add Bootstrap flex class to WP columns block to allow three columns display to work on the front-end
-  value = value.replace(/wp-block-columns/g, 'wp-block-columns d-flex')
+  value = value.replace(/wp-block-columns/g, 'wp-block-columns d-flex gap-3')
 
   // Accordion: transform Drupal FAQ markup into Bootstrap accordion markup
   // Transform faq-title h3 → accordion-header
