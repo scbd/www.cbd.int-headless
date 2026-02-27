@@ -464,7 +464,34 @@ function contentNormalizer (value: string): string {
   // Convert Drupal image paths to use the path defined on the nuxt.config.ts
   value = value.replace(/\/sites\/default\/files\//g, DRUPAL_IMAGE_PATH)
   // Add Bootstrap flex class to WP columns block to allow three columns display to work on the front-end
-  value = value.replace(/wp-block-columns/g, 'wp-block-columns d-flex')
+  value = value.replace(/wp-block-columns/g, 'wp-block-columns d-flex gap-3')
+
+  // Accordion: transform Drupal FAQ markup into Bootstrap accordion markup
+  // Transform faq-title h3 → accordion-header
+  value = value.replace(/class="faq-title h3"/g, 'class="accordion-header"')
+
+  // Transform accordion-trigger → accordion-button collapsed with data-bs-toggle and data-bs-target
+  value = value.replace(
+    /<button([^>]*)class="accordion-trigger"([^>]*)>/g,
+    (_match, before: string, after: string) => {
+      const ariaMatch = (before + after).match(/aria-controls="([^"]*)"/)
+      const targetId = ariaMatch?.[1] ?? ''
+      return `<button${before}class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#${targetId}"${after}>`
+    }
+  )
+
+  // Transform accordion-panel → accordion-collapse collapse and remove hidden attribute
+  value = value.replace(/class="accordion-panel"/g, 'class="accordion-collapse collapse"')
+  value = value.replace(/<div([^>]*class="accordion-collapse collapse"[^>]*) hidden/g, '<div$1')
+
+  // Transform faqitem → accordion-item
+  value = value.replace(/class="faqitem"/g, 'class="accordion-item"')
+
+  // Add accordion-body class to the first div inside each accordion-collapse
+  value = value.replace(
+    /(<div[^>]*class="accordion-collapse collapse"[^>]*>)\s*<div/g,
+    '$1<div class="accordion-body"'
+  )
 
   return value
 }
