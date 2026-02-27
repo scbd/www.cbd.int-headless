@@ -3,7 +3,8 @@
     class="nav-item"
     :class="{
       [`level-${level}-item`]: true,
-      'current-page': menu.activeBranch
+      'current-page': menu.activeBranch,
+      'aside-nav-header': level === 3
     }"
   >
     <NuxtLink
@@ -13,26 +14,26 @@
     >
       {{ menu.title }}
     </NuxtLink>
-  </li>
 
-  <ul
-    v-if="menu.children && menu.children?.length > 0"
-    class="nav"
-    :class="{
-      [`level-${level}-items`]: true,
-      'current-page': menu.activeBranch
-    }"
-  >
-    <template
-      v-for="child of menu.children"
-      :key="child.branchId"
+    <ul
+      v-if="menu.children && menu.children?.length > 0"
+      class="nav"
+      :class="{
+        [`level-${level + 1}-items`]: true,
+        'current-page': menu.activeBranch
+      }"
     >
-      <NavigationSubmenuVerticalItems
-        :menu="child"
-        :level="level + 1"
-      />
-    </template>
-  </ul>
+      <template
+        v-for="child of menu.children"
+        :key="child.branchId"
+      >
+        <NavigationSubmenuVerticalItems
+          :menu="child"
+          :level="level + 1"
+        />
+      </template>
+    </ul>
+  </li>
 </template>
 
 <script
