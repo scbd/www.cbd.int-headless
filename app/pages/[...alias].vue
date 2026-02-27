@@ -57,7 +57,7 @@
 
           <template v-else>
             <section
-              v-dompurify-html="page!.body"
+              v-dompurify-html="page?.body ?? ''"
               class="rendered-content"
               ></section>
           </template>
@@ -80,16 +80,18 @@ const route = useRoute()
 const { content: page, error } = await useContentApi(route.path)
 
 if (error.value !== undefined && error.value !== null && 'statusCode' in error.value && error.value.statusCode === 404) {
-  showError(error.value)
+  throw createError({ statusCode: 404, fatal: true, data: { url: route.path } })
 }
 
 const { menu, error: menuError } =
-  await useMenuApi(page.value?.menu ?? '',
-  {
-    url: route.path,
-    depth: 1
-  }
-)
+  page.value?.menu
+    ? await useMenuApi(page.value.menu,
+      {
+        url: route.path,
+        depth: 1
+      }
+    )
+    : { menu: ref<Menu[]>([]), error: ref<Error | undefined>(undefined) }
 
 const buildPath = (item: Menu | undefined): Breadcrumb[] => {
   if (!item) return []
