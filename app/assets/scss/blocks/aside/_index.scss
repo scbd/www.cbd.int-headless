@@ -14,7 +14,7 @@
 
 .aside-nav {
   .aside-nav-header {
-    padding: 0.5rem 1rem;
+    padding: 0;
     font-size: 1rem;
     font-weight: 600;
     color: var(--bs-secondary-bg);
@@ -23,6 +23,18 @@
     cursor: default;
     a {
       color: var(--bs-secondary-bg);
+    }
+    > .nav-link {
+      font-size: 1rem;
+    }
+    > .nav {
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-color);
+      font-weight: normal;
+      padding: 0;
+      .nav-link {
+        color: var(--bs-body-color);
+      }
     }
   }
   .nav-item:not(.aside-nav-header) {
@@ -54,6 +66,9 @@
         box-shadow: 0 1px var(--bs-secondary-bg);
         font-weight: bold;
         padding-left: 0.66rem;
+        .nav-link {
+          box-shadow: none;
+        }
       }
       .nav.level-6-items {
         [aria-current="page"] {
