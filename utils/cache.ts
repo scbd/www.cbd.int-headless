@@ -2,6 +2,7 @@
 export interface CacheOptions {
   name?: string
   expiry?: number | null
+  maxSize?: number | null
 }
 
 interface CacheEntry<T> {
@@ -13,14 +14,23 @@ interface CacheEntry<T> {
 export class Cache {
   readonly name: string
   private readonly expiry: number | null
+  private readonly maxSize: number | null
   private readonly store = new Map<string, CacheEntry<unknown>>()
 
   constructor (options: CacheOptions = {}) {
     this.name = options.name ?? 'default'
     this.expiry = options.expiry ?? null
+    this.maxSize = options.maxSize ?? null
   }
 
   set<T>(key: string, value: T): T {
+    if (this.store.has(key)) {
+      this.store.delete(key)
+    } else if (this.maxSize !== null && this.store.size >= this.maxSize) {
+      const firstKey = this.store.keys().next().value
+      if (firstKey !== undefined) this.store.delete(firstKey)
+    }
+
     this.store.set(key, {
       value,
       createdAt: Date.now(),
@@ -37,6 +47,10 @@ export class Cache {
       this.store.delete(key)
       return null
     }
+
+    // Promote to most recently used
+    this.store.delete(key)
+    this.store.set(key, entry)
 
     return entry.value as T
   }

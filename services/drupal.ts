@@ -14,7 +14,7 @@ const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
 })
 
-const drupalCache = new Cache({ name: 'drupalCache', expiry: MENU_CACHE_DURATION_MS })
+const drupalCache = new Cache({ name: 'drupalCache', expiry: MENU_CACHE_DURATION_MS, maxSize: 200 })
 
 // Cache structure
 interface MenuCacheEntry {
