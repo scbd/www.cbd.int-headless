@@ -41,11 +41,11 @@
                 <NuxtImg
                     v-show="notification.file.type.match(/application\/pdf/)"
                     src="/images/icons/icon-file-pdf.svg"
-                    alt="{{ t('downloadPDF') }}"></NuxtImg>
+                    :alt="t('downloadPDF')"></NuxtImg>
                 <NuxtImg
                     v-show="notification.file.type.match(/\.doc/)"
                     src="/images/icons/icon-file-doc.svg"
-                    alt="{{ t('downloadDOC') }}"></NuxtImg>
+                    :alt="t('downloadDOC')"></NuxtImg>
                 </NuxtLink>
              </div>
           </div>

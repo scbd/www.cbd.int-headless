@@ -5,10 +5,10 @@
 </template>
 
 <script setup lang="ts">
-const route = useRoute()
-const code = route.params.code as string
-
 definePageMeta({
   layout: 'home'
 })
+
+const route = useRoute()
+const code = route.params.code as string
 </script>

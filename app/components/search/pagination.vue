@@ -1,24 +1,28 @@
 <template>
   <nav v-if="totalPages > 1" class="results-pagination">
     <!-- Page numbers (show up to 5 pages) -->
-    <span
+    <button
       v-for="page in visiblePages"
       :key="page"
+      type="button"
       class="page"
       :class="{ 'current-page': page === currentPage }"
+      :disabled="page === currentPage"
       @click="page !== currentPage && $emit('update:page', page)"
     >
       {{ page }}
-    </span>
+    </button>
 
     <!-- Next page arrow -->
-    <span
+    <button
       v-if="currentPage < totalPages"
+      type="button"
       class="page"
+      aria-label="Next page"
       @click="$emit('update:page', currentPage + 1)"
     >
       &#9654;
-    </span>
+    </button>
 
     <!-- Page jump dropdown -->
     <select
