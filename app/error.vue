@@ -9,7 +9,7 @@
         aria-hidden="true"
         />
     </div>
-    <ErrorMessage :statusCode="statusCode" />
+    <ErrorMessage :statusCode="statusCode" :url="url"/>
   </div>
 </template>
 
@@ -18,10 +18,11 @@ import type { NuxtError } from "nuxt/app"
 import ErrorMessage from "./components/error-message.vue";
 
 const props = defineProps<{
-  error: NuxtError;
+  error: NuxtError<{ url?: string }>;
 }>();
 
 const statusCode = computed(() => props.error?.statusCode)
+const url = computed(() => (props.error?.data?.url))
 </script>
 
 <style scoped>
