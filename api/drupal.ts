@@ -1,5 +1,5 @@
 import ApiBase from 'api-client/api-base'
-import type { Image } from '../types/image'
+import type { Image } from '~~/types/image'
 import { mandatory, handleError } from 'api-client/api-error'
 export default class DrupalApi extends ApiBase {
   constructor (options: { baseURL: string }) {

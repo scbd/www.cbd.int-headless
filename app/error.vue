@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import type { NuxtError } from "nuxt/app"
-import ErrorMessage from "./components/error-message.vue";
+import ErrorMessage from "~/components/error-message.vue";
 
 const props = defineProps<{
   error: NuxtError;

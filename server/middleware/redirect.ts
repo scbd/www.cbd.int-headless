@@ -1,5 +1,5 @@
 import { getRequestURL, sendRedirect, type StatusCode } from 'h3'
-import { getRoute } from '../../services/drupal'
+import { getRoute } from '~~/services/drupal'
 
 export default defineEventHandler(async (event) => {
   const path = getRequestURL(event).pathname
