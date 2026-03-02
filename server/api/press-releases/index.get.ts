@@ -1,0 +1,8 @@
+import type { QueryParams } from '~~/types/api/query-params'
+import { listPressReleases } from '~~/services/press-release'
+import { apiErrorHandler } from '~~/server/utils/api-error-handler'
+
+export default defineEventHandler(async (event) => {
+  const { sort, limit, skip } = getQuery(event) as QueryParams
+  return await listPressReleases({ sort, limit, skip }).catch(apiErrorHandler)
+})
