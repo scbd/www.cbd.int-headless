@@ -38,6 +38,7 @@ const items = (rows ?? []).map((row) => ({
   url: 'urls' in row ? row.urls?.[0] ?? '#' : row.alias ?? '#',  // TO-DO: standardize URL property across content types
 }))
 
+// TO-DO: articles/meetings/statements and decisions will follow the same new pattern as notifications on their respective PRs.
 async function getContent(component: string) {
   switch (component) {
     case 'articles':       return (await useArticleListApi({ limit: 4 })).articles;
