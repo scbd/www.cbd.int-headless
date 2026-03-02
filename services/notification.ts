@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, toLString, toLStringArray } from '~~/utils/solr'
+import { solrEscape, toLString, toLStringArray, andOr } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Notification } from '~~/types/notification'
@@ -27,12 +27,18 @@ export async function listNotifications (options: QueryParams): Promise<SearchRe
 async function searchNotification (options?: QueryParams & { code?: string }): Promise<SearchResult<Notification>> {
   const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
 
+  const fqParts: string[] = ['schema_s:notification']
+  if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
+    fqParts.push(options.fieldQueries)
+  }
+  const fieldQueries = andOr(fqParts, 'AND')
+
   const params: SolrQuery =
     {
       query,
-      fieldQueries: 'schema_s:notification',
+      fieldQueries,
       sort: options?.sort ?? 'updatedDate_dt DESC',
-      fields: 'id,symbol_s,title_*_t,url_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
+      fields: 'id,symbol_s,title_*_t,url_ss,files_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
       start: options?.skip ?? 0,
       rowsPerPage: options?.limit ?? 10
     }
@@ -43,6 +49,16 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     code: item.symbol_s,
     title: toLString(item, 'title'),
     urls: item.url_ss,
+    file: (() => {
+      try {
+        const parsed = JSON.parse(item.files_ss?.[0])
+        const f = parsed?.[0]
+        if (f === undefined || f === null) return null
+        return { url: f.url, language: f.language, type: f.type }
+      } catch {
+        return null
+      }
+    })(),
     themes: toLStringArray(item, 'themes'),
     createdOn: new Date(item.createdDate_dt),
     endOn: new Date(item.endDate_dt),

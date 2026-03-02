@@ -1,0 +1,16 @@
+{
+    "notifications": "Notifications",
+    "filterAndSort": "Filter and Sort",
+    "titleContains": "Title Contains:",
+    "title": "Title:",
+    "themes": "Themes:",
+    "recipients": "Recipients:",
+    "filter": "Filter:",
+    "anyYear": "Any year",
+    "sort": "Sort",
+    "name": "Name",
+    "date": "Date",
+    "ascending": "Ascending",
+    "descending": "Descending",
+    "search": "Search"
+}
