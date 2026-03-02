@@ -5,7 +5,18 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   typescript: {
     strict: true,
-    typeCheck: true
+    typeCheck: true,
+    tsConfig: {
+      include: [
+        '../services/**/*',
+        '../api/**/*',
+        '../utils/**/*',
+        '../types/**/*',
+        '../constants/**/*',
+        '../providers/**/*',
+        '../config/**/*'
+      ]
+    }
   },
   modules: [
     '@pinia/nuxt',
