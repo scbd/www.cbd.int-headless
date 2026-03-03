@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "ts-standard",
-    "lint:fix": "ts-standard --fix"
+    "lint:fix": "ts-standard --fix",
+    "clean-install": "rm -rf ./node_modules && rm -rf ./.nuxt && rm -rf ./dist && rm -rf .output && yarn install --network-concurrency 1"
   },
   "ts-standard": {
     "ignore": [
