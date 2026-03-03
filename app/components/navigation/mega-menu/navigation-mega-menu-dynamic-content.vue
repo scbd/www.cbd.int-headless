@@ -10,8 +10,8 @@
 <script setup lang="ts">
 import useArticleListApi from '~/composables/api/use-articles-api';
 import useDecisionsApi from '~/composables/api/use-decisions';
-import useMeetingsApi from '~/composables/api/use-meetings';
-import useNotificationsListApi from '~/composables/api/use-notifications';
+import useMeetingsListApi from '~/composables/api/use-meetings';
+import useNotificationsApi from '~/composables/api/use-notifications';
 import useStatementsApi from '~/composables/api/use-statements';
 import { useLString } from '~/composables/use-lstring';
 import { useFormatDate } from '~/composables/use-format-date'
@@ -42,8 +42,8 @@ const items = (rows ?? []).map((row) => ({
 async function getContent(component: string) {
   switch (component) {
     case 'articles':       return (await useArticleListApi({ limit: 4 })).articles;
-    case 'meetings':       return (await useMeetingsApi({ limit: 4 })).meetings;
-    case 'notifications':  return (await useNotificationsListApi(ref({ limit: 4 }))).notifications.value.rows;
+    case 'meetings':       return (await useMeetingsListApi(ref({ limit: 4 }))).meetings.value.rows;
+    case 'notifications':  return (await useNotificationsApi({ limit: 4 })).notifications;
     case 'statements':     return (await useStatementsApi({ limit: 4 })).statements;
     case 'decisions':      return (await useDecisionsApi({ limit: 4 })).decisions;
     default:               return [];
