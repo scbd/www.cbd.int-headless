@@ -7,7 +7,7 @@
       <status v-if="error" :error="error" />
       <meeting-card
         v-else
-        v-for="meeting in meetings"
+        v-for="meeting in meetings.rows"
         :meeting="meeting"
         :key="meeting.id"
       />
@@ -20,10 +20,10 @@
 <i18n src="~~/i18n/dist/app/components/meeting/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useMeetingsApi from '~/composables/api/use-meetings'
+import useMeetingsListApi from '~/composables/api/use-meetings'
 import { MEETINGS } from '~~/constants/url-paths'
 
 const { t } = useI18n()
 
-const { meetings, error } = await useMeetingsApi({ limit: 4 })
+const { meetings, error } = await useMeetingsListApi(ref({ limit: 4 }))
 </script>
