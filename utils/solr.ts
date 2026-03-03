@@ -101,5 +101,5 @@ export function andOr (query: string | string[], sep: string): string {
 };
 
 export function normalizeCode (code: string): string {
-  return code.toUpperCase()
+  return code.toUpperCase().trim()
 }
