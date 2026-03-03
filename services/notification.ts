@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, toLString, toLStringArray, andOr } from '~~/utils/solr'
+import { solrEscape, toLString, toLStringArray, andOr, normalizeCode } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Notification } from '~~/types/notification'
@@ -14,7 +14,7 @@ const api = new SolrIndexApi({
 
 export async function getNotification (code: string): Promise<Notification> {
   if (code === null || code === '') throw mandatory('code', 'Notification code is required.')
-  const data = await searchNotification({ code })
+  const data = await searchNotification({ code: normalizeCode(code) })
 
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Notification '${code}' not found.`)
   return data.rows[0] as Notification
