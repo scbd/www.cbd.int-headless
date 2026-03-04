@@ -62,5 +62,12 @@ export default defineNuxtConfig({
       proxy: `${String(process.env.NUXT_DRUPAL_BASE_URL)}/sites/default/files/**`
     }
   },
+  nitro: {
+    esbuild: {
+      options: {
+        target: 'esnext'
+      }
+    }
+  },
   css: ['~/assets/scss/styles.scss']
 })
