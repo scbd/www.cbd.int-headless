@@ -18,7 +18,7 @@ export async function getPressRelease (code: string): Promise<PressRelease> {
   if (code === null || code === '') throw mandatory('code', 'Press release code is required.')
   const data = await searchPressReleases({ code: normalizePressReleaseCode(code) })
 
-  if (data.total === 0 || data.rows[0] === null) throw notFound(`Press release '${code}' not found.`)
+  if (!data.rows.length) throw notFound(`Press release '${code}' not found.`)
   return data.rows[0] as PressRelease
 };
 
