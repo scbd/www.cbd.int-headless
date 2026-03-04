@@ -1,11 +1,12 @@
-export default function contentParser (content: string): string {
+import { JSDOM } from 'jsdom'
+
+const { document } = new JSDOM("").window;
+
+export default function convertPlainTextToHtml (content: string): string {
   if (content === undefined || content === null || content === '') return ''
 
   // Escape HTML entities to prevent XSS
-  content = content
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
+  content = escapeHtml(content)
 
   // Convert URLs to clickable links
   content = content.replace(
@@ -28,4 +29,10 @@ export default function contentParser (content: string): string {
     .join('')
 
   return content
+}
+
+function escapeHtml(text: string): string {
+  const el = document.createElement("div");
+  el.textContent = text;
+  return el.innerHTML;
 }

@@ -50,7 +50,7 @@
              </div>
           </div>
         </div>
-        <div class="description" v-html="contentParser(toLocaleText(notification.fulltext))"></div>
+        <div class="description" v-html="convertPlainTextToHtml(toLocaleText(notification.fulltext))"></div>
         <div class="description"><p>{{ toLocaleText(notification.from) }}</p></div>
       </div>
     </section>
@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { useNotificationsApi } from '~/composables/api/use-notifications'
-import contentParser from '~~/utils/content-parser'
+import convertPlainTextToHtml from '~~/utils/convert-plain-text-to-html'
 
 const props = defineProps<{
   code: string
