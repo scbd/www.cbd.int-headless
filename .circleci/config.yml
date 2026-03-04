@@ -23,11 +23,15 @@ jobs:
           command: |
             docker buildx create --use
             docker buildx build --platform linux/amd64 \
+              --cache-from type=registry,ref=scbd/www-nuxt:master \
+              --cache-from type=registry,ref=scbd/www-nuxt:dev \
               -t scbd/www-nuxt:$CIRCLE_BRANCH --load .
       - run:
           name: Build www-router image
           command: |
             docker buildx build --platform linux/amd64 \
+              --cache-from type=registry,ref=scbd/www-router:master \
+              --cache-from type=registry,ref=scbd/www-router:dev \
               -t scbd/www-router:$CIRCLE_BRANCH --load ./nginx
 
   build-and-push:
@@ -46,20 +50,29 @@ jobs:
               echo "export IMAGE_TAG=$CIRCLE_BRANCH" >> $BASH_ENV
             fi
       - run:
+          name: Login to Docker Hub
+          command: |
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+      - run:
           name: Build www-nuxt image
           command: |
             docker buildx create --use
             docker buildx build --platform linux/amd64 \
+              --cache-from type=registry,ref=scbd/www-nuxt:$IMAGE_TAG \
+              --cache-from type=registry,ref=scbd/www-nuxt:master \
+              --cache-to type=registry,ref=scbd/www-nuxt:$IMAGE_TAG,mode=max \
               -t scbd/www-nuxt:$IMAGE_TAG --load .
       - run:
           name: Build www-router image
           command: |
             docker buildx build --platform linux/amd64 \
-              -t scbd/www-router:$IMAGE_TAG --load ./nginx
+              --cache-from type=registry,ref=scbd/www-router:$IMAGE_TAG \
+              --cache-from type=registry,ref=scbd/www-router:master \
+              --cache-to type=registry,ref=scbd/www-router:$IMAGE_TAG,mode=max \
+              -t scbd/www-router:$IMAGE_TAG --load .
       - run:
           name: Push images to Docker Hub
           command: |
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
             docker push scbd/www-nuxt:$IMAGE_TAG
             docker push scbd/www-router:$IMAGE_TAG
       - run:
