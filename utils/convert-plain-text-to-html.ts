@@ -1,6 +1,4 @@
-import { JSDOM } from 'jsdom'
-
-const { document } = new JSDOM("").window;
+import escapeHtml from './escape-html'
 
 export default function convertPlainTextToHtml (content: string): string {
   if (content === undefined || content === null || content === '') return ''
@@ -29,10 +27,4 @@ export default function convertPlainTextToHtml (content: string): string {
     .join('')
 
   return content
-}
-
-function escapeHtml(text: string): string {
-  const el = document.createElement("div");
-  el.textContent = text;
-  return el.innerHTML;
 }
