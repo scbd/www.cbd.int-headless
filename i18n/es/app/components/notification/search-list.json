@@ -1,0 +1,10 @@
+{
+    "showingNotifications": "Mostrando {startItem}-{endItem} de {total} notificaciones",
+    "subjects": "Asuntos:",
+    "recipients": "Destinatarios:",
+    "actionRequired": "Acción requerida:",
+    "viewNotification": "Ver notificación",
+    "files": "Archivos",
+    "pdf": "Documento PDF",
+    "doc": "Documento Word"
+}
