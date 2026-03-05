@@ -17,6 +17,9 @@
       <async-block>
         <portal-card-list portal="cbd-portals" />
       </async-block>
+      <async-block>
+        <nbsap-card-list />
+      </async-block>
     </div>
   </main>
 </template>
