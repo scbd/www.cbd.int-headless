@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, toLString, toLStringArray, andOr } from '~~/utils/solr'
+import { solrEscape, toLString, toLStringArray, andOr, normalizeCode } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Notification } from '~~/types/notification'
