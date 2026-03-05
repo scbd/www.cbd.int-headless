@@ -27,7 +27,7 @@ export default async function useNbsapsListApi (
 }
 
 export async function useNbsapApi (code: string): Promise<{ nbsaps: ComputedRef<{ rows: Nbsap[], total: number }>, error: Ref<Error | undefined> }> {
-  if (code === undefined || code === null) { throw mandatory('code is mandatory') }
+  if (code === undefined || code === null) { throw mandatory('code', 'code is mandatory') }
 
   const { data, error } = await useFetch<Nbsap>(`${NBSAPS}/${code}`)
 

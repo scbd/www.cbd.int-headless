@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, toLString, toLStringArray, normalizeCode } from '~~/utils/solr'
+import { solrEscape, toLString, normalizeCode } from '~~/utils/solr'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Nbsap } from '~~/types/nbsap'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -23,7 +23,7 @@ export async function listNbsaps (options: QueryParams): Promise<SearchResult<Nb
 };
 
 async function searchNbsaps (options?: QueryParams & { code?: string }): Promise<SearchResult<Nbsap>> {
-  const query = options?.code !== undefined && options.code !== '' ? `uniqueIdentifier_t:${solrEscape(options.code)}` : '*.*'
+  const query = options?.code !== undefined && options.code !== '' ? `uniqueIdentifier_t:${solrEscape(options.code)}` : '*:*'
 
   const params: SolrQuery =
         {
@@ -36,15 +36,15 @@ async function searchNbsaps (options?: QueryParams & { code?: string }): Promise
         }
   const { response } = await api.querySolr(params)
 
-  const nbsapList: Nbsap[] = await Promise.all(response.docs.map(async (item: any): Promise<Nbsap> => ({
+  const nbsapList: Nbsap[] = response.docs.map((item: any): Nbsap => ({
     id: item.id,
-    code: item.uniqueIdentifier_s,
+    code: item.uniqueIdentifier_t,
     title: toLString(item, 'title'),
     urls: item.url_ss,
     country: toLString(item, 'government'),
     createdOn: new Date(item.createdDate_dt),
     updatedOn: new Date(item.updatedDate_dt)
-  })))
+  }))
 
   return {
     total: response.numFound,

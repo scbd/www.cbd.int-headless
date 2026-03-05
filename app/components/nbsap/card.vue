@@ -5,7 +5,7 @@
     </div>
 
     <div class="title">{{ toLocaleText(nbsap.title) }}</div>
-    <div v-if="nbsap.country" class="location">
+    <div v-if="toLocaleText(nbsap.country)" class="location">
       {{ `${toLocaleText(nbsap.country)}` }}
     </div>
     <div class="read-on-wrapper">
