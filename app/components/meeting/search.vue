@@ -98,11 +98,10 @@
 import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const title = ref('')
 const themes = ref('')
-const recipients = ref('')
 const year = ref(0)
 const sortField = ref('date')
 const sortDirection = ref('desc')
@@ -121,9 +120,6 @@ function buildActiveFilters (): ActiveFilter[] {
   if (themes.value.trim()) {
     filters.push({ key: 'themes', label: t('themes'), displayValue: themes.value.trim() })
   }
-  if (recipients.value.trim()) {
-    filters.push({ key: 'recipients', label: t('recipients'), displayValue: recipients.value.trim() })
-  }
   if (year.value) {
     filters.push({ key: 'year', label: t('year'), displayValue: String(year.value) })
   }
@@ -131,7 +127,7 @@ function buildActiveFilters (): ActiveFilter[] {
 }
 
 function removeFilter (key: string) {
-  const fieldMap: Record<string, Ref> = { title, themes, recipients, year }
+  const fieldMap: Record<string, Ref> = { title, themes, year }
   const field = fieldMap[key]
   if (field) {
     field.value = key === 'year' ? 0 : ''
@@ -143,10 +139,10 @@ function buildFieldQueries (): string | undefined {
   const parts: string[] = []
 
   if (title.value.trim()) {
-    parts.push(`(title_EN_t:${solrEscape(title.value.trim())} OR title_EN_t:*${solrEscape(title.value.trim())}*)`)
+    parts.push(`(title_${locale.value.toUpperCase()}_t:${solrEscape(title.value.trim())} OR title_${locale.value.toUpperCase()}_t:*${solrEscape(title.value.trim())}*)`)
   }
   if (themes.value.trim()) {
-    parts.push(`(themes_EN_txt:${solrEscape(themes.value.trim())} OR themes_EN_txt:*${solrEscape(themes.value.trim())}*)`)
+    parts.push(`(themes_${locale.value.toUpperCase()}_txt:${solrEscape(themes.value.trim())} OR themes_${locale.value.toUpperCase()}_txt:*${solrEscape(themes.value.trim())}*)`)
   }
   if (year.value) {
     // Date range — NOT escaped since we control the format
@@ -160,7 +156,7 @@ function buildSort (): string {
   if (sortField.value === 'title') {
     return `title_EN_t ${sortDirection.value === 'asc' ? 'ASC' : 'DESC'}`
   }
-  return `updatedDate_dt ${sortDirection.value === 'asc' ? 'ASC' : 'DESC'}`
+  return `startDate_dt ${sortDirection.value === 'asc' ? 'ASC' : 'DESC'}`
 }
 
 function onSearch () {

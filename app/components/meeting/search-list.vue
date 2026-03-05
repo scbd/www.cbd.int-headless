@@ -40,7 +40,7 @@
                 <NuxtLink :to="meeting.urls?.[0]" class="title">
                     {{ meeting.code }} &ndash; {{ toLocaleText(meeting.title) }}
                 </NuxtLink>
-                <div class="location" v-if="toLocaleText(meeting.city) === 'Online'">
+                <div class="location" v-if="meeting.city.en === 'Online'">
                     {{ toLocaleText(meeting.city) }}
                 </div>
                 <div class="location" v-else>
