@@ -109,3 +109,7 @@
     width: 100%;
   }
 }
+
+.wp-block-columns > .wp-block-column:not(:first-child) {
+  padding: 1rem;
+}
