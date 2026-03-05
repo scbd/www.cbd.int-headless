@@ -77,7 +77,7 @@
 import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const title = ref('')
 const themes = ref('')
@@ -118,10 +118,10 @@ function buildFieldQueries (): string | undefined {
   const parts: string[] = []
 
   if (title.value.trim()) {
-    parts.push(`(title_EN_t:${solrEscape(title.value.trim())} OR title_EN_t:*${solrEscape(title.value.trim())}*)`)
+    parts.push(`(title_${locale.value.toUpperCase()}_t:${solrEscape(title.value.trim())} OR title_${locale.value.toUpperCase()}_t:*${solrEscape(title.value.trim())}*)`)
   }
   if (themes.value.trim()) {
-    parts.push(`(themes_EN_txt:${solrEscape(themes.value.trim())} OR themes_EN_txt:*${solrEscape(themes.value.trim())}*)`)
+    parts.push(`(themes_${locale.value.toUpperCase()}_txt:${solrEscape(themes.value.trim())} OR themes_${locale.value.toUpperCase()}_txt:*${solrEscape(themes.value.trim())}*)`)
   }
   if (year.value) {
     parts.push(`createdDate_dt:[${year.value}-01-01T00:00:00Z TO ${year.value}-12-31T23:59:59Z]`)
