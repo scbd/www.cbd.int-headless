@@ -7,7 +7,7 @@
       <status v-if="error" :error="error" />
       <statement-card
         v-else
-        v-for="statement in statements"
+        v-for="statement in statements.rows"
         :statement="statement"
         :key="statement.id"
       />
@@ -20,10 +20,10 @@
 <i18n src="~~/i18n/dist/app/components/statement/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useStatementsApi from '~/composables/api/use-statements';
+import useStatementsListApi from '~/composables/api/use-statements';
 import { STATEMENTS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 
-const { statements, error } = await useStatementsApi({ limit: 4 })
+const { statements, error } = await useStatementsListApi(ref({ limit: 4 }))
 </script>

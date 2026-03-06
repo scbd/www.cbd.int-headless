@@ -12,8 +12,8 @@ import useArticleListApi from '~/composables/api/use-articles-api';
 import useDecisionsApi from '~/composables/api/use-decisions';
 import useMeetingsListApi from '~/composables/api/use-meetings';
 import useNotificationsListApi from '~/composables/api/use-notifications';
+import useStatementsListApi from '~/composables/api/use-statements';
 import usePressReleasesApi from '~/composables/api/use-press-releases';
-import useStatementsApi from '~/composables/api/use-statements';
 import { useLString } from '~/composables/use-lstring';
 import { useFormatDate } from '~/composables/use-format-date'
 import type { Article } from '~~/types/content';
@@ -46,7 +46,7 @@ async function getContent(component: string) {
     case 'articles':       return (await useArticleListApi({ limit: 4 })).articles;
     case 'meetings':       return (await useMeetingsListApi(ref({ limit: 4 }))).meetings.value.rows;
     case 'notifications':  return (await useNotificationsListApi(ref({ limit: 4 }))).notifications.value.rows;
-    case 'statements':     return (await useStatementsApi({ limit: 4 })).statements;
+    case 'statements':     return (await useStatementsListApi(ref({ limit: 4 })) ).statements.value.rows;
     case 'decisions':      return (await useDecisionsApi({ limit: 4 })).decisions;
     case 'press-releases': return (await usePressReleasesApi({ limit: 4 })).pressReleases;
     default:               return [];
