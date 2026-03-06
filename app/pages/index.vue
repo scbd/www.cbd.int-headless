@@ -3,6 +3,9 @@
     <hero />
     <div class="cus-article container-xxl d-flex flex-column">
       <async-block>
+        <recent-update-card-list />
+      </async-block>
+      <async-block>
         <meeting-card-list />
       </async-block>
       <async-block>
