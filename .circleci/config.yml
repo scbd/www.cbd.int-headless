@@ -33,7 +33,7 @@ jobs:
             docker buildx build --platform linux/amd64 \
               --cache-from type=registry,ref=scbd/www-router:master \
               --cache-from type=registry,ref=scbd/www-router:dev \
-              -t scbd/www-router:$CIRCLE_BRANCH --load ./nginx
+              -t scbd/www-router:$CIRCLE_BRANCH --load ./infra/router
 
   build-and-push:
     resource_class: small
@@ -71,7 +71,7 @@ jobs:
               --cache-from type=registry,ref=scbd/www-router:$IMAGE_TAG \
               --cache-from type=registry,ref=scbd/www-router:master \
               --cache-to type=registry,ref=scbd/www-router:$IMAGE_TAG,mode=max \
-              -t scbd/www-router:$IMAGE_TAG --load .
+              -t scbd/www-router:$IMAGE_TAG --load ./infra/router
       - run:
           name: Push images to Docker Hub
           command: |
