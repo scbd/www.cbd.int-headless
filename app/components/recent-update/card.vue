@@ -31,7 +31,7 @@
     </div>
 
     <div class="read-on-wrapper">
-      <NuxtLink :to="item.url" class="read-on">{{ t('viewDetails') }}</NuxtLink>
+      <NuxtLink :to="item.url" class="read-on">{{ item.category === 'meeting' ? t('viewMeeting') : item.category === 'statement' ? t('viewStatement') : item.category === 'notification' ? t('viewNotification') : t('viewDetails') }}</NuxtLink>
     </div>
   </div>
 </template>

@@ -2,5 +2,8 @@
     "meeting": "Reunión",
     "notification": "Notificación",
     "statement": "Declaración",
+    "viewMeeting": "Ver reunión",
+    "viewNotification": "Ver notificación",
+    "viewStatement": "Ver declaración",
     "viewDetails": "Ver detalles"
 }

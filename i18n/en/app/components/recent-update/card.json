@@ -2,5 +2,8 @@
     "meeting": "Meeting",
     "notification": "Notification",
     "statement": "Statement",
+    "viewMeeting": "View Meeting",
+    "viewNotification": "View Notification",
+    "viewStatement": "View Statement",
     "viewDetails": "View details"
 }
