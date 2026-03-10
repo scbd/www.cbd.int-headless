@@ -1,6 +1,7 @@
 import { notFound, badRequest } from 'api-client/api-error'
 import DrupalApi from '~~/api/drupal'
 import { Cache } from '~~/utils/cache'
+import { extractTextFromHtml } from '~~/utils/escape-html'
 import type { Content, Article } from '~~/types/content'
 import type { DrupalRouterResponse } from '~~/types/api/drupal'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -222,7 +223,7 @@ export async function listPages (options?: QueryParams): Promise<{ rows: Content
         alias: attributes?.path?.alias,
         locale: attributes?.path?.langcode,
         body: contentNormalizer(attributes?.body?.processed),
-        summary: attributes?.body?.summary
+        summary: extractTextFromHtml(attributes?.body?.processed)
       }
 
       const page = content as Content
