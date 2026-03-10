@@ -57,4 +57,15 @@ export default class DrupalApi extends ApiBase {
     })
     return data
   };
+
+  async listPages (options?: { sort?: string, limit?: number, skip?: number }): Promise<any> {
+    const { data } = await this.fetch('/jsonapi/node/page', {
+      query: {
+        sort: options?.sort ?? '-changed',
+        'page[limit]': options?.limit ?? 10,
+        'page[offset]': options?.skip ?? 0
+      }
+    })
+    return data
+  }
 };

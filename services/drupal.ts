@@ -206,6 +206,34 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
   return articles
 }
 
+export async function listPages (options?: QueryParams): Promise<Content[]> {
+  const data = await drupalApi.listPages(options)
+
+  const pages = await Promise.all(
+    data.map(async (item: any) => {
+      const { attributes } = item
+
+      const content: Content = {
+        id: attributes?.id,
+        bundle: 'page',
+        title: attributes?.title,
+        createdOn: attributes?.created,
+        updatedOn: attributes?.changed,
+        alias: attributes?.path?.alias,
+        locale: attributes?.path?.langcode,
+        body: contentNormalizer(attributes?.body?.processed),
+        summary: attributes?.body?.summary
+      }
+
+      const page = content as Content
+
+      return page
+    })
+  )
+
+  return pages
+}
+
 async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
   const now = Date.now()
   const cached = menuCache.get(code)
