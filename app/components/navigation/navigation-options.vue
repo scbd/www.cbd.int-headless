@@ -2,7 +2,7 @@
   <div class="cus-options container-fluid justify-content-end">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <NuxtLink class="nav-link" :to="''" role="button">
+        <NuxtLink class="nav-link" to="/search" role="button">
           <NuxtImg
             src="/images/icons/icon-nav-search-outline.svg"
             :alt="t('searchIcon')"
@@ -63,6 +63,17 @@
 import { languages } from '~~/data/un-languages';
 
 const { t, locale } = useI18n();
+
+const showSearch = ref(false)
+const searchQuery = ref('')
+const router = useRouter()
+
+function goToSearch() {
+  if (searchQuery.value.trim()) {
+    router.push({ path: '/search', query: { q: searchQuery.value.trim() } })
+    showSearch.value = false
+  }
+}
 
 const languagesWithLabel = computed(() =>
   languages.map((l) => {

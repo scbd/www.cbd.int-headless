@@ -18,26 +18,32 @@ export default async function useSearchApi(
     search: options?.value.search,
   }))
 
-  const { data: articles, error: articlesError } = await useFetch<SearchResult<Article>>(ARTICLES, {
-    params,
-    default: () => ({ total: 0, rows: [] })
-  })
-
-  const { data: pages, error: pagesError } = await useFetch<SearchResult<Content>>(PAGES, {
-    params,
-    default: () => ({ total: 0, rows: [] })
-  })
+  const [
+    { data: articles, error: articlesError },
+    { data: pages, error: pagesError }
+  ] = await Promise.all([
+    useFetch<SearchResult<Article>>(ARTICLES, {
+      params,
+      default: () => ({ total: 0, rows: [] })
+    }),
+    useFetch<SearchResult<Content>>(PAGES, {
+      params,
+      default: () => ({ total: 0, rows: [] })
+    })
+  ])
 
   const error = computed(() => articlesError.value || pagesError.value)
 
   const results = computed(() => {
+    const articleData = articles.value ?? { rows: [], total: 0 }
+    const pageData = pages.value ?? { rows: [], total: 0 }
     const allRows = [
-      ...articles.value.rows.map(r => normalizeObjectDates(r)),
-      ...pages.value.rows.map(r => normalizeObjectDates(r))
+      ...(articleData.rows ?? []).map(r => normalizeObjectDates(r)),
+      ...(pageData.rows ?? []).map(r => normalizeObjectDates(r))
     ]
     return {
       rows: allRows,
-      total: articles.value.total + pages.value.total
+      total: (articleData.total ?? 0) + (pageData.total ?? 0)
     }
   })
 
