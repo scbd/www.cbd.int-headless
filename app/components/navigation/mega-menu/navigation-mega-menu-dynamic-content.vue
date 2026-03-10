@@ -43,7 +43,7 @@ const items = (rows ?? []).map((row) => ({
 // TO-DO: articles/meetings/statements and decisions will follow the same new pattern as notifications on their respective PRs.
 async function getContent(component: string) {
   switch (component) {
-    case 'articles':       return (await useArticleListApi({ limit: 4 })).articles;
+    case 'articles':       return (await useArticleListApi({ limit: 4 })).articles.value.rows;
     case 'meetings':       return (await useMeetingsListApi(ref({ limit: 4 }))).meetings.value.rows;
     case 'notifications':  return (await useNotificationsListApi(ref({ limit: 4 }))).notifications.value.rows;
     case 'statements':     return (await useStatementsListApi(ref({ limit: 4 })) ).statements.value.rows;

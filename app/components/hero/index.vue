@@ -24,8 +24,8 @@ import useArticleListApi from '~/composables/api/use-articles-api'
 
 const { articles, error } = await useArticleListApi({ limit: 3 })
 
-const primaryArticle = computed(() => articles.at(0))
-const secondaryArticles = computed(() => articles.slice(1))
+const primaryArticle = computed(() => articles.value.rows.at(0))
+const secondaryArticles = computed(() => articles.value.rows.slice(1))
 const isMultiple = computed(() => secondaryArticles.value.length !== 0)
 const heroClasses = computed(() =>
   isMultiple.value ? ['triple-features'] : ['']

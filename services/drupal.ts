@@ -161,8 +161,8 @@ export async function getImage (id: string, category: Image['category']): Promis
   }
 }
 
-export async function listArticles (options?: QueryParams): Promise<Article[]> {
-  const { data } = await drupalApi.listArticles(options)
+export async function listArticles (options?: QueryParams): Promise<{ rows: Article[], total: number }> {
+  const { data, total } = await drupalApi.listArticles(options)
 
   const articles = await Promise.all(
     data.map(async (item: any) => {
@@ -203,11 +203,11 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
     })
   )
 
-  return articles
+  return { rows: articles, total }
 }
 
-export async function listPages (options?: QueryParams): Promise<Content[]> {
-  const { data } = await drupalApi.listPages(options)
+export async function listPages (options?: QueryParams): Promise<{ rows: Content[], total: number}> {
+  const { data, total } = await drupalApi.listPages(options)
 
   const pages = await Promise.all(
     data.map(async (item: any) => {
@@ -231,7 +231,7 @@ export async function listPages (options?: QueryParams): Promise<Content[]> {
     })
   )
 
-  return pages
+  return { rows: pages, total }
 }
 
 async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
