@@ -47,25 +47,35 @@ export default class DrupalApi extends ApiBase {
     return data
   };
 
-  async listArticles (options?: { sort?: string, limit?: number, skip?: number }): Promise<any> {
-    const { data } = await this.fetch('/jsonapi/node/article', {
-      query: {
-        sort: options?.sort ?? '-changed',
-        'page[limit]': options?.limit ?? 10,
-        'page[offset]': options?.skip ?? 0
-      }
-    })
-    return data
-  };
+  async listArticles (options?: { sort?: string, limit?: number, skip?: number, search?: string }): Promise<{ data: any[], total: number }> {
+    const query: Record<string, any> = {
+      sort: options?.sort ?? '-changed',
+      'page[limit]': options?.limit ?? 10,
+      'page[offset]': options?.skip ?? 0
+    }
 
-  async listPages (options?: { sort?: string, limit?: number, skip?: number }): Promise<any> {
-    const { data } = await this.fetch('/jsonapi/node/page', {
-      query: {
-        sort: options?.sort ?? '-changed',
-        'page[limit]': options?.limit ?? 10,
-        'page[offset]': options?.skip ?? 0
-      }
-    })
-    return data
+    if (options?.search) {
+      query['filter[title][operator]'] = 'CONTAINS'
+      query['filter[title][value]'] = options.search
+    }
+
+    const response = await this.fetch('/jsonapi/node/article', { query })
+    return { data: response.data, total: response.meta?.count ?? response.data.length }
+  }
+
+  async listPages (options?: { sort?: string, limit?: number, skip?: number, search?: string }): Promise<{ data: any[], total: number }> {
+    const query: Record<string, any> = {
+      sort: options?.sort ?? '-changed',
+      'page[limit]': options?.limit ?? 10,
+      'page[offset]': options?.skip ?? 0
+    }
+
+    if (options?.search) {
+      query['filter[title][operator]'] = 'CONTAINS'
+      query['filter[title][value]'] = options.search
+    }
+
+    const response = await this.fetch('/jsonapi/node/page', { query })
+    return { data: response.data, total: response.meta?.count ?? response.data.length }
   }
 };

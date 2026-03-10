@@ -162,7 +162,7 @@ export async function getImage (id: string, category: Image['category']): Promis
 }
 
 export async function listArticles (options?: QueryParams): Promise<Article[]> {
-  const data = await drupalApi.listArticles(options)
+  const { data } = await drupalApi.listArticles(options)
 
   const articles = await Promise.all(
     data.map(async (item: any) => {
@@ -207,7 +207,7 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
 }
 
 export async function listPages (options?: QueryParams): Promise<Content[]> {
-  const data = await drupalApi.listPages(options)
+  const { data } = await drupalApi.listPages(options)
 
   const pages = await Promise.all(
     data.map(async (item: any) => {
