@@ -12,6 +12,7 @@ version: 2.1
 
 jobs:
   build-only:
+    resource_class: small
     docker:
       - image: cimg/base:current
     steps:
@@ -35,6 +36,7 @@ jobs:
               -t scbd/www-router:$CIRCLE_BRANCH --load ./nginx
 
   build-and-push:
+    resource_class: small
     docker:
       - image: cimg/base:current
     steps:
