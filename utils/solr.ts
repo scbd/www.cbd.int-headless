@@ -1,7 +1,7 @@
 import { Locales } from '~~/types/api/locales'
 import { LTypeString, LTypeArray } from '~~/types/api/ltypes'
 import type { LString } from '@scbd/vue-components'
-import _ from 'lodash'
+import * as _ from 'lodash-es'
 
 export function localizeFields (fields: string, locale?: string): string | undefined {
   if (fields === null || fields === '') { return }

@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import { mkdir, readdir, stat, writeFile } from 'fs/promises'
 import { readJson } from 'fs-extra'
-import _ from 'lodash'
+import * as _ from 'lodash-es'
 import path from 'path'
 import * as url from 'url'
 import type { Plugin } from 'vite'
