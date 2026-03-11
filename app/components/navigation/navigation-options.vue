@@ -64,17 +64,6 @@ import { languages } from '~~/data/un-languages';
 
 const { t, locale } = useI18n();
 
-const showSearch = ref(false)
-const searchQuery = ref('')
-const router = useRouter()
-
-function goToSearch() {
-  if (searchQuery.value.trim()) {
-    router.push({ path: '/search', query: { q: searchQuery.value.trim() } })
-    showSearch.value = false
-  }
-}
-
 const languagesWithLabel = computed(() =>
   languages.map((l) => {
     const label =

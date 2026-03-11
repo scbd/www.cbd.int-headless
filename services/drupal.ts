@@ -223,7 +223,7 @@ export async function listPages (options?: QueryParams): Promise<{ rows: Content
         alias: attributes?.path?.alias,
         locale: attributes?.path?.langcode,
         body: contentNormalizer(attributes?.body?.processed),
-        summary: extractTextFromHtml(attributes?.body?.processed)
+        summary: extractTextFromHtml(attributes?.body?.processed ?? '')
       }
 
       const page = content as Content

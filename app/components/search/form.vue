@@ -52,8 +52,8 @@ const emit = defineEmits<{
 }>()
 
 function buildSort(): string {
-  const dir = sortDirection.value === 'asc' ? 'ASC' : 'DESC'
-  return sortField.value === 'title' ? `title ASC` : `-changed`
+  const field = sortField.value === 'title' ? 'title' : 'changed'
+  return sortDirection.value === 'asc' ? field : `-${field}`
 }
 
 function onSearch() {

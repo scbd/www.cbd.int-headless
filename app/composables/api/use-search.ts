@@ -2,7 +2,7 @@
 import type { Content, Article } from '~~/types/content'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
-import { ARTICLES, PAGES } from '~~/constants/api-paths'
+import { SEARCH } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
 export default async function useSearchApi(
@@ -18,32 +18,16 @@ export default async function useSearchApi(
     search: options?.value.search,
   }))
 
-  const [
-    { data: articles, error: articlesError },
-    { data: pages, error: pagesError }
-  ] = await Promise.all([
-    useFetch<SearchResult<Article>>(ARTICLES, {
-      params,
-      default: () => ({ total: 0, rows: [] })
-    }),
-    useFetch<SearchResult<Content>>(PAGES, {
-      params,
-      default: () => ({ total: 0, rows: [] })
-    })
-  ])
-
-  const error = computed(() => articlesError.value || pagesError.value)
+  const { data, error } = await useFetch<SearchResult<Content | Article>>(SEARCH, {
+    params,
+    default: () => ({ total: 0, rows: [] })
+  })
 
   const results = computed(() => {
-    const articleData = articles.value ?? { rows: [], total: 0 }
-    const pageData = pages.value ?? { rows: [], total: 0 }
-    const allRows = [
-      ...(articleData.rows ?? []).map(r => normalizeObjectDates(r)),
-      ...(pageData.rows ?? []).map(r => normalizeObjectDates(r))
-    ]
+    const response = data.value ?? { rows: [], total: 0 }
     return {
-      rows: allRows,
-      total: (articleData.total ?? 0) + (pageData.total ?? 0)
+      rows: (response.rows ?? []).map(r => normalizeObjectDates(r)),
+      total: response.total ?? 0
     }
   })
 
