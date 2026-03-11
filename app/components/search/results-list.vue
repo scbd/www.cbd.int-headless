@@ -39,7 +39,7 @@
 import useSearchApi from '~/composables/api/use-search'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { useFormatDate } from '~/composables/use-format-date'
-import { truncate } from 'lodash'
+import { truncate } from 'lodash-es'
 
 const { t } = useI18n()
 const { toFormatDate } = useFormatDate()
