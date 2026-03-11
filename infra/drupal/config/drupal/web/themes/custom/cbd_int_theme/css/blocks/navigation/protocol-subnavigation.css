@@ -1,0 +1,82 @@
+.protocol-subnavigation {
+  padding: 0 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.protocol-subnavigation .navbar {
+  padding: 0 1rem;
+}
+.protocol-subnavigation .nav {
+  width: 100%;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+.protocol-subnavigation .nav-item .nav-link {
+  color: var(--bs-body-color);
+}
+.protocol-subnavigation .nav-item .nav-link:hover {
+  color: var(--cbd-content-accent);
+}
+.protocol-subnavigation .nav-item.selected {
+  background-color: var(--cbd-content-accent);
+}
+.protocol-subnavigation .nav-item.selected .nav-link {
+  color: var(--bs-tertiary-color);
+}
+.protocol-subnavigation .nav-item.selected .nav-link:hover {
+  color: var(--bs-tertiary-color);
+}
+.protocol-subnavigation .subnav-header {
+  flex-basis: 100%;
+  display: flex;
+  column-gap: 0.5rem;
+}
+.protocol-subnavigation .subnav-header .nav-item:first-of-type:not(.selected) .nav-link {
+  padding-left: 0;
+}
+.protocol-subnavigation .subnav-header .nav-link {
+  color: var(--cbd-content-accent);
+}
+.protocol-subnavigation .subnav-header .cbd-btn-subnavigation {
+  display: none;
+}
+.protocol-subnavigation .subnav-level-2-items {
+  flex-wrap: nowrap;
+  box-shadow: 0 3px var(--cbd-content-accent);
+}
+.protocol-subnavigation .subnav-level-2-items .nav-item {
+  flex: 1 1 auto;
+  align-content: center;
+}
+.protocol-subnavigation .subnav-level-2-items .nav-item .nav-link {
+  text-align: center;
+}
+.protocol-subnavigation .subnav-level-2-items .subnav-level-3-items {
+  display: none;
+}
+.protocol-subnavigation .subnav-level-3-items {
+  margin-top: 0.5rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.protocol-subnavigation .subnav-level-3-items .nav-item.selected {
+  background-color: transparent;
+}
+.protocol-subnavigation .subnav-level-3-items .nav-item.selected .nav-link {
+  color: var(--cbd-content-accent);
+}
+.protocol-subnavigation .subnav-level-3-items .nav-link {
+  text-align: center;
+}
+
+.subnav-level-2-items {
+  display: flex;
+}
+
+.cus-internal-page .protocol-subnavigation,
+.cus-serp .protocol-subnavigation {
+  padding: 2rem 0;
+  background-color: var(--bs-secondary-bg);
+}
+
+/*# sourceMappingURL=protocol-subnavigation.css.map */

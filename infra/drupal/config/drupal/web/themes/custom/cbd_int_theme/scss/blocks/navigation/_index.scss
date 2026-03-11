@@ -1,0 +1,21 @@
+.cus-navigation {
+    width: 100%;
+    .navbar {
+        padding: 0;
+    }
+    
+    // Modify extra div added by Drupal and Vue
+    div.region,
+    div[data-v-app] {
+        width: 100%;
+    }
+}
+
+.navbar-toggler {
+    border: none;
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+@import 'tbm-mega-menu','cus-options', 'cus-mega-menu', 'protocol-subnavigation';

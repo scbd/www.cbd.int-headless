@@ -1,0 +1,85 @@
+.cus-footer {
+    padding: 2rem;
+    column-gap: 2rem;
+    background-color: var(--bs-body-color);
+    color: var(--bs-secondary-bg);
+
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    a {
+        color: var(--bs-secondary-bg);
+    }
+
+    .footer-navigation {
+        display: flex;
+        column-gap: 4rem;
+
+        address {
+            ul {
+                display: flex;
+                flex-direction: column;
+                row-gap: 1rem;
+    
+                li {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 1rem;
+                }
+            }
+        }
+        
+        nav {
+            flex: 1 1 auto;
+            display: flex;
+            justify-content: space-between;
+
+            ul {
+                li:first-of-type {
+                    margin-bottom: 1rem;
+                    font-size: 1.33rem;
+                    font-weight: bold;
+                    text-transform: capitalize;
+                    color: #009C48;
+                }
+            }
+
+            .social-media-follow {
+                display: flex;
+                flex-direction: column;
+                row-gap: 0.5rem;
+                a {
+                    display: flex;
+                    column-gap: 0.5rem;
+                    align-items: center;
+        
+                    img:not([alt*="RSS"]) {
+                        filter: invert(100%);
+                    }
+                }
+            }
+
+            // .a-part-of {
+            //     ul {
+            //         display: flex;
+            //         column-gap: 0.5rem;
+            //     }
+            // }
+        }
+    }
+
+    .contact-and-legal {
+        ul {
+            display: flex;
+            align-items: center;
+            column-gap: 2rem;
+            
+            li:not(:last-of-type) {
+                box-shadow: 1rem 0 var(--bs-body-color), calc(1rem + 2px) 0 var(--bs-secondary-bg);
+            }
+        }
+    }
+}
