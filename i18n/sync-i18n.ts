@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import { mkdir, readdir, stat, writeFile } from 'fs/promises'
 import { readJson } from 'fs-extra'
-import _ from 'lodash'
+import { unset } from 'lodash-es'
 import path from 'path'
 import * as url from 'url'
 import type { Plugin } from 'vite'
@@ -111,16 +111,16 @@ function compareKeyHashes (baseMessages: Record<string, any>, localizedMessages:
 
           // if locale hash matches the english text has then use locale text else english
           if (enHash?.length !== undefined && enHash.length > 0 && meta.hashes[key] === enHash) {
-            _.unset(baseMessages, key)
+            unset(baseMessages, key)
           } else {
-            _.unset(localizedMessages, key)
+            unset(localizedMessages, key)
           }
         }
       })
   }
 
   Object.entries(localizedMessages).filter(([, value]) => value != null && value !== '').forEach(([key]) => {
-    _.unset(baseMessages, key)
+    unset(baseMessages, key)
   })
   return localizedMessages
 }

@@ -1,7 +1,7 @@
 import { Locales } from '~~/types/api/locales'
 import { LTypeString, LTypeArray } from '~~/types/api/ltypes'
 import type { LString } from '@scbd/vue-components'
-import _ from 'lodash'
+import { isNumber, isDate, isArray, map } from 'lodash-es'
 
 export function localizeFields (fields: string, locale?: string): string | undefined {
   if (fields === null || fields === '') { return }
@@ -18,8 +18,8 @@ export function solrEscape (value: string | number | Date): string {
   if (value === null) throw new Error('Value is null')
   if (value === '') throw new Error('Value is null')
 
-  if (_.isNumber(value)) value = value.toString()
-  if (_.isDate(value)) value = value.toISOString()
+  if (isNumber(value)) value = value.toString()
+  if (isDate(value)) value = value.toISOString()
 
   value = value.toString()
 
@@ -85,9 +85,9 @@ export function toLStringArray (item: any, field: string, type: LTypeArray = LTy
 };
 
 export function andOr (query: string | string[], sep: string): string {
-  if (_.isArray(query)) {
-    query = _.map(query, function (criteria) {
-      if (_.isArray(criteria)) {
+  if (isArray(query)) {
+    query = map(query, function (criteria) {
+      if (isArray(criteria)) {
         return andOr(criteria, sep === 'AND' ? 'OR' : 'AND')
       }
 
