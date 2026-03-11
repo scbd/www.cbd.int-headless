@@ -62,23 +62,20 @@ server {
 
     # /doc/* (all other doc routes) -> Legacy CMS (via CloudFront)
     location ^~ ^/doc {
-        proxy_pass http://legacy-cms;
-        include /etc/nginx/conf.d/proxy-params.conf;
+        include /etc/nginx/conf.d/snippets/proxy-pass-legacy-cms.conf;
         proxy_intercept_errors on;
         error_page 301 = @convert_301_to_302;
     }
 
     # Static documents -> Nuxt first, fallback to Legacy CMS on 404
     location ~* \.(avi|bmp|css|docx?|dot[mx]?|eot|eps|geojson|gif|htc|html?|ico|jpe?g|js|json|km[lz]|mov|mp[34g]|ogv|otf|pdf|png|ppsx?|pptx?|psd|pub|rar|rtf|svg|swf|tiff?|ttf|txt|wav|web[mp]|wmv|woff2?|wpd|wri|xap|xls[mx]?|xml|xsd|zip)$ {
-        proxy_pass http://www-nuxt;
-        include /etc/nginx/conf.d/proxy-params.conf;
+        include /etc/nginx/conf.d/snippets/proxy-pass-nuxt.conf;
         proxy_intercept_errors on;
         error_page 404 = @static_docs_legacy_fallback;
     }
 
     location @static_docs_legacy_fallback {
-        proxy_pass http://legacy-cms;
-        include /etc/nginx/conf.d/proxy-params.conf;
+        include /etc/nginx/conf.d/snippets/proxy-pass-legacy-cms.conf;
         proxy_intercept_errors on;
         error_page 301 = @convert_301_to_302;
     }
@@ -99,8 +96,7 @@ server {
     # Fallback to legacy-www on 404
     # ===========================================
     location / {
-        proxy_pass http://www-nuxt;
-        include /etc/nginx/conf.d/proxy-params.conf;
+        include /etc/nginx/conf.d/snippets/proxy-pass-nuxt.conf;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
         proxy_intercept_errors on;
