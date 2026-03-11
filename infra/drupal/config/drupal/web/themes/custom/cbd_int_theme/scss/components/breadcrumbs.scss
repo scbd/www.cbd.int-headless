@@ -1,0 +1,17 @@
+.breadcrumbs {
+    font-size: 0.8rem;
+    --bs-breadcrumb-divider: '>';
+    .breadcrumb {
+        margin-bottom: 0;
+    }
+}
+
+html:dir(rtl) {
+    .breadcrumb-item + .breadcrumb-item::before {
+        float: right;
+        padding-left: var(--bs-breadcrumb-item-padding-x);
+    }
+    .breadcrumb-item {
+        padding-left: var(--bs-breadcrumb-item-padding-x)
+    }
+}

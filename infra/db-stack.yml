@@ -1,0 +1,57 @@
+# CBD.int — Database Stack (MariaDB)
+#
+# Deploy this stack separately from the main application stack.
+# It creates the shared "db_net" overlay network used by the drupal service.
+#
+# For production, replace this stack with an external RDS/Aurora endpoint and
+# point DRUPAL_DATABASE_HOST in drupal-stack.yml at the external host.
+#
+# Prerequisites:
+#   echo "rootpassword" | docker secret create www_mysql_root_password -
+#   echo "password"     | docker secret create www_db_password -
+#
+# Deploy:
+#   docker stack deploy -c db-stack.yml www-db
+
+services:
+
+  mariadb:
+    image: mariadb:10.6.21-focal
+    networks:
+      - db_net
+    volumes:
+      - db_data:/var/lib/mysql
+    secrets:
+      - mysql_root_password
+      - db_password
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      # placement:
+      #   constraints:
+      #     - node.role == worker
+
+networks:
+  db_net:
+    driver: overlay
+    external: true
+
+volumes:
+  db_data:
+    driver: local
+
+secrets:
+  mysql_root_password:
+    external: true
+    name: www_mysql_root_password
+  db_password:
+    external: true
+    name: www_db_password

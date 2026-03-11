@@ -1,0 +1,34 @@
+@import 'cus-main','cus-serp','cus-footer','navigation','content-object','aside';
+
+.cus-header,
+.cus-main,
+.cus-footer {
+    width: 100%;
+}
+
+.cus-landing-page,
+.cus-landing-page-protocol,
+.cus-internal-page {
+    .cus-article,
+    .region {
+        row-gap: 2rem;
+    }
+}
+
+.cus-internal-page {    
+    &>.container-xxl {
+        padding: 0 1rem;
+        column-gap: 2rem;
+        align-items: stretch;
+    }
+    .cus-article,
+    .region {
+        padding: 0;
+        margin: 0;
+        flex: 1 2 100%;
+    }
+}
+
+.cus-article {
+    padding: 0 1rem;
+}

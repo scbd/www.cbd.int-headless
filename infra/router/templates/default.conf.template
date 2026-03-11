@@ -33,6 +33,11 @@ server {
     # Handled by TRAEFIK 
 
     # ===========================================
+    # Well-Known -> 404
+    # ===========================================
+    location ^~ /.well-known/ { return 404; }
+
+    # ===========================================
     # Static Documents Routing
     # ===========================================
     # Files under /content/files/* -> Drupal sites/default/files

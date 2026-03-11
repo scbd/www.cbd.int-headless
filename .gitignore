@@ -19,6 +19,10 @@ logs
 .idea
 .vscode
 
+# Deploy data and secrets (provided locally, never committed)
+infra/deploy/data/
+infra/deploy/secrets/
+
 # Local env files
 .env
 .env.*

@@ -1,0 +1,10 @@
+# Source maps — not needed in the production image
+**/*.map
+
+# Common junk
+**/.git
+**/.gitignore
+**/.env
+**/.DS_Store
+**/Thumbs.db
+**/*.md
