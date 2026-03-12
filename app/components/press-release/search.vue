@@ -155,7 +155,7 @@ function buildFieldQueries (): string | undefined {
 
 function buildSort (): string {
   if (sortField.value === 'title') {
-    return `title_${locale.value.toUpperCase()}_t ${sortDirection.value === 'asc' ? 'ASC' : 'DESC'}`
+    return `title_EN_t ${sortDirection.value === 'asc' ? 'ASC' : 'DESC'}`
   }
   return `updatedDate_dt ${sortDirection.value === 'asc' ? 'ASC' : 'DESC'}`
 }

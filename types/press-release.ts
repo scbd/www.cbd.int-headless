@@ -1,5 +1,5 @@
 import type { LString } from '@scbd/vue-components'
-import type { Image } from './image'
+import type { Image } from '~~/types/image'
 
 export interface PressRelease {
   id: string
