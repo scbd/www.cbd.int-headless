@@ -13,7 +13,7 @@ import useDecisionsApi from '~/composables/api/use-decisions';
 import useMeetingsListApi from '~/composables/api/use-meetings';
 import useNotificationsListApi from '~/composables/api/use-notifications';
 import useStatementsListApi from '~/composables/api/use-statements';
-import usePressReleasesApi from '~/composables/api/use-press-releases';
+import usePressReleasesListApi from '~/composables/api/use-press-releases';
 import { useLString } from '~/composables/use-lstring';
 import { useFormatDate } from '~/composables/use-format-date'
 import type { Article } from '~~/types/content';
@@ -48,7 +48,7 @@ async function getContent(component: string) {
     case 'notifications':  return (await useNotificationsListApi(ref({ limit: 4 }))).notifications.value.rows;
     case 'statements':     return (await useStatementsListApi(ref({ limit: 4 })) ).statements.value.rows;
     case 'decisions':      return (await useDecisionsApi({ limit: 4 })).decisions;
-    case 'press-releases': return (await usePressReleasesApi({ limit: 4 })).pressReleases;
+    case 'press-releases': return (await usePressReleasesListApi(ref({ limit: 4 }))).pressReleases.value.rows;
     default:               return [];
   }
 }
