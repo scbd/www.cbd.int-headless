@@ -1,7 +1,21 @@
 /**
+ * Subject label resolution utilities.
+ *
+ * Builds lookup maps from thesaurus options and generates human-readable
+ * fallback labels from CBD subject identifiers.
+ *
+ * @module utils/calendar/subjects
+ */
+
+/**
  * Build a subject identifier → label map from an array of options.
+ *
  * @param options - Options with value/label pairs.
  * @returns Map of identifier to display label.
+ *
+ * @example
+ * buildSubjectLabelMap([{ value: 'CBD-SUBJECT-ABS', label: 'ABS' }])
+ * // → { 'CBD-SUBJECT-ABS': 'ABS' }
  */
 export function buildSubjectLabelMap(options: Array<{ value: string; label: string }>): Record<string, string> {
   return options.reduce<Record<string, string>>((accumulator, option) => {
@@ -12,9 +26,13 @@ export function buildSubjectLabelMap(options: Array<{ value: string; label: stri
 
 /**
  * Resolve a subject label from a label map.
+ *
  * @param identifier - Subject identifier.
  * @param labels - Map of identifier → label.
  * @returns Display label or empty string.
+ *
+ * @example
+ * resolveSubjectLabel('CBD-SUBJECT-ABS', { 'CBD-SUBJECT-ABS': 'ABS' }) // → 'ABS'
  */
 export function resolveSubjectLabel(identifier: string, labels: Record<string, string>): string {
   if (!identifier) {
@@ -25,8 +43,12 @@ export function resolveSubjectLabel(identifier: string, labels: Record<string, s
 
 /**
  * Generate a human-readable fallback label from a subject identifier.
+ *
  * @param identifier - Subject identifier (e.g. "CBD-SUBJECT-MARINE-COASTAL").
  * @returns Humanized label.
+ *
+ * @example
+ * fallbackSubjectLabel('CBD-SUBJECT-MARINE-COASTAL') // → 'Marine Coastal'
  */
 export function fallbackSubjectLabel(identifier: string): string {
   const cleaned = identifier

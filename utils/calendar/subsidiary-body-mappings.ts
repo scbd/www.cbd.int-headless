@@ -32,8 +32,12 @@ const SUBJECT_TO_SUBSIDIARY_BODY_MAP: Record<string, string> = {
 
 /**
  * Convert a subsidiary body filter identifier to its corresponding subject identifier.
+ *
  * @param subsidiaryBodyId - e.g. 'CAL-SUBSIDIARY-BODY-SBI' or 'SBI'
  * @returns Subject identifier (e.g. 'CBD-SUBJECT-SBI') or undefined.
+ *
+ * @example
+ * subsidiaryBodyToSubject('SBI') // → 'CBD-SUBJECT-SBI'
  */
 export function subsidiaryBodyToSubject(subsidiaryBodyId: string): string | undefined {
   if (!subsidiaryBodyId) {
@@ -45,8 +49,12 @@ export function subsidiaryBodyToSubject(subsidiaryBodyId: string): string | unde
 
 /**
  * Convert a subject identifier to its corresponding subsidiary body identifier.
+ *
  * @param subjectId - e.g. 'CBD-SUBJECT-SBI'
  * @returns Subsidiary body short name (e.g. 'SBI') or undefined.
+ *
+ * @example
+ * subjectToSubsidiaryBody('CBD-SUBJECT-SBI') // → 'SBI'
  */
 export function subjectToSubsidiaryBody(subjectId: string): string | undefined {
   if (!subjectId) {

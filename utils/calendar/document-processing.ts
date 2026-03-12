@@ -1,3 +1,13 @@
+/**
+ * SOLR document field extraction utilities.
+ *
+ * Provides type-safe accessors for extracting values from normalized calendar
+ * SOLR documents — strings, booleans, multi-value arrays, decision labels,
+ * and value/label pairs.
+ *
+ * @module utils/calendar/document-processing
+ */
+
 import type { CalendarDoc } from '~/types/calendar-activity';
 import { normalizeSolrFieldName, normalizeSolrDocument } from './solr-normalize';
 
@@ -12,9 +22,13 @@ export interface ValueLabelPair {
 /**
  * Resolve the first non-empty string value for any of the provided keys.
  * Documents are pre-normalized so only the normalized doc is searched.
+ *
  * @param doc - Calendar document.
  * @param keys - Candidate field names (SOLR-style or camelCase).
  * @returns Normalized string or undefined.
+ *
+ * @example
+ * getDocStringValue(doc, 'status', 'statusKey') // → 'CONFIRMED'
  */
 export function getDocStringValue(doc: CalendarDoc, ...keys: string[]): string | undefined {
   const anyDoc = doc as Record<string, unknown>;

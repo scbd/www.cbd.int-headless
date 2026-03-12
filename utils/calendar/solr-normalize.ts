@@ -57,7 +57,7 @@ const camelizeSegments = (segments: string[]): string => {
  *
  * @example
  * normalizeSolrFieldName('governingBodies_ss') // → 'governingBodies'
- * normalizeSolrFieldName('startDateCOA_dt')    // → 'startDateCoa'
+ * normalizeSolrFieldName('startDateCOA_dt')    // → 'startDateCOA'
  * normalizeSolrFieldName('title_EN_t')         // → 'titleEn'
  */
 export const normalizeSolrFieldName = (field: string): string => {

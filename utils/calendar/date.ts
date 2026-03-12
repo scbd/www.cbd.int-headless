@@ -1,3 +1,13 @@
+/**
+ * Date parsing and formatting utilities for calendar documents.
+ *
+ * Uses Luxon for all date operations. Handles flexible legacy date formats,
+ * quarter-based ranges for tentative activities, and both human-readable and
+ * grid-view date formatting.
+ *
+ * @module utils/calendar/date
+ */
+
 import { DateTime } from 'luxon';
 import type { CalendarDoc } from '~/types/calendar-activity';
 import { normalizeTypeKey } from './type-colors';
@@ -6,8 +16,13 @@ import { normalizeStatusKey } from './status';
 
 /**
  * Attempt to parse a loosely formatted date string from legacy datasets into ISO.
+ *
  * @param value - Source text that may include quarters or short years.
  * @returns ISO 8601 string when parsing succeeds, otherwise null.
+ *
+ * @example
+ * parseFlexibleDate('15-Jan-24')  // → '2024-01-15T00:00:00.000Z'
+ * parseFlexibleDate('Q2 2025')    // → '2025-04-01T00:00:00.000Z'
  */
 export function parseFlexibleDate(value: string | undefined): string | null {
   if (!value) return null;

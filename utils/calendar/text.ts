@@ -1,7 +1,20 @@
 /**
+ * Text normalization utilities for calendar data.
+ *
+ * Provides HTML-to-text conversion, entity decoding, whitespace normalization,
+ * and identifier humanization used throughout the calendar pipeline.
+ *
+ * @module utils/calendar/text
+ */
+
+/**
  * Normalize whitespace by collapsing consecutive whitespace and trimming edges.
+ *
  * @param value - Text to normalize.
  * @returns Normalized string with single spaces and no leading/trailing whitespace.
+ *
+ * @example
+ * normalizeWhitespace('  hello   world  ') // → 'hello world'
  */
 export function normalizeWhitespace(value: string): string {
   return value
@@ -12,8 +25,12 @@ export function normalizeWhitespace(value: string): string {
 
 /**
  * Convert an HTML string into human-readable text while preserving intentional separators.
+ *
  * @param html - HTML markup to convert.
  * @returns Decoded plain-text content.
+ *
+ * @example
+ * htmlToText('<p>Hello</p><p>World</p>') // → 'Hello World'
  */
 export function htmlToText(html: string): string {
   return decodeEntities(
@@ -29,8 +46,12 @@ export function htmlToText(html: string): string {
 
 /**
  * Decode common HTML entities from the provided text.
+ *
  * @param text - String that may include HTML entities.
  * @returns Plain text with entities converted.
+ *
+ * @example
+ * decodeEntities('Tom &amp; Jerry') // → 'Tom & Jerry'
  */
 export function decodeEntities(text: string): string {
   return text
@@ -48,8 +69,12 @@ export function decodeEntities(text: string): string {
 
 /**
  * Humanize a technical identifier by splitting on separators and capitalizing parts.
+ *
  * @param value - Identifier to humanize.
  * @returns Human-readable label.
+ *
+ * @example
+ * humanizeIdentifier('MARINE_COASTAL') // → 'Marine Coastal'
  */
 export function humanizeIdentifier(value: string): string {
   const trimmed = value.trim();

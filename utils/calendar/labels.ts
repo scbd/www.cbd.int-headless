@@ -1,12 +1,27 @@
+/**
+ * Label resolution utilities for calendar documents.
+ *
+ * Resolves country display names via `Intl.DisplayNames`, normalizes decision
+ * labels with COP prefix handling, and maps SCBD unit/division abbreviations
+ * to their full names.
+ *
+ * @module utils/calendar/labels
+ */
+
 import type { CalendarDoc } from '~/types/calendar-activity';
 import { getDocStringValue } from './document-processing';
 import { humanizeIdentifier } from './text';
 
 /**
  * Resolve a country label using provided information, regional display names, or heuristics.
+ *
  * @param value - Country code or name.
  * @param provided - Optional label from the dataset.
  * @returns Display label.
+ *
+ * @example
+ * resolveCountryLabel('CA')        // → 'Canada'
+ * resolveCountryLabel('CA', 'CAN') // → 'CAN'
  */
 export function resolveCountryLabel(value: string, provided?: string | null): string {
   if (provided && provided.trim()) {
@@ -39,8 +54,13 @@ export function resolveCountryLabel(value: string, provided?: string | null): st
 
 /**
  * Normalize a decision label ensuring the COP prefix is present.
+ *
  * @param label - Original decision label.
  * @returns Normalized decision label or null.
+ *
+ * @example
+ * normalizeDecisionLabel('15/4') // → 'COP 15/4'
+ * normalizeDecisionLabel('CP-11/7') // → 'CP-11/7' (already has prefix)
  */
 export function normalizeDecisionLabel(label: string | null | undefined): string | null {
   if (label === null || label === undefined) {

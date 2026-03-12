@@ -1,5 +1,17 @@
+/**
+ * Calendar activity type color mapping.
+ *
+ * Maps raw activity type strings to one of 18 normalized `CalendarTypeKey`
+ * values via regex pattern matching, then resolves a background/text color
+ * pair for UI rendering.
+ *
+ * @module utils/calendar/type-colors
+ */
+
+/** CBD brand green used for COP/SBSTTA/SBI type backgrounds. */
 export const CBD_GREEN = '#009b48';
 
+/** Union of all recognized calendar activity type keys. */
 export type CalendarTypeKey =
   | 'cop'
   | 'sbstta'
@@ -20,6 +32,7 @@ export type CalendarTypeKey =
   | 'campaign'
   | 'other';
 
+/** Background and text color pair for a calendar activity type. */
 export interface CalendarTypeColor {
   background: string;
   text: string;
@@ -68,8 +81,14 @@ const TYPE_PATTERNS: Array<{ key: CalendarTypeKey; patterns: RegExp[] }> = [
 
 /**
  * Normalize a type string to a CalendarTypeKey by matching against known patterns.
+ *
  * @param value - Raw type string from document.
  * @returns Matched CalendarTypeKey or 'other'.
+ *
+ * @example
+ * normalizeTypeKey('COP Meeting')      // → 'cop'
+ * normalizeTypeKey('peer-review')      // → 'peerReview'
+ * normalizeTypeKey('unknown-type')     // → 'other'
  */
 export function normalizeTypeKey(value: string | null | undefined): CalendarTypeKey {
   if (!value) {
@@ -93,8 +112,13 @@ export function normalizeTypeKey(value: string | null | undefined): CalendarType
 
 /**
  * Get the color pair for a calendar type.
+ *
  * @param type - CalendarTypeKey or raw type string.
  * @returns Color pair with background and text hex colors.
+ *
+ * @example
+ * getTypeColor('cop')        // → { background: '#009b48', text: '#ffffff' }
+ * getTypeColor('notification') // → { background: '#0F7ABD', text: '#ffffff' }
  */
 export function getTypeColor(type: CalendarTypeKey | string | null | undefined): CalendarTypeColor {
   const normalized = typeof type === 'string' ? normalizeTypeKey(type) : type ?? 'other';

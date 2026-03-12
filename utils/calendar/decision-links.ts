@@ -1,3 +1,12 @@
+/**
+ * Decision URL generation and label parsing.
+ *
+ * Parses decision labels (COP, CP, NP) into structured data and resolves
+ * canonical CBD decision URLs for linking from calendar activity cards.
+ *
+ * @module utils/calendar/decision-links
+ */
+
 type DecisionType = 'COP' | 'CP' | 'NP';
 
 interface ParsedDecisionLabel {
@@ -7,6 +16,9 @@ interface ParsedDecisionLabel {
   paragraphs: string[];
 }
 
+/**
+ * A resolved decision reference with its display label and optional URL.
+ */
 export interface DecisionEntry {
   label: string;
   href?: string;
@@ -141,8 +153,12 @@ function parseDecisionType(token: string): DecisionType | null {
 
 /**
  * Parse a decision label such as "COP 15/4" or "CP-11/7" into its components.
+ *
  * @param label - Decision label string.
  * @returns Parsed components or null when the label is not recognized.
+ *
+ * @example
+ * parseDecisionLabel('COP 15/4') // → { type: 'COP', meetingNumber: 15, decisionNumber: 4, paragraphs: [] }
  */
 export function parseDecisionLabel(label: string | null | undefined): ParsedDecisionLabel | null {
   if (!label) {
@@ -185,8 +201,12 @@ export function parseDecisionLabel(label: string | null | undefined): ParsedDeci
 
 /**
  * Resolve a decision label to its canonical CBD URL.
+ *
  * @param label - Decision label (e.g. "COP 15/4").
  * @returns Absolute URL or undefined.
+ *
+ * @example
+ * resolveDecisionHref('COP 15/4') // → 'https://www.cbd.int/decisions/cop/15/04'
  */
 export function resolveDecisionHref(label: string | null | undefined): string | undefined {
   const parsed = parseDecisionLabel(label);

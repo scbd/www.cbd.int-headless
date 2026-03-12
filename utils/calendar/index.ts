@@ -1,3 +1,12 @@
+/**
+ * Calendar utility barrel export.
+ *
+ * Re-exports all public functions, types, and constants from the calendar
+ * utility modules used by the SOLR service layer, composables, and UI.
+ *
+ * @module utils/calendar
+ */
+
 export {
   normalizeSolrFieldName,
   normalizeSolrDocument,

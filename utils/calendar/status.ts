@@ -1,3 +1,13 @@
+/**
+ * Status normalization and equivalence mapping.
+ *
+ * Handles the dual representation of event statuses in SOLR (short codes like
+ * `CONFIRM` vs full thesaurus identifiers like `NCHM-EVENT-STATUS-CONFIRMED`)
+ * and provides human-readable labels and Bootstrap color keys.
+ *
+ * @module utils/calendar/status
+ */
+
 import type { CalendarDoc } from '~/types/calendar-activity';
 import { getDocStringValue } from './document-processing';
 

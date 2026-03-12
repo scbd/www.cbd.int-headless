@@ -1,8 +1,8 @@
 # Checkpoint
 
 **Current phase:** Phase 01
-**Last completed:** `p01-02b-calendar-utilities-tests` — 398 unit tests across 9 test files, 97%+ coverage on utility modules
-**Next task:** `phase-01/p01-02c-calendar-utilities-jsdoc.md`
+**Last completed:** `p01-02c-calendar-utilities-jsdoc` — module-level JSDoc headers, @example annotations, and type/constant documentation across all 12 utility files
+**Next task:** `phase-02/p02-01a-calendar-solr-service.md`
 **Updated:** 2026-03-12T21:00:00Z
 
 ## State
@@ -12,6 +12,7 @@
 - p01-01c complete: JSDoc comments on all exported symbols (types, constants, plugin)
 - p01-02a complete: 12 utility files in utils/calendar/ (solr-normalize, text, document-processing, status, labels, date, decision-links, notifications, type-colors, subjects, subsidiary-body-mappings, index barrel)
 - p01-02b complete: 9 test files with 398 unit tests, 97%+ coverage on utility modules
+- p01-02c complete: JSDoc comments on all exported symbols in utils/calendar/
 - Plan fully drafted, reviewed, and reconciled
 - 7 phases with 15 task groups (39 sub-task files: 12 × 3 triplets + 3 E2E)
 - **Shared contracts frozen** in [shared-contracts.md](shared-contracts.md) — all phases must conform

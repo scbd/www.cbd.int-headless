@@ -1,8 +1,20 @@
+/**
+ * Notification handling utilities for calendar documents.
+ *
+ * Extracts notification symbols (format `YYYY-NNN`), builds canonical CBD
+ * notification URLs, parses attachment metadata from SOLR, and generates
+ * plain-text excerpts from HTML content.
+ *
+ * @module utils/calendar/notifications
+ */
+
 import type { CalendarDoc, NotificationAttachment } from '~/types/calendar-activity';
 import { htmlToText, normalizeWhitespace } from './text';
 
+/** Base URL for all CBD notification links. */
 export const NOTIFICATION_BASE_URL = 'https://www.cbd.int';
 
+/** A notification symbol key in `YYYY-NNN` format. */
 export type NotificationKey = string;
 
 const notificationKeyCache = new WeakMap<CalendarDoc, NotificationKey[]>();
@@ -87,8 +99,12 @@ export function deriveNameFromUrl(url: string): string {
 
 /**
  * Build the canonical link for a notification symbol.
+ *
  * @param key - Notification symbol (format "YYYY-NNN").
  * @returns Absolute URL for the notification page.
+ *
+ * @example
+ * buildNotificationLink('2024-067') // → 'https://www.cbd.int/notifications/2024-067'
  */
 export function buildNotificationLink(key: NotificationKey): string {
   return resolveNotificationUrl(`/notifications/${key}`);
