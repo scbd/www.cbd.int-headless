@@ -12,8 +12,8 @@ services:
       - NUXT_PORT=3000
       - DRUPAL_HOST=drupal
       - DRUPAL_PORT=80
-      - LEGACY_CMS_HOST=${LEGACY_CMS_HOST:-legacy-cms}
-      - LEGACY_CMS_PORT=${LEGACY_CMS_PORT:-80}
+      - LEGACY_CMS_HOST=${LEGACY_CMS_HOST:-archive.cbd.int}
+      - LEGACY_CMS_PORT=${LEGACY_CMS_PORT:-443}
       - LEGACY_WWW_FALLBACK_URL=${LEGACY_WWW_FALLBACK_URL:-https://archive.cbd.int}
       - GAIA_DOCS_S3_ENDPOINT=${GAIA_S3_ENDPOINT:-s3.us-east-1.amazonaws.com}
       - API_HOST=${API_HOST:-api.cbd.int}
@@ -103,19 +103,6 @@ services:
       # placement:
       #   constraints:
       #     - node.role == worker
-
-  # ===========================================
-  # Legacy CMS stub (local/dev only — in production this is an external service
-  # on the webgateway network provided by the host infrastructure)
-  # ===========================================
-  legacy-cms:
-    image: nginx:alpine
-    networks:
-      - backend
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
 
   # ===========================================
   # Redis Cache (for Drupal)

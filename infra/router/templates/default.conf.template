@@ -52,16 +52,21 @@ server {
     # Document Routes (/doc)
     # ===========================================
 
-    # /doc/c/* 
-    # /doc/interventions/* -> S3 (gaia documents)
-    location ^~ ^/doc/(c|interventions)/ {
+    # /doc/c/* and /doc/interventions/* -> S3 (gaia documents)
+    # More specific prefixes win over the /doc catch-all below
+    location ^~ /doc/c/            {
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${GAIA_DOCS_S3_ENDPOINT};
+        proxy_pass https://gaia-docs/gaia.documents$request_uri;
+    }
+    location ^~ /doc/interventions/ {
         proxy_ssl_server_name on;
         proxy_set_header Host ${GAIA_DOCS_S3_ENDPOINT};
         proxy_pass https://gaia-docs/gaia.documents$request_uri;
     }
 
     # /doc/* (all other doc routes) -> Legacy CMS (via CloudFront)
-    location ^~ ^/doc {
+    location ^~ /doc {
         include /etc/nginx/conf.d/snippets/proxy-pass-legacy-cms.conf;
         proxy_intercept_errors on;
         error_page 301 = @convert_301_to_302;
@@ -85,8 +90,8 @@ server {
     # ===========================================
     location /api/v {
         proxy_ssl_server_name on;
-        proxy_ssl_name api.cbd.int;
-        proxy_set_header Host api.cbd.int;
+        proxy_ssl_name ${API_HOST};
+        proxy_set_header Host ${API_HOST};
         proxy_pass https://api;
         include /etc/nginx/conf.d/proxy-params.conf;
     }
