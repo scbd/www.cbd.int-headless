@@ -2,6 +2,10 @@
 // Thesaurus domain identifiers — values must match the CBD thesaurus API
 // ---------------------------------------------------------------------------
 
+/**
+ * CBD thesaurus domain identifiers used to fetch filter options
+ * from the thesaurus API (e.g. countries, GBF targets, activity types).
+ */
 export const THESAURUS_DOMAINS = {
   COUNTRIES: 'countries',
   GBF_GOALS: 'GBF-GOALS',
@@ -15,25 +19,37 @@ export const THESAURUS_DOMAINS = {
   SUBSIDIARY_BODIES: 'SUBSIDIARY-BODIES',
 } as const
 
+/** Union of all keys in {@link THESAURUS_DOMAINS}. */
 export type ThesaurusDomainKey = keyof typeof THESAURUS_DOMAINS
+/** Union of all string literal values in {@link THESAURUS_DOMAINS}. */
 export type ThesaurusDomainIdentifier = typeof THESAURUS_DOMAINS[ThesaurusDomainKey]
 
 // ---------------------------------------------------------------------------
 // Record types
 // ---------------------------------------------------------------------------
 
+/**
+ * The three calendar document schemas with their i18n label keys.
+ * Used to populate the "Type" filter dropdown.
+ */
 export const CALENDAR_RECORD_TYPES = [
   { value: 'meeting', labelKey: 'calendar.types.meeting' },
   { value: 'notification', labelKey: 'calendar.types.notification' },
   { value: 'calendarActivity', labelKey: 'calendar.types.calendarActivity' },
 ] as const
 
+/** Union type of record type values: `'meeting' | 'notification' | 'calendarActivity'`. */
 export type RecordType = typeof CALENDAR_RECORD_TYPES[number]['value']
 
 // ---------------------------------------------------------------------------
 // SOLR facet fields with exclusion tags
 // ---------------------------------------------------------------------------
 
+/**
+ * SOLR facet field definitions with `{!ex=tag}` exclusion tags.
+ * Exclusion tags allow multi-select faceting: selecting a value in one
+ * facet does not collapse the counts in that same facet.
+ */
 export const SOLR_FACET_FIELDS = {
   schema: '{!ex=schema}schema_s',
   subjects: '{!ex=subjects}thematicArea_ss',
@@ -48,12 +64,14 @@ export const SOLR_FACET_FIELDS = {
   themes: '{!ex=themes}themes_ss',
 } as const
 
+/** Union of all keys in {@link SOLR_FACET_FIELDS}. */
 export type SolrFacetFieldKey = keyof typeof SOLR_FACET_FIELDS
 
 // ---------------------------------------------------------------------------
 // SOLR field lists
 // ---------------------------------------------------------------------------
 
+/** Comma-separated SOLR field list for calendar list/search views. */
 export const CALENDAR_LIST_FIELDS = [
   'id', '_id', 'schema_s', 'identifier_s',
   'title_EN_t', 'title_FR_t', 'title_ES_t', 'title_AR_t', 'title_RU_t', 'title_ZH_t',
@@ -71,6 +89,7 @@ export const CALENDAR_LIST_FIELDS = [
   'recipient_ss', 'files_ss', 'sender_s', 'reference_s', 'fulltext_s', 'deadline_dt',
 ].join(',')
 
+/** Comma-separated SOLR field list for calendar detail views (superset of list fields). */
 export const CALENDAR_DETAIL_FIELDS = [
   ...CALENDAR_LIST_FIELDS.split(','),
   'description_EN_t', 'description_FR_t', 'description_ES_t',
@@ -92,10 +111,12 @@ export const CALENDAR_DETAIL_FIELDS = [
 // Pagination
 // ---------------------------------------------------------------------------
 
+/** Number of calendar items displayed per page in search results. */
 export const ITEMS_PER_PAGE = 10
 
 // ---------------------------------------------------------------------------
 // URL path for the calendar page
 // ---------------------------------------------------------------------------
 
+/** Client-side route path for the calendar of activities page. */
 export const CALENDAR_ACTIVITIES_PATH = '/calendar-of-activities'

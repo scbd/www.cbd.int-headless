@@ -4,6 +4,10 @@ import type { LString } from '@scbd/vue-components'
 // Base document — common fields shared by every schema
 // ---------------------------------------------------------------------------
 
+/**
+ * Common fields shared by every calendar document schema.
+ * Extended by {@link MeetingDoc}, {@link NotificationDoc}, and {@link CalendarActivityDoc}.
+ */
 export interface BaseCalendarDoc {
   id: string
   schema: 'meeting' | 'notification' | 'calendarActivity'
@@ -32,6 +36,7 @@ export interface BaseCalendarDoc {
 // Schema-specific documents
 // ---------------------------------------------------------------------------
 
+/** A CBD meeting document (e.g. COP, SBSTTA, SBI sessions). */
 export interface MeetingDoc extends BaseCalendarDoc {
   schema: 'meeting'
   symbol: string | null
@@ -42,6 +47,7 @@ export interface MeetingDoc extends BaseCalendarDoc {
   themes: string[]
 }
 
+/** A CBD notification document with sender, recipients, and attachments. */
 export interface NotificationDoc extends BaseCalendarDoc {
   schema: 'notification'
   symbol: string | null
@@ -54,6 +60,7 @@ export interface NotificationDoc extends BaseCalendarDoc {
   fulltext: LString
 }
 
+/** A general calendar activity document (actions, deadlines, milestones). */
 export interface CalendarActivityDoc extends BaseCalendarDoc {
   schema: 'calendarActivity'
   type: string | null
@@ -69,13 +76,17 @@ export interface CalendarActivityDoc extends BaseCalendarDoc {
   outcome: string | null
 }
 
-// Discriminated union — narrow via doc.schema
+/**
+ * Discriminated union of all calendar document schemas.
+ * Narrow via `doc.schema` to access schema-specific fields.
+ */
 export type CalendarDoc = MeetingDoc | NotificationDoc | CalendarActivityDoc
 
 // ---------------------------------------------------------------------------
 // Filter & query types
 // ---------------------------------------------------------------------------
 
+/** Local UI state for the calendar search filter form. */
 export interface CalendarFilterState {
   types: string[]
   subjects: string[]
@@ -95,7 +106,11 @@ export interface CalendarFilterState {
   initialLoad?: boolean
 }
 
-// Matches shared contract SC-04
+/**
+ * Query parameters sent to the calendar API route.
+ * Array params are serialized as comma-separated strings.
+ * @see SC-04 in shared-contracts.md
+ */
 export interface CalendarSearchParams {
   types?: string[]
   subjects?: string[]
@@ -120,9 +135,13 @@ export interface CalendarSearchParams {
 // Facets & results
 // ---------------------------------------------------------------------------
 
+/** Parsed SOLR facet counts keyed by facet field name. */
 export type ParsedFacets = Record<string, Array<{ value: string; count: number }>>
 
-// Matches shared contract SC-01
+/**
+ * Canonical response from the calendar API route and composable.
+ * @see SC-01 in shared-contracts.md
+ */
 export interface CalendarSearchResult {
   docs: CalendarDoc[]
   total: number
@@ -133,6 +152,10 @@ export interface CalendarSearchResult {
 // Grouping (matches SC-08)
 // ---------------------------------------------------------------------------
 
+/**
+ * A group of calendar documents keyed by a date bucket (e.g. "2025-03").
+ * @see SC-08 in shared-contracts.md
+ */
 export interface GroupedItem {
   key: string
   label: string
@@ -143,6 +166,7 @@ export interface GroupedItem {
 // Supporting types
 // ---------------------------------------------------------------------------
 
+/** A parsed agenda item linking a meeting code to its agenda entry. */
 export interface AgendaItem {
   meetingCode: string
   item: string
@@ -150,12 +174,14 @@ export interface AgendaItem {
   shortTitle: string
 }
 
+/** A single option in a calendar filter dropdown (vue-multiselect). */
 export interface CalendarFilterOption {
   value: string
   label: string
   count?: number
 }
 
+/** Expanded notification details for the detail/expansion panel view. */
 export interface NotificationDetails {
   title: string | null
   from: string | null
@@ -165,6 +191,7 @@ export interface NotificationDetails {
   fulltext: string | null
 }
 
+/** A file attachment on a notification document. */
 export interface NotificationAttachment {
   name: string
   url: string
