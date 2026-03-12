@@ -69,5 +69,8 @@ export default defineNuxtConfig({
       }
     }
   },
-  css: ['~/assets/scss/styles.scss']
+  css: [
+    '~/assets/scss/styles.scss',
+    'vue-multiselect/dist/vue-multiselect.css'
+  ]
 })
