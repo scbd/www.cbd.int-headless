@@ -49,7 +49,7 @@ export default class DrupalApi extends ApiBase {
 
   async listArticles (options?: { sort?: string, limit?: number, skip?: number, search?: string }): Promise<{ data: any[], total: number }> {
     const query: Record<string, any> = {
-      sort: options?.sort ?? '-changed',
+      sort: options?.sort ?? '-promoted,-changed,-created',
       'page[limit]': options?.limit ?? 10,
       'page[offset]': options?.skip ?? 0
     }
