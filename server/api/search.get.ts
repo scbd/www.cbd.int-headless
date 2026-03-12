@@ -7,8 +7,8 @@ export default defineEventHandler(async (event) => {
   const { sort, limit = 10, skip = 0, search } = getQuery(event) as QueryParams
 
   const [articles, pages] = await Promise.all([
-    listArticles({ sort, search }),
-    listPages({ sort, search }),
+    listArticles({ sort, search, limit: Number(limit), skip: Number(skip) }),
+    listPages({ sort, search, limit: Number(limit), skip: Number(skip) }),
   ]).catch(apiErrorHandler)
 
   const merged: Content[] = [...articles.rows, ...pages.rows]
@@ -22,11 +22,8 @@ export default defineEventHandler(async (event) => {
     return sortDir * (aVal - bVal)
   })
 
-  const start = Number(skip)
-  const end = start + Number(limit)
-
   return {
-    rows: merged.slice(start, end),
-    total: merged.length,
+    rows: merged,
+    total: articles.total + pages.total,
   }
 })
