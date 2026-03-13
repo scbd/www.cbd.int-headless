@@ -18,7 +18,7 @@ services:
   mariadb:
     image: mariadb:10.6.21-focal
     networks:
-      - db_net
+      - www_db_net
     volumes:
       - db_data:/var/lib/mysql
     secrets:
@@ -35,12 +35,13 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 3
-      # placement:
-      #   constraints:
-      #     - node.role == worker
+      placement:
+        constraints:
+          - node.role == worker
+          - node.labels.sql == true
 
 networks:
-  db_net:
+  www_db_net:
     driver: overlay
     external: true
 
