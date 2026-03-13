@@ -3,8 +3,6 @@ let { document } = globalThis
 
 if (document === undefined) {
   await import('jsdom').then(({ JSDOM }) => {
-    console.log('escapeHtml will use jsdom')
-
     document = new JSDOM('').window.document
   }).catch(() => console.warn('jsdom is not available, HTML escaping may not work properly in non-browser environments.'))
 }
@@ -34,4 +32,14 @@ export default function escapeHtml (text: string): string {
   const el = document.createElement('div')
   el.textContent = text
   return el.innerHTML
+}
+
+export function extractTextFromHtml(html: string): string {
+  if (document === undefined) {
+    throw new Error('extractTextFromHtml function requires a DOM environment. Please ensure jsdom is installed and available in non-browser environments.')
+  }
+
+  const el = document.createElement('div')
+  el.innerHTML = html
+  return el.textContent || ''
 }

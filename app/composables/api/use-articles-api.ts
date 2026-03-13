@@ -13,17 +13,21 @@ export async function useArticleApi (url: string): Promise<{ article: Article | 
   return { article, error }
 }
 
-export default async function useArticleListApi (options?: QueryParams): Promise<{ articles: Article[], error: Ref<Error | undefined> }> {
-  const { data, error } = await useFetch<Article[]>(ARTICLES, {
+export default async function useArticleListApi (options?: QueryParams): Promise<{ articles: ComputedRef<{ rows: Article[], total: number }>, error: Ref<Error | undefined> }> {
+  const { data, error } = await useFetch<{ rows: Article[], total: number }>(ARTICLES, {
     params: {
       sort: options?.sort,
       limit: options?.limit,
-      skip: options?.skip
+      skip: options?.skip,
+      search: options?.search
     },
-    default: () => []
+    default: () => ({ total: 0, rows: [] })
   })
 
-  const articles = data.value.map((row) => normalizeObjectDates(row))
+  const articles = computed(() => ({
+    rows: data.value.rows.map((row) => normalizeObjectDates(row)),
+    total: data.value.total
+  }))
 
   return { articles, error }
 }
