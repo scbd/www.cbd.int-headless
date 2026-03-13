@@ -10,6 +10,7 @@ export default defineEventHandler(async (event) => {
   if (/^\/api\//i.test(path)) return
   if (/^\/meetings(\/|$)/i.test(path)) return // Ignore /meetings path
   if (/^\/notifications(\/|$)/i.test(path)) return // Ignore /notifications path
+  if (/^\/search(\/|$)/i.test(path)) return // Ignore /search path
   if (/^\/_/.test(path)) return
 
   try {

@@ -1,6 +1,7 @@
 import { notFound, badRequest } from 'api-client/api-error'
 import DrupalApi from '~~/api/drupal'
 import { Cache } from '~~/utils/cache'
+import { extractTextFromHtml } from '~~/utils/escape-html'
 import type { Content, Article } from '~~/types/content'
 import type { DrupalRouterResponse } from '~~/types/api/drupal'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -161,8 +162,13 @@ export async function getImage (id: string, category: Image['category']): Promis
   }
 }
 
-export async function listArticles (options?: QueryParams): Promise<Article[]> {
-  const data = await drupalApi.listArticles(options)
+export async function listArticles (options?: QueryParams): Promise<{ rows: Article[], total: number }> {
+  const { data, total } = await drupalApi.listArticles({
+    sort: options?.sort,
+    search: options?.search,
+    limit: options?.limit,
+    skip: options?.skip,
+  })
 
   const articles = await Promise.all(
     data.map(async (item: any) => {
@@ -203,7 +209,40 @@ export async function listArticles (options?: QueryParams): Promise<Article[]> {
     })
   )
 
-  return articles
+  return { rows: articles, total }
+}
+
+export async function listPages (options?: QueryParams): Promise<{ rows: Content[], total: number}> {
+  const { data, total } = await drupalApi.listPages({
+    sort: options?.sort,
+    search: options?.search,
+    limit: options?.limit,
+    skip: options?.skip,
+  })
+
+  const pages = await Promise.all(
+    data.map(async (item: any) => {
+      const { attributes } = item
+
+      const content: Content = {
+        id: attributes?.id,
+        bundle: 'page',
+        title: attributes?.title,
+        createdOn: attributes?.created,
+        updatedOn: attributes?.changed,
+        alias: attributes?.path?.alias,
+        locale: attributes?.path?.langcode,
+        body: contentNormalizer(attributes?.body?.processed),
+        summary: extractTextFromHtml(attributes?.body?.processed ?? '')
+      }
+
+      const page = content as Content
+
+      return page
+    })
+  )
+
+  return { rows: pages, total }
 }
 
 async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
