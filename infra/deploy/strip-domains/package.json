@@ -1,0 +1,14 @@
+{
+  "name": "strip-domains",
+  "version": "1.0.0",
+  "description": "Strip domain prefixes from URLs in Drupal MariaDB HTML content",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "jsdom": "^25.0.0",
+    "mysql2": "^3.0.0"
+  }
+}

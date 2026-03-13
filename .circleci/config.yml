@@ -35,12 +35,12 @@ jobs:
               --cache-from type=registry,ref=scbd/www-router:dev \
               -t scbd/www-router:$CIRCLE_BRANCH --load ./infra/router
       - run:
-          name: Build www-cms image
+          name: Build www-drupal image
           command: |
             docker buildx build --platform linux/amd64 \
-              --cache-from type=registry,ref=scbd/www-cms:master \
-              --cache-from type=registry,ref=scbd/www-cms:dev \
-              -t scbd/www-cms:$CIRCLE_BRANCH --load ./infra/drupal
+              --cache-from type=registry,ref=scbd/www-drupal:master \
+              --cache-from type=registry,ref=scbd/www-drupal:dev \
+              -t scbd/www-drupal:$CIRCLE_BRANCH --load ./infra/drupal
 
   build-and-push:
     resource_class: small
@@ -80,19 +80,19 @@ jobs:
               --cache-to type=registry,ref=scbd/www-router:$IMAGE_TAG,mode=max \
               -t scbd/www-router:$IMAGE_TAG --load ./infra/router
       - run:
-          name: Build www-cms image
+          name: Build www-drupal image
           command: |
             docker buildx build --platform linux/amd64 \
-              --cache-from type=registry,ref=scbd/www-cms:$IMAGE_TAG \
-              --cache-from type=registry,ref=scbd/www-cms:master \
-              --cache-to type=registry,ref=scbd/www-cms:$IMAGE_TAG,mode=max \
-              -t scbd/www-cms:$IMAGE_TAG --load ./infra/drupal
+              --cache-from type=registry,ref=scbd/www-drupal:$IMAGE_TAG \
+              --cache-from type=registry,ref=scbd/www-drupal:master \
+              --cache-to type=registry,ref=scbd/www-drupal:$IMAGE_TAG,mode=max \
+              -t scbd/www-drupal:$IMAGE_TAG --load ./infra/drupal
       - run:
           name: Push images to Docker Hub
           command: |
             docker push scbd/www-nuxt:$IMAGE_TAG
             docker push scbd/www-router:$IMAGE_TAG
-            docker push scbd/www-cms:$IMAGE_TAG
+            docker push scbd/www-drupal:$IMAGE_TAG
       - run:
           name: Trigger Portainer webhooks
           command: |

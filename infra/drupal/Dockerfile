@@ -46,6 +46,7 @@ RUN composer require -n \
     "drupal/dotenv:*" \
     "drupal/entity:*" \
     "drupal/entity_update:*" \
+    "drupal/extlink:*" \
     "drupal/externalauth:*" \
     "drupal/field_group:*" \
     "drupal/file_replace:*" \
@@ -151,6 +152,8 @@ RUN chown -R www-data:www-data /opt/drupal/web
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+VOLUME ["/opt/drupal/web/sites/default/files", "/var/drupal/sync"]
 
 EXPOSE 80
 

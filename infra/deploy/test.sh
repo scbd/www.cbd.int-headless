@@ -1,20 +1,25 @@
 #!/usr/bin/env bash
+# ---------------------------------------------------------------------------
+# test.sh — full local test deployment (teardown + data restore)
+#
+# For production deployments use deploy-db.sh and deploy-www.sh directly.
+# ---------------------------------------------------------------------------
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INFRA_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-# ---------------------------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------------------------
-STACK_NAME=www
-DB_STACK_NAME=www-db
-IMAGE_TAG=local
-PORT="${PORT:-3010}"
+# Source .env if present
+if [ -f "${SCRIPT_DIR}/.env" ]; then
+  set -a; source "${SCRIPT_DIR}/.env"; set +a
+fi
 
-DRUPAL_DATABASE_HOST="${DB_STACK_NAME}_mariadb"
-DRUPAL_DATABASE_DB_NAME=www-cms
-DRUPAL_DATABASE_USERNAME=drupal
+STACK_NAME="${STACK_NAME:-www}"
+DB_STACK_NAME="${DB_STACK_NAME:-www-db}"
+IMAGE_TAG="${IMAGE_TAG:-local}"
+
+DRUPAL_DATABASE_DB_NAME="${DRUPAL_DATABASE_DB_NAME:-www-cms}"
+DRUPAL_DATABASE_USERNAME="${DRUPAL_DATABASE_USERNAME:-drupal}"
 
 # ---------------------------------------------------------------------------
 # Tear down existing stacks
@@ -36,35 +41,9 @@ docker volume rm "${STACK_NAME}_drupal_files"    2>/dev/null || true
 docker volume rm "${STACK_NAME}_redis_data"      2>/dev/null || true
 
 # ---------------------------------------------------------------------------
-# Ensure db_net overlay network exists (shared between both stacks)
+# Deploy DB stack (creates www_db_net + secrets + stack, waits for ready)
 # ---------------------------------------------------------------------------
-docker network inspect db_net >/dev/null 2>&1 || \
-  docker network create --driver overlay --attachable db_net
-echo "Network db_net ready."
-
-docker network inspect webgateway >/dev/null 2>&1 || \
-  docker network create --driver overlay --attachable webgateway
-echo "Network webgateway ready."
-
-# ---------------------------------------------------------------------------
-# Create secrets from infra/deploy/secrets/ files
-# ---------------------------------------------------------------------------
-bash "${SCRIPT_DIR}/init-secrets.sh"
-
-# ---------------------------------------------------------------------------
-# Deploy DB stack
-# ---------------------------------------------------------------------------
-MYSQL_DATABASE="${DRUPAL_DATABASE_DB_NAME}" \
-MYSQL_USER="${DRUPAL_DATABASE_USERNAME}" \
-  docker stack deploy --detach=true -c "${INFRA_DIR}/db-stack.yml" "${DB_STACK_NAME}"
-
-echo "Waiting for MariaDB to be ready..."
-until docker exec $(docker ps -q -f name=${DB_STACK_NAME}_mariadb) \
-  sh -c 'mariadb -u root -p"$(cat /run/secrets/mysql_root_password)" -e "SELECT 1"' &>/dev/null; do
-  echo "  ...not ready yet, retrying in 3s"
-  sleep 3
-done
-echo "MariaDB is ready."
+IMAGE_TAG="${IMAGE_TAG}" bash "${SCRIPT_DIR}/deploy-db.sh"
 
 # ---------------------------------------------------------------------------
 # Restore database
@@ -84,7 +63,9 @@ docker exec $(docker ps -q -f name=${DB_STACK_NAME}_mariadb) \
 echo "Privileges granted."
 
 # ---------------------------------------------------------------------------
-# Pre-populate drupal_files volume before starting Drupal
+# Pre-populate drupal_files volume (local Docker volume, not EFS)
+# Pre-creating the volume before stack deploy causes Swarm to reuse it
+# rather than creating it with the EFS NFS driver_opts in www-stack.yml.
 # ---------------------------------------------------------------------------
 echo "Pre-populating drupal_files volume..."
 docker volume create "${STACK_NAME}_drupal_files"
@@ -96,23 +77,9 @@ docker run --rm \
 echo "Files volume populated."
 
 # ---------------------------------------------------------------------------
-# Deploy app stack
+# Deploy www stack
 # ---------------------------------------------------------------------------
-NGINX_IMAGE="scbd/www-router:${IMAGE_TAG}" \
-NUXT_IMAGE="scbd/www-app:${IMAGE_TAG}" \
-DRUPAL_IMAGE="scbd/www-cms:${IMAGE_TAG}" \
-DRUPAL_DATABASE_HOST="${DRUPAL_DATABASE_HOST}" \
-DRUPAL_DATABASE_DB_NAME="${DRUPAL_DATABASE_DB_NAME}" \
-DRUPAL_DATABASE_USERNAME="${DRUPAL_DATABASE_USERNAME}" \
-PORT="${PORT}" \
-  docker stack deploy --detach=true -c "${INFRA_DIR}/www-stack.yml" "${STACK_NAME}"
-
-# ---------------------------------------------------------------------------
-# Run migration init (updatedb + cache-rebuild) once Drupal is up
-# ---------------------------------------------------------------------------
-echo "Waiting 5s for Drupal to start..."
-sleep 5
-bash "${SCRIPT_DIR}/migration-init.sh" "${STACK_NAME}"
+IMAGE_TAG="${IMAGE_TAG}" bash "${SCRIPT_DIR}/deploy-www.sh"
 
 echo ""
 echo "Done. Stack '${STACK_NAME}' deployed."

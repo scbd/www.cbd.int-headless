@@ -18,11 +18,6 @@ services:
       - GAIA_DOCS_S3_ENDPOINT=${GAIA_S3_ENDPOINT:-s3.us-east-1.amazonaws.com}
       - API_HOST=${API_HOST:-api.cbd.int}
       - API_PORT=${API_PORT:-443}
-    ports:
-      - target: 80
-        published: ${PORT:-3030}
-        protocol: tcp
-        mode: host
     networks:
       - webgateway
       - backend
@@ -35,20 +30,23 @@ services:
         condition: on-failure
         delay: 10s
         max_attempts: 10
-      # placement:
-      #   constraints:
-      #     - node.role == worker
+      placement:
+        constraints:
+          - node.role == worker
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.website-preview-www.rule=Host(`preview-www.cbd.int`)"
-        - "traefik.http.services.website-preview-www.loadbalancer.server.port=80"
+        - "traefik.backend=www2-nuxt"
+        - "traefik.backend.loadbalancer.swarm=true"
+        - "traefik.docker.network=webgateway"
+        - "traefik.frontend.rule=Host:www2.cbddev.xyz"
+        - "traefik.port=80"
 
   # ===========================================
   # Nuxt Frontend Application
   # ===========================================
   nuxt:
     hostname: nuxt
-    image: ${NUXT_IMAGE:-scbd/www-app:master}
+    image: ${NUXT_IMAGE:-scbd/www-nuxt:master}
     environment:
       - NODE_ENV=production
       - NUXT_DRUPAL_BASE_URL=http://drupal
@@ -58,9 +56,9 @@ services:
       - backend
     deploy:
       replicas: 1
-      # placement:
-      #   constraints:
-      #     - node.role == worker
+      placement:
+        constraints:
+          - node.role == worker
       restart_policy:
         condition: on-failure
 
@@ -69,13 +67,13 @@ services:
   # ===========================================
   drupal:
     hostname: drupal
-    image: ${DRUPAL_IMAGE:-scbd/www-cms:master}
+    image: ${DRUPAL_IMAGE:-scbd/www-drupal:master}
     volumes:
       - drupal_files:/opt/drupal/web/sites/default/files
       - drupal_sync:/var/drupal/sync
     networks:
       - backend
-      - db_net
+      - www_db_net
     secrets:
       - db_password
       - redis_password
@@ -100,9 +98,9 @@ services:
         parallelism: 1
         delay: 10s
         order: start-first
-      # placement:
-      #   constraints:
-      #     - node.role == worker
+      placement:
+        constraints:
+          - node.role == worker
 
   # ===========================================
   # Redis Cache (for Drupal)
@@ -118,9 +116,9 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
-      # placement:
-      #   constraints:
-      #     - node.role == worker
+      placement:
+        constraints:
+          - node.role == worker
 
 # ===========================================
 # Networks
@@ -134,7 +132,7 @@ networks:
   backend:
     driver: overlay
 
-  db_net:
+  www_db_net:
     external: true  # Shared with the DB stack
 
 # ===========================================
@@ -143,21 +141,21 @@ networks:
 volumes:
   drupal_files:
     driver: local
-    # driver_opts:
-    #   type: nfs
-    #   # EFS_FILES_DNS must be set at deploy time, e.g.:
-    #   #   EFS_FILES_DNS=<fs-id>.efs.<region>.amazonaws.com docker stack deploy ...
-    #   o: "addr=${EFS_FILES_DNS},nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport"
-    #   device: ":/www/files"  # EFS root — maps to /opt/drupal/web/sites/default/files
+    driver_opts:
+      type: nfs
+      # EFS_FILES_DNS must be set at deploy time, e.g.:
+      #   EFS_FILES_DNS=<fs-id>.efs.<region>.amazonaws.com docker stack deploy ...
+      o: "addr=${EFS_FILES_DNS},nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport"
+      device: ":/www/files"  # EFS root — maps to /opt/drupal/web/sites/default/files
 
   drupal_sync:
     driver: local
-    # driver_opts:
-    #   type: nfs
-    #   # EFS_SYNC_DNS must be set at deploy time, e.g.:
-    #   #   EFS_SYNC_DNS=<fs-id>.efs.<region>.amazonaws.com docker stack deploy ...
-    #   o: "addr=${EFS_SYNC_DNS},nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport"
-    #   device: ":/www/drupal/sync"  # EFS root — maps to /var/drupal/sync
+    driver_opts:
+      type: nfs
+      # EFS_SYNC_DNS must be set at deploy time, e.g.:
+      #   EFS_SYNC_DNS=<fs-id>.efs.<region>.amazonaws.com docker stack deploy ...
+      o: "addr=${EFS_SYNC_DNS},nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport"
+      device: ":/www/drupal/sync"  # EFS root — maps to /var/drupal/sync
 
   redis_data:
     driver: local

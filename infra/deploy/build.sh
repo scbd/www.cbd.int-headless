@@ -4,7 +4,7 @@ set -euo pipefail
 # Run from anywhere: bash infra/deploy/build.sh [tag]
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-TAG="${1:-local}"
+TAG="${1:?Usage: build.sh <tag>}"
 
 echo "Building images — tag: ${TAG}"
 echo ""
@@ -15,14 +15,14 @@ docker build --platform linux/amd64 \
 echo "  Built: scbd/www-router:${TAG}"
 
 docker build --platform linux/amd64 \
-  --tag "scbd/www-app:${TAG}" \
+  --tag "scbd/www-nuxt:${TAG}" \
   "${REPO_ROOT}"
-echo "  Built: scbd/www-app:${TAG}"
+echo "  Built: scbd/www-nuxt:${TAG}"
 
 docker build --platform linux/amd64 \
-  --tag "scbd/www-cms:${TAG}" \
+  --tag "scbd/www-drupal:${TAG}" \
   "${REPO_ROOT}/infra/drupal"
-echo "  Built: scbd/www-cms:${TAG}"
+echo "  Built: scbd/www-drupal:${TAG}"
 
 echo ""
 echo "Done. Deploy with: bash infra/deploy/test.sh"
