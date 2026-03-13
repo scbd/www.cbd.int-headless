@@ -26,27 +26,27 @@ const BATCH_SIZE = 200
 
 /** Drupal field tables to process by default: { table, column, pkCols } */
 const DEFAULT_TABLES = [
-  { table: 'node__body',          column: 'body_value' },
+  { table: 'node__body', column: 'body_value' },
   { table: 'node_revision__body', column: 'body_value' },
   { table: 'block_content__body', column: 'body_value' }
 ]
 
 /** Attributes that may contain a single URL */
 const URL_ATTRS = [
-  ['a',      'href'],
-  ['img',    'src'],
+  ['a', 'href'],
+  ['img', 'src'],
   ['script', 'src'],
-  ['link',   'href'],
+  ['link', 'href'],
   ['iframe', 'src'],
-  ['form',   'action'],
-  ['video',  'src'],
-  ['audio',  'src'],
+  ['form', 'action'],
+  ['video', 'src'],
+  ['audio', 'src'],
   ['source', 'src']
 ]
 
 /** Attributes that contain a srcset string (space-separated url + descriptor pairs) */
 const SRCSET_ATTRS = [
-  ['img',    'srcset'],
+  ['img', 'srcset'],
   ['source', 'srcset']
 ]
 
@@ -112,6 +112,8 @@ function stripDomain (urlStr, domains) {
     return null // relative or malformed — leave as-is
   }
   if (!domains.has(parsed.hostname.toLowerCase())) return null
+  console.log(`    stripping domain from URL: ${urlStr} → ${parsed.pathname + parsed.search + parsed.hash}`)
+
   return parsed.pathname + parsed.search + parsed.hash
 }
 
@@ -128,6 +130,7 @@ function stripDomainInSrcset (srcset, domains) {
     const descriptor = spaceIdx < 0 ? '' : trimmed.slice(spaceIdx)
     const stripped = stripDomain(urlPart, domains)
     if (stripped !== null) {
+      console.log(`    [srcset] stripping domain from URL: ${urlPart} → ${stripped}`)
       changed = true
       return stripped + descriptor
     }
@@ -258,7 +261,7 @@ async function processTable (conn, tableSpec, domains, opts) {
 
 async function main () {
   // Load .env from parent directory (infra/deploy/.env)
-  const envPath = path.resolve(import.meta.dirname, '..', '.env')
+  const envPath = path.resolve(import.meta.dirname, '.env')
   loadDotEnv(envPath)
 
   const args = parseArgs(process.argv)
@@ -279,12 +282,12 @@ async function main () {
   console.log()
 
   const conn = await createConnection({
-    host:     process.env.DB_HOST     || '127.0.0.1',
-    port:     parseInt(process.env.DB_PORT || '3306', 10),
-    user:     process.env.DB_USER     || process.env.MYSQL_USER     || 'drupal',
+    host: process.env.DB_HOST || '127.0.0.1',
+    port: parseInt(process.env.DB_PORT || '3306', 10),
+    user: process.env.DB_USER || process.env.MYSQL_USER || 'drupal',
     password: process.env.DB_PASSWORD || process.env.MYSQL_PASSWORD || '',
-    database: process.env.DB_NAME     || process.env.MYSQL_DATABASE || 'www-cms',
-    charset:  'utf8mb4'
+    database: process.env.DB_NAME || process.env.MYSQL_DATABASE || 'www-cms',
+    charset: 'utf8mb4'
   })
 
   console.log('Connected to MariaDB\n')
