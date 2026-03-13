@@ -1,9 +1,9 @@
 # Checkpoint
 
-**Current phase:** Phase 04
-**Last completed:** `p04-01a-calendar-search-filters` — Calendar search/filter component with vue-multiselect dropdowns, URL sync, and active filter pills
-**Next task:** `phase-04/p04-01b-calendar-search-filters-tests.md`
-**Updated:** 2026-03-13T18:00:00Z
+**Current phase:** Phase 05
+**Last completed:** `p05-01a-calendar-result-cards` — Unified card.vue + card-list.vue + i18n
+**Next task:** `phase-05/p05-01b-calendar-result-cards-tests.md`
+**Updated:** 2026-03-13T21:00:00Z
 
 ## State
 
@@ -26,6 +26,9 @@
 - p03-02b complete: 3 test files (61 tests), 99.65%/100%/98.92% coverage on thesaurus-filters/body-labels/unit-names composables
 - p03-02c complete: JSDoc on all exported symbols in thesaurus-filter, body-labels, and unit-names composables
 - p04-01a complete: app/components/calendar-activity/search.vue (1086 LOC), i18n/en/app/components/calendar-activity/search.json
+- p04-01b complete: utils/calendar/search-filters.ts extracted (pure logic), test/unit/utils/calendar/search-filters.test.ts (95 tests), 100% coverage
+- p04-01c complete: JSDoc on all exported symbols in utils/calendar/search-filters.ts (2 constants, 11 functions)
+- p05-01a complete: app/components/calendar-activity/card.vue (unified card for all 3 schemas), card-list.vue (home page), i18n card.json + card-list.json
 - Plan fully drafted, reviewed, and reconciled
 - 7 phases with 15 task groups (39 sub-task files: 12 × 3 triplets + 3 E2E)
 - **Shared contracts frozen** in [shared-contracts.md](shared-contracts.md) — all phases must conform
