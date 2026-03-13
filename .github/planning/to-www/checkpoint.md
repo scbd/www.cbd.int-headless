@@ -1,9 +1,9 @@
 # Checkpoint
 
-**Current phase:** Phase 01
-**Last completed:** `p01-02c-calendar-utilities-jsdoc` — module-level JSDoc headers, @example annotations, and type/constant documentation across all 12 utility files
-**Next task:** `phase-02/p02-01a-calendar-solr-service.md`
-**Updated:** 2026-03-12T21:00:00Z
+**Current phase:** Phase 04
+**Last completed:** `p04-01a-calendar-search-filters` — Calendar search/filter component with vue-multiselect dropdowns, URL sync, and active filter pills
+**Next task:** `phase-04/p04-01b-calendar-search-filters-tests.md`
+**Updated:** 2026-03-13T18:00:00Z
 
 ## State
 
@@ -13,6 +13,19 @@
 - p01-02a complete: 12 utility files in utils/calendar/ (solr-normalize, text, document-processing, status, labels, date, decision-links, notifications, type-colors, subjects, subsidiary-body-mappings, index barrel)
 - p01-02b complete: 9 test files with 398 unit tests, 97%+ coverage on utility modules
 - p01-02c complete: JSDoc comments on all exported symbols in utils/calendar/
+- p02-01a complete: services/calendar-activity.ts (414 LOC), api/solr-index.ts extended with querySolrFaceted()
+- p02-01b complete: test/unit/services/calendar-activity.test.ts (88 tests), 100% coverage on service
+- p02-01c complete: JSDoc on all exported & private functions in service + api/solr-index.ts
+- p02-02a complete: server/api/calendar-activities/ routes (index.get.ts, [id].get.ts), CALENDAR_OF_ACTIVITIES url-path constant
+- p02-02b complete: 3 test files (40 tests) for index.get, [id].get, api-error-handler; 100% coverage on route files
+- p02-02c complete: JSDoc on all exported handlers (index.get, [id].get), parseArrayParam, and apiErrorHandler
+- p03-01a complete: app/composables/api/use-calendar-activities.ts (list + single-item composables, ~65 LOC)
+- p03-01b complete: test/unit/composables/api/use-calendar-activities.test.ts (19 tests), 100% coverage on composable
+- p03-01c complete: JSDoc on all exported composable functions (useCalendarActivitiesListApi, useCalendarActivityApi)
+- p03-02a complete: 3 composables (use-calendar-thesaurus-filters.ts, use-calendar-body-labels.ts, use-calendar-unit-names.ts) + constants/scbd-units-divisions.ts
+- p03-02b complete: 3 test files (61 tests), 99.65%/100%/98.92% coverage on thesaurus-filters/body-labels/unit-names composables
+- p03-02c complete: JSDoc on all exported symbols in thesaurus-filter, body-labels, and unit-names composables
+- p04-01a complete: app/components/calendar-activity/search.vue (1086 LOC), i18n/en/app/components/calendar-activity/search.json
 - Plan fully drafted, reviewed, and reconciled
 - 7 phases with 15 task groups (39 sub-task files: 12 × 3 triplets + 3 E2E)
 - **Shared contracts frozen** in [shared-contracts.md](shared-contracts.md) — all phases must conform
