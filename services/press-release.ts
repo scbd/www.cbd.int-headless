@@ -1,10 +1,12 @@
 import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, toLString, toLStringArray } from '~~/utils/solr'
+import { solrEscape, toLString, toLStringArray, andOr } from '~~/utils/solr'
 import { mandatory, notFound } from 'api-client/api-error'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { PressRelease } from '~~/types/press-release'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
+import { getImage } from '~~/services/drupal'
+import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
@@ -25,10 +27,16 @@ export async function getPressRelease (code: string): Promise<PressRelease> {
 async function searchPressReleases (options?: QueryParams & { code?: string }): Promise<SearchResult<PressRelease>> {
   const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
 
+  const fqParts: string[] = ['schema_s:pressRelease']
+  if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
+    fqParts.push(options.fieldQueries)
+  }
+  const fieldQueries = andOr(fqParts, 'AND')
+
   const params: SolrQuery =
         {
           query,
-          fieldQueries: 'schema_s:pressRelease',
+          fieldQueries,
           sort: options?.sort ?? 'updatedDate_dt DESC',
           fields: 'id,symbol_s,code_s,title_*_t,url_ss,themes_*_txt,createdDate_dt,updatedDate_dt',
           start: options?.skip ?? 0,
@@ -36,15 +44,22 @@ async function searchPressReleases (options?: QueryParams & { code?: string }): 
         }
   const { response } = await api.querySolr(params)
 
-  const pressReleaseList: PressRelease[] = response.docs.map((item: any): PressRelease => ({
+  const pressReleaseList: PressRelease[] = await Promise.all(response.docs.map(async (item: any): Promise<PressRelease> => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
     urls: item.url_ss,
     themes: toLStringArray(item, 'themes'),
+    image: await (async () => {
+      try {
+        return await getImage(item.symbol_s, 'press_releases')
+      } catch {
+        return DEFAULT_IMAGE
+      }
+    })(),
     createdOn: new Date(item.createdDate_dt),
     updatedOn: new Date(item.updatedDate_dt)
-  }))
+  })))
 
   return {
     total: response.numFound,
