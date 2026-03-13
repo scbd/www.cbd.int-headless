@@ -266,13 +266,21 @@ async function main () {
 
   const args = parseArgs(process.argv)
 
-  if (args.domains.length === 0) {
-    console.error('Error: at least one --domains value is required')
+  // Merge domains from STRIP_DOMAINS env var and CLI --domains flags
+  const envDomains = (process.env.STRIP_DOMAINS || '')
+    .split(',')
+    .map(d => d.trim().toLowerCase())
+    .filter(Boolean)
+
+  const allDomains = [...new Set([...envDomains, ...args.domains])]
+
+  if (allDomains.length === 0) {
+    console.error('Error: no domains specified — set STRIP_DOMAINS in .env or pass --domains flags')
     console.error('  Example: node index.js --domains www.cbd.int --domains cbd.int')
     process.exit(1)
   }
 
-  const domains = new Set(args.domains)
+  const domains = new Set(allDomains)
   const tables = args.tables.length > 0 ? args.tables : DEFAULT_TABLES
 
   console.log('Domains to strip:', [...domains].join(', '))

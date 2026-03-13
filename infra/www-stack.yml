@@ -35,7 +35,7 @@ services:
           - node.role == worker
       labels:
         - "traefik.enable=true"
-        - "traefik.backend=www2-nuxt"
+        - "traefik.backend=www-router"
         - "traefik.backend.loadbalancer.swarm=true"
         - "traefik.docker.network=webgateway"
         - "traefik.frontend.rule=Host:www2.cbddev.xyz"
