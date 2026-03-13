@@ -110,6 +110,21 @@
   }
 }
 
-.wp-block-columns > .wp-block-column:not(:first-child) {
+.wp-block-columns {
+  min-width: 0;
+}
+
+.wp-block-column {
+  min-width: 0;
+  flex: 1;
   padding: 1rem;
+
+  > figure {
+    margin: -1rem -1rem 0;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 }
