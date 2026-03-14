@@ -36,24 +36,6 @@
           </li>
         </ul>
       </li>
-      <li class="nav-item">
-        <NuxtLink class="nav-link" to="#" role="button">
-          <NuxtImg
-            src="/images/icons/icon-nav-account-outline.svg"
-            :alt="t('loginIcon')"
-          />
-          <span class="nav-options-login-slot">{{ t('login') }}</span>
-        </NuxtLink>
-      </li>
-      <li class="nav-item">
-        <NuxtLink class="nav-link" to="#" role="button">
-          <NuxtImg
-            src="/images/icons/icon-nav-settings-outline.svg"
-            :alt="t('settingsIcon')"
-          />
-          <span class="nav-options-settings-slot">{{ t('settings') }}</span>
-        </NuxtLink>
-      </li>
     </ul>
   </div>
 </template>
