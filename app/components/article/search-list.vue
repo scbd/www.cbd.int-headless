@@ -37,7 +37,7 @@
             <div class="content-information-wrapper">
                 <div class="information">
                 <div class="date">{{ toFormatDate(article.createdOn) }}</div>
-                <NuxtLink :to="`/article${article.alias}`" class="title">
+                <NuxtLink :to="article.alias" class="title">
                     {{ article.title }}
                 </NuxtLink>
                 <div
@@ -50,7 +50,7 @@
                     })
                 }}</div>
                 <div class="read-on-wrapper">
-                    <NuxtLink :to="`/article${article.alias}`" class="btn cbd-btn cbd-btn-primary btn cbd-btn-more-content read-on">
+                    <NuxtLink :to="article.alias" class="btn cbd-btn cbd-btn-primary btn cbd-btn-more-content read-on">
                         {{ t('readMore') }}
                     </NuxtLink>
                 </div>
