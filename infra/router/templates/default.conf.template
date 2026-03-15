@@ -41,6 +41,11 @@ server {
     location ^~ /.well-known/ { return 404; }
 
     # ===========================================
+    # Knowledge Base -> Search
+    # ===========================================
+    location ^~ /kb/ { return 301 /search; }
+
+    # ===========================================
     # Static Documents Routing
     # ===========================================
     # Files under /content/files/* -> Drupal sites/default/files
