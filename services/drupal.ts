@@ -469,6 +469,27 @@ export async function getMenu (
   // Start building from root
   const menus = buildHierarchy(options.branch)
 
+  // TODO(DEV-842): Temporary static injection of "Calendar of Activities" menu item.
+  // Remove this block once the Drupal CMS admin has added the menu item permanently.
+  // After removal, verify the item still appears from Drupal data.
+  // The component value 'calendar-activities' maps to the dynamic-content switch case.
+  if (code === 'cbd-header-processes-and-meeting' && options.branch == null) {
+    const calendarBranchId = 'temp-calendar-of-activities'
+    const alreadyPresent = menus.some(item => item.branchId === calendarBranchId)
+
+    if (!alreadyPresent) {
+      menus.push({
+        branchId: calendarBranchId,
+        parentId: null,
+        title: 'Calendar of Activities',
+        url: '/calendar-of-activities-and-actions',
+        position: -47,
+        component: 'calendar-activities',
+        childrenCount: 0
+      })
+    }
+  }
+
   // If a specific branch was requested but not found, signal this explicitly
   if (options.branch != null && menus.length === 0) {
     throw notFound(`Menu branch '${options.branch}' not found`)
