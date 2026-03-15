@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxt/image'
   ],
-  site: { indexable: false },
+  site: { indexable: true },
   vite: {
     plugins: [
       viteSyncI18nFiles({})
