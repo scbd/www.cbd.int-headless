@@ -1,0 +1,75 @@
+parameters:
+  security.enable_super_user: true
+  session.storage.options:
+    gc_probability: 1
+    gc_divisor: 100
+    gc_maxlifetime: 200000
+    cookie_lifetime: 2000000
+    cookie_samesite: Lax
+    sid_length: 48
+    sid_bits_per_character: 6
+    name_suffix: ""
+  twig.config:
+    debug: false
+    auto_reload: null
+    cache: true
+    allowed_file_extensions:
+      - css
+      - html
+      - js
+      - svg
+      - twig
+  renderer.config:
+    required_cache_contexts:
+      ["languages:language_interface", "theme", "user.permissions"]
+    auto_placeholder_conditions:
+      max-age: 0
+      contexts: ["session", "user"]
+      tags: []
+    debug: false
+  http.response.debug_cacheability_headers: false
+  factory.keyvalue: {}
+  factory.keyvalue.expirable: {}
+  filter_protocols:
+    - http
+    - https
+    - ftp
+    - news
+    - nntp
+    - tel
+    - telnet
+    - mailto
+    - irc
+    - ssh
+    - sftp
+    - webcal
+    - rtsp
+  jsonapi_page_limit.size_max:
+    /jsonapi/menu_link_content/*: 1000
+    /*/jsonapi/menu_link_content/*: 1000
+    /jsonapi/menu_items/*: 1000
+    /*/jsonapi/menu_items/*: 1000
+
+  cors.config:
+    enabled: true
+    allowedHeaders:
+      [
+        "x-csrf-token",
+        "authorization",
+        "content-type",
+        "accept",
+        "origin",
+        "x-requested-with",
+        "access-control-allow-origin",
+        "access-control-allow-headers",
+        "access-control-allow-methods",
+      ]
+    allowedMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]
+    allowedOrigins: ["*"]
+    allowedOriginsPatterns: []
+    exposedHeaders: false
+    maxAge: 1000
+    supportsCredentials: true
+
+  queue.config:
+    suspendMaximumWait: 30

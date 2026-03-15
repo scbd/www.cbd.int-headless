@@ -1,0 +1,43 @@
+:root {
+    // Define REM
+    font-size: 18px;
+
+    // Colours
+    --cbd-primary-body: rgb(10,10,10);
+    --cbd-secondary-body: rgb(60,60,60);
+    --cbd-tertiary-body: rgb(255,255,255);
+    --cbd-primary-body-bg: rgb(255,255,255);
+    --cbd-secondary-body-bg: rgb(240,240,240);
+    --cbd-tertiary-body-bg: rgb(60,60,60);
+    
+    --cbd-link-color: rgb(52,131,165);
+
+    --cbd-content-accent: rgb(0,0,0);
+    --cbd-general-green: rgb(0,72,58);
+    --cbd-cartagena-orange: rgb(250,105,56);
+    --cbd-supplementary-brown: rgb(171,84,16);
+    --cbd-nagoya-blue: rgb(0,73,142);    
+
+
+    --bs-body-color: var(--cbd-primary-body);
+    --bs-secondary-color: var(--cbd-secondary-body);
+    --bs-tertiary-color: var(--cbd-tertiary-body);
+    --bs-body-bg: var(--cbd-primary-body-bg);
+    --bs-secondary-bg: var(--cbd-secondary-body-bg);
+    --bs-tertiary-bg: var(--cbd-tertiary-body-bg);
+    
+    --bs-primary: var(--cbd-link-color);
+    //--bs-primary-bg-subtle: rgb(29,104,136);
+}
+
+.accent-cbd {
+    --cbd-content-accent: var(--cbd-general-green);
+}
+
+.accent-cartagena {
+    --cbd-content-accent: var(--cbd-cartagena-orange);
+}
+
+.accent-nagoya {
+    --cbd-content-accent: var(--cbd-nagoya-blue);
+}

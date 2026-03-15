@@ -1,0 +1,40 @@
+.cus-serp .results-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+.cus-serp .results-info {
+  padding-bottom: 0.5rem;
+  box-shadow: 0 1px var(--bs-secondary-bg);
+}
+.cus-serp .results-pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  column-gap: 0.5rem;
+}
+.cus-serp .results-pagination .page {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cus-serp .results-pagination .page:not(.current-page) {
+  cursor: pointer;
+}
+.cus-serp .results-pagination .page:not(.current-page):hover {
+  background-color: var(--bs-secondary-bg);
+}
+.cus-serp .results-pagination .page.current-page {
+  color: var(--bs-tertiary-color);
+  background-color: var(--bs-tertiary-bg);
+}
+.cus-serp .search-results-items {
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+}
+
+/*# sourceMappingURL=cus-serp.css.map */

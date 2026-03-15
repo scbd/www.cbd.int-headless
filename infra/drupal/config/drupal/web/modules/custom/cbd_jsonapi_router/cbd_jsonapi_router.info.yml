@@ -1,0 +1,7 @@
+name: "CBD JSON:API Router"
+type: module
+description: "Extends decoupled_router response with additional fields for CBD"
+core_version_requirement: ^10
+package: CBD
+dependencies:
+  - decoupled_router:decoupled_router

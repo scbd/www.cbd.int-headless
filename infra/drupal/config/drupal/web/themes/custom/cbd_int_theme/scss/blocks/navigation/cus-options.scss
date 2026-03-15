@@ -1,0 +1,39 @@
+.cus-options {
+    padding: .5rem 1rem;
+    font-size: 0.778rem;
+    font-weight: 600;
+    background-color: var(--bs-tertiary-bg);
+    .navbar-nav {
+        column-gap: 1rem;
+        .nav-item {
+            position: relative;
+            .nav-link {
+                padding: 0;
+                display: flex;
+                column-gap: 0.5rem;
+                align-items: center;
+                color: var(--bs-secondary-bg);
+            }
+            .language-selector-dropdown {
+                left: 0;
+                top: 100%;
+                background-color: var(--bs-tertiary-bg);
+                border: none;
+                .dropdown-item {
+                    font-size: 0.8rem;
+                    color: var(--bs-secondary-bg);
+                    &:hover {
+                        text-decoration: underline;
+                        background-color: var(--bs-body-color);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.cus-options.language-selector-dropdown {
+    font-size: 1rem;
+    background: transparent;
+    border: none;
+}
