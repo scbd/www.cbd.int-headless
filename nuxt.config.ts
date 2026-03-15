@@ -54,7 +54,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     drupalBaseUrl: '',
     apiBaseUrl: '',
-    ortUrl: ''
+    ortUrl: '',
+    public: {
+      iframeCalendarUrl: ''
+    }
   },
   routeRules: {
     '/content/images/**': {
