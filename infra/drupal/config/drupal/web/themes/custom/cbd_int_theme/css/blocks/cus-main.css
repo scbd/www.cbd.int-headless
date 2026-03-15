@@ -1,0 +1,26 @@
+.cus-main {
+  flex-grow: 2;
+  display: flex;
+  justify-content: center;
+  row-gap: 2rem;
+}
+.cus-main .region-content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+}
+.cus-main .region-content .node--type-article {
+  padding: 0 1rem;
+  margin: 0 auto;
+  column-gap: 2rem;
+  align-items: stretch;
+}
+.cus-main .region-content .node--type-article .node__content h2.wp-block-heading {
+  margin-top: 2rem;
+}
+.cus-main .region-content [class*=componentcbd-int]:nth-last-of-type(-n + 2) .content-row {
+  padding-bottom: 0;
+  box-shadow: none;
+}
+
+/*# sourceMappingURL=cus-main.css.map */

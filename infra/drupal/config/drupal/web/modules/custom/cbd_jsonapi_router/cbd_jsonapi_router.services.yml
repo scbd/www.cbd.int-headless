@@ -1,0 +1,5 @@
+services:
+  cbd_jsonapi_router.response_subscriber:
+    class: Drupal\cbd_jsonapi_router\EventSubscriber\DecoupledRouterResponseSubscriber
+    tags:
+      - { name: event_subscriber }

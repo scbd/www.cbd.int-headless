@@ -1,0 +1,260 @@
+@import 'gbf-target', 'update', 'search-item';
+
+.content-row {
+    padding: 0 2rem 2rem;
+    row-gap: 1rem;
+    box-shadow: 0 2px var(--bs-secondary-bg);
+    // Moved to styles.scss
+    // &:last-of-type {
+    //     padding-bottom: 0;
+    //     box-shadow: none;
+    // }
+    
+    .row-title {
+        font-size: 1.33rem;
+        font-weight: 600;
+        font-variant-caps: small-caps;
+    }
+
+    &.related-terms {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: .25rem;
+        .row-title {
+            flex: 2 0 100%;
+        }
+        a {
+            padding: 0.5rem;
+            color: var(--bs-tertiary-color);
+            background-color: var(--bs-primary);
+        }
+    }
+}
+
+.content-object {
+    flex: 1 1;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: .66rem;
+    box-shadow: 1px 0 var(--bs-secondary-bg);
+    overflow: hidden;
+    &:first-of-type {
+        padding-left: 0;
+    }
+    &:last-of-type {
+        padding-right: 0;
+        box-shadow: none;
+    }
+
+    .content-image {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    &>*:not(.content-image):empty {
+        display: none;
+    }
+
+    .information {
+        display: flex;
+        justify-content: space-between;
+
+        .taxonomy {
+            display: flex;
+            flex-wrap: wrap;
+            padding-left: 1rem;
+            font-size: .778rem;
+            font-weight: bold;
+            color: var(--cc_body-grey);
+            box-shadow: .3rem 0 inset var(--cbd-content-accent);    
+            .source:not(:empty){
+                margin-right: 0.5rem;
+                padding-right: 0.5rem;
+                box-shadow: 
+                0 .2rem inset var(--bs-body-bg),
+                0 -.2rem inset var(--bs-body-bg),
+                -2px 0 inset var(--bs-tertiary-bg);                            
+            }
+        }                
+    }
+
+    .date {
+        font-size: .778rem;
+        color: var(--cc_body-grey);
+        white-space: nowrap;
+    }
+
+    .title {
+        height: 2rem;
+        font-size: 1.5rem;
+        line-height: 1.25;
+        font-weight: bold;
+        letter-spacing: -0.02rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .action-required {
+        font-size: .778rem;
+        font-weight: bold;
+        color: var(--cc_body-danger);
+    }
+
+    .subjects {
+        color: var(--cc_body-grey);
+    }
+
+    .location {
+        color: var(--cc_body-grey);
+    }
+
+    .description {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+
+    .content-link {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+        color: var(--cc_body-black);
+        &:hover {
+            color: var(--cc_body-black);
+        }
+    }
+
+    .read-on-wrapper {
+        padding-top: 1rem;
+        flex: 1 2 auto;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        .read-on {
+            font-weight: bold;
+        }
+    }
+    
+    &.update {
+        box-shadow: none;
+    }
+
+    &.clearing-house-link {
+        .content-image {
+            width: auto;
+            height: 100%;
+            aspect-ratio: unset;
+            object-fit: scale-down;
+            object-position: -1.5rem;
+            
+        }   
+    }
+}
+
+html:dir(rtl) {
+    .content-object {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        box-shadow: -1px 0 var(--bs-secondary-bg);
+        overflow: hidden;
+        &:first-of-type {
+            padding-right: 0;
+        }
+        &:last-of-type {
+            padding-left: 0;
+            box-shadow: none;
+        }
+        .information {
+            .taxonomy {
+                padding-right: 1rem;
+                padding-left: 0;
+                box-shadow: -0.3rem 0 inset var(--cbd-content-accent);
+                .source:not(:empty) {
+                    margin-left: 0.5rem;
+                    padding-left: 0.5rem;
+                    margin-right: 0;
+                    padding-right: 0;
+                    box-shadow: 
+                    0 .2rem inset var(--bs-body-bg),
+                    0 -.2rem inset var(--bs-body-bg),
+                    2px 0 inset var(--bs-tertiary-bg);
+                }
+            }
+        }
+        &.clearing-house-link {
+            .content-image {
+                align-self: flex-start;
+                object-position: 1.5rem;
+            }
+        }
+    }
+}
+
+.related-content {
+    .content-row {
+        box-shadow: none;
+    }
+}
+
+.cus-landing-page-protocol {
+    .content-row {
+        .content-object {
+            .information {
+                .taxonomy {
+                    padding-left: 0;
+                    box-shadow: none;
+                    .source {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
+// @media (max-width: 67rem) {
+//     .content-row {
+//         .content-wrapper {
+//             .content-object {
+//                 .information {
+//                     flex-direction: column-reverse;
+//                     row-gap: 0.5rem;
+//                 }
+//                 .date {
+//                     white-space: wrap;
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// @media (max-width: 53rem) {
+//     .content-row {
+//         .content-wrapper {
+//             flex-wrap: wrap;
+//             gap: 2rem;
+//             .content-object {
+//                 flex: 1 1 calc(50% - 1rem);
+//                 padding: unset;
+//                 box-shadow: none;
+//             }
+//         }
+//     }
+// }
+
+// @media (max-width: 30rem) {
+//     .content-row {
+//         .content-wrapper {
+//             .content-object {
+//                 flex: 1 1 100%;
+//             }
+//         }
+//     }
+// }

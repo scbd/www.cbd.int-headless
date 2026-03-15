@@ -1,0 +1,60 @@
+.filter-and-sort-wrapper {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.filter-and-sort-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    
+    .cbd-btn-outline-icon.filter-and-sort {
+        align-self: flex-end;
+    }
+    
+    .filter-row {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .form_section-header {
+        flex: 1 1 100%;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .form_section-options {
+        flex: 0 1 fit-content;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    input:not([type="submit"]) {
+        background-color: var(--bs-secondary-bg);
+        border-color: var(--bs-tertiary-bg);
+        border-radius: 3px;
+    }
+
+    select {
+        flex: 0 1 fit-content;
+        --bs-form-select-bg-img: url(../images/icons/icon_nav-arrow.svg);
+        background-color: var(--bs-secondary-bg);
+        border-color: var(--bs-secondary-bg);
+        border-radius: 0.5rem;
+    }
+
+    input[type="submit"] {
+        width: fit-content;
+        align-self: flex-end;
+    }
+}
