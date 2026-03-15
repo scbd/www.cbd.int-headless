@@ -35,12 +35,15 @@ services:
           - node.role == worker
       labels:
         - "traefik.enable=true"
-        - "traefik.backend=www-router"
-        - "traefik.backend.loadbalancer.swarm=true"
-        - "traefik.docker.network=webgateway"
-        - "traefik.frontend.rule=Host:www2.cbddev.xyz"
-        - "traefik.port=80"
-
+        - "traefik.http.routers.www-router.rule=Host(`www-preview.cbd.int`)"
+        - "traefik.http.services.www-router.loadbalancer.server.port=80"
+      # labels: # treagif 1.7
+      #   - "traefik.enable=true"
+      #   - "traefik.backend=www-router"
+      #   - "traefik.backend.loadbalancer.swarm=true"
+      #   - "traefik.docker.network=webgateway"
+      #   - "traefik.frontend.rule=Host:www2.cbddev.xyz"
+      #   - "traefik.port=80"
   # ===========================================
   # Nuxt Frontend Application
   # ===========================================
@@ -73,7 +76,7 @@ services:
       - drupal_sync:/var/drupal/sync
     networks:
       - backend
-      - www_db_net
+    #  - www_db_net
     secrets:
       - db_password
       - redis_password
@@ -132,8 +135,8 @@ networks:
   backend:
     driver: overlay
 
-  www_db_net:
-    external: true  # Shared with the DB stack
+  #www_db_net:
+  #  external: true  # Shared with the DB stack
 
 # ===========================================
 # Volumes

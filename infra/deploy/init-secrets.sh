@@ -35,7 +35,7 @@ create_secret() {
     || echo "secret ${name} already exists, skipping"
 }
 
-create_secret www_mysql_root_password
+# create_secret www_mysql_root_password
 create_secret www_db_password
 create_secret www_redis_password
 create_secret www_hash_salt
