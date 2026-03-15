@@ -1,0 +1,4 @@
+include /etc/nginx/conf.d/proxy-params.conf;
+
+proxy_set_header Host $http_host;
+proxy_pass http://www-nuxt;
