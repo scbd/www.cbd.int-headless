@@ -39,9 +39,10 @@ jobs:
   test-e2e:
     resource_class: medium
     docker:
-      - image: cimg/node:lts-browsers
+      - image: mcr.microsoft.com/playwright:v1.52.0-noble
     environment:
       CI: "true"
+      HOME: /root
       NUXT_DRUPAL_BASE_URL: https://cms.staging.drupal.www.infra.cbd.int
       NUXT_API_BASE_URL: https://api.cbd.int
       NUXT_ORT_URL: https://ort.cbd.int
@@ -54,24 +55,14 @@ jobs:
             - yarn-deps-v3-
       - run:
           name: Install dependencies
-          command: yarn install --frozen-lockfile --network-timeout 100000 --network-concurrency 1
+          command: |
+            corepack enable
+            yarn install --frozen-lockfile --network-timeout 100000 --network-concurrency 1
       - save_cache:
           key: yarn-deps-v3-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
             - ~/.cache/yarn
-      - restore_cache:
-          keys:
-            - playwright-browsers-v1-{{ checksum "yarn.lock" }}
-            - playwright-browsers-v1-
-      - run:
-          name: Install Playwright browsers
-          command: npx playwright install --with-deps chromium
-          no_output_timeout: 5m
-      - save_cache:
-          key: playwright-browsers-v1-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/ms-playwright
       - run:
           name: Build Nuxt application
           command: yarn build
@@ -96,8 +87,9 @@ jobs:
             exit 1
       - run:
           name: Run e2e tests
-          command: npx playwright test --reporter=list
-          no_output_timeout: 1m
+          command: yarn test:e2e --reporter=list
+          no_output_timeout: 2m
+          timeout: 300
       - store_artifacts:
           path: playwright-report
           destination: playwright-report
