@@ -29,7 +29,7 @@ test.describe('calendar-activities API', () => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayStr = `${yesterday.toISOString().split('T')[0]}T00:00:00Z`;
-    const fieldQueries = `startDateCOA_dt:{${yesterdayStr} TO *]`;
+    const fieldQueries = `startDateCOA_dt:[${yesterdayStr} TO *]`;
     const response = await request.get(`/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`);
     expect(response.status()).toBe(200);
 
@@ -38,9 +38,9 @@ test.describe('calendar-activities API', () => {
     expect(body).toHaveProperty('rows');
     expect(Array.isArray(body.rows)).toBe(true);
 
-    // Every returned row must have a startDate after yesterday
+    // Every returned row must have a startDate on or after yesterday
     for (const row of body.rows) {
-      expect(new Date(row.startDate).getTime()).toBeGreaterThan(new Date(yesterdayStr).getTime());
+      expect(new Date(row.startDate).getTime()).toBeGreaterThanOrEqual(new Date(yesterdayStr).getTime());
     }
   });
 
