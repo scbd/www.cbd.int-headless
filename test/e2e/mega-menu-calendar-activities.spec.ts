@@ -6,10 +6,11 @@ test.describe('mega menu calendar activities', () => {
     // whether we should expect items or an empty list
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
-    const yesterdayStr = `${yesterday.toISOString().split('T')[0]}T00:00:00Z`
+    const yesterdayStr = `${yesterday.toISOString().split('T')[0] ?? ''}T00:00:00Z`
+    const fieldQueries = `startDateCOA_dt:[${yesterdayStr} TO *]`
 
     const apiResponse = await request.get(
-      `/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&startDate=${yesterdayStr}`
+      `/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`
     )
     const apiBody = await apiResponse.json()
     const expectedCount = apiBody.rows.length
@@ -63,7 +64,7 @@ test.describe('mega menu calendar activities', () => {
         for (const row of allBody.rows) {
           expect(
             new Date(row.startDate).getTime(),
-            `Unfiltered activity "${row.title.en}" should be in the past, confirming the menu correctly excluded it`
+            `Unfiltered activity "${String(row.title.en)}" should be in the past, confirming the menu correctly excluded it`
           ).toBeLessThan(new Date(yesterdayStr).getTime())
         }
       }
@@ -73,10 +74,11 @@ test.describe('mega menu calendar activities', () => {
   test('clicking a calendar activity link navigates to the calendar page with autoExpand in the iframe src', async ({ page, request }) => {
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
-    const yesterdayStr = `${yesterday.toISOString().split('T')[0]}T00:00:00Z`
+    const yesterdayStr = `${yesterday.toISOString().split('T')[0] ?? ''}T00:00:00Z`
+    const fieldQueries = `startDateCOA_dt:[${yesterdayStr} TO *]`
 
     const apiResponse = await request.get(
-      `/api/calendar-activities?limit=4&sort=actionRequiredByParties_b%20desc%2C%20startDateCOA_dt%20asc&startDate=${yesterdayStr}`
+      `/api/calendar-activities?limit=4&sort=actionRequiredByParties_b%20desc%2C%20startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`
     )
     const apiBody = await apiResponse.json()
 
@@ -85,7 +87,7 @@ test.describe('mega menu calendar activities', () => {
       return
     }
 
-    const expectedId = apiBody.rows[0].id
+    const expectedId = String(apiBody.rows[0].id)
 
     // Open the page and mega menu
     await page.goto('/')
@@ -126,10 +128,11 @@ test.describe('mega menu calendar activities', () => {
   test('clicking a calendar activity link and waiting for iframe load preserves the autoExpand src', async ({ page, request }) => {
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
-    const yesterdayStr = `${yesterday.toISOString().split('T')[0]}T00:00:00Z`
+    const yesterdayStr = `${yesterday.toISOString().split('T')[0] ?? ''}T00:00:00Z`
+    const fieldQueries = `startDateCOA_dt:[${yesterdayStr} TO *]`
 
     const apiResponse = await request.get(
-      `/api/calendar-activities?limit=4&sort=actionRequiredByParties_b%20desc%2C%20startDateCOA_dt%20asc&startDate=${yesterdayStr}`
+      `/api/calendar-activities?limit=4&sort=actionRequiredByParties_b%20desc%2C%20startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`
     )
     const apiBody = await apiResponse.json()
 
@@ -138,7 +141,7 @@ test.describe('mega menu calendar activities', () => {
       return
     }
 
-    const expectedId = apiBody.rows[0].id
+    const expectedId = String(apiBody.rows[0].id)
 
     await page.goto('/')
     await page.waitForLoadState('networkidle')
@@ -178,13 +181,14 @@ test.describe('mega menu calendar activities', () => {
     expect(iframeSrc, 'iframe src should still contain autoExpand after load').toContain(`autoExpand=${expectedId}`)
   })
 
-  test('calendar activities API returns only future activities when startDate filter is applied', async ({ request }) => {
+  test('calendar activities API returns only future activities when fieldQueries date filter is applied', async ({ request }) => {
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
-    const yesterdayStr = `${yesterday.toISOString().split('T')[0]}T00:00:00Z`
+    const yesterdayStr = `${yesterday.toISOString().split('T')[0] ?? ''}T00:00:00Z`
+    const fieldQueries = `startDateCOA_dt:[${yesterdayStr} TO *]`
 
     const response = await request.get(
-      `/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&startDate=${yesterdayStr}`
+      `/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`
     )
     expect(response.status()).toBe(200)
 
