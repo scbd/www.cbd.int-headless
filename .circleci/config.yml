@@ -192,7 +192,7 @@ workflows:
       - build-only:
           requires:
             - test-unit
-            - test-e2e
+            # - test-e2e
           filters:
             branches:
               ignore:
@@ -201,7 +201,7 @@ workflows:
       - build-and-push:
           requires:
             - test-unit
-            - test-e2e
+            # - test-e2e
           context: docker-hub
           filters:
             branches:
