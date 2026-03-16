@@ -43,6 +43,7 @@ jobs:
     environment:
       CI: "true"
       HOME: /root
+      HOST: 0.0.0.0
       NUXT_DRUPAL_BASE_URL: https://cms.staging.drupal.www.infra.cbd.int
       NUXT_API_BASE_URL: https://api.cbd.int
       NUXT_ORT_URL: https://ort.cbd.int
@@ -72,14 +73,14 @@ jobs:
           no_output_timeout: 5m
       - run:
           name: Start preview server
-          command: yarn preview
+          command: node .output/server/index.mjs
           background: true
       - run:
           name: Wait for preview server
           command: |
-            echo "Waiting for http://localhost:3000 ..."
+            echo "Waiting for http://127.0.0.1:3000 ..."
             for i in $(seq 1 30); do
-              if curl -s -o /dev/null -w '' http://localhost:3000; then
+              if curl -s -o /dev/null -w '' http://127.0.0.1:3000; then
                 echo "Server is ready"
                 exit 0
               fi
