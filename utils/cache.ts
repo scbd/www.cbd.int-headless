@@ -33,11 +33,12 @@ export class Cache {
   /** Start a recurring setTimeout that purges expired cache entries. */
   startPurgeTimer (): void {
     if (this.purgeTimer !== null || this.purgeInterval === null) return
-    const schedule = () => {
+    const interval = this.purgeInterval
+    const schedule = (): void => {
       this.purgeTimer = setTimeout(() => {
         this.purgeExpired()
         schedule()
-      }, this.purgeInterval!)
+      }, interval)
     }
     schedule()
   }

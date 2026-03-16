@@ -5,17 +5,17 @@ import type { SearchResult } from '~~/types/api/search-result'
 import { SEARCH } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
-export default async function useSearchApi(
+export default async function useSearchApi (
   options?: ComputedRef<QueryParams> | Ref<QueryParams>
 ): Promise<{
-  results: ComputedRef<{ rows: (Content | Article)[], total: number }>,
-  error: Ref<Error | undefined>
-}> {
+    results: ComputedRef<{ rows: Array<Content | Article>, total: number }>
+    error: Ref<Error | undefined>
+  }> {
   const params = computed(() => ({
     sort: options?.value.sort,
     limit: options?.value.limit,
     skip: options?.value.skip,
-    search: options?.value.search,
+    search: options?.value.search
   }))
 
   const { data, error } = await useFetch<SearchResult<Content | Article>>(SEARCH, {
