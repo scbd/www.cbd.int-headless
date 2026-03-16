@@ -5,6 +5,7 @@
         {{ toFormatDate(item.date) }}
         <span v-if="item.actionRequired" class="badge rounded-pill bg-danger ms-1">{{ t('actionRequired') }}</span>
       </span>
+      <br />
       {{ toLocaleText(item.title) }}
     </NuxtLink>
   </li>
