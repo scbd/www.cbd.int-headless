@@ -30,8 +30,28 @@ definePageMeta({
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
+const route = useRoute()
+const router = useRouter()
 
-const iframeUrl = config.public.iframeCalendarUrl
+const baseUrl = config.public.iframeCalendarUrl as string | undefined
+const autoExpand = ref<string | undefined>()
+
+const iframeUrl = computed(() => {
+  if (!baseUrl) return undefined;
+  if (!autoExpand.value) return baseUrl;
+
+  const url = new URL(baseUrl);
+  url.searchParams.set('autoExpand', autoExpand.value);
+  return url.toString();
+});
+
+watch(() => route.query.autoExpand as string | undefined, (val) => {
+  if (!val) return;
+  autoExpand.value = val;
+  if (import.meta.client) {
+    nextTick(() => router.replace({ query: {} }));
+  }
+}, { immediate: true });
 
 useHead({
   title: t('title')
