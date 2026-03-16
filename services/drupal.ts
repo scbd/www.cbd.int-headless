@@ -10,6 +10,7 @@ import type { Portal } from '~~/types/portal'
 import type { Image } from '~~/types/image'
 import { MENU_CACHE_DURATION_MS } from '~~/constants/cache'
 import { DEFAULT_IMAGE, DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
+import { shouldInjectCalendarItem, injectCalendarItemIfAbsent } from '~~/constants/calendar-menu'
 
 const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
@@ -471,23 +472,9 @@ export async function getMenu (
 
   // TODO(DEV-842): Temporary static injection of "Calendar of Activities" menu item.
   // Remove this block once the Drupal CMS admin has added the menu item permanently.
-  // After removal, verify the item still appears from Drupal data.
-  // The component value 'calendar-activities' maps to the dynamic-content switch case.
-  if (code === 'cbd-header-processes-and-meeting' && options.branch == null) {
-    const calendarBranchId = 'temp-calendar-of-activities'
-    const alreadyPresent = menus.some(item => item.branchId === calendarBranchId)
-
-    if (!alreadyPresent) {
-      menus.push({
-        branchId: calendarBranchId,
-        parentId: null,
-        title: 'Calendar of Activities',
-        url: '/calendar-of-activities-and-actions',
-        position: -47,
-        component: 'calendar-activities',
-        childrenCount: 0
-      })
-    }
+  // Disable at runtime by setting NUXT_INJECT_CALENDAR_MENU_ITEM=false.
+  if (shouldInjectCalendarItem(code, options.branch) && useRuntimeConfig().injectCalendarMenuItem !== false) {
+    injectCalendarItemIfAbsent(menus)
   }
 
   // If a specific branch was requested but not found, signal this explicitly

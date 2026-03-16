@@ -56,12 +56,22 @@ jobs:
           paths:
             - node_modules
             - ~/.cache/yarn
+      - restore_cache:
+          keys:
+            - playwright-browsers-v1-{{ checksum "yarn.lock" }}
+            - playwright-browsers-v1-
       - run:
           name: Install Playwright browsers
           command: npx playwright install --with-deps chromium
+          no_output_timeout: 5m
+      - save_cache:
+          key: playwright-browsers-v1-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/ms-playwright
       - run:
           name: Run e2e tests
           command: yarn test:e2e
+          no_output_timeout: 10m
       - store_artifacts:
           path: playwright-report
           destination: playwright-report

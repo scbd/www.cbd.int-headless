@@ -20,9 +20,9 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: 'yarn dev',
+    command: isCI ? 'yarn build && yarn preview' : 'yarn dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !isCI,
-    timeout: 120_000
+    timeout: isCI ? 300_000 : 120_000
   }
 })
