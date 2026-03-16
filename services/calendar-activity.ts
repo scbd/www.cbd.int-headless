@@ -4,6 +4,7 @@ import type { SolrQuery } from '~~/types/api/solr'
 import type { CalendarActivity } from '~~/types/calendar-activity'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
+import { CALENDAR_ACTIVITIES } from '~~/constants/url-paths'
 
 interface SolrCalendarActivityDoc {
   identifier_s: string
@@ -16,11 +17,7 @@ interface SolrCalendarActivityDoc {
   [key: string]: unknown
 }
 
-export async function listCalendarActivities (options: QueryParams): Promise<SearchResult<CalendarActivity>> {
-  return await searchCalendarActivities(options)
-}
-
-async function searchCalendarActivities (options?: QueryParams): Promise<SearchResult<CalendarActivity>> {
+export async function listCalendarActivities (options?: QueryParams): Promise<SearchResult<CalendarActivity>> {
   const api = new SolrIndexApi({
     baseURL: useRuntimeConfig().apiBaseUrl
   })
@@ -33,9 +30,7 @@ async function searchCalendarActivities (options?: QueryParams): Promise<SearchR
   const query = queryParts.length > 0 ? andOr(queryParts, 'AND') : '*.*'
 
   const fqParts: string[] = ['schema_s:calendarActivity AND _state_s:public']
-  if (options?.fieldQueries != null && options.fieldQueries !== '') {
-    fqParts.push(options.fieldQueries)
-  }
+  if (options?.fieldQueries != null && options.fieldQueries !== '') fqParts.push(options.fieldQueries)
   const fieldQueries = andOr(fqParts, 'AND')
 
   const params: SolrQuery = {
@@ -53,7 +48,7 @@ async function searchCalendarActivities (options?: QueryParams): Promise<SearchR
     (item: SolrCalendarActivityDoc): CalendarActivity => ({
       id: item.identifier_s,
       title: toLString(item, 'title'),
-      url: item.url_ss?.[0] ?? `/calendar-of-activities-and-actions?autoExpand=${String(item.identifier_s)}`,
+      url: item.url_ss?.[0] ?? `${CALENDAR_ACTIVITIES}?autoExpand=${String(item.identifier_s)}`,
       actionRequiredByParties: item.actionRequiredByParties_b ?? false,
       startDate: item.startDateCOA_dt != null ? new Date(item.startDateCOA_dt) : null,
       endDate: item.endDateCOA_dt != null ? new Date(item.endDateCOA_dt) : null,

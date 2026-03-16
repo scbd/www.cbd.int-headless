@@ -1,7 +1,10 @@
 import { test, expect } from '@playwright/test'
 
+type Page = import('@playwright/test').Page
+type Locator = import('@playwright/test').Locator
+
 // Helper: open the mega menu and return the calendar activities section
-async function openCalendarMenu (page: import('@playwright/test').Page): Promise<import('@playwright/test').Locator> {
+async function openCalendarMenu (page: Page): Promise<Locator> {
   await page.goto('/')
   await page.waitForLoadState('networkidle')
 
@@ -17,6 +20,31 @@ async function openCalendarMenu (page: import('@playwright/test').Page): Promise
   return dropdown.locator('.level-2-item', {
     hasText: /calendar of activities/i
   })
+}
+
+// Helper: click the first activity link and wait for the calendar iframe
+async function clickFirstActivityAndWaitForIframe (page: Page): Promise<{ expectedId: string, iframe: Locator }> {
+  const calendarSection = await openCalendarMenu(page)
+  const activityLinks = calendarSection.locator('.level-3-items .nav-link')
+  const count = await activityLinks.count()
+
+  if (count === 0) {
+    test.skip(true, 'No calendar activities displayed in mega menu')
+    return { expectedId: '', iframe: page.locator('iframe.calendar-iframe') }
+  }
+
+  const href = await activityLinks.first().getAttribute('href') ?? ''
+  const autoExpandMatch = href.match(/autoExpand=([^&]+)/)
+  expect(autoExpandMatch, 'First activity link should contain autoExpand param').not.toBeNull()
+  const expectedId = autoExpandMatch?.[1] ?? ''
+
+  await activityLinks.first().click()
+  await page.waitForURL('**/calendar-of-activities-and-actions', { timeout: 10_000 })
+
+  const iframe = page.locator('iframe.calendar-iframe')
+  await iframe.waitFor({ state: 'visible', timeout: 10_000 })
+
+  return { expectedId, iframe }
 }
 
 test.describe('mega menu calendar activities', () => {
@@ -45,66 +73,24 @@ test.describe('mega menu calendar activities', () => {
   })
 
   test('clicking a calendar activity link navigates to the calendar page with autoExpand in the iframe src', async ({ page }) => {
-    const calendarSection = await openCalendarMenu(page)
-    const activityLinks = calendarSection.locator('.level-3-items .nav-link')
-    const count = await activityLinks.count()
-
-    if (count === 0) {
-      test.skip(true, 'No calendar activities displayed in mega menu')
-      return
-    }
-
-    // Extract the expected autoExpand id from the link href
-    const href = await activityLinks.first().getAttribute('href') ?? ''
-    const autoExpandMatch = href.match(/autoExpand=([^&]+)/)
-    expect(autoExpandMatch, 'First activity link should contain autoExpand param').not.toBeNull()
-    const expectedId = autoExpandMatch?.[1] ?? ''
-
-    await activityLinks.first().click()
-
-    await page.waitForURL('**/calendar-of-activities-and-actions', { timeout: 10_000 })
+    const { expectedId, iframe } = await clickFirstActivityAndWaitForIframe(page)
 
     // autoExpand must be stripped from the browser URL
     expect(page.url()).not.toContain('autoExpand')
-
-    // The iframe must have autoExpand forwarded in its src
-    const iframe = page.locator('iframe.calendar-iframe')
-    await iframe.waitFor({ state: 'visible', timeout: 10_000 })
 
     const iframeSrc = await iframe.getAttribute('src')
     expect(iframeSrc, 'iframe src should contain autoExpand param').toContain(`autoExpand=${expectedId}`)
   })
 
   test('clicking a calendar activity link and waiting for iframe load preserves the autoExpand src', async ({ page }) => {
-    const calendarSection = await openCalendarMenu(page)
-    const activityLinks = calendarSection.locator('.level-3-items .nav-link')
-    const count = await activityLinks.count()
-
-    if (count === 0) {
-      test.skip(true, 'No calendar activities displayed in mega menu')
-      return
-    }
-
-    const href = await activityLinks.first().getAttribute('href') ?? ''
-    const autoExpandMatch = href.match(/autoExpand=([^&]+)/)
-    expect(autoExpandMatch, 'First activity link should contain autoExpand param').not.toBeNull()
-    const expectedId = autoExpandMatch?.[1] ?? ''
-
-    await activityLinks.first().click()
-    await page.waitForURL('**/calendar-of-activities-and-actions', { timeout: 10_000 })
-
-    const iframe = page.locator('iframe.calendar-iframe')
-    await iframe.waitFor({ state: 'visible', timeout: 10_000 })
+    const { expectedId, iframe } = await clickFirstActivityAndWaitForIframe(page)
 
     // Wait for the iframe content to load
     const iframeElement = await iframe.elementHandle()
     const contentFrame = await iframeElement?.contentFrame().catch(() => null)
-    if (contentFrame != null) {
-      await contentFrame.waitForLoadState('load', { timeout: 5_000 }).catch(() => {})
-    } else {
-      // cross-origin iframe — fall back to a timed wait
-      await page.waitForTimeout(3_000)
-    }
+    // cross-origin iframe — fall back to a timed wait
+    if (contentFrame != null) await contentFrame.waitForLoadState('load', { timeout: 5_000 }).catch(() => {})
+    else await page.waitForTimeout(3_000)
 
     // src must still carry the autoExpand param after the iframe finishes loading
     const iframeSrc = await iframe.getAttribute('src')

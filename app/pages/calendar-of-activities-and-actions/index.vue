@@ -47,9 +47,7 @@ const iframeUrl = computed(() => {
 watch(() => route.query.autoExpand as string | undefined, (val) => {
   if (!val) return;
   autoExpand.value = val;
-  if (import.meta.client) {
-    nextTick(() => router.replace({ query: {} }));
-  }
+  if (import.meta.client) nextTick(() => router.replace({ query: {} }));
 }, { immediate: true });
 
 useHead({
