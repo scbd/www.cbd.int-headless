@@ -1,3 +1,4 @@
+export const CALENDAR_ACTIVITIES = '/calendar-of-activities-and-actions'
 export const MEETINGS = '/meetings'
 export const NOTIFICATIONS = '/notifications'
 export const STATEMENTS = '/statements'
