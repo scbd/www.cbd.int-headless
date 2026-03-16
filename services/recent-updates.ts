@@ -1,6 +1,8 @@
 import SolrIndexApi from '~~/api/solr-index'
 import { toLString, toLStringArray } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
+import { Cache } from '~~/utils/cache'
+import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { RecentUpdate } from '~~/types/recent-updates'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -12,6 +14,9 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
+const solrCache = new Cache({ name: 'recentUpdatesCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+solrCache.startPurgeTimer()
+
 export async function listRecentUpdates (options: QueryParams): Promise<SearchResult<RecentUpdate>> {
   const params: SolrQuery = {
     query: '*:*',
@@ -21,6 +26,10 @@ export async function listRecentUpdates (options: QueryParams): Promise<SearchRe
     start: options?.skip ?? 0,
     rowsPerPage: options?.limit ?? 10
   }
+
+  const cacheKey = JSON.stringify(params)
+  const cached = solrCache.get<SearchResult<RecentUpdate>>(cacheKey)
+  if (cached !== null) return cached
 
   const { response } = await api.querySolr(params)
 
@@ -50,10 +59,8 @@ export async function listRecentUpdates (options: QueryParams): Promise<SearchRe
     }))
   )
 
-  return {
-    total: response.numFound,
-    rows: recentUpdatesList
-  }
+  const result = { total: response.numFound, rows: recentUpdatesList }
+  return solrCache.set(cacheKey, result)
 }
 
 // TO-DO: currently the schema_s from solr returns meeting and the media endpoint in drupal returns meetings

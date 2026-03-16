@@ -1,6 +1,8 @@
 import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, toLString } from '~~/utils/solr'
+import { Cache } from '~~/utils/cache'
 import { mandatory, notFound } from 'api-client/api-error'
+import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Decision } from '~~/types/decision'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -9,6 +11,9 @@ import type { SearchResult } from '~~/types/api/search-result'
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
+
+const solrCache = new Cache({ name: 'decisionCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+solrCache.startPurgeTimer()
 
 export async function listDecisions (options: QueryParams): Promise<SearchResult<Decision>> {
   return await searchDecisions(options)
@@ -25,15 +30,19 @@ export async function getDecision (code: string): Promise<Decision> {
 async function searchDecisions (options?: QueryParams & { code?: string }): Promise<SearchResult<Decision>> {
   const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
 
-  const params: SolrQuery =
-        {
-          query,
-          fieldQueries: 'schema_s:decision',
-          sort: options?.sort ?? 'updatedDate_dt DESC',
-          fields: 'id,symbol_s,code_s,title_*_t,url_ss,eventTitle_t,session_i,decision_i,createdDate_dt,updatedDate_dt',
-          start: options?.skip ?? 0,
-          rowsPerPage: options?.limit ?? 10
-        }
+  const params: SolrQuery = {
+    query,
+    fieldQueries: 'schema_s:decision',
+    sort: options?.sort ?? 'updatedDate_dt DESC',
+    fields: 'id,symbol_s,code_s,title_*_t,url_ss,eventTitle_t,session_i,decision_i,createdDate_dt,updatedDate_dt',
+    start: options?.skip ?? 0,
+    rowsPerPage: options?.limit ?? 10
+  }
+
+  const cacheKey = JSON.stringify(params)
+  const cached = solrCache.get<SearchResult<Decision>>(cacheKey)
+  if (cached !== null) return cached
+
   const { response } = await api.querySolr(params)
 
   const decisionList: Decision[] = response.docs.map((item: any): Decision => ({
@@ -48,10 +57,8 @@ async function searchDecisions (options?: QueryParams & { code?: string }): Prom
     updatedOn: new Date(item.updatedDate_dt)
   }))
 
-  return {
-    total: response.numFound,
-    rows: decisionList
-  }
+  const result = { total: response.numFound, rows: decisionList }
+  return solrCache.set(cacheKey, result)
 }
 
 function normalizeDecisionCode (code: string): string {

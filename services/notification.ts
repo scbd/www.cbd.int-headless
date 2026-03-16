@@ -2,6 +2,8 @@ import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, toLString, toLStringArray, andOr, normalizeCode } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
+import { Cache } from '~~/utils/cache'
+import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Notification } from '~~/types/notification'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -11,6 +13,9 @@ import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
+
+const solrCache = new Cache({ name: 'notificationCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+solrCache.startPurgeTimer()
 
 export async function getNotification (code: string): Promise<Notification> {
   if (code === null || code === '') throw mandatory('code', 'Notification code is required.')
@@ -33,15 +38,19 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
   }
   const fieldQueries = andOr(fqParts, 'AND')
 
-  const params: SolrQuery =
-    {
-      query,
-      fieldQueries,
-      sort: options?.sort ?? 'updatedDate_dt DESC',
-      fields: 'id,symbol_s,title_*_t,url_ss,files_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
-      start: options?.skip ?? 0,
-      rowsPerPage: options?.limit ?? 10
-    }
+  const params: SolrQuery = {
+    query,
+    fieldQueries,
+    sort: options?.sort ?? 'updatedDate_dt DESC',
+    fields: 'id,symbol_s,title_*_t,url_ss,files_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
+    start: options?.skip ?? 0,
+    rowsPerPage: options?.limit ?? 10
+  }
+
+  const cacheKey = JSON.stringify(params)
+  const cached = solrCache.get<SearchResult<Notification>>(cacheKey)
+  if (cached !== null) return cached
+
   const { response } = await api.querySolr(params)
 
   const notificationList: Notification[] = await Promise.all(response.docs.map(async (item: any): Promise<Notification> => ({
@@ -79,8 +88,6 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     })()
   })))
 
-  return {
-    total: response.numFound,
-    rows: notificationList
-  }
+  const result = { total: response.numFound, rows: notificationList }
+  return solrCache.set(cacheKey, result)
 }

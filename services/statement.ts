@@ -2,6 +2,8 @@ import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, andOr, toLString, toLStringArray } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
+import { Cache } from '~~/utils/cache'
+import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Statement } from '~~/types/statement'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -16,6 +18,9 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
+const solrCache = new Cache({ name: 'statementCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+solrCache.startPurgeTimer()
+
 export async function getStatement (code: string): Promise<Statement> {
   if (code === null || code === '') throw mandatory('code', 'Statement code is required.')
   const data = await searchStatements({ code: normalizeStatementCode(code) })
@@ -29,7 +34,6 @@ export async function listStatements (options: QueryParams): Promise<SearchResul
 }
 
 async function searchStatements (options?: QueryParams & { code?: string }): Promise<SearchResult<Statement>> {
-  // const fieldQueries = andOr([
   const fqParts: string[] = [
     'schema_s:statement',
     '_state_s:public',
@@ -42,15 +46,19 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
 
   const fieldQueries = andOr(fqParts, 'AND')
 
-  const params: SolrQuery =
-        {
-          fieldQueries,
-          query: '*:*',
-          sort: options?.sort ?? 'updatedDate_dt DESC',
-          fields: 'id,symbol_s,title_*_t,url_ss,themes_*_txt,createdDate_dt,updatedDate_dt',
-          start: options?.skip ?? 0,
-          rowsPerPage: options?.limit ?? 10
-        }
+  const params: SolrQuery = {
+    fieldQueries,
+    query: '*:*',
+    sort: options?.sort ?? 'updatedDate_dt DESC',
+    fields: 'id,symbol_s,title_*_t,url_ss,themes_*_txt,createdDate_dt,updatedDate_dt',
+    start: options?.skip ?? 0,
+    rowsPerPage: options?.limit ?? 10
+  }
+
+  const cacheKey = JSON.stringify(params)
+  const cached = solrCache.get<SearchResult<Statement>>(cacheKey)
+  if (cached !== null) return cached
+
   const { response } = await api.querySolr(params)
 
   const statementList: Statement[] = await Promise.all(response.docs.map(async (item: any): Promise<Statement> => ({
@@ -70,8 +78,6 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
     })()
   })))
 
-  return {
-    total: response.numFound,
-    rows: statementList
-  }
-};
+  const result = { total: response.numFound, rows: statementList }
+  return solrCache.set(cacheKey, result)
+}
