@@ -25,5 +25,6 @@ import { MEETINGS } from '~~/constants/url-paths'
 
 const { t } = useI18n()
 
-const { meetings, error } = await useMeetingsListApi(ref({ limit: 4 }))
+const sort = "query({!lucene v='endDate_dt:[NOW TO *]'}) DESC, endDate_dt ASC"
+const { meetings, error } = await useMeetingsListApi(ref({ limit: 4, sort }))
 </script>
