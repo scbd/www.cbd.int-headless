@@ -43,9 +43,12 @@ interface ProcessedMenuItem {
 const menuCache = new Map<string, MenuCacheEntry>()
 
 export async function getRoute (url: string): Promise<DrupalRouterResponse> {
-  const route = await drupalApi.getRoute(url)
+  const cacheKey = `route-${url}`
+  const cached = drupalCache.get<DrupalRouterResponse>(cacheKey)
+  if (cached !== null) return cached
 
-  return route
+  const route = await drupalApi.getRoute(url)
+  return drupalCache.set(cacheKey, route)
 }
 
 export async function getContent (url: string): Promise<Content | Article> {
