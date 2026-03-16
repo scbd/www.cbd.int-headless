@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 // Helper: open the mega menu and return the calendar activities section
-async function openCalendarMenu (page: import('@playwright/test').Page) {
+async function openCalendarMenu (page: import('@playwright/test').Page): Promise<import('@playwright/test').Locator> {
   await page.goto('/')
   await page.waitForLoadState('networkidle')
 
@@ -58,7 +58,7 @@ test.describe('mega menu calendar activities', () => {
     const href = await activityLinks.first().getAttribute('href') ?? ''
     const autoExpandMatch = href.match(/autoExpand=([^&]+)/)
     expect(autoExpandMatch, 'First activity link should contain autoExpand param').not.toBeNull()
-    const expectedId = autoExpandMatch![1]
+    const expectedId = autoExpandMatch?.[1] ?? ''
 
     await activityLinks.first().click()
 
@@ -88,7 +88,7 @@ test.describe('mega menu calendar activities', () => {
     const href = await activityLinks.first().getAttribute('href') ?? ''
     const autoExpandMatch = href.match(/autoExpand=([^&]+)/)
     expect(autoExpandMatch, 'First activity link should contain autoExpand param').not.toBeNull()
-    const expectedId = autoExpandMatch![1]
+    const expectedId = autoExpandMatch?.[1] ?? ''
 
     await activityLinks.first().click()
     await page.waitForURL('**/calendar-of-activities-and-actions', { timeout: 10_000 })
