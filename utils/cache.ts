@@ -3,6 +3,8 @@ export interface CacheOptions {
   name?: string
   expiry?: number | null
   maxSize?: number | null
+  /** How often (ms) to purge expired entries. Defaults to half of `expiry`, or 60 000 ms when expiry is null. */
+  purgeInterval?: number | null
 }
 
 interface CacheEntry<T> {
@@ -15,12 +17,37 @@ export class Cache {
   readonly name: string
   private readonly expiry: number | null
   private readonly maxSize: number | null
+  private readonly purgeInterval: number | null
   private readonly store = new Map<string, CacheEntry<unknown>>()
+  private purgeTimer: ReturnType<typeof setTimeout> | null = null
 
   constructor (options: CacheOptions = {}) {
     this.name = options.name ?? 'default'
     this.expiry = options.expiry ?? null
     this.maxSize = options.maxSize ?? null
+    this.purgeInterval = options.purgeInterval !== undefined
+      ? options.purgeInterval
+      : this.expiry !== null ? Math.max(this.expiry / 2, 1000) : 60_000
+  }
+
+  /** Start a recurring setTimeout that purges expired cache entries. */
+  startPurgeTimer (): void {
+    if (this.purgeTimer !== null || this.purgeInterval === null) return
+    const schedule = () => {
+      this.purgeTimer = setTimeout(() => {
+        this.purgeExpired()
+        schedule()
+      }, this.purgeInterval!)
+    }
+    schedule()
+  }
+
+  /** Stop the purge timer (call during app teardown to avoid memory leaks). */
+  stopPurgeTimer (): void {
+    if (this.purgeTimer !== null) {
+      clearTimeout(this.purgeTimer)
+      this.purgeTimer = null
+    }
   }
 
   set<T>(key: string, value: T): T {

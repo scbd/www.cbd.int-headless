@@ -1,6 +1,8 @@
 import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, toLString, toLStringArray, andOr } from '~~/utils/solr'
+import { Cache } from '~~/utils/cache'
 import { mandatory, notFound } from 'api-client/api-error'
+import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { PressRelease } from '~~/types/press-release'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -11,6 +13,9 @@ import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
+
+const solrCache = new Cache({ name: 'pressReleaseCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+solrCache.startPurgeTimer()
 
 export async function listPressReleases (options: QueryParams): Promise<SearchResult<PressRelease>> {
   return await searchPressReleases(options)
@@ -33,15 +38,19 @@ async function searchPressReleases (options?: QueryParams & { code?: string }): 
   }
   const fieldQueries = andOr(fqParts, 'AND')
 
-  const params: SolrQuery =
-        {
-          query,
-          fieldQueries,
-          sort: options?.sort ?? 'updatedDate_dt DESC',
-          fields: 'id,symbol_s,code_s,title_*_t,url_ss,themes_*_txt,createdDate_dt,updatedDate_dt',
-          start: options?.skip ?? 0,
-          rowsPerPage: options?.limit ?? 10
-        }
+  const params: SolrQuery = {
+    query,
+    fieldQueries,
+    sort: options?.sort ?? 'updatedDate_dt DESC',
+    fields: 'id,symbol_s,code_s,title_*_t,url_ss,themes_*_txt,createdDate_dt,updatedDate_dt',
+    start: options?.skip ?? 0,
+    rowsPerPage: options?.limit ?? 10
+  }
+
+  const cacheKey = JSON.stringify(params)
+  const cached = solrCache.get<SearchResult<PressRelease>>(cacheKey)
+  if (cached !== null) return cached
+
   const { response } = await api.querySolr(params)
 
   const pressReleaseList: PressRelease[] = await Promise.all(response.docs.map(async (item: any): Promise<PressRelease> => ({
@@ -61,10 +70,8 @@ async function searchPressReleases (options?: QueryParams & { code?: string }): 
     updatedOn: new Date(item.updatedDate_dt)
   })))
 
-  return {
-    total: response.numFound,
-    rows: pressReleaseList
-  }
+  const result = { total: response.numFound, rows: pressReleaseList }
+  return solrCache.set(cacheKey, result)
 }
 
 function normalizePressReleaseCode (code: string): string {

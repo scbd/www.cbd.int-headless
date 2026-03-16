@@ -2,6 +2,8 @@ import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, toLString, toLStringArray, andOr, normalizeCode } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
+import { Cache } from '~~/utils/cache'
+import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Meeting } from '~~/types/meeting'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -11,6 +13,9 @@ import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
+
+const solrCache = new Cache({ name: 'meetingCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+solrCache.startPurgeTimer()
 
 export async function getMeeting (code: string): Promise<Meeting> {
   if (code === null || code === '') throw mandatory('code', 'Meeting code is required.')
@@ -33,8 +38,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
   }
   const fieldQueries = andOr(fqParts, 'AND')
 
-  const params: SolrQuery =
-  {
+  const params: SolrQuery = {
     query,
     fieldQueries,
     sort: options?.sort ?? 'startDate_dt DESC',
@@ -42,6 +46,11 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
     start: options?.skip ?? 0,
     rowsPerPage: options?.limit ?? 10
   }
+
+  const cacheKey = JSON.stringify(params)
+  const cached = solrCache.get<SearchResult<Meeting>>(cacheKey)
+  if (cached !== null) return cached
+
   const { response } = await api.querySolr(params)
 
   const meetingList: Meeting[] = await Promise.all(response.docs.map(async (item: any): Promise<Meeting> => ({
@@ -65,8 +74,6 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
     })()
   })))
 
-  return {
-    total: response.numFound,
-    rows: meetingList
-  }
+  const result = { total: response.numFound, rows: meetingList }
+  return solrCache.set(cacheKey, result)
 }
