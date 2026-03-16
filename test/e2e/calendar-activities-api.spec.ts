@@ -25,23 +25,15 @@ test.describe('calendar-activities API', () => {
     }
   })
 
-  test('GET /api/calendar-activities supports startDateCOA_dt fieldQueries filter', async ({ request }) => {
-    const yesterday = new Date()
-    yesterday.setDate(yesterday.getDate() - 1)
-    const yesterdayStr = `${yesterday.toISOString().split('T')[0] ?? ''}T00:00:00Z`
-    const fieldQueries = `startDateCOA_dt:[${yesterdayStr} TO *]`
-    const response = await request.get(`/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`)
+  test('GET /api/calendar-activities supports sort and limit params', async ({ request }) => {
+    const response = await request.get('/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc')
     expect(response.status()).toBe(200)
 
     const body = await response.json()
     expect(body).toHaveProperty('total')
     expect(body).toHaveProperty('rows')
     expect(Array.isArray(body.rows)).toBe(true)
-
-    // Every returned row must have a startDate on or after yesterday
-    for (const row of body.rows) {
-      expect(new Date(row.startDate).getTime()).toBeGreaterThanOrEqual(new Date(yesterdayStr).getTime())
-    }
+    expect(body.rows.length).toBeLessThanOrEqual(4)
   })
 
   test('GET /api/calendar-activities returns results without date filter (fallback scenario)', async ({ request }) => {

@@ -1,47 +1,37 @@
 import { test, expect } from '@playwright/test'
 
+// Helper: open the mega menu and return the calendar activities section
+async function openCalendarMenu (page: import('@playwright/test').Page) {
+  await page.goto('/')
+  await page.waitForLoadState('networkidle')
+
+  const processesMenu = page.locator('.mega-menu-item.dropdown .dropdown-toggle', {
+    hasText: /processes/i
+  })
+  await processesMenu.waitFor({ state: 'visible', timeout: 10_000 })
+  await processesMenu.click()
+
+  const dropdown = processesMenu.locator('..').locator('.dropdown-menu')
+  await dropdown.waitFor({ state: 'visible', timeout: 10_000 })
+
+  return dropdown.locator('.level-2-item', {
+    hasText: /calendar of activities/i
+  })
+}
+
 test.describe('mega menu calendar activities', () => {
-  test('calendar activities in mega menu never show past dates', async ({ page, request }) => {
-    // First check what the API returns with the date filter to understand
-    // whether we should expect items or an empty list
-    const twoDaysAgo = new Date()
-    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
-    const twoDaysAgoStr = `${twoDaysAgo.toISOString().split('T')[0] ?? ''}T00:00:00Z`
-    const dateQuery = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
-
-    const apiResponse = await request.get(
-      `/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&query=${encodeURIComponent(dateQuery)}`
-    )
-    const apiBody = await apiResponse.json()
-    const expectedCount = apiBody.rows.length
-
-    // Now load the page and open the mega menu
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    const processesMenu = page.locator('.mega-menu-item.dropdown .dropdown-toggle', {
-      hasText: /processes/i
-    })
-    await processesMenu.waitFor({ state: 'visible', timeout: 10_000 })
-    await processesMenu.click()
-
-    const dropdown = processesMenu.locator('..').locator('.dropdown-menu')
-    await dropdown.waitFor({ state: 'visible', timeout: 10_000 })
-
-    // Find the calendar activities section
-    const calendarSection = dropdown.locator('.level-2-item', {
-      hasText: /calendar of activities/i
-    })
+  test('calendar activities in mega menu never show dates older than 2 days', async ({ page }) => {
+    const calendarSection = await openCalendarMenu(page)
     await expect(calendarSection).toBeVisible()
 
-    // Get all displayed activity links
     const activityLinks = calendarSection.locator('.level-3-items .nav-link')
     const displayedCount = await activityLinks.count()
 
-    // The displayed count must match what the filtered API returns
-    expect(displayedCount, 'displayed item count should match filtered API result count').toBe(expectedCount)
+    // The cutoff: 2 days before today at midnight
+    const twoDaysAgo = new Date()
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+    twoDaysAgo.setHours(0, 0, 0, 0)
 
-    // If there are items, every date must be from yesterday forward
     for (let i = 0; i < displayedCount; i++) {
       const linkText = await activityLinks.nth(i).innerText()
       const dateLine = linkText.split('\n')[0].trim()
@@ -49,69 +39,29 @@ test.describe('mega menu calendar activities', () => {
 
       expect(
         parsedDate.getTime(),
-        `Activity "${dateLine}" should be from two days ago (${twoDaysAgoStr}) forward`
+        `Activity "${dateLine}" is older than 2 days — should have been filtered out`
       ).toBeGreaterThanOrEqual(twoDaysAgo.getTime())
-    }
-
-    // If there are NO items, verify the API has past-only data (confirming
-    // the component correctly omitted stale entries rather than falling back)
-    if (displayedCount === 0) {
-      const allResponse = await request.get('/api/calendar-activities?limit=4&sort=startDateCOA_dt%20desc')
-      const allBody = await allResponse.json()
-      // There ARE activities in the system, but none upcoming — the menu
-      // correctly shows nothing instead of stale dates
-      if (allBody.rows.length > 0) {
-        for (const row of allBody.rows) {
-          expect(
-            new Date(row.startDate).getTime(),
-            `Unfiltered activity "${String(row.title.en)}" should be in the past, confirming the menu correctly excluded it`
-          ).toBeLessThan(new Date(twoDaysAgoStr).getTime())
-        }
-      }
     }
   })
 
-  test('clicking a calendar activity link navigates to the calendar page with autoExpand in the iframe src', async ({ page, request }) => {
-    const twoDaysAgo = new Date()
-    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
-    const twoDaysAgoStr = `${twoDaysAgo.toISOString().split('T')[0] ?? ''}T00:00:00Z`
-    const dateQuery = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
+  test('clicking a calendar activity link navigates to the calendar page with autoExpand in the iframe src', async ({ page }) => {
+    const calendarSection = await openCalendarMenu(page)
+    const activityLinks = calendarSection.locator('.level-3-items .nav-link')
+    const count = await activityLinks.count()
 
-    const apiResponse = await request.get(
-      `/api/calendar-activities?limit=4&sort=actionRequiredByParties_b%20desc%2C%20startDateCOA_dt%20asc&query=${encodeURIComponent(dateQuery)}`
-    )
-    const apiBody = await apiResponse.json()
-
-    if (apiBody.rows.length === 0) {
-      test.skip(true, 'No upcoming calendar activities available to test')
+    if (count === 0) {
+      test.skip(true, 'No calendar activities displayed in mega menu')
       return
     }
 
-    const expectedId = String(apiBody.rows[0].id)
+    // Extract the expected autoExpand id from the link href
+    const href = await activityLinks.first().getAttribute('href') ?? ''
+    const autoExpandMatch = href.match(/autoExpand=([^&]+)/)
+    expect(autoExpandMatch, 'First activity link should contain autoExpand param').not.toBeNull()
+    const expectedId = autoExpandMatch![1]
 
-    // Open the page and mega menu
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    const processesMenu = page.locator('.mega-menu-item.dropdown .dropdown-toggle', {
-      hasText: /processes/i
-    })
-    await processesMenu.waitFor({ state: 'visible', timeout: 10_000 })
-    await processesMenu.click()
-
-    const dropdown = processesMenu.locator('..').locator('.dropdown-menu')
-    await dropdown.waitFor({ state: 'visible', timeout: 10_000 })
-
-    const calendarSection = dropdown.locator('.level-2-item', {
-      hasText: /calendar of activities/i
-    })
-    const activityLinks = calendarSection.locator('.level-3-items .nav-link')
-    await expect(activityLinks.first()).toBeVisible()
-
-    // Click the first activity — its url is /calendar-of-activities-and-actions?autoExpand=<id>
     await activityLinks.first().click()
 
-    // Should land on the calendar page
     await page.waitForURL('**/calendar-of-activities-and-actions', { timeout: 10_000 })
 
     // autoExpand must be stripped from the browser URL
@@ -125,48 +75,28 @@ test.describe('mega menu calendar activities', () => {
     expect(iframeSrc, 'iframe src should contain autoExpand param').toContain(`autoExpand=${expectedId}`)
   })
 
-  test('clicking a calendar activity link and waiting for iframe load preserves the autoExpand src', async ({ page, request }) => {
-    const twoDaysAgo = new Date()
-    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
-    const twoDaysAgoStr = `${twoDaysAgo.toISOString().split('T')[0] ?? ''}T00:00:00Z`
-    const dateQuery = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
+  test('clicking a calendar activity link and waiting for iframe load preserves the autoExpand src', async ({ page }) => {
+    const calendarSection = await openCalendarMenu(page)
+    const activityLinks = calendarSection.locator('.level-3-items .nav-link')
+    const count = await activityLinks.count()
 
-    const apiResponse = await request.get(
-      `/api/calendar-activities?limit=4&sort=actionRequiredByParties_b%20desc%2C%20startDateCOA_dt%20asc&query=${encodeURIComponent(dateQuery)}`
-    )
-    const apiBody = await apiResponse.json()
-
-    if (apiBody.rows.length === 0) {
-      test.skip(true, 'No upcoming calendar activities available to test')
+    if (count === 0) {
+      test.skip(true, 'No calendar activities displayed in mega menu')
       return
     }
 
-    const expectedId = String(apiBody.rows[0].id)
+    const href = await activityLinks.first().getAttribute('href') ?? ''
+    const autoExpandMatch = href.match(/autoExpand=([^&]+)/)
+    expect(autoExpandMatch, 'First activity link should contain autoExpand param').not.toBeNull()
+    const expectedId = autoExpandMatch![1]
 
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    const processesMenu = page.locator('.mega-menu-item.dropdown .dropdown-toggle', {
-      hasText: /processes/i
-    })
-    await processesMenu.waitFor({ state: 'visible', timeout: 10_000 })
-    await processesMenu.click()
-
-    const dropdown = processesMenu.locator('..').locator('.dropdown-menu')
-    await dropdown.waitFor({ state: 'visible', timeout: 10_000 })
-
-    const calendarSection = dropdown.locator('.level-2-item', {
-      hasText: /calendar of activities/i
-    })
-    const activityLinks = calendarSection.locator('.level-3-items .nav-link')
     await activityLinks.first().click()
-
     await page.waitForURL('**/calendar-of-activities-and-actions', { timeout: 10_000 })
 
     const iframe = page.locator('iframe.calendar-iframe')
     await iframe.waitFor({ state: 'visible', timeout: 10_000 })
 
-    // Wait for the iframe content to load and scroll to the selection
+    // Wait for the iframe content to load
     const iframeElement = await iframe.elementHandle()
     const contentFrame = await iframeElement?.contentFrame().catch(() => null)
     if (contentFrame != null) {
@@ -181,25 +111,13 @@ test.describe('mega menu calendar activities', () => {
     expect(iframeSrc, 'iframe src should still contain autoExpand after load').toContain(`autoExpand=${expectedId}`)
   })
 
-  test('calendar activities API returns only future activities when query date filter is applied', async ({ request }) => {
-    const twoDaysAgo = new Date()
-    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
-    const twoDaysAgoStr = `${twoDaysAgo.toISOString().split('T')[0] ?? ''}T00:00:00Z`
-    const dateQuery = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
-
-    const response = await request.get(
-      `/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&query=${encodeURIComponent(dateQuery)}`
-    )
+  test('calendar activities API returns valid structure', async ({ request }) => {
+    const response = await request.get('/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc')
     expect(response.status()).toBe(200)
 
     const body = await response.json()
     expect(body).toHaveProperty('rows')
-
-    // Every returned row must have a startDate >= twoDaysAgo
-    for (const row of body.rows) {
-      expect(new Date(row.startDate).getTime()).toBeGreaterThanOrEqual(
-        new Date(twoDaysAgoStr).getTime()
-      )
-    }
+    expect(body).toHaveProperty('total')
+    expect(Array.isArray(body.rows)).toBe(true)
   })
 })

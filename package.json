@@ -4,9 +4,9 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt cleanup && nuxt dev --open",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "preview": "nuxt cleanup && nuxt build && nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
