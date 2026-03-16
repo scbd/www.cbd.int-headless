@@ -77,6 +77,24 @@ jobs:
           command: yarn build
           no_output_timeout: 5m
       - run:
+          name: Start preview server
+          command: yarn preview
+          background: true
+      - run:
+          name: Wait for preview server
+          command: |
+            echo "Waiting for http://localhost:3000 ..."
+            for i in $(seq 1 30); do
+              if curl -s -o /dev/null -w '' http://localhost:3000; then
+                echo "Server is ready"
+                exit 0
+              fi
+              echo "  attempt $i/30 …"
+              sleep 2
+            done
+            echo "Server failed to start within 60s"
+            exit 1
+      - run:
           name: Run e2e tests
           command: yarn test:e2e
           no_output_timeout: 3m

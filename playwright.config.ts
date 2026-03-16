@@ -19,12 +19,14 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] }
     }
   ],
-  webServer: {
-    command: isCI ? 'yarn preview' : 'yarn dev',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !isCI,
-    timeout: isCI ? 30_000 : 120_000,
-    stdout: 'pipe',
-    stderr: 'pipe'
-  }
+  webServer: isCI
+    ? undefined
+    : {
+        command: 'yarn dev',
+        url: 'http://localhost:3000',
+        reuseExistingServer: true,
+        timeout: 120_000,
+        stdout: 'pipe',
+        stderr: 'pipe'
+      }
 })

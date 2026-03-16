@@ -63,9 +63,9 @@ async function getContent(component: string) {
 }
 
 function getCalendarActivitiesOptions() {
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const startDate = `${yesterday.toISOString().split('T')[0]}T00:00:00Z`;
+  const twoDaysAgo = new Date();
+  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+  const startDate = `${twoDaysAgo.toISOString().split('T')[0]}T00:00:00Z`;
   const query = `startDateCOA_dt:[${startDate} TO *]`;
 
   return { limit, sort: 'actionRequiredByParties_b desc, startDateCOA_dt asc', query };
