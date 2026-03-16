@@ -189,6 +189,8 @@ jobs:
 workflows:
   build-deploy:
     jobs:
+      - test-unit
+      - test-e2e
       - build-only:
           requires:
             - test-unit
