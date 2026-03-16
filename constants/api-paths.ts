@@ -1,6 +1,7 @@
 export const MENUS = '/api/menus'
 export const ARTICLE = '/api/content'
 export const ARTICLES = '/api/articles'
+export const CALENDAR_ACTIVITIES = '/api/calendar-activities'
 export const CONTENT = '/api/content'
 export const DECISIONS = '/api/decisions'
 export const GBF_TARGETS = '/api/gbf-targets'
