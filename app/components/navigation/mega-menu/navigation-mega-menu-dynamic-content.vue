@@ -1,7 +1,10 @@
 <template>
   <li v-for="item in items" :key="item.id" class="nav-item">
     <NuxtLink class="nav-link" :to="item.url">
-      {{ toFormatDate(item.date) }}<br />
+      <span class="d-flex align-items-center gap-1">
+        {{ toFormatDate(item.date) }}
+        <span v-if="item.actionRequired" class="badge rounded-pill bg-danger ms-1">{{ t('actionRequired') }}</span>
+      </span>
       {{ toLocaleText(item.title) }}
     </NuxtLink>
   </li>
@@ -25,48 +28,65 @@ import type { Notification } from '~~/types/notification';
 import type { PressRelease } from '~~/types/press-release';
 import type { Statement } from '~~/types/statement';
 
+type ContentRow = Article | CalendarActivity | Decision | Meeting | Notification | PressRelease | Statement;
 
 const props = defineProps<{
   component: string;
 }>();
 
+const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
 const rows = await getContent(props.component)
-
+const limit = 4
 const items = (rows ?? []).map((row) => ({
   id: row.id,
   title: row.title,
   date: getDateProperty(row),
-  url: getUrlProperty(row)
+  url: getUrlProperty(row),
+  actionRequired: getActionRequired(row)
 }))
 
-// TO-DO: articles/meetings/statements and decisions will follow the same new pattern as notifications on their respective PRs.
 async function getContent(component: string) {
   switch (component) {
-    case 'articles':              return (await useArticleListApi(ref({ limit: 4 }))).articles.value.rows;
-    case 'calendar-activities':   return (await useCalendarActivitiesListApi(ref({ limit: 4, sort: 'startDate_dt asc' }))).calendarActivities.value.rows;
-    case 'meetings':              return (await useMeetingsListApi(ref({ limit: 4 }))).meetings.value.rows;
-    case 'notifications':         return (await useNotificationsListApi(ref({ limit: 4 }))).notifications.value.rows;
-    case 'statements':            return (await useStatementsListApi(ref({ limit: 4 })) ).statements.value.rows;
-    case 'decisions':             return (await useDecisionsApi({ limit: 4 })).decisions;
-    case 'press-releases':        return (await usePressReleasesListApi(ref({ limit: 4 }))).pressReleases.value.rows;
-    default:                      return [];
+    case 'articles':             return (await useArticleListApi(ref({ limit }))).articles.value.rows;
+    case 'calendar-activities':  return (await useCalendarActivitiesListApi(ref(getCalendarActivitiesOptions()))).calendarActivities.value.rows;
+    case 'meetings':             return (await useMeetingsListApi(ref({ limit }))).meetings.value.rows;
+    case 'notifications':        return (await useNotificationsListApi(ref({ limit }))).notifications.value.rows;
+    case 'statements':           return (await useStatementsListApi(ref({ limit }))).statements.value.rows;
+    case 'decisions':            return (await useDecisionsApi({ limit })).decisions;
+    case 'press-releases':       return (await usePressReleasesListApi(ref({ limit }))).pressReleases.value.rows;
+    default:                     return [];
   }
 }
 
-function getUrlProperty(row: Article | CalendarActivity | Decision | Meeting | Notification | PressRelease | Statement): string {
+function getCalendarActivitiesOptions() {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const startDate = `${yesterday.toISOString().split('T')[0]}T00:00:00Z`;
+  const query = `startDateCOA_dt:[${startDate} TO *]`;
+
+  return { limit, sort: 'actionRequiredByParties_b desc, startDateCOA_dt asc', query };
+}
+
+function getUrlProperty(row: ContentRow): string {
   if ('urls' in row && row.urls?.length > 0) return row.urls[0] ?? '#';
   if ('url' in row && row.url != null) return row.url;
   if ('alias' in row) return row.alias ?? '#';
   return '#';
 }
 
-function getDateProperty(row: Article | CalendarActivity | Decision | Meeting | Notification | PressRelease | Statement): Date {
+function getDateProperty(row: ContentRow): Date {
   if ('startDate' in row && row.startDate != null) return row.startDate instanceof Date ? row.startDate : new Date(row.startDate);
   if ('startOn' in row && row.startOn !== undefined && row.startOn !== null) return row.startOn;
   if ('updatedOn' in row && row.updatedOn !== undefined && row.updatedOn !== null) return row.updatedOn;
   return row.createdOn;
 }
+
+function getActionRequired(row: ContentRow): boolean {
+  return 'actionRequiredByParties' in row && (row as CalendarActivity).actionRequiredByParties === true;
+}
 </script>
+
+<i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-dynamic-content.json"></i18n>

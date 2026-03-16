@@ -24,4 +24,33 @@ test.describe('calendar-activities API', () => {
       expect(row).toHaveProperty('updatedOn');
     }
   });
+
+  test('GET /api/calendar-activities supports startDateCOA_dt fieldQueries filter', async ({ request }) => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = `${yesterday.toISOString().split('T')[0]}T00:00:00Z`;
+    const fieldQueries = `startDateCOA_dt:{${yesterdayStr} TO *]`;
+    const response = await request.get(`/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`);
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    expect(body).toHaveProperty('total');
+    expect(body).toHaveProperty('rows');
+    expect(Array.isArray(body.rows)).toBe(true);
+
+    // Every returned row must have a startDate after yesterday
+    for (const row of body.rows) {
+      expect(new Date(row.startDate).getTime()).toBeGreaterThan(new Date(yesterdayStr).getTime());
+    }
+  });
+
+  test('GET /api/calendar-activities returns results without date filter (fallback scenario)', async ({ request }) => {
+    const response = await request.get('/api/calendar-activities?limit=4&sort=startDateCOA_dt%20desc');
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    expect(body).toHaveProperty('total');
+    expect(body.total).toBeGreaterThan(0);
+    expect(body.rows.length).toBeGreaterThan(0);
+  });
 });

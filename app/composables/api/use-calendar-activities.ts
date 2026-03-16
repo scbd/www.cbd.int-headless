@@ -21,7 +21,8 @@ export default async function useCalendarActivitiesListApi (
       sort: options?.value.sort,
       limit: options?.value.limit,
       skip: options?.value.skip,
-      fieldQueries: options?.value.fieldQueries
+      fieldQueries: options?.value.fieldQueries,
+      query: options?.value.query
     })),
     default: () => ({ total: 0, rows: [] })
   })

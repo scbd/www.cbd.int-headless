@@ -11,6 +11,62 @@
 version: 2.1
 
 jobs:
+  test-unit:
+    resource_class: small
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-deps-v1-{{ checksum "yarn.lock" }}
+            - yarn-deps-v1-
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile --network-timeout 100000
+      - save_cache:
+          key: yarn-deps-v1-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run:
+          name: Run lint
+          command: yarn lint
+      - run:
+          name: Run unit tests
+          command: yarn test
+
+  test-e2e:
+    resource_class: medium
+    docker:
+      - image: cimg/node:lts-browsers
+    environment:
+      CI: "true"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-deps-v1-{{ checksum "yarn.lock" }}
+            - yarn-deps-v1-
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile --network-timeout 100000
+      - save_cache:
+          key: yarn-deps-v1-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run:
+          name: Install Playwright browsers
+          command: npx playwright install --with-deps chromium
+      - run:
+          name: Run e2e tests
+          command: yarn test:e2e
+      - store_artifacts:
+          path: playwright-report
+          destination: playwright-report
+      - store_artifacts:
+          path: test-results
+          destination: test-results
+
   build-only:
     resource_class: small
     docker:
@@ -113,13 +169,27 @@ jobs:
 workflows:
   build-deploy:
     jobs:
+      - test-unit:
+          filters:
+            tags:
+              only: /^\d{4}\.\d+\.\d+$/
+      - test-e2e:
+          filters:
+            tags:
+              only: /^\d{4}\.\d+\.\d+$/
       - build-only:
+          requires:
+            - test-unit
+            - test-e2e
           filters:
             branches:
               ignore:
                 - dev
                 - master
       - build-and-push:
+          requires:
+            - test-unit
+            - test-e2e
           context: docker-hub
           filters:
             branches:
