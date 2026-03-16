@@ -8,7 +8,7 @@ export default defineConfig({
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
   workers: isCI ? 1 : undefined,
-  reporter: 'html',
+  reporter: isCI ? [['list'], ['html', { open: 'never' }]] : 'html',
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry'
@@ -20,9 +20,11 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: isCI ? 'yarn build && yarn preview' : 'yarn dev',
+    command: isCI ? 'yarn preview' : 'yarn dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !isCI,
-    timeout: isCI ? 300_000 : 120_000
+    timeout: isCI ? 30_000 : 120_000,
+    stdout: 'pipe',
+    stderr: 'pipe'
   }
 })

@@ -36,48 +36,56 @@ jobs:
           name: Run unit tests
           command: yarn test
 
-  # test-e2e:
-  #   resource_class: medium
-  #   docker:
-  #     - image: cimg/node:lts-browsers
-  #   environment:
-  #     CI: "true"
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys:
-  #           - yarn-deps-v3-{{ checksum "yarn.lock" }}
-  #           - yarn-deps-v3-
-  #     - run:
-  #         name: Install dependencies
-  #         command: yarn install --frozen-lockfile --network-timeout 100000 --network-concurrency 1
-  #     - save_cache:
-  #         key: yarn-deps-v3-{{ checksum "yarn.lock" }}
-  #         paths:
-  #           - node_modules
-  #           - ~/.cache/yarn
-  #     - restore_cache:
-  #         keys:
-  #           - playwright-browsers-v1-{{ checksum "yarn.lock" }}
-  #           - playwright-browsers-v1-
-  #     - run:
-  #         name: Install Playwright browsers
-  #         command: npx playwright install --with-deps chromium
-  #         no_output_timeout: 5m
-  #     - save_cache:
-  #         key: playwright-browsers-v1-{{ checksum "yarn.lock" }}
-  #         paths:
-  #           - ~/.cache/ms-playwright
-  #     - run:
-  #         name: Run e2e tests
-  #         command: yarn test:e2e
-  #         no_output_timeout: 10m
-  #     - store_artifacts:
-  #         path: playwright-report
-  #         destination: playwright-report
-  #     - store_artifacts:
-  #         path: test-results
-  #         destination: test-results
+  test-e2e:
+    resource_class: medium
+    docker:
+      - image: cimg/node:lts-browsers
+    environment:
+      CI: "true"
+      NUXT_DRUPAL_BASE_URL: https://cms.staging.drupal.www.infra.cbd.int
+      NUXT_API_BASE_URL: https://api.cbd.int
+      NUXT_ORT_URL: https://ort.cbd.int
+      NUXT_PUBLIC_IFRAME_CALENDAR_URL: https://www.staging.cbd.int/calendar-of-activities-and-actions/calendar-of-activities
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-deps-v3-{{ checksum "yarn.lock" }}
+            - yarn-deps-v3-
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile --network-timeout 100000 --network-concurrency 1
+      - save_cache:
+          key: yarn-deps-v3-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - ~/.cache/yarn
+      - restore_cache:
+          keys:
+            - playwright-browsers-v1-{{ checksum "yarn.lock" }}
+            - playwright-browsers-v1-
+      - run:
+          name: Install Playwright browsers
+          command: npx playwright install --with-deps chromium
+          no_output_timeout: 5m
+      - save_cache:
+          key: playwright-browsers-v1-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/ms-playwright
+      - run:
+          name: Build Nuxt application
+          command: yarn build
+          no_output_timeout: 5m
+      - run:
+          name: Run e2e tests
+          command: yarn test:e2e
+          no_output_timeout: 3m
+      - store_artifacts:
+          path: playwright-report
+          destination: playwright-report
+      - store_artifacts:
+          path: test-results
+          destination: test-results
 
   build-only:
     resource_class: small
@@ -181,32 +189,26 @@ jobs:
 workflows:
   build-deploy:
     jobs:
-      - test-unit:
-          filters:
-            tags:
-              only: /^\d{4}\.\d+\.\d+$/
-      # - test-e2e:
-      #     filters:
-      #       tags:
-      #         only: /^\d{4}\.\d+\.\d+$/
       - build-only:
           requires:
             - test-unit
-            # - test-e2e
+            - test-e2e
           filters:
             branches:
               ignore:
                 - dev
+                - stg
                 - master
       - build-and-push:
           requires:
             - test-unit
-            # - test-e2e
+            - test-e2e
           context: docker-hub
           filters:
             branches:
               only:
                 - dev
+                - stg
                 - master
             tags:
               only: /^\d{4}\.\d+\.\d+$/
