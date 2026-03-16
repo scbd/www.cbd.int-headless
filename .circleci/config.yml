@@ -11,6 +11,96 @@
 version: 2.1
 
 jobs:
+  test-unit:
+    resource_class: small
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-deps-v3-{{ checksum "yarn.lock" }}
+            - yarn-deps-v3-
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile --network-timeout 100000 --network-concurrency 1
+      - save_cache:
+          key: yarn-deps-v3-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - ~/.cache/yarn
+      - run:
+          name: Run lint
+          command: yarn lint
+      - run:
+          name: Run unit tests
+          command: yarn test
+
+  test-e2e:
+    resource_class: medium
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.52.0-noble
+    environment:
+      CI: "true"
+      HOME: /root
+      HOST: 0.0.0.0
+      NUXT_DRUPAL_BASE_URL: https://cms.staging.drupal.www.infra.cbd.int
+      NUXT_API_BASE_URL: https://api.cbd.int
+      NUXT_ORT_URL: https://ort.cbd.int
+      NUXT_PUBLIC_IFRAME_CALENDAR_URL: https://www.staging.cbd.int/calendar-of-activities-and-actions/calendar-of-activities
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-deps-v3-{{ checksum "yarn.lock" }}
+            - yarn-deps-v3-
+      - run:
+          name: Install dependencies
+          command: |
+            corepack enable
+            mkdir -p /tmp/noop-bin
+            printf '#!/bin/sh\nexit 0\n' > /tmp/noop-bin/vue-tsc
+            chmod +x /tmp/noop-bin/vue-tsc
+            PATH="/tmp/noop-bin:$PATH" yarn install --frozen-lockfile --network-timeout 100000 --network-concurrency 1
+      - save_cache:
+          key: yarn-deps-v3-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - ~/.cache/yarn
+      - run:
+          name: Build Nuxt application
+          command: yarn build
+          no_output_timeout: 5m
+      - run:
+          name: Start preview server
+          command: node .output/server/index.mjs
+          background: true
+      - run:
+          name: Wait for preview server
+          command: |
+            echo "Waiting for http://127.0.0.1:3000 ..."
+            for i in $(seq 1 30); do
+              if curl -s -o /dev/null -w '' http://127.0.0.1:3000; then
+                echo "Server is ready"
+                exit 0
+              fi
+              echo "  attempt $i/30 …"
+              sleep 2
+            done
+            echo "Server failed to start within 60s"
+            exit 1
+      - run:
+          name: Run e2e tests
+          command: yarn test:e2e --reporter=list
+          no_output_timeout: 2m
+          timeout: 300
+      - store_artifacts:
+          path: playwright-report
+          destination: playwright-report
+      - store_artifacts:
+          path: test-results
+          destination: test-results
+
   build-only:
     resource_class: small
     docker:
@@ -113,18 +203,28 @@ jobs:
 workflows:
   build-deploy:
     jobs:
+      - test-unit
+      - test-e2e
       - build-only:
+          requires:
+            - test-unit
+            - test-e2e
           filters:
             branches:
               ignore:
                 - dev
+                - stg
                 - master
       - build-and-push:
+          requires:
+            - test-unit
+            - test-e2e
           context: docker-hub
           filters:
             branches:
               only:
                 - dev
+                - stg
                 - master
             tags:
               only: /^\d{4}\.\d+\.\d+$/
