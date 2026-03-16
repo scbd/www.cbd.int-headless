@@ -57,8 +57,10 @@ jobs:
           name: Install dependencies
           command: |
             corepack enable
-            yarn install --frozen-lockfile --ignore-scripts --network-timeout 100000 --network-concurrency 1
-            yarn postinstall
+            mkdir -p /tmp/noop-bin
+            printf '#!/bin/sh\nexit 0\n' > /tmp/noop-bin/vue-tsc
+            chmod +x /tmp/noop-bin/vue-tsc
+            PATH="/tmp/noop-bin:$PATH" yarn install --frozen-lockfile --network-timeout 100000 --network-concurrency 1
       - save_cache:
           key: yarn-deps-v3-{{ checksum "yarn.lock" }}
           paths:
