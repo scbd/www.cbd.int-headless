@@ -57,7 +57,8 @@ jobs:
           name: Install dependencies
           command: |
             corepack enable
-            yarn install --frozen-lockfile --network-timeout 100000 --network-concurrency 1
+            yarn install --frozen-lockfile --ignore-scripts --network-timeout 100000 --network-concurrency 1
+            yarn postinstall
       - save_cache:
           key: yarn-deps-v3-{{ checksum "yarn.lock" }}
           paths:
