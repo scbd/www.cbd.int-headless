@@ -39,6 +39,12 @@
 import type { Menu } from '~~/types/menu'
 const isVisible = ref(false)
 
+onMounted(() => {
+  if (window.innerWidth <= 953) {
+    isVisible.value = true
+  }
+})
+
 const props = defineProps<{
   menu: Menu
 }>()
