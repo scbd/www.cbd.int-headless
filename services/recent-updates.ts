@@ -65,6 +65,6 @@ export async function listRecentUpdates (options: QueryParams): Promise<SearchRe
 
 // TO-DO: currently the schema_s from solr returns meeting and the media endpoint in drupal returns meetings
 // this function will need to be updated when the Drupal endpoint is corrected to return the same pattern as solr
-function pluralizeImageCategory(word: string): Image['category'] {
+function pluralizeImageCategory (word: string): Image['category'] {
   return `${word}s` as Image['category']
 }

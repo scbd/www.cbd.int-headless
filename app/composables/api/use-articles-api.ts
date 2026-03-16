@@ -16,9 +16,9 @@ export async function useArticleApi (url: string): Promise<{ article: Article | 
 export default async function useArticleListApi (
   options?: ComputedRef<QueryParams> | Ref<QueryParams>
 ): Promise<{
-  articles: ComputedRef<{ rows: Article[], total: number }>
-  error: Ref<Error | undefined>
-}> {
+    articles: ComputedRef<{ rows: Article[], total: number }>
+    error: Ref<Error | undefined>
+  }> {
   const { data, error } = await useFetch<{ rows: Article[], total: number }>(ARTICLES, {
     params: computed(() => ({
       sort: options?.value.sort,
