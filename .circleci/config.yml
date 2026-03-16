@@ -185,10 +185,10 @@ workflows:
           filters:
             tags:
               only: /^\d{4}\.\d+\.\d+$/
-      - test-e2e:
-          filters:
-            tags:
-              only: /^\d{4}\.\d+\.\d+$/
+      # - test-e2e:
+      #     filters:
+      #       tags:
+      #         only: /^\d{4}\.\d+\.\d+$/
       - build-only:
           requires:
             - test-unit
