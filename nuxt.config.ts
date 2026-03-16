@@ -66,9 +66,6 @@ export default defineNuxtConfig({
     },
     '/images/**': {
       headers: { 'cache-control': 'public, max-age=604800' }  // 1 week
-    },
-    '/**/*.svg': {
-      headers: { 'cache-control': 'public, max-age=604800' }  // 1 week
     }
   },
   nitro: {
