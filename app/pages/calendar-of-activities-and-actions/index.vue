@@ -7,7 +7,6 @@
         :src="iframeUrl"
         :title="t('iframeTitle')"
         class="calendar-iframe w-100 border-0"
-        loading="lazy"
         referrerpolicy="no-referrer"
         sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
       />
@@ -46,19 +45,19 @@ const iframeUrl = computed(() => {
 });
 
 watch(() => route.query.autoExpand as string | undefined, (val) => {
+  autoExpand.value = val ?? undefined;
   if (!val) return;
-  autoExpand.value = val;
   if (import.meta.client) {
     nextTick(() => router.replace({ query: {} }));
   }
 }, { immediate: true });
 
 useHead({
-  title: t('title')
+  title: computed(() => t('title'))
 })
 
 useSeoMeta({
-  description: t('description')
+  description: computed(() => t('description'))
 })
 </script>
 
