@@ -45,8 +45,8 @@ const iframeUrl = computed(() => {
 });
 
 watch(() => route.query.autoExpand as string | undefined, (val) => {
-  autoExpand.value = val ?? undefined;
   if (!val) return;
+  autoExpand.value = val;
   if (import.meta.client) {
     nextTick(() => router.replace({ query: {} }));
   }
