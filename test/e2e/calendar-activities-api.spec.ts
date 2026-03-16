@@ -1,15 +1,19 @@
 import { test, expect } from '@playwright/test'
 
+function expectSearchResult (body: any): void {
+  expect(body).toHaveProperty('total')
+  expect(body).toHaveProperty('rows')
+  expect(Array.isArray(body.rows)).toBe(true)
+}
+
 test.describe('calendar-activities API', () => {
   test('GET /api/calendar-activities returns valid search result', async ({ request }) => {
     const response = await request.get('/api/calendar-activities?limit=2')
     expect(response.status()).toBe(200)
 
     const body = await response.json()
-    expect(body).toHaveProperty('total')
-    expect(body).toHaveProperty('rows')
+    expectSearchResult(body)
     expect(typeof body.total).toBe('number')
-    expect(Array.isArray(body.rows)).toBe(true)
   })
 
   test('GET /api/calendar-activities rows have expected shape', async ({ request }) => {
@@ -30,9 +34,7 @@ test.describe('calendar-activities API', () => {
     expect(response.status()).toBe(200)
 
     const body = await response.json()
-    expect(body).toHaveProperty('total')
-    expect(body).toHaveProperty('rows')
-    expect(Array.isArray(body.rows)).toBe(true)
+    expectSearchResult(body)
     expect(body.rows.length).toBeLessThanOrEqual(4)
   })
 
@@ -41,7 +43,7 @@ test.describe('calendar-activities API', () => {
     expect(response.status()).toBe(200)
 
     const body = await response.json()
-    expect(body).toHaveProperty('total')
+    expectSearchResult(body)
     expect(body.total).toBeGreaterThan(0)
     expect(body.rows.length).toBeGreaterThan(0)
   })
