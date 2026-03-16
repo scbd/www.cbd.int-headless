@@ -7,10 +7,10 @@ test.describe('mega menu calendar activities', () => {
     const twoDaysAgo = new Date()
     twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
     const twoDaysAgoStr = `${twoDaysAgo.toISOString().split('T')[0] ?? ''}T00:00:00Z`
-    const fieldQueries = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
+    const dateQuery = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
 
     const apiResponse = await request.get(
-      `/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`
+      `/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&query=${encodeURIComponent(dateQuery)}`
     )
     const apiBody = await apiResponse.json()
     const expectedCount = apiBody.rows.length
@@ -75,10 +75,10 @@ test.describe('mega menu calendar activities', () => {
     const twoDaysAgo = new Date()
     twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
     const twoDaysAgoStr = `${twoDaysAgo.toISOString().split('T')[0] ?? ''}T00:00:00Z`
-    const fieldQueries = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
+    const dateQuery = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
 
     const apiResponse = await request.get(
-      `/api/calendar-activities?limit=4&sort=actionRequiredByParties_b%20desc%2C%20startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`
+      `/api/calendar-activities?limit=4&sort=actionRequiredByParties_b%20desc%2C%20startDateCOA_dt%20asc&query=${encodeURIComponent(dateQuery)}`
     )
     const apiBody = await apiResponse.json()
 
@@ -129,10 +129,10 @@ test.describe('mega menu calendar activities', () => {
     const twoDaysAgo = new Date()
     twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
     const twoDaysAgoStr = `${twoDaysAgo.toISOString().split('T')[0] ?? ''}T00:00:00Z`
-    const fieldQueries = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
+    const dateQuery = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
 
     const apiResponse = await request.get(
-      `/api/calendar-activities?limit=4&sort=actionRequiredByParties_b%20desc%2C%20startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`
+      `/api/calendar-activities?limit=4&sort=actionRequiredByParties_b%20desc%2C%20startDateCOA_dt%20asc&query=${encodeURIComponent(dateQuery)}`
     )
     const apiBody = await apiResponse.json()
 
@@ -181,14 +181,14 @@ test.describe('mega menu calendar activities', () => {
     expect(iframeSrc, 'iframe src should still contain autoExpand after load').toContain(`autoExpand=${expectedId}`)
   })
 
-  test('calendar activities API returns only future activities when fieldQueries date filter is applied', async ({ request }) => {
+  test('calendar activities API returns only future activities when query date filter is applied', async ({ request }) => {
     const twoDaysAgo = new Date()
     twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
     const twoDaysAgoStr = `${twoDaysAgo.toISOString().split('T')[0] ?? ''}T00:00:00Z`
-    const fieldQueries = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
+    const dateQuery = `startDateCOA_dt:[${twoDaysAgoStr} TO *]`
 
     const response = await request.get(
-      `/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&fieldQueries=${encodeURIComponent(fieldQueries)}`
+      `/api/calendar-activities?limit=4&sort=startDateCOA_dt%20asc&query=${encodeURIComponent(dateQuery)}`
     )
     expect(response.status()).toBe(200)
 

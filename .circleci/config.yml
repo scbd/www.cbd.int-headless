@@ -96,8 +96,8 @@ jobs:
             exit 1
       - run:
           name: Run e2e tests
-          command: yarn test:e2e
-          no_output_timeout: 3m
+          command: npx playwright test --reporter=list
+          no_output_timeout: 1m
       - store_artifacts:
           path: playwright-report
           destination: playwright-report
