@@ -8,14 +8,14 @@ import type { QueryParams } from '~~/types/api/query-params'
 import type { Menu } from '~~/types/menu'
 import type { Portal } from '~~/types/portal'
 import type { Image } from '~~/types/image'
-import { MENU_CACHE_DURATION_MS } from '~~/constants/cache'
+import { MENU_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
 import { DEFAULT_IMAGE, DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
 
 const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
 })
 
-const drupalCache = new Cache({ name: 'drupalCache', expiry: MENU_CACHE_DURATION_MS, maxSize: 200 })
+const drupalCache = new Cache({ name: 'drupalCache', expiry: MENU_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
 
 // Cache structure
 interface MenuCacheEntry {
@@ -40,7 +40,12 @@ interface ProcessedMenuItem {
 }
 
 // In-memory cache: Map<menuCode, MenuCacheEntry>
-const menuCache = new Map<string, MenuCacheEntry>()
+const menuCache = new Cache({
+  name: 'menuCache',
+  expiry: MENU_CACHE_DURATION_MS,
+  maxSize: 50
+})
+menuCache.startPurgeTimer()
 
 export async function getRoute (url: string): Promise<DrupalRouterResponse> {
   const cacheKey = `route-${url}`
@@ -250,7 +255,7 @@ export async function listPages (options?: QueryParams): Promise<{ rows: Content
 
 async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
   const now = Date.now()
-  const cached = menuCache.get(code)
+  const cached = menuCache.get<MenuCacheEntry>(code)
 
   // Return cached data if valid (not expired)
   if (cached != null && (now - cached.timestamp) < MENU_CACHE_DURATION_MS) {

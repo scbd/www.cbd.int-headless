@@ -2,7 +2,7 @@ import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, toLString, normalizeCode } from '~~/utils/solr'
 import { Cache } from '~~/utils/cache'
-import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
+import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Nbsap } from '~~/types/nbsap'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -12,7 +12,7 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-const solrCache = new Cache({ name: 'nbsapCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+const solrCache = new Cache({ name: 'nbsapCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
 solrCache.startPurgeTimer()
 
 export async function getNbsap (code: string): Promise<Nbsap> {

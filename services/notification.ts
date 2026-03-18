@@ -3,7 +3,7 @@ import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, toLString, toLStringArray, andOr, normalizeCode } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
 import { Cache } from '~~/utils/cache'
-import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
+import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Notification } from '~~/types/notification'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -14,7 +14,7 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-const solrCache = new Cache({ name: 'notificationCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+const solrCache = new Cache({ name: 'notificationCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
 solrCache.startPurgeTimer()
 
 export async function getNotification (code: string): Promise<Notification> {

@@ -2,7 +2,7 @@ import SolrIndexApi from '~~/api/solr-index'
 import { toLString, toLStringArray } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
 import { Cache } from '~~/utils/cache'
-import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
+import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { RecentUpdate } from '~~/types/recent-updates'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -14,7 +14,7 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-const solrCache = new Cache({ name: 'recentUpdatesCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+const solrCache = new Cache({ name: 'recentUpdatesCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
 solrCache.startPurgeTimer()
 
 export async function listRecentUpdates (options: QueryParams): Promise<SearchResult<RecentUpdate>> {
