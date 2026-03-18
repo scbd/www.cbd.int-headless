@@ -53,7 +53,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
 
   const { response } = await api.querySolr(params)
 
-  const meetingList: Meeting[] = await Promise.all(response.docs.map(async (item: any): Promise<Meeting> => ({
+  const results = await Promise.allSettled(response.docs.map(async (item: any): Promise<Meeting> => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
@@ -73,6 +73,10 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
       }
     })()
   })))
+
+  const meetingList = results
+    .filter((r): r is PromiseFulfilledResult<Meeting> => r.status === 'fulfilled')
+    .map(r => r.value)
 
   const result = { total: response.numFound, rows: meetingList }
   return solrCache.set(cacheKey, result)

@@ -61,7 +61,7 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
 
   const { response } = await api.querySolr(params)
 
-  const statementList: Statement[] = await Promise.all(response.docs.map(async (item: any): Promise<Statement> => ({
+  const results = await Promise.allSettled(response.docs.map(async (item: any): Promise<Statement> => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
@@ -77,6 +77,10 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
       }
     })()
   })))
+
+  const statementList = results
+    .filter((r): r is PromiseFulfilledResult<Statement> => r.status === 'fulfilled')
+    .map(r => r.value)
 
   const result = { total: response.numFound, rows: statementList }
   return solrCache.set(cacheKey, result)
