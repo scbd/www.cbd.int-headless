@@ -1,3 +1,9 @@
 export default defineEventHandler((event) => {
-    console.log('New request:', getRequestURL(event).href);
+  if (Math.random() < 0.1) { // Log 10% of requests
+    const mem = process.memoryUsage()
+    console.log('Memory:', {
+      heapUsed: Math.round(mem.heapUsed / 1024 / 1024) + 'MB',
+      rss: Math.round(mem.rss / 1024 / 1024) + 'MB'
+    })
+  }
 })

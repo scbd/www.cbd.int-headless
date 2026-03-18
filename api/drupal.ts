@@ -1,10 +1,12 @@
 import ApiBase from 'api-client/api-base'
 import type { Image } from '~~/types/image'
 import { mandatory, handleError } from 'api-client/api-error'
+import { API_TIMEOUT } from '~~/constants/cache'
 export default class DrupalApi extends ApiBase {
   constructor (options: { baseURL: string }) {
     super({
       ...options,
+      timeout: API_TIMEOUT,
       onResponseError: handleError
     })
   };

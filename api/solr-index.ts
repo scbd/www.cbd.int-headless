@@ -2,11 +2,12 @@ import ApiBase from 'api-client/api-base'
 import { handleError } from 'api-client/api-error'
 import type { SolrQuery } from '~~/types/api/solr'
 import { localizeFields } from '~~/utils/solr'
-
+import { API_TIMEOUT } from '~~/constants/cache'
 export default class SolrIndexApi extends ApiBase {
   constructor (options: { baseURL: string }) {
     super({
       ...options,
+      timeout: API_TIMEOUT,
       onResponseError: handleError // TODO: mix with api-base/concatInterceptors
     })
   };
