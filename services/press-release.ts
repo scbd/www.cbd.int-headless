@@ -53,7 +53,7 @@ async function searchPressReleases (options?: QueryParams & { code?: string }): 
 
   const { response } = await api.querySolr(params)
 
-  const results = await Promise.allSettled(response.docs.map(async (item: any): Promise<PressRelease> => ({
+  const pressReleaseList: PressRelease[] = await Promise.all(response.docs.map(async (item: any): Promise<PressRelease> => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
@@ -69,10 +69,6 @@ async function searchPressReleases (options?: QueryParams & { code?: string }): 
     createdOn: new Date(item.createdDate_dt),
     updatedOn: new Date(item.updatedDate_dt)
   })))
-
-  const pressReleaseList = results
-    .filter((r): r is PromiseFulfilledResult<PressRelease> => r.status === 'fulfilled')
-    .map(r => r.value)
 
   const result = { total: response.numFound, rows: pressReleaseList }
   return solrCache.set(cacheKey, result)

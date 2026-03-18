@@ -53,7 +53,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
 
   const { response } = await api.querySolr(params)
 
-  const results = await Promise.allSettled(response.docs.map(async (item: any): Promise<Notification> => ({
+  const notificationList: Notification[] = await Promise.all(response.docs.map(async (item: any): Promise<Notification> => ({
     id: item.id,
     code: item.symbol_s,
     title: toLString(item, 'title'),
@@ -88,10 +88,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     })()
   })))
 
-  const notificationList = results
-    .filter((r): r is PromiseFulfilledResult<Notification> => r.status === 'fulfilled')
-    .map(r => r.value)
-
   const result = { total: response.numFound, rows: notificationList }
+
   return solrCache.set(cacheKey, result)
 }

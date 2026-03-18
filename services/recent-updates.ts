@@ -33,7 +33,7 @@ export async function listRecentUpdates (options: QueryParams): Promise<SearchRe
 
   const { response } = await api.querySolr(params)
 
-  const results = await Promise.allSettled(
+  const recentUpdatesList: RecentUpdate[] = await Promise.all(
     response.docs.map(async (item: any): Promise<RecentUpdate> => ({
       id: item.id,
       code: item.symbol_s,
@@ -59,11 +59,8 @@ export async function listRecentUpdates (options: QueryParams): Promise<SearchRe
     }))
   )
 
-  const recentUpdatesList = results
-    .filter((r): r is PromiseFulfilledResult<RecentUpdate> => r.status === 'fulfilled')
-    .map(r => r.value)
-
   const result = { total: response.numFound, rows: recentUpdatesList }
+
   return solrCache.set(cacheKey, result)
 }
 

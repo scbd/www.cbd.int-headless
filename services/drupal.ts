@@ -44,7 +44,7 @@ interface ProcessedMenuItem {
 const menuCache = new Cache({
   name: 'menuCache',
   expiry: MENU_CACHE_DURATION_MS,
-  maxSize: 50
+  maxSize: CACHE_MAX_SIZE
 })
 menuCache.startPurgeTimer()
 
@@ -179,7 +179,7 @@ export async function listArticles (options?: QueryParams): Promise<{ rows: Arti
     skip: options?.skip,
   })
 
-  const results = await Promise.allSettled(
+  const articles = await Promise.all(
     data.map(async (item: any) => {
       const { attributes } = item
       const { meta } = item?.relationships?.field_image?.data
@@ -205,26 +205,18 @@ export async function listArticles (options?: QueryParams): Promise<{ rows: Arti
         path: ''
       }
 
-      try {
-        const media = await drupalApi.getMedia(item?.relationships?.field_image?.data?.id)
+      const media = await drupalApi.getMedia(item?.relationships?.field_image?.data?.id)
 
-        if (media !== null) {
-          article.coverImage = {
-            ...article.coverImage,
-            path: contentNormalizer(media?.data?.attributes?.uri?.url)
-          }
+      if (media !== null) {
+        article.coverImage = {
+          ...article.coverImage,
+          path: contentNormalizer(media?.data?.attributes?.uri?.url)
         }
-      } catch {
-        // Keep default empty path on media fetch failure
       }
 
       return article
     })
   )
-
-  const articles = results
-    .filter((r): r is PromiseFulfilledResult<Article> => r.status === 'fulfilled')
-    .map(r => r.value)
 
   return { rows: articles, total }
 }
