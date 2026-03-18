@@ -16,6 +16,7 @@ const drupalApi = new DrupalApi({
 })
 
 const drupalCache = new Cache({ name: 'drupalCache', expiry: MENU_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
+drupalCache.startPurgeTimer()
 
 // Cache structure
 interface MenuCacheEntry {
