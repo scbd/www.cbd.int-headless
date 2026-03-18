@@ -48,32 +48,30 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
   }
 
   const cacheKey = JSON.stringify(params)
-  const cached = solrCache.get<SearchResult<Meeting>>(cacheKey)
-  if (cached !== null) return cached
+  return solrCache.getOrFetch(cacheKey, async () => {
+    const { response } = await api.querySolr(params)
 
-  const { response } = await api.querySolr(params)
+    const meetingList: Meeting[] = await Promise.all(response.docs.map(async (item: any): Promise<Meeting> => ({
+      id: item.id,
+      code: item.symbol_s,
+      title: toLString(item, 'title'),
+      urls: item.url_ss,
+      themes: toLStringArray(item, 'themes'),
+      startOn: new Date(item.startDate_dt),
+      endOn: new Date(item.endDate_dt),
+      createdOn: new Date(item.createdDate_dt),
+      updatedOn: new Date(item.updatedDate_dt),
+      country: toLString(item, 'eventCountry'),
+      city: toLString(item, 'eventCity'),
+      image: await (async () => {
+        try {
+          return await getImage(item.symbol_s, 'meetings')
+        } catch {
+          return DEFAULT_IMAGE
+        }
+      })()
+    })))
 
-  const meetingList: Meeting[] = await Promise.all(response.docs.map(async (item: any): Promise<Meeting> => ({
-    id: item.id,
-    code: item.symbol_s,
-    title: toLString(item, 'title'),
-    urls: item.url_ss,
-    themes: toLStringArray(item, 'themes'),
-    startOn: new Date(item.startDate_dt),
-    endOn: new Date(item.endDate_dt),
-    createdOn: new Date(item.createdDate_dt),
-    updatedOn: new Date(item.updatedDate_dt),
-    country: toLString(item, 'eventCountry'),
-    city: toLString(item, 'eventCity'),
-    image: await (async () => {
-      try {
-        return await getImage(item.symbol_s, 'meetings')
-      } catch {
-        return DEFAULT_IMAGE
-      }
-    })()
-  })))
-
-  const result = { total: response.numFound, rows: meetingList }
-  return solrCache.set(cacheKey, result)
+    return { total: response.numFound, rows: meetingList }
+  })
 }

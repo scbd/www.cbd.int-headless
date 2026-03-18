@@ -20,6 +20,7 @@ export class Cache {
   private readonly purgeInterval: number | null
   private readonly store = new Map<string, CacheEntry<unknown>>()
   private purgeTimer: ReturnType<typeof setTimeout> | null = null
+  private readonly pending = new Map<string, Promise<unknown>>()
 
   constructor (options: CacheOptions = {}) {
     this.name = options.name ?? 'default'
@@ -95,6 +96,28 @@ export class Cache {
 
   has (key: string): boolean {
     return this.get(key) !== null
+  }
+
+  async getOrFetch<T>(key: string, fetchFn: () => Promise<T>): Promise<T> {
+    const cached = this.get<T>(key)
+    if (cached !== null) return cached
+
+    const inflight = this.pending.get(key)
+    if (inflight !== undefined) return inflight as Promise<T>
+
+    const promise = fetchFn().then(
+      (value) => {
+        this.pending.delete(key)
+        return this.set(key, value)
+      },
+      (error) => {
+        this.pending.delete(key)
+        throw error
+      }
+    )
+
+    this.pending.set(key, promise)
+    return promise
   }
 
   get size (): number {

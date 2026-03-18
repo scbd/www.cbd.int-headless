@@ -48,47 +48,44 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
   }
 
   const cacheKey = JSON.stringify(params)
-  const cached = solrCache.get<SearchResult<Notification>>(cacheKey)
-  if (cached !== null) return cached
+  return solrCache.getOrFetch(cacheKey, async () => {
+    const { response } = await api.querySolr(params)
 
-  const { response } = await api.querySolr(params)
+    const notificationList: Notification[] = await Promise.all(response.docs.map(async (item: any): Promise<Notification> => ({
+      id: item.id,
+      code: item.symbol_s,
+      title: toLString(item, 'title'),
+      urls: item.url_ss,
+      file: (() => {
+        try {
+          const parsed = JSON.parse(item.files_ss?.[0])
+          const f = parsed?.[0]
+          if (f === undefined || f === null) return null
+          return { url: f.url, language: f.language, type: f.type }
+        } catch {
+          return null
+        }
+      })(),
+      themes: toLStringArray(item, 'themes'),
+      createdOn: new Date(item.createdDate_dt),
+      endOn: new Date(item.endDate_dt),
+      updatedOn: new Date(item.updatedDate_dt),
+      actionOn: new Date(item.actionDate_dt),
+      deadlineOn: new Date(item.deadline_dt),
+      reference: item.reference_t,
+      fulltext: toLString(item, 'fulltext'),
+      from: toLString(item, 'from'),
+      recipients: item.recipient_txt,
+      sender: item.sender_t,
+      image: await (async () => {
+        try {
+          return await getImage(item.symbol_s, 'notifications')
+        } catch {
+          return DEFAULT_IMAGE
+        }
+      })()
+    })))
 
-  const notificationList: Notification[] = await Promise.all(response.docs.map(async (item: any): Promise<Notification> => ({
-    id: item.id,
-    code: item.symbol_s,
-    title: toLString(item, 'title'),
-    urls: item.url_ss,
-    file: (() => {
-      try {
-        const parsed = JSON.parse(item.files_ss?.[0])
-        const f = parsed?.[0]
-        if (f === undefined || f === null) return null
-        return { url: f.url, language: f.language, type: f.type }
-      } catch {
-        return null
-      }
-    })(),
-    themes: toLStringArray(item, 'themes'),
-    createdOn: new Date(item.createdDate_dt),
-    endOn: new Date(item.endDate_dt),
-    updatedOn: new Date(item.updatedDate_dt),
-    actionOn: new Date(item.actionDate_dt),
-    deadlineOn: new Date(item.deadline_dt),
-    reference: item.reference_t,
-    fulltext: toLString(item, 'fulltext'),
-    from: toLString(item, 'from'),
-    recipients: item.recipient_txt,
-    sender: item.sender_t,
-    image: await (async () => {
-      try {
-        return await getImage(item.symbol_s, 'notifications')
-      } catch {
-        return DEFAULT_IMAGE
-      }
-    })()
-  })))
-
-  const result = { total: response.numFound, rows: notificationList }
-
-  return solrCache.set(cacheKey, result)
+    return { total: response.numFound, rows: notificationList }
+  })
 }

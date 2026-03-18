@@ -40,21 +40,19 @@ async function searchNbsaps (options?: QueryParams & { code?: string }): Promise
   }
 
   const cacheKey = JSON.stringify(params)
-  const cached = solrCache.get<SearchResult<Nbsap>>(cacheKey)
-  if (cached !== null) return cached
+  return solrCache.getOrFetch(cacheKey, async () => {
+    const { response } = await api.querySolr(params)
 
-  const { response } = await api.querySolr(params)
+    const nbsapList: Nbsap[] = response.docs.map((item: any): Nbsap => ({
+      id: item.id,
+      code: item.uniqueIdentifier_t,
+      title: toLString(item, 'title'),
+      urls: item.url_ss,
+      country: toLString(item, 'government'),
+      createdOn: new Date(item.createdDate_dt),
+      updatedOn: new Date(item.updatedDate_dt)
+    }))
 
-  const nbsapList: Nbsap[] = response.docs.map((item: any): Nbsap => ({
-    id: item.id,
-    code: item.uniqueIdentifier_t,
-    title: toLString(item, 'title'),
-    urls: item.url_ss,
-    country: toLString(item, 'government'),
-    createdOn: new Date(item.createdDate_dt),
-    updatedOn: new Date(item.updatedDate_dt)
-  }))
-
-  const result = { total: response.numFound, rows: nbsapList }
-  return solrCache.set(cacheKey, result)
+    return { total: response.numFound, rows: nbsapList }
+  })
 }

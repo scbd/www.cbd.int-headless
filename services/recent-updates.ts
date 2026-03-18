@@ -28,40 +28,37 @@ export async function listRecentUpdates (options: QueryParams): Promise<SearchRe
   }
 
   const cacheKey = JSON.stringify(params)
-  const cached = solrCache.get<SearchResult<RecentUpdate>>(cacheKey)
-  if (cached !== null) return cached
+  return solrCache.getOrFetch(cacheKey, async () => {
+    const { response } = await api.querySolr(params)
 
-  const { response } = await api.querySolr(params)
+    const recentUpdatesList: RecentUpdate[] = await Promise.all(
+      response.docs.map(async (item: any): Promise<RecentUpdate> => ({
+        id: item.id,
+        code: item.symbol_s,
+        category: item.schema_s,
+        title: toLString(item, 'title'),
+        urls: item.url_ss,
+        themes: toLStringArray(item, 'themes'),
+        createdOn: new Date(item.createdDate_dt),
+        updatedOn: new Date(item.updatedDate_dt),
+        ...(item.schema_s === 'meeting' && {
+          startOn: new Date(item.startDate_dt),
+          endOn: new Date(item.endDate_dt),
+          country: toLString(item, 'eventCountry'),
+          city: toLString(item, 'eventCity')
+        }),
+        image: await (async () => {
+          try {
+            return await getImage(item.symbol_s, pluralizeImageCategory(item.schema_s))
+          } catch {
+            return DEFAULT_IMAGE
+          }
+        })()
+      }))
+    )
 
-  const recentUpdatesList: RecentUpdate[] = await Promise.all(
-    response.docs.map(async (item: any): Promise<RecentUpdate> => ({
-      id: item.id,
-      code: item.symbol_s,
-      category: item.schema_s,
-      title: toLString(item, 'title'),
-      urls: item.url_ss,
-      themes: toLStringArray(item, 'themes'),
-      createdOn: new Date(item.createdDate_dt),
-      updatedOn: new Date(item.updatedDate_dt),
-      ...(item.schema_s === 'meeting' && {
-        startOn: new Date(item.startDate_dt),
-        endOn: new Date(item.endDate_dt),
-        country: toLString(item, 'eventCountry'),
-        city: toLString(item, 'eventCity')
-      }),
-      image: await (async () => {
-        try {
-          return await getImage(item.symbol_s, pluralizeImageCategory(item.schema_s))
-        } catch {
-          return DEFAULT_IMAGE
-        }
-      })()
-    }))
-  )
-
-  const result = { total: response.numFound, rows: recentUpdatesList }
-
-  return solrCache.set(cacheKey, result)
+    return { total: response.numFound, rows: recentUpdatesList }
+  })
 }
 
 // TO-DO: currently the schema_s from solr returns meeting and the media endpoint in drupal returns meetings

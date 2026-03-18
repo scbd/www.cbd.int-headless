@@ -49,12 +49,7 @@ const menuCache = new Cache({
 menuCache.startPurgeTimer()
 
 export async function getRoute (url: string): Promise<DrupalRouterResponse> {
-  const cacheKey = `route-${url}`
-  const cached = drupalCache.get<DrupalRouterResponse>(cacheKey)
-  if (cached !== null) return cached
-
-  const route = await drupalApi.getRoute(url)
-  return drupalCache.set(cacheKey, route)
+  return drupalCache.getOrFetch(`route-${url}`, () => drupalApi.getRoute(url))
 }
 
 export async function getContent (url: string): Promise<Content | Article> {
@@ -146,26 +141,22 @@ export async function getPortal (id: string): Promise<Portal[]> {
 
 export async function getImage (id: string, category: Image['category']): Promise<Image> {
   try {
-    const cacheKey = `image-${category}-${id}`
-    const cached = drupalCache.get<Image>(cacheKey)
-    if (cached !== null) return cached
+    return await drupalCache.getOrFetch(`image-${category}-${id}`, async () => {
+      const data = await drupalApi.getImage(id, category)
 
-    const data = await drupalApi.getImage(id, category)
+      const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
+      const path = data?.included?.[0]?.attributes?.uri?.url
 
-    const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
-    const path = data?.included?.[0]?.attributes?.uri?.url
+      if (attributes?.id === null || attributes?.id === undefined) return DEFAULT_IMAGE
 
-    if (attributes?.id === null || attributes?.id === undefined) return DEFAULT_IMAGE
-
-    const contentImage = {
-      category,
-      alt: attributes?.meta?.alt,
-      width: attributes?.meta?.width,
-      height: attributes?.meta?.height,
-      path: contentNormalizer(path)
-    }
-
-    return drupalCache.set(cacheKey, contentImage)
+      return {
+        category,
+        alt: attributes?.meta?.alt,
+        width: attributes?.meta?.width,
+        height: attributes?.meta?.height,
+        path: contentNormalizer(path)
+      }
+    })
   } catch (error) {
     throw badRequest(`Error fetching ${id}.`)
   }
