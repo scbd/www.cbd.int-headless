@@ -38,6 +38,9 @@ export class Cache {
         this.purgeExpired()
         schedule()
       }, this.purgeInterval!)
+      if (typeof this.purgeTimer === 'object' && 'unref' in this.purgeTimer) {
+        this.purgeTimer.unref()
+      }
     }
     schedule()
   }
@@ -111,6 +114,11 @@ export class Cache {
   }
 
   private purgeExpired (): void {
-    for (const [key] of this.store) this.get(key)
+    const now = Date.now()
+    for (const [key, entry] of this.store) {
+      if (entry.expiry !== null && now - entry.createdAt > entry.expiry) {
+        this.store.delete(key)
+      }
+    }
   }
 }
