@@ -43,7 +43,7 @@ interface ProcessedMenuItem {
 // In-memory cache: Map<menuCode, MenuCacheEntry>
 const menuCache = new Cache({
   name: 'menuCache',
-  expiry: MENU_CACHE_DURATION_MS,
+  expiry: null,
   maxSize: CACHE_MAX_SIZE
 })
 menuCache.startPurgeTimer()
