@@ -12,11 +12,11 @@
           {{ menuItem.title }}
         </NuxtLink>
 
-        <ul v-if="menuItem.component" class="level-3-items nav">
-          <async-block>
-            <navigation-mega-menu-dynamic-content :component="menuItem.component" />
-          </async-block>
-        </ul>
+        <async-block>
+          <ul v-if="menuItem.component" class="level-3-items nav">
+              <navigation-mega-menu-dynamic-content :component="menuItem.component" />
+          </ul>
+        </async-block>
 
         <ul v-if="menuItem.children" class="level-3-items nav">
           <navigation-mega-menu-list-item :menu="menuItem" />
