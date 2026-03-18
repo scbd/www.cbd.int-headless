@@ -328,21 +328,39 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
       }
     })
 
-    // Cache the result
-    menuCache.set(code, {
-      data: processed,
-      timestamp: now
-    })
+    // Cache the final result (without promise) to release closure references
+    const entry: MenuCacheEntry = { data: processed, timestamp: now }
+    menuCache.set(code, entry)
 
     return processed
   })()
+
+  // Attach a cleanup handler so the promise reference is cleared on
+  // both success and failure, releasing the closures over rawData,
+  // itemsById, childrenMap, etc.
+  const cleanedPromise = loadPromise.then(
+    (result) => {
+      const current = menuCache.get<MenuCacheEntry>(code)
+      if (current?.promise != null) {
+        menuCache.set(code, { data: current.data, timestamp: current.timestamp })
+      }
+      return result
+    },
+    (error) => {
+      const current = menuCache.get<MenuCacheEntry>(code)
+      if (current?.promise != null) {
+        menuCache.set(code, { data: current.data, timestamp: current.timestamp })
+      }
+      throw error
+    }
+  )
 
   // Store promise to prevent concurrent requests
   // Preserve existing stale data if available
   menuCache.set(code, {
     data: cached?.data ?? [],
     timestamp: cached?.timestamp ?? 0,
-    promise: loadPromise
+    promise: cleanedPromise
   })
 
   // Return stale data immediately if available, otherwise wait for fresh data
@@ -350,7 +368,7 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
     return cached.data
   }
 
-  return await loadPromise
+  return await cleanedPromise
 }
 
 /**
