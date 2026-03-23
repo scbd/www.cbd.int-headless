@@ -5,7 +5,7 @@ import { getImage } from '~~/services/drupal'
 import { Cache } from '~~/utils/cache'
 import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
-import type { Notification } from '~~/types/notification'
+import type { Notification, Submission } from '~~/types/notification'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
 import { DEFAULT_IMAGE } from '~~/constants/image-paths'
@@ -87,5 +87,44 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     })))
 
     return { total: response.numFound, rows: notificationList }
+  })
+}
+
+export async function listSubmissions (options: QueryParams & { code?: string }): Promise<SearchResult<Submission>> {
+  return await searchSubmission(options)
+}
+
+async function searchSubmission (options?: QueryParams & { code?: string }): Promise<SearchResult<Submission>> {
+  const query = options?.code !== undefined && options.code !== '' ? `notifications_ss:${solrEscape(options.code)}` : '*.*'
+
+  const fqParts: string[] = ['schema_s:submission']
+  if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
+    fqParts.push(options.fieldQueries)
+  }
+  const fieldQueries = andOr(fqParts, 'AND')
+
+  const params: SolrQuery = {
+    query,
+    fieldQueries,
+    sort: options?.sort ?? 'updatedDate_dt DESC',
+    fields: 'id,title_t,government_t,url_ss,notifications_ss,submittedDate_dt',
+    start: options?.skip ?? 0,
+    rowsPerPage: options?.limit ?? 500
+  }
+
+  const cacheKey = JSON.stringify(params)
+  return solrCache.getOrFetch(cacheKey, async () => {
+    const { response } = await api.querySolr(params)
+
+    const submissionList: Submission[] = response.docs.map((item: any): Submission => ({
+      id: item.id,
+      title: item.title_t,
+      government: item.government_t,
+      notifications: item.notifications_ss,
+      urls: item.url_ss,
+      submittedDate: new Date(item.submittedDate_dt)
+    }))
+
+    return { total: response.numFound, rows: submissionList }
   })
 }

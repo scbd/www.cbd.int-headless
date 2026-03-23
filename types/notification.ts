@@ -23,3 +23,12 @@ export interface Notification {
   recipients: string[]
   image: Image
 }
+
+export interface Submission {
+  id: string
+  title: string
+  government?: string
+  notifications: string[]
+  urls: string[]
+  submittedDate: Date
+}
