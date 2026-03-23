@@ -108,7 +108,7 @@ const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
-const { submissions } = await useSubmissionsApi(props.code)
+const { submissions } = await useSubmissionsApi(props.code, { limit: 500 })
 const { countries } = await useCountriesApi()
 
 const countryMap = computed(() => {

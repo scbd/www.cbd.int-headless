@@ -109,7 +109,7 @@ async function searchSubmission (options?: QueryParams & { code?: string }): Pro
     sort: options?.sort ?? 'updatedDate_dt DESC',
     fields: 'id,title_t,government_t,url_ss,documents_ss,notifications_ss,submittedDate_dt',
     start: options?.skip ?? 0,
-    rowsPerPage: options?.limit ?? 500
+    rowsPerPage: options?.limit ?? 10
   }
 
   const cacheKey = JSON.stringify(params)
