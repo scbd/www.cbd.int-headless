@@ -38,7 +38,7 @@
                 <div class="information">
                 <div class="date">{{ toFormatDate(notification.createdOn) }}</div>
                 <NuxtLink :to="notification.urls?.[0]" class="title">
-                    {{ notification.code }} &ndash; {{ toLocaleText(notification.title) }}
+                    {{ notification.code }} &ndash; {{ toLocaleText(notification.title) }} ({{ notification.reference }})
                 </NuxtLink>
                 <div v-if="notification.actionOn" class="action-required">
                     {{ t('actionRequired') }} {{ toFormatDate(notification.actionOn) }}
