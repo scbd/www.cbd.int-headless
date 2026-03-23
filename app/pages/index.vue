@@ -1,6 +1,8 @@
 <template>
   <main class="cus-main cus-landing-page d-flex flex-column" role="main">
-    <hero />
+    <async-block>
+      <hero />
+    </async-block>
     <div class="cus-article container-xxl d-flex flex-column">
       <async-block>
         <recent-update-card-list />
