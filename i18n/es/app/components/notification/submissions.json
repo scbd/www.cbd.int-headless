@@ -1,0 +1,8 @@
+{
+    "submissions": "Presentaciones",
+    "parties": "Partes",
+    "observers": "Observadores",
+    "submittedOn": "Presentado el {date}",
+    "noSubmissions": "No se han recibido presentaciones.",
+    "viewDocument": "Ver documento"
+}
