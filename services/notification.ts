@@ -107,7 +107,7 @@ async function searchSubmission (options?: QueryParams & { code?: string }): Pro
     query,
     fieldQueries,
     sort: options?.sort ?? 'updatedDate_dt DESC',
-    fields: 'id,title_t,government_t,url_ss,notifications_ss,submittedDate_dt',
+    fields: 'id,title_t,government_t,url_ss,documents_ss,notifications_ss,submittedDate_dt',
     start: options?.skip ?? 0,
     rowsPerPage: options?.limit ?? 500
   }
@@ -122,6 +122,7 @@ async function searchSubmission (options?: QueryParams & { code?: string }): Pro
       government: item.government_t,
       notifications: item.notifications_ss,
       urls: item.url_ss,
+      files: item.documents_ss,
       submittedDate: new Date(item.submittedDate_dt)
     }))
 

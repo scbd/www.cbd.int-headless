@@ -30,5 +30,6 @@ export interface Submission {
   government?: string
   notifications: string[]
   urls: string[]
+  files: string[]
   submittedDate: Date
 }
