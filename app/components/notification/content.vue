@@ -52,6 +52,8 @@
         </div>
         <div class="description" v-html="convertPlainTextToHtml(toLocaleText(notification.fulltext))"></div>
         <div class="description"><p>{{ toLocaleText(notification.from) }}</p></div>
+        
+        <notification-submissions :code="notification.code" />
       </div>
     </section>
   </article>

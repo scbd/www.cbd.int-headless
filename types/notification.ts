@@ -33,3 +33,9 @@ export interface Submission {
   files: string[]
   submittedDate: Date
 }
+
+export interface FileInfo {
+  url: string
+  name: string
+  type: 'pdf' | 'doc' | 'other'
+}
