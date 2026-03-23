@@ -34,7 +34,7 @@ export interface Submission {
   submittedDate: Date
 }
 
-export interface FileInfo {
+export interface NotificationFileInfo {
   url: string
   name: string
   type: 'pdf' | 'doc' | 'other'

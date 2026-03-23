@@ -97,7 +97,7 @@
 <script setup lang="ts">
 import useSubmissionsApi from '~/composables/api/use-submissions'
 import useCountriesApi from '~/composables/api/use-countries'
-import type { Submission, FileInfo } from '~~/types/notification'
+import type { Submission, NotificationFileInfo } from '~~/types/notification'
 import type { Country } from '~~/types/country'
 
 const props = defineProps<{
@@ -136,7 +136,7 @@ function isParty (submission: Submission): boolean {
   return country?.treaties.XXVII8 === true
 }
 
-function getFiles (submission: Submission): FileInfo[] {
+function getFiles (submission: Submission): NotificationFileInfo[] {
   if (!submission.files?.length) return []
   return submission.files.map((url) => {
     const name = decodeURIComponent(url.split('/').pop() || url)
