@@ -2,7 +2,7 @@ import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, toLString, normalizeCode } from '~~/utils/solr'
 import { Cache } from '~~/utils/cache'
-import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
+import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Nbsap } from '~~/types/nbsap'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -12,7 +12,7 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-const solrCache = new Cache({ name: 'nbsapCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+const solrCache = new Cache({ name: 'nbsapCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
 solrCache.startPurgeTimer()
 
 export async function getNbsap (code: string): Promise<Nbsap> {
@@ -40,21 +40,19 @@ async function searchNbsaps (options?: QueryParams & { code?: string }): Promise
   }
 
   const cacheKey = JSON.stringify(params)
-  const cached = solrCache.get<SearchResult<Nbsap>>(cacheKey)
-  if (cached !== null) return cached
+  return solrCache.getOrFetch(cacheKey, async () => {
+    const { response } = await api.querySolr(params)
 
-  const { response } = await api.querySolr(params)
+    const nbsapList: Nbsap[] = response.docs.map((item: any): Nbsap => ({
+      id: item.id,
+      code: item.uniqueIdentifier_t,
+      title: toLString(item, 'title'),
+      urls: item.url_ss,
+      country: toLString(item, 'government'),
+      createdOn: new Date(item.createdDate_dt),
+      updatedOn: new Date(item.updatedDate_dt)
+    }))
 
-  const nbsapList: Nbsap[] = response.docs.map((item: any): Nbsap => ({
-    id: item.id,
-    code: item.uniqueIdentifier_t,
-    title: toLString(item, 'title'),
-    urls: item.url_ss,
-    country: toLString(item, 'government'),
-    createdOn: new Date(item.createdDate_dt),
-    updatedOn: new Date(item.updatedDate_dt)
-  }))
-
-  const result = { total: response.numFound, rows: nbsapList }
-  return solrCache.set(cacheKey, result)
+    return { total: response.numFound, rows: nbsapList }
+  })
 }

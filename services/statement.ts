@@ -3,7 +3,7 @@ import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, andOr, toLString, toLStringArray } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
 import { Cache } from '~~/utils/cache'
-import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
+import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Statement } from '~~/types/statement'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -18,7 +18,7 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-const solrCache = new Cache({ name: 'statementCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+const solrCache = new Cache({ name: 'statementCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
 solrCache.startPurgeTimer()
 
 export async function getStatement (code: string): Promise<Statement> {
@@ -56,28 +56,26 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
   }
 
   const cacheKey = JSON.stringify(params)
-  const cached = solrCache.get<SearchResult<Statement>>(cacheKey)
-  if (cached !== null) return cached
+  return solrCache.getOrFetch(cacheKey, async () => {
+    const { response } = await api.querySolr(params)
 
-  const { response } = await api.querySolr(params)
+    const statementList: Statement[] = await Promise.all(response.docs.map(async (item: any): Promise<Statement> => ({
+      id: item.id,
+      code: item.symbol_s,
+      title: toLString(item, 'title'),
+      urls: item.url_ss,
+      themes: toLStringArray(item, 'themes'),
+      createdOn: new Date(item.createdDate_dt),
+      updatedOn: new Date(item.updatedDate_dt),
+      image: await (async () => {
+        try {
+          return await getImage(item.symbol_s, 'statements')
+        } catch {
+          return DEFAULT_IMAGE
+        }
+      })()
+    })))
 
-  const statementList: Statement[] = await Promise.all(response.docs.map(async (item: any): Promise<Statement> => ({
-    id: item.id,
-    code: item.symbol_s,
-    title: toLString(item, 'title'),
-    urls: item.url_ss,
-    themes: toLStringArray(item, 'themes'),
-    createdOn: new Date(item.createdDate_dt),
-    updatedOn: new Date(item.updatedDate_dt),
-    image: await (async () => {
-      try {
-        return await getImage(item.symbol_s, 'statements')
-      } catch {
-        return DEFAULT_IMAGE
-      }
-    })()
-  })))
-
-  const result = { total: response.numFound, rows: statementList }
-  return solrCache.set(cacheKey, result)
+    return { total: response.numFound, rows: statementList }
+  })
 }

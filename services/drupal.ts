@@ -8,14 +8,15 @@ import type { QueryParams } from '~~/types/api/query-params'
 import type { Menu } from '~~/types/menu'
 import type { Portal } from '~~/types/portal'
 import type { Image } from '~~/types/image'
-import { MENU_CACHE_DURATION_MS } from '~~/constants/cache'
+import { MENU_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
 import { DEFAULT_IMAGE, DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
 
 const drupalApi = new DrupalApi({
   baseURL: useRuntimeConfig().drupalBaseUrl
 })
 
-const drupalCache = new Cache({ name: 'drupalCache', expiry: MENU_CACHE_DURATION_MS, maxSize: 200 })
+const drupalCache = new Cache({ name: 'drupalCache', expiry: MENU_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
+drupalCache.startPurgeTimer()
 
 // Cache structure
 interface MenuCacheEntry {
@@ -40,15 +41,15 @@ interface ProcessedMenuItem {
 }
 
 // In-memory cache: Map<menuCode, MenuCacheEntry>
-const menuCache = new Map<string, MenuCacheEntry>()
+const menuCache = new Cache({
+  name: 'menuCache',
+  expiry: null,
+  maxSize: CACHE_MAX_SIZE
+})
+menuCache.startPurgeTimer()
 
 export async function getRoute (url: string): Promise<DrupalRouterResponse> {
-  const cacheKey = `route-${url}`
-  const cached = drupalCache.get<DrupalRouterResponse>(cacheKey)
-  if (cached !== null) return cached
-
-  const route = await drupalApi.getRoute(url)
-  return drupalCache.set(cacheKey, route)
+  return drupalCache.getOrFetch(`route-${url}`, () => drupalApi.getRoute(url))
 }
 
 export async function getContent (url: string): Promise<Content | Article> {
@@ -140,26 +141,22 @@ export async function getPortal (id: string): Promise<Portal[]> {
 
 export async function getImage (id: string, category: Image['category']): Promise<Image> {
   try {
-    const cacheKey = `image-${category}-${id}`
-    const cached = drupalCache.get<Image>(cacheKey)
-    if (cached !== null) return cached
+    return await drupalCache.getOrFetch(`image-${category}-${id}`, async () => {
+      const data = await drupalApi.getImage(id, category)
 
-    const data = await drupalApi.getImage(id, category)
+      const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
+      const path = data?.included?.[0]?.attributes?.uri?.url
 
-    const attributes = data?.data?.[0]?.relationships?.field_media_image?.data
-    const path = data?.included?.[0]?.attributes?.uri?.url
+      if (attributes?.id === null || attributes?.id === undefined) return DEFAULT_IMAGE
 
-    if (attributes?.id === null || attributes?.id === undefined) return DEFAULT_IMAGE
-
-    const contentImage = {
-      category,
-      alt: attributes?.meta?.alt,
-      width: attributes?.meta?.width,
-      height: attributes?.meta?.height,
-      path: contentNormalizer(path)
-    }
-
-    return drupalCache.set(cacheKey, contentImage)
+      return {
+        category,
+        alt: attributes?.meta?.alt,
+        width: attributes?.meta?.width,
+        height: attributes?.meta?.height,
+        path: contentNormalizer(path)
+      }
+    })
   } catch (error) {
     throw badRequest(`Error fetching ${id}.`)
   }
@@ -250,7 +247,7 @@ export async function listPages (options?: QueryParams): Promise<{ rows: Content
 
 async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
   const now = Date.now()
-  const cached = menuCache.get(code)
+  const cached = menuCache.get<MenuCacheEntry>(code)
 
   // Return cached data if valid (not expired)
   if (cached != null && (now - cached.timestamp) < MENU_CACHE_DURATION_MS) {
@@ -331,21 +328,39 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
       }
     })
 
-    // Cache the result
-    menuCache.set(code, {
-      data: processed,
-      timestamp: now
-    })
+    // Cache the final result (without promise) to release closure references
+    const entry: MenuCacheEntry = { data: processed, timestamp: now }
+    menuCache.set(code, entry)
 
     return processed
   })()
+
+  // Attach a cleanup handler so the promise reference is cleared on
+  // both success and failure, releasing the closures over rawData,
+  // itemsById, childrenMap, etc.
+  const cleanedPromise = loadPromise.then(
+    (result) => {
+      const current = menuCache.get<MenuCacheEntry>(code)
+      if (current?.promise != null) {
+        menuCache.set(code, { data: current.data, timestamp: current.timestamp })
+      }
+      return result
+    },
+    (error) => {
+      const current = menuCache.get<MenuCacheEntry>(code)
+      if (current?.promise != null) {
+        menuCache.set(code, { data: current.data, timestamp: current.timestamp })
+      }
+      throw error
+    }
+  )
 
   // Store promise to prevent concurrent requests
   // Preserve existing stale data if available
   menuCache.set(code, {
     data: cached?.data ?? [],
     timestamp: cached?.timestamp ?? 0,
-    promise: loadPromise
+    promise: cleanedPromise
   })
 
   // Return stale data immediately if available, otherwise wait for fresh data
@@ -353,7 +368,7 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
     return cached.data
   }
 
-  return await loadPromise
+  return await cleanedPromise
 }
 
 /**

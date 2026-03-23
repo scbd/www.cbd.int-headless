@@ -20,6 +20,7 @@ export class Cache {
   private readonly purgeInterval: number | null
   private readonly store = new Map<string, CacheEntry<unknown>>()
   private purgeTimer: ReturnType<typeof setTimeout> | null = null
+  private readonly pending = new Map<string, Promise<unknown>>()
 
   constructor (options: CacheOptions = {}) {
     this.name = options.name ?? 'default'
@@ -38,6 +39,9 @@ export class Cache {
         this.purgeExpired()
         schedule()
       }, this.purgeInterval!)
+      if (typeof this.purgeTimer === 'object' && 'unref' in this.purgeTimer) {
+        this.purgeTimer.unref()
+      }
     }
     schedule()
   }
@@ -94,6 +98,28 @@ export class Cache {
     return this.get(key) !== null
   }
 
+  async getOrFetch<T>(key: string, fetchFn: () => Promise<T>): Promise<T> {
+    const cached = this.get<T>(key)
+    if (cached !== null) return cached
+
+    const inflight = this.pending.get(key)
+    if (inflight !== undefined) return inflight as Promise<T>
+
+    const promise = fetchFn().then(
+      (value) => {
+        this.pending.delete(key)
+        return this.set(key, value)
+      },
+      (error) => {
+        this.pending.delete(key)
+        throw error
+      }
+    )
+
+    this.pending.set(key, promise)
+    return promise
+  }
+
   get size (): number {
     this.purgeExpired()
     return this.store.size
@@ -111,6 +137,11 @@ export class Cache {
   }
 
   private purgeExpired (): void {
-    for (const [key] of this.store) this.get(key)
+    const now = Date.now()
+    for (const [key, entry] of this.store) {
+      if (entry.expiry !== null && now - entry.createdAt > entry.expiry) {
+        this.store.delete(key)
+      }
+    }
   }
 }

@@ -2,7 +2,7 @@ import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, toLString, toLStringArray, andOr } from '~~/utils/solr'
 import { Cache } from '~~/utils/cache'
 import { mandatory, notFound } from 'api-client/api-error'
-import { SOLR_CACHE_DURATION_MS } from '~~/constants/cache'
+import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { PressRelease } from '~~/types/press-release'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -14,7 +14,7 @@ const api = new SolrIndexApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-const solrCache = new Cache({ name: 'pressReleaseCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: 200 })
+const solrCache = new Cache({ name: 'pressReleaseCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
 solrCache.startPurgeTimer()
 
 export async function listPressReleases (options: QueryParams): Promise<SearchResult<PressRelease>> {
@@ -48,30 +48,28 @@ async function searchPressReleases (options?: QueryParams & { code?: string }): 
   }
 
   const cacheKey = JSON.stringify(params)
-  const cached = solrCache.get<SearchResult<PressRelease>>(cacheKey)
-  if (cached !== null) return cached
+  return solrCache.getOrFetch(cacheKey, async () => {
+    const { response } = await api.querySolr(params)
 
-  const { response } = await api.querySolr(params)
+    const pressReleaseList: PressRelease[] = await Promise.all(response.docs.map(async (item: any): Promise<PressRelease> => ({
+      id: item.id,
+      code: item.symbol_s,
+      title: toLString(item, 'title'),
+      urls: item.url_ss,
+      themes: toLStringArray(item, 'themes'),
+      image: await (async () => {
+        try {
+          return await getImage(item.symbol_s, 'press_releases')
+        } catch {
+          return DEFAULT_IMAGE
+        }
+      })(),
+      createdOn: new Date(item.createdDate_dt),
+      updatedOn: new Date(item.updatedDate_dt)
+    })))
 
-  const pressReleaseList: PressRelease[] = await Promise.all(response.docs.map(async (item: any): Promise<PressRelease> => ({
-    id: item.id,
-    code: item.symbol_s,
-    title: toLString(item, 'title'),
-    urls: item.url_ss,
-    themes: toLStringArray(item, 'themes'),
-    image: await (async () => {
-      try {
-        return await getImage(item.symbol_s, 'press_releases')
-      } catch {
-        return DEFAULT_IMAGE
-      }
-    })(),
-    createdOn: new Date(item.createdDate_dt),
-    updatedOn: new Date(item.updatedDate_dt)
-  })))
-
-  const result = { total: response.numFound, rows: pressReleaseList }
-  return solrCache.set(cacheKey, result)
+    return { total: response.numFound, rows: pressReleaseList }
+  })
 }
 
 function normalizePressReleaseCode (code: string): string {

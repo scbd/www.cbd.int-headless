@@ -66,12 +66,22 @@ export default defineNuxtConfig({
     },
     '/images/**': {
       headers: { 'cache-control': 'public, max-age=604800' }  // 1 week
-    }
+    },
+    // Cache SSR-rendered pages to avoid concurrent full renders under load
+    '/': { swr: 600 },
+    '/api/**': { swr: 600 },
+    '/api/menus/**': { swr: 900 }
   },
   nitro: {
     esbuild: {
       options: {
         target: 'esnext'
+      }
+    },
+    storage: {
+      cache: {
+        driver: 'lruCache',
+        max: 100  // max cached responses
       }
     }
   },
