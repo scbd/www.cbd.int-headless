@@ -15,6 +15,7 @@
                     v-if="item.urls?.length"
                     :href="item.urls[0]"
                     target="_blank"
+                    rel="noopener noreferrer"
                 ><strong>{{ getSubmitterName(item) }}</strong>
                 </NuxtLink>
             </td>
@@ -24,7 +25,7 @@
             <td width="30%">
               <ul class="list-unstyled mb-0">
                 <li v-for="(file, idx) in getFiles(item)" :key="idx">
-                  <NuxtLink :href="file.url" target="_blank">
+                  <NuxtLink :href="file.url" target="_blank" rel="noopener noreferrer">
                     <NuxtImg
                         v-if="file.type === 'pdf'"
                         src="/images/icons/icon-file-pdf.svg"
@@ -59,6 +60,7 @@
                     v-if="item.urls?.length"
                     :href="item.urls[0]"
                     target="_blank"
+                    rel="noopener noreferrer"
                 ><strong>{{ getSubmitterName(item) }}</strong>
                 </NuxtLink>
             </td>
@@ -68,7 +70,7 @@
             <td width="30%">
               <ul class="list-unstyled mb-0">
                 <li v-for="(file, idx) in getFiles(item)" :key="idx">
-                    <NuxtLink :href="file.url" target="_blank">
+                    <NuxtLink :href="file.url" target="_blank" rel="noopener noreferrer">
                         <NuxtImg
                             v-if="file.type === 'pdf'"
                             src="/images/icons/icon-file-pdf.svg"
