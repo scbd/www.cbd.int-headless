@@ -1,4 +1,8 @@
-export const useFormatDate = (): { toFormatDate: (date: Date | string, localeOverride?: string) => string } => {
+export const useFormatDate = (): {
+  toFormatDate: (date: Date | string, localeOverride?: string) => string
+  toFormatStartDay: (date: string | undefined) => string | undefined
+  toFormatEndDay: (date: string | undefined) => string | undefined
+} => {
   const { locale } = useI18n()
 
   const toFormatDate = (date: Date | string, localeOverride?: string): string => {
@@ -12,5 +16,18 @@ export const useFormatDate = (): { toFormatDate: (date: Date | string, localeOve
       day: 'numeric'
     }).format(convertedDate)
   }
-  return { toFormatDate }
+  
+  const toFormatStartDay = (date: string | undefined): string | undefined => {
+    if (!date) return undefined
+    if (date.includes('T')) return date
+    return `${date}T00:00:00Z`
+  }
+
+  const toFormatEndDay = (date: string | undefined): string | undefined => {
+    if (!date) return undefined
+    if (date.includes('T')) return date
+    return `${date}T23:59:59Z`
+  }
+
+  return { toFormatDate, toFormatStartDay, toFormatEndDay }
 }
