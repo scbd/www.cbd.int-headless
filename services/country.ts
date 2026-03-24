@@ -26,12 +26,10 @@ export async function getCountry (code: string): Promise<Country> {
 }
 
 async function searchCountries (options?: QueryParams & { code?: string }): Promise<SearchResult<Country>> {
-  const cacheKey = JSON.stringify(options ?? {})
-
-  return cache.getOrFetch(cacheKey, async () => {
+  let countries = await cache.getOrFetch('all', async () => {
     const response = await api.getCountries()
 
-    let countries: Country[] = response.map((item: any): Country => ({
+    return response.map((item: any): Country => ({
       id: item._id,
       name: item.name,
       code: item.code,
@@ -44,16 +42,16 @@ async function searchCountries (options?: QueryParams & { code?: string }): Prom
         XXVII8c: !!item.treaties?.XXVII8c?.party
       }
     }))
-
-    if (options?.code) {
-      const code = options.code.toUpperCase()
-      countries = countries.filter(c => c.code?.toUpperCase() === code || c.code2?.toUpperCase() === code || c.code3?.toUpperCase() === code)
-    }
-
-    const start = options?.skip ?? 0
-    const limit = options?.limit ?? countries.length
-    const paged = countries.slice(start, start + limit)
-
-    return { total: countries.length, rows: paged }
   })
+
+  if (options?.code) {
+    const code = options.code.toUpperCase()
+    countries = countries.filter(c => c.code?.toUpperCase() === code || c.code2?.toUpperCase() === code || c.code3?.toUpperCase() === code)
+  }
+
+  const start = options?.skip ?? 0
+  const limit = options?.limit ?? countries.length
+  const paged = countries.slice(start, start + limit)
+
+  return { total: countries.length, rows: paged }
 }
