@@ -1,5 +1,5 @@
 <template>
-  <div v-if="submissions.total > 0" class="mt-4">
+  <div v-if="submissions.total > 0" class="mt-4 w-100">
     <h3>{{ t('submissions') }}</h3>
 
     <template v-if="parties.length > 0">
