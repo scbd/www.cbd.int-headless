@@ -60,7 +60,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
 
     const meetingList: Meeting[] = await Promise.all(response.docs.map(async (item: any): Promise<Meeting> => ({
       id: item.id,
-      code: item.symbol_s,
+      code: item.symbol_t,
       title: toLString(item, 'title'),
       urls: item.url_ss,
       themes: toLStringArray(item, 'themes'),
@@ -72,7 +72,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
       city: toLString(item, 'eventCity'),
       image: await (async () => {
         try {
-          return await getImage(item.symbol_s, 'meetings')
+          return await getImage(item.symbol_t, 'meetings')
         } catch {
           return DEFAULT_IMAGE
         }
