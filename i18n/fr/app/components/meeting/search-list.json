@@ -1,5 +1,7 @@
 {
     "showingMeetings": "Affichage de {startItem}-{endItem} sur {total} réunions",
-    "subjects": "Sujets :",
+    "subjects": "Sujets:",
+    "upcomingMeetings": "Réunions à venir",
+    "previousMeetings": "Réunions précédentes",
     "viewMeeting": "Afficher la réunion"
 }

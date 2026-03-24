@@ -1,5 +1,7 @@
 {
     "showingMeetings": "عرض {startItem}-{endItem} من {total} اجتماعات",
     "subjects": "الموضوعات:",
+    "upcomingMeetings": "الاجتماعات القادمة",
+    "previousMeetings": "الاجتماعات السابقة",
     "viewMeeting": "عرض الاجتماع"
 }

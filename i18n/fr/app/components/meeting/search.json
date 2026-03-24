@@ -5,12 +5,9 @@
     "title": "Titre:",
     "themes": "Thèmes:",
     "filter": "Filtre:",
-    "anyYear": "N'importe quelle année",
-    "year": "Année:",
-    "sort": "Trier",
-    "name": "Nom",
     "date": "Date",
-    "ascending": "Ascendant",
-    "descending": "Descendant",
+    "dateRange": "Plage de dates",
+    "startDate": "Date de début:",
+    "endDate": "Date de fin:",
     "search": "Rechercher"
 }

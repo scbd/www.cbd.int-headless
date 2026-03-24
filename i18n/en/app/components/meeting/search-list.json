@@ -1,5 +1,7 @@
 {
     "showingMeetings": "Showing {startItem}-{endItem} of {total} meetings",
     "subjects": "Subjects:",
+    "upcomingMeetings": "Upcoming meetings",
+    "previousMeetings": "Previous meetings",
     "viewMeeting": "View meeting"
 }

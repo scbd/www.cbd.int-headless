@@ -1,5 +1,7 @@
 {
     "showingMeetings": "显示 {startItem}-{endItem} 项会议，共 {total} 项会议",
     "subjects": "主题：",
+    "upcomingMeetings": "即将举行的会议",
+    "previousMeetings": "过往会议",
     "viewMeeting": "查看会议"
 }

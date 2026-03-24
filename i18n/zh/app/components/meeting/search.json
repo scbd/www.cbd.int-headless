@@ -5,12 +5,9 @@
     "title": "标题：",
     "themes": "主题：",
     "filter": "筛选条件：",
-    "anyYear": "任意年份",
-    "year": "年份：",
-    "sort": "排序",
-    "name": "名称",
     "date": "日期",
-    "ascending": "升序",
-    "descending": "降序",
+    "dateRange": "日期范围",
+    "startDate": "开始日期：",
+    "endDate": "结束日期：",
     "search": "搜索"
 }

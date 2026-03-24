@@ -5,12 +5,9 @@
     "title": "Title:",
     "themes": "Themes:",
     "filter": "Filter:",
-    "anyYear": "Any year",
-    "year": "Year:",
-    "sort": "Sort",
-    "name": "Name",
     "date": "Date",
-    "ascending": "Ascending",
-    "descending": "Descending",
+    "dateRange": "Date range",
+    "startDate": "Start date:",
+    "endDate": "End date:",
     "search": "Search"
 }
