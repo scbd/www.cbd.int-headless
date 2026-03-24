@@ -1,0 +1,8 @@
+{
+    "submissions": "Материалы",
+    "parties": "Стороны",
+    "observers": "Наблюдатели",
+    "submittedOn": "Представлено {date}",
+    "noSubmissions": "Материалы не получены.",
+    "viewDocument": "Просмотреть документ"
+}

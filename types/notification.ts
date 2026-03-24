@@ -23,3 +23,19 @@ export interface Notification {
   recipients: string[]
   image: Image
 }
+
+export interface Submission {
+  id: string
+  title: string
+  government?: string
+  notifications: string[]
+  urls: string[]
+  files: string[]
+  submittedDate: Date
+}
+
+export interface NotificationFileInfo {
+  url: string
+  name: string
+  type: 'pdf' | 'doc' | 'other'
+}

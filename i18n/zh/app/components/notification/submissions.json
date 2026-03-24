@@ -1,0 +1,8 @@
+{
+    "submissions": "提交材料",
+    "parties": "缔约方",
+    "observers": "观察员",
+    "submittedOn": "提交日期：{date}",
+    "noSubmissions": "未收到任何提交材料。",
+    "viewDocument": "查看文件"
+}

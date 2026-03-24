@@ -9,8 +9,8 @@
       <div class="content-object">
         <div class="information">
           <div class="date">{{ toFormatDate(notification.createdOn) }}</div>
-          <div v-if="notification.deadlineOn" class="action-required">
-            {{ t('actionRequired') }} {{ toFormatDate(notification.deadlineOn) }}
+          <div v-if="notification.actionOn" class="action-required">
+            {{ t('actionRequired') }} {{ toFormatDate(notification.actionOn) }}
           </div>
         </div>
         <div class="subjects-recipients">
@@ -52,6 +52,8 @@
         </div>
         <div class="description" v-html="convertPlainTextToHtml(toLocaleText(notification.fulltext))"></div>
         <div class="description"><p>{{ toLocaleText(notification.from) }}</p></div>
+        
+        <notification-submissions :code="notification.code" />
       </div>
     </section>
   </article>
