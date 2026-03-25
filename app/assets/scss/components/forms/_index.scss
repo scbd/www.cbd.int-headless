@@ -57,8 +57,8 @@
     flex: 0 1 fit-content;
     --bs-form-select-bg-img: url(/images/icons/icon-nav-arrow.svg);
     background-color: var(--bs-secondary-bg);
-    border-color: var(--bs-secondary-bg);
-    border-radius: 0.5rem;
+    border-color: var(--bs-tertiary-bg);
+    border-radius: 3px;
   }
 
   input[type="submit"],

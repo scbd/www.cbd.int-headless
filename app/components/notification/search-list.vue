@@ -115,7 +115,8 @@ const { toFormatDate } = useFormatDate()
 const props = defineProps<{
   searchParams?: {
     fieldQueries?: string
-    sort?: string
+    startDate?: string
+    endDate?: string
   }
 }>()
 
@@ -124,7 +125,8 @@ const currentPage = ref(1)
 const queryParams = computed(() => ({
   limit: ITEMS_PER_PAGE,
   skip: (currentPage.value - 1) * ITEMS_PER_PAGE,
-  sort: props.searchParams?.sort,
+  startDate: props.searchParams?.startDate,
+  endDate: props.searchParams?.endDate,
   fieldQueries: props.searchParams?.fieldQueries
 }))
 
