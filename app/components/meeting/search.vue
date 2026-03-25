@@ -4,7 +4,7 @@
         <div>
           <p><b>{{ t('codeOfConduct') }}</b></p>
           <p>| <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-ar.pdf" target="_blank" rel="noopener noreferrer">العربية</NuxtLink>| <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-en.pdf" target="_blank" rel="noopener noreferrer">English</NuxtLink> | <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-es.pdf" target="_blank" rel="noopener noreferrer">Español</NuxtLink> | <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-fr.pdf" target="_blank" rel="noopener noreferrer">Français</NuxtLink> | <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-ru.pdf" target="_blank" rel="noopener noreferrer">Русский</NuxtLink> | <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-zh.pdf" target="_blank" rel="noopener noreferrer">中文</NuxtLink> |</p>
-          <p><NuxtImg src="/images/icons/icon-file-pdf.svg" :alt="t('upcomingMeetings')"></NuxtImg> <NuxtLink to="/doc/lists/events-scbd.pdf" rel="noopener noreferrer">{{ t('upcomingMeetings') }}</NuxtLink></p>
+          <p><NuxtImg src="/images/icons/icon-file-pdf.svg" :alt="t('upcomingMeetings')"></NuxtImg> <NuxtLink to="/doc/lists/events-scbd.pdf" target="_blank" rel="noopener noreferrer">{{ t('upcomingMeetings') }}</NuxtLink></p>
         </div>
         <div class="filter-and-sort-wrapper container-fluid">
             <button
