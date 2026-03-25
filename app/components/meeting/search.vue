@@ -39,22 +39,11 @@
                 <SearchSelect
                   ref="subjectSelectRef"
                   v-model="selectedThemes"
+                  :domain=SUBJECTS
                   input-id="fsThemes"
                 >
                   {{ t('themes') }}
                 </SearchSelect>
-              <!--
-              <label for="fsThemes" class="w-100">
-                {{ t('themes') }}
-                <input
-                  v-model="themes"
-                  type="text"
-                  name="fsThemes"
-                  id="fsThemes"
-                  class="form-control"
-                />
-              </label>
-              -->
             </div>
 
             <div class="filter-row row">
@@ -93,6 +82,7 @@
 import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
 import { useFormatDate } from '~/composables/use-format-date'
+import { SUBJECTS } from '~~/constants/thesaurus'
 
 const { t, locale } = useI18n()
 const { toFormatDate, toFormatStartDay, toFormatEndDay } = useFormatDate()
@@ -149,8 +139,7 @@ function buildFieldQueries (): string | undefined {
   }
 
   if (selectedThemes.value) {
-    const label = subjectSelectRef.value?.getLabel(selectedThemes.value) ?? selectedThemes.value
-    parts.push(`themes_${locale.value.toUpperCase()}_txt:"${solrEscape(label)}"`)
+    parts.push(`themes_ss:"${solrEscape(selectedThemes.value)}"`)
   }
 
   return parts.length > 0 ? andOr(parts, 'AND') : undefined

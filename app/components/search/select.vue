@@ -24,14 +24,11 @@
 import { useLString } from '~/composables/use-lstring'
 import useSubjectsApi from '~/composables/api/use-subjects'
 
-const props = withDefaults(defineProps<{
+const props = defineProps<{
   modelValue: string
-  domain?: string
-  inputId?: string
-}>(), {
-  domain: 'CBD-SUBJECTS',
-  inputId: 'fsThemes',
-})
+  domain: string
+  inputId: string
+}>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
