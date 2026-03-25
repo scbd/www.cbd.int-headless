@@ -30,19 +30,28 @@ export async function listMeetings (options: QueryParams): Promise<SearchResult<
 };
 
 async function searchMeetings (options?: QueryParams & { code?: string }): Promise<SearchResult<Meeting>> {
-  const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
+  const query = options?.code !== undefined && options.code !== '' ? `symbol_t:${solrEscape(options.code)}` : '*.*'
 
   const fqParts: string[] = ['schema_s:meeting']
   if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
     fqParts.push(options.fieldQueries)
   }
+
+  if (options?.startDate || options?.endDate) {
+    const from = options.startDate ?? '*'
+    const to   = options.endDate   ?? '*'
+    fqParts.push(`(startDate_dt:[* TO ${to}] AND endDate_dt:[${from} TO *])`)
+  } else if (!options?.code) {
+    fqParts.push(`(endDate_dt:[NOW TO *])`)
+  }
+
   const fieldQueries = andOr(fqParts, 'AND')
 
   const params: SolrQuery = {
     query,
     fieldQueries,
-    sort: options?.sort ?? 'startDate_dt DESC',
-    fields: 'id,symbol_s,title_*_t,eventCountry_*_t,eventCity_*_t,url_ss,themes_*_txt,startDate_dt,endDate_dt,createdDate_dt,updatedDate_dt',
+    sort: options?.sort ?? 'startDate_dt ASC',
+    fields: 'id,symbol_t,title_*_t,eventCountry_*_t,eventCity_*_t,url_ss,themes_*_txt,startDate_dt,endDate_dt,createdDate_dt,updatedDate_dt',
     start: options?.skip ?? 0,
     rowsPerPage: options?.limit ?? 10
   }
@@ -53,7 +62,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
 
     const meetingList: Meeting[] = await Promise.all(response.docs.map(async (item: any): Promise<Meeting> => ({
       id: item.id,
-      code: item.symbol_s,
+      code: item.symbol_t,
       title: toLString(item, 'title'),
       urls: item.url_ss,
       themes: toLStringArray(item, 'themes'),
@@ -65,7 +74,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
       city: toLString(item, 'eventCity'),
       image: await (async () => {
         try {
-          return await getImage(item.symbol_s, 'meetings')
+          return await getImage(item.symbol_t, 'meetings')
         } catch {
           return DEFAULT_IMAGE
         }

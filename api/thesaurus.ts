@@ -1,11 +1,13 @@
 import ApiBase from 'api-client/api-base'
 import { handleError } from 'api-client/api-error'
+import { API_TIMEOUT } from '~~/constants/cache'
 import type { ThesaurusQuery } from '~~/types/api/thesaurus'
 
 export default class ThesaurusApi extends ApiBase {
   constructor (options: { baseURL: string }) {
     super({
       ...options,
+      timeout: API_TIMEOUT,
       onResponseError: handleError // TODO: mix with api-base/concatInterceptors
     })
   }

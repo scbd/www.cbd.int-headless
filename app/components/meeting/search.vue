@@ -1,6 +1,11 @@
 <template>
     <article class="cus-article container-xxl d-flex flex-column page-component">
         <h1>{{ t('meetings')}}</h1>
+        <div>
+          <p><b>{{ t('codeOfConduct') }}</b></p>
+          <p>| <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-ar.pdf" target="_blank" rel="noopener noreferrer">العربية</NuxtLink>| <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-en.pdf" target="_blank" rel="noopener noreferrer">English</NuxtLink> | <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-es.pdf" target="_blank" rel="noopener noreferrer">Español</NuxtLink> | <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-fr.pdf" target="_blank" rel="noopener noreferrer">Français</NuxtLink> | <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-ru.pdf" target="_blank" rel="noopener noreferrer">Русский</NuxtLink> | <NuxtLink to="/doc/meetings/un-system-code-conduct-harassment-zh.pdf" target="_blank" rel="noopener noreferrer">中文</NuxtLink> |</p>
+          <p><NuxtImg src="/images/icons/icon-file-pdf.svg" :alt="t('upcomingMeetings')"></NuxtImg> <NuxtLink to="/doc/lists/events-scbd.pdf" target="_blank" rel="noopener noreferrer">{{ t('upcomingMeetings') }}</NuxtLink></p>
+        </div>
         <div class="filter-and-sort-wrapper container-fluid">
             <button
                 class="btn cbd-btn-outline-icon filter-and-sort"
@@ -31,48 +36,27 @@
             </label>
 
             <div class="col">
-                <label for="fsThemes" class="w-100">
-                    {{ t('themes') }}
-                    <input
-                        v-model="themes"
-                        type="text"
-                        name="fsThemes"
-                        id="fsThemes"
-                        class="form-control"
-                    />
-                </label>
+                <SearchSelect
+                  ref="subjectSelectRef"
+                  v-model="selectedThemes"
+                  :domain="SUBJECTS_DOMAIN"
+                  input-id="fsThemes"
+                >
+                  {{ t('themes') }}
+                </SearchSelect>
             </div>
 
             <div class="filter-row row">
-                <div class="form_section-header">{{ t('filter') }}</div>
-                <div class="form_section-options">
-                <select v-model="year" class="form-select">
-                    <option value="">
-                    {{ t('anyYear') }}
-                    </option>
-                    <option
-                        v-for="y of [...Array(new Date().getFullYear() + 1).keys()].slice(1991).reverse()"
-                        :key="y"
-                        :value="y"
-                    >
-                        {{ y }}
-                    </option>
-                </select>
-                </div>
-            </div>
-
-            <div class="form_section-options column">
-                <div class="form_section-header">{{ t('sort') }}</div>
-                <div class="form_section-options">
-                    <select v-model="sortField" class="form-select">
-                        <option value="title">{{ t('name') }}</option>
-                        <option value="date">{{ t('date') }}</option>
-                    </select>
-                    <select v-model="sortDirection" class="form-select">
-                        <option value="asc">&uarr; {{ t('ascending') }}</option>
-                        <option value="desc">&darr; {{ t('descending') }}</option>
-                    </select>
-                </div>
+              <div class="form_section-options d-flex gap-3">
+                  <label>
+                      {{ t('startDate') }}
+                      <input v-model="startDate" type="date" class="form-control" />
+                  </label>
+                  <label>
+                      {{ t('endDate') }}
+                      <input v-model="endDate" type="date" class="form-control" />
+                  </label>
+              </div>
             </div>
 
             <input class="btn cbd-btn-primary" type="submit" :value="t('search')" />
@@ -97,40 +81,52 @@
 <script setup lang="ts">
 import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
+import { useFormatDate } from '~/composables/use-format-date'
+import { SUBJECTS_DOMAIN } from '~~/constants/thesaurus'
 
 const { t, locale } = useI18n()
+const { toFormatDate, toFormatStartDay, toFormatEndDay } = useFormatDate()
 
 const title = ref('')
-const themes = ref('')
-const year = ref(0)
-const sortField = ref('date')
-const sortDirection = ref('desc')
+const selectedThemes = ref('')
+const startDate = ref<string | undefined>(undefined)
+const endDate   = ref<string | undefined>(undefined)
 const activeFilters = ref<ActiveFilter[]>([])
 
+const subjectSelectRef = ref<{ getLabel: (id: string) => string } | null>(null)
 
 const emit = defineEmits<{
-  search: [params: { fieldQueries?: string, sort?: string }]
+  search: [params: { fieldQueries?: string, startDate?: string, endDate?: string }]
 }>()
+
 
 function buildActiveFilters (): ActiveFilter[] {
   const filters: ActiveFilter[] = []
   if (title.value.trim()) {
     filters.push({ key: 'title', label: t('title'), displayValue: title.value.trim() })
   }
-  if (themes.value.trim()) {
-    filters.push({ key: 'themes', label: t('themes'), displayValue: themes.value.trim() })
+  if (selectedThemes.value) {
+    const label = subjectSelectRef.value?.getLabel(selectedThemes.value) ?? selectedThemes.value
+    filters.push({ key: 'themes', label: t('themes'), displayValue: label })
   }
-  if (year.value) {
-    filters.push({ key: 'year', label: t('year'), displayValue: String(year.value) })
+  if (startDate.value) {
+    filters.push({ key: 'startDate', label: t('startDate'), displayValue: toFormatDate(startDate.value) })
+  }
+  if (endDate.value) {
+    filters.push({ key: 'endDate', label: t('endDate'), displayValue: toFormatDate(endDate.value) })
   }
   return filters
 }
 
 function removeFilter (key: string) {
-  const fieldMap: Record<string, Ref> = { title, themes, year }
-  const field = fieldMap[key]
-  if (field) {
-    field.value = key === 'year' ? 0 : ''
+  if (key === 'themes') {
+    selectedThemes.value = ''
+  } else {
+    const fieldMap: Record<string, Ref> = { title, startDate, endDate }
+    const field = fieldMap[key]
+    if (field) {
+      field.value = (key === 'startDate' || key === 'endDate') ? undefined : ''
+    }
   }
   onSearch()
 }
@@ -139,31 +135,22 @@ function buildFieldQueries (): string | undefined {
   const parts: string[] = []
 
   if (title.value.trim()) {
-    parts.push(`(title_${locale.value.toUpperCase()}_t:${solrEscape(title.value.trim())} OR title_${locale.value.toUpperCase()}_t:*${solrEscape(title.value.trim())}*)`)
+    parts.push(`(title_${locale.value.toUpperCase()}_t:${solrEscape(title.value.trim())} OR title_${locale.value.toUpperCase()}_t:*${solrEscape(title.value.trim())}* OR symbol_t:${solrEscape(title.value.trim())} OR symbol_t:*${solrEscape(title.value.trim())}*)`)
   }
-  if (themes.value.trim()) {
-    parts.push(`(themes_${locale.value.toUpperCase()}_txt:${solrEscape(themes.value.trim())} OR themes_${locale.value.toUpperCase()}_txt:*${solrEscape(themes.value.trim())}*)`)
-  }
-  if (year.value) {
-    // Date range — NOT escaped since we control the format
-    parts.push(`startDate_dt:[${year.value}-01-01T00:00:00Z TO ${year.value}-12-31T23:59:59Z]`)
+
+  if (selectedThemes.value) {
+    parts.push(`themes_ss:"${solrEscape(selectedThemes.value)}"`)
   }
 
   return parts.length > 0 ? andOr(parts, 'AND') : undefined
-}
-
-function buildSort (): string {
-  if (sortField.value === 'title') {
-    return `title_EN_t ${sortDirection.value === 'asc' ? 'ASC' : 'DESC'}`
-  }
-  return `startDate_dt ${sortDirection.value === 'asc' ? 'ASC' : 'DESC'}`
 }
 
 function onSearch () {
   activeFilters.value = buildActiveFilters()
   emit('search', {
     fieldQueries: buildFieldQueries(),
-    sort: buildSort()
+    startDate: toFormatStartDay(startDate.value),
+    endDate: toFormatEndDay(endDate.value)
   })
 }
 </script>

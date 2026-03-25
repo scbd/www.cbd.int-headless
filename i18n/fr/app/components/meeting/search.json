@@ -1,16 +1,15 @@
 {
     "meetings": "Réunions",
+    "codeOfConduct": "Code de conduite pour prévenir le harcèlement, y compris le harcèlement sexuel, lors des réunions du système des Nations Unies",
+    "upcomingMeetings": "Liste des prochaines réunions du SCBD",
     "filterAndSort": "Filtrer et trier",
     "titleContains": "Le titre contient:",
     "title": "Titre:",
     "themes": "Thèmes:",
     "filter": "Filtre:",
-    "anyYear": "N'importe quelle année",
-    "year": "Année:",
-    "sort": "Trier",
-    "name": "Nom",
     "date": "Date",
-    "ascending": "Ascendant",
-    "descending": "Descendant",
+    "dateRange": "Plage de dates",
+    "startDate": "Date de début:",
+    "endDate": "Date de fin:",
     "search": "Rechercher"
 }

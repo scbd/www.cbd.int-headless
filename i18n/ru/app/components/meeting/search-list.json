@@ -1,5 +1,7 @@
 {
     "showingMeetings": "Показано {startItem}-{endItem} из {total} встреч",
     "subjects": "Темы:",
+    "upcomingMeetings": "Предстоящие встречи",
+    "previousMeetings": "Прошедшие встречи",
     "viewMeeting": "Просмотреть встречу"
 }

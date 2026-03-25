@@ -1,16 +1,15 @@
 {
     "meetings": "Meetings",
+    "codeOfConduct": "Code of Conduct to Prevent Harassment, Including Sexual Harassment, at UN System Events",
+    "upcomingMeetings": "List of Upcoming SCBD Meetings",
     "filterAndSort": "Filter and sort",
     "titleContains": "Title contains:",
     "title": "Title:",
     "themes": "Themes:",
     "filter": "Filter:",
-    "anyYear": "Any year",
-    "year": "Year:",
-    "sort": "Sort",
-    "name": "Name",
     "date": "Date",
-    "ascending": "Ascending",
-    "descending": "Descending",
+    "dateRange": "Date range",
+    "startDate": "Start date:",
+    "endDate": "End date:",
     "search": "Search"
 }

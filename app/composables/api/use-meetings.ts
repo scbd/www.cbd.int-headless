@@ -11,13 +11,15 @@ export default async function useMeetingsListApi (options?: ComputedRef<QueryPar
       sort: options?.value.sort,
       limit: options?.value.limit,
       skip: options?.value.skip,
-      fieldQueries: options?.value.fieldQueries
+      fieldQueries: options?.value.fieldQueries,
+      startDate: options?.value.startDate,
+      endDate: options?.value.endDate
     })),
     default: () => ({ total: 0, rows: [] })
   })
 
   const meetings = computed(() => ({
-    rows: data.value.rows.map(row => normalizeObjectDates(row)),
+    rows: (data.value.rows).map(row => normalizeObjectDates(row)),
     total: data.value.total
   }))
 
