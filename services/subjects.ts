@@ -18,7 +18,7 @@ export async function getSubjects (domain: string): Promise<Subject[]> {
   return await cache.getOrFetch(domain, async () => {
     const response = await api.queryThesaurus(domain)
 
-    if (response === undefined || response === null) throw notFound(response)
+    if (response === undefined || response === null) throw notFound('No subject list found.')
 
     return response.map((item: ThesaurusQuery): Subject => ({
       identifier: item.identifier,

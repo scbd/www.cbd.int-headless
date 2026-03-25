@@ -1,1 +1,1 @@
-export const SUBJECTS = 'CBD-SUBJECTS'
+export const SUBJECTS_DOMAIN = 'CBD-SUBJECTS'

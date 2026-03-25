@@ -39,7 +39,7 @@
                 <SearchSelect
                   ref="subjectSelectRef"
                   v-model="selectedThemes"
-                  :domain=SUBJECTS
+                  :domain="SUBJECTS_DOMAIN"
                   input-id="fsThemes"
                 >
                   {{ t('themes') }}
@@ -82,7 +82,7 @@
 import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
 import { useFormatDate } from '~/composables/use-format-date'
-import { SUBJECTS } from '~~/constants/thesaurus'
+import { SUBJECTS_DOMAIN } from '~~/constants/thesaurus'
 
 const { t, locale } = useI18n()
 const { toFormatDate, toFormatStartDay, toFormatEndDay } = useFormatDate()

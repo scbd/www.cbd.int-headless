@@ -40,7 +40,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
   if (options?.startDate || options?.endDate) {
     const from = options.startDate ?? '*'
     const to   = options.endDate   ?? '*'
-    fqParts.push(`(startDate_dt:[${from} TO ${to}] AND endDate_dt:[${from} TO ${to}])`)
+    fqParts.push(`(startDate_dt:[* TO ${to}] AND endDate_dt:[${from} TO *])`)
   } else if (!options?.code) {
     fqParts.push(`(endDate_dt:[NOW TO *])`)
   }
