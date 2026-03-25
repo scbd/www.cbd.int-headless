@@ -84,7 +84,7 @@
 <script setup lang="ts">
 import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
-import { useFormatDate } from '~~/app/composables/use-format-date'
+import { useFormatDate } from '~/composables/use-format-date'
 
 const { t, locale } = useI18n()
 const { toFormatDate, toFormatStartDay, toFormatEndDay } = useFormatDate()

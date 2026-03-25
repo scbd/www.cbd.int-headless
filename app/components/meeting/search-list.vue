@@ -105,7 +105,7 @@ import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import type { Meeting } from '~~/types/meeting'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
@@ -157,7 +157,7 @@ function groupByMonth (items: Meeting[]): MonthGroup[] {
     .map(([, meetings]) => {
       const date = new Date(meetings[0]!.startOn)
       return {
-        label: date.toLocaleDateString(undefined, { year: 'numeric', month: 'long' }),
+        label: date.toLocaleDateString(locale.value, { year: 'numeric', month: 'long' }),
         meetings
       }
     })

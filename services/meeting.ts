@@ -30,7 +30,7 @@ export async function listMeetings (options: QueryParams): Promise<SearchResult<
 };
 
 async function searchMeetings (options?: QueryParams & { code?: string }): Promise<SearchResult<Meeting>> {
-  const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
+  const query = options?.code !== undefined && options.code !== '' ? `symbol_t:${solrEscape(options.code)}` : '*.*'
 
   const fqParts: string[] = ['schema_s:meeting']
   if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
@@ -40,7 +40,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
   if (options?.startDate || options?.endDate) {
     const from = options.startDate ?? '*'
     const to   = options.endDate   ?? '*'
-    fqParts.push(`(startDate_dt:[${from} TO ${to}] OR endDate_dt:[${from} TO ${to}])`)
+    fqParts.push(`(startDate_dt:[${from} TO ${to}] AND endDate_dt:[${from} TO ${to}])`)
   } else if (!options?.code) {
     fqParts.push(`(endDate_dt:[NOW TO *])`)
   }
