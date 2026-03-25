@@ -5,13 +5,7 @@
     "title": "العنوان:",
     "themes": "الموضوعات:",
     "recipients": "المستلمون:",
-    "filter": "التصفية:",
-    "anyYear": "أي سنة",
-    "year": "السنة:",
-    "sort": "فرز",
-    "name": "الاسم",
-    "date": "التاريخ",
-    "ascending": "تصاعدي",
-    "descending": "تنازلي",
+    "startDate": "تاريخ البداية:",
+    "endDate": "تاريخ النهاية:",
     "search": "بحث"
 }

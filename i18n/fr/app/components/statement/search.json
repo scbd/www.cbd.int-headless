@@ -4,13 +4,7 @@
     "titleContains": "Le titre contient:",
     "title": "Titre:",
     "themes": "Sujets:",
-    "filter": "Filtre:",
-    "anyYear": "N'importe quelle année",
-    "year": "Année:",
-    "sort": "Trier",
-    "name": "Nom",
-    "date": "Date",
-    "ascending": "Ascendant",
-    "descending": "Descendant",
+    "startDate": "Date de début:",
+    "endDate": "Date de fin:",
     "search": "Rechercher"
 }
