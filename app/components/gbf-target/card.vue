@@ -46,11 +46,11 @@ const props = defineProps<{
 }>()
 
 const gbfTarget = computed(() => {
-  const identifier = props.gbfTarget.identifier.match(/GBF-TARGET-0?(\d{1,2})$/)?.[1]
+  const identifier = props.gbfTarget.identifier.match(/GBF-TARGET-(\d+)$/)?.[1] ?? '0'
   return {
     ...props.gbfTarget,
     number: identifier,
-    url: `/gbf/targets/${identifier}`,
+    url: `/gbf/targets/${+identifier}`,
     classes: [`gbf-target-${identifier}`],
     styles: [
       'background-color: blue',
