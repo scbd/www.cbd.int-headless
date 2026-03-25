@@ -60,7 +60,7 @@ server {
     # Document Routes (/doc)
     # ===========================================
 
-    # /doc/c/* and /doc/interventions/* -> S3 (gaia documents)
+    # /doc/c/*, /doc/interventions/* and /doc/lists -> S3 (gaia documents)
     # More specific prefixes win over the /doc catch-all below
     location ^~ /doc/c/            {
         proxy_ssl_server_name on;
@@ -68,6 +68,11 @@ server {
         proxy_pass https://gaia-docs/gaia.documents$request_uri;
     }
     location ^~ /doc/interventions/ {
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${GAIA_DOCS_S3_ENDPOINT};
+        proxy_pass https://gaia-docs/gaia.documents$request_uri;
+    }
+    location ^~ /doc/lists/ {
         proxy_ssl_server_name on;
         proxy_set_header Host ${GAIA_DOCS_S3_ENDPOINT};
         proxy_pass https://gaia-docs/gaia.documents$request_uri;
