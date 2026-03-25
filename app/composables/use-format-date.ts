@@ -18,7 +18,7 @@ export const useFormatDate = (): {
     if (typeof date === 'string') {
       // Extract the YYYY-MM-DD part from any date/datetime string
       // and treat it as a local calendar date to avoid UTC timezone shifts.
-      const dateOnlyMatch = date.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+      const dateOnlyMatch = date.match(/(\d{4})-(\d{2})-(\d{2})/)
 
       if (dateOnlyMatch) {
         const [, year, month, day] = dateOnlyMatch
