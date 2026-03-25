@@ -50,7 +50,7 @@ const gbfTarget = computed(() => {
   return {
     ...props.gbfTarget,
     number: identifier,
-    url: `/gbf/targets/${+identifier}`,
+    url: `/gbf/targets/${Number.parseInt(identifier, 10)}`,
     classes: [`gbf-target-${identifier}`],
     styles: [
       'background-color: blue',
