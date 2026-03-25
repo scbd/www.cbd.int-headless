@@ -16,7 +16,8 @@ export const useFormatDate = (): {
     let convertedDate: Date
 
     if (typeof date === 'string') {
-      // Treat YYYY-MM-DD as a local calendar date, not UTC.
+      // Extract the YYYY-MM-DD part from any date/datetime string
+      // and treat it as a local calendar date to avoid UTC timezone shifts.
       const dateOnlyMatch = date.match(/^(\d{4})-(\d{2})-(\d{2})$/)
 
       if (dateOnlyMatch) {
@@ -26,7 +27,9 @@ export const useFormatDate = (): {
         convertedDate = new Date(date)
       }
     } else {
-      convertedDate = date
+      // Date objects from the API represent UTC midnight dates.
+      // Extract UTC date components to avoid timezone shifts.
+      convertedDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
     }
 
     return Intl.DateTimeFormat(useLocale, {
