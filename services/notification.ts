@@ -36,6 +36,13 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
   if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
     fqParts.push(options.fieldQueries)
   }
+
+  if (options?.startDate || options?.endDate) {
+    const from = options.startDate ?? '*'
+    const to   = options.endDate   ?? '*'
+    fqParts.push(`createdDate_dt:[${from} TO ${to}]`)
+  }
+
   const fieldQueries = andOr(fqParts, 'AND')
 
   const params: SolrQuery = {

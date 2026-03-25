@@ -44,6 +44,12 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
     fqParts.push(options.fieldQueries)
   }
 
+  if (options?.startDate || options?.endDate) {
+    const from = options.startDate ?? '*'
+    const to   = options.endDate   ?? '*'
+    fqParts.push(`createdDate_dt:[${from} TO ${to}]`)
+  }
+
   const fieldQueries = andOr(fqParts, 'AND')
 
   const params: SolrQuery = {
