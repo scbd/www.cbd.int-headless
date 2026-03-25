@@ -30,7 +30,7 @@ export async function listMeetings (options: QueryParams): Promise<SearchResult<
 };
 
 async function searchMeetings (options?: QueryParams & { code?: string }): Promise<SearchResult<Meeting>> {
-  const query = options?.code !== undefined && options.code !== '' ? `symbol_s:${solrEscape(options.code)}` : '*.*'
+  const query = options?.code !== undefined && options.code !== '' ? `symbol_t:${solrEscape(options.code)}` : '*.*'
 
   const fqParts: string[] = ['schema_s:meeting']
   if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
