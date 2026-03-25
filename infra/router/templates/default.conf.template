@@ -72,11 +72,6 @@ server {
         proxy_set_header Host ${GAIA_DOCS_S3_ENDPOINT};
         proxy_pass https://gaia-docs/gaia.documents$request_uri;
     }
-    location ^~ /doc/lists/ {
-        proxy_ssl_server_name on;
-        proxy_set_header Host ${GAIA_DOCS_S3_ENDPOINT};
-        proxy_pass https://gaia-docs/gaia.documents$request_uri;
-    }
 
     # /doc/* (all other doc routes) -> Legacy CMS (via CloudFront)
     location ^~ /doc {
