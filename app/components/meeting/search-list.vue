@@ -29,7 +29,7 @@
                 <div class="information">
                   <div class="date">{{ toFormatDate(meeting.startOn) }} - {{ toFormatDate(meeting.endOn) }}</div>
                   <NuxtLink :to="meeting.urls?.[0]" class="title">
-                    {{ meeting.code }} &ndash; {{ toLocaleText(meeting.title) }}
+                    {{ toLocaleText(meeting.title) }}
                   </NuxtLink>
                   <div class="location" v-if="meeting.city.en === 'Online'">{{ toLocaleText(meeting.city) }}</div>
                   <div class="location" v-else>{{ toLocaleText(meeting.country) }}, {{ toLocaleText(meeting.city) }}</div>

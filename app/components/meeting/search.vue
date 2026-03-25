@@ -36,16 +36,25 @@
             </label>
 
             <div class="col">
-                <label for="fsThemes" class="w-100">
-                    {{ t('themes') }}
-                    <input
-                        v-model="themes"
-                        type="text"
-                        name="fsThemes"
-                        id="fsThemes"
-                        class="form-control"
-                    />
-                </label>
+                <SearchSelect
+                  ref="subjectSelectRef"
+                  v-model="selectedThemes"
+                  input-id="fsThemes"
+                >
+                  {{ t('themes') }}
+                </SearchSelect>
+              <!--
+              <label for="fsThemes" class="w-100">
+                {{ t('themes') }}
+                <input
+                  v-model="themes"
+                  type="text"
+                  name="fsThemes"
+                  id="fsThemes"
+                  class="form-control"
+                />
+              </label>
+              -->
             </div>
 
             <div class="filter-row row">
@@ -80,7 +89,6 @@
 </template>
 <i18n src="~~/i18n/dist/app/components/meeting/search.json"></i18n>
 
-
 <script setup lang="ts">
 import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
@@ -90,10 +98,12 @@ const { t, locale } = useI18n()
 const { toFormatDate, toFormatStartDay, toFormatEndDay } = useFormatDate()
 
 const title = ref('')
-const themes = ref('')
+const selectedThemes = ref('')
 const startDate = ref<string | undefined>(undefined)
 const endDate   = ref<string | undefined>(undefined)
 const activeFilters = ref<ActiveFilter[]>([])
+
+const subjectSelectRef = ref<{ getLabel: (id: string) => string } | null>(null)
 
 const emit = defineEmits<{
   search: [params: { fieldQueries?: string, startDate?: string, endDate?: string }]
@@ -105,8 +115,9 @@ function buildActiveFilters (): ActiveFilter[] {
   if (title.value.trim()) {
     filters.push({ key: 'title', label: t('title'), displayValue: title.value.trim() })
   }
-  if (themes.value.trim()) {
-    filters.push({ key: 'themes', label: t('themes'), displayValue: themes.value.trim() })
+  if (selectedThemes.value) {
+    const label = subjectSelectRef.value?.getLabel(selectedThemes.value) ?? selectedThemes.value
+    filters.push({ key: 'themes', label: t('themes'), displayValue: label })
   }
   if (startDate.value) {
     filters.push({ key: 'startDate', label: t('startDate'), displayValue: toFormatDate(startDate.value) })
@@ -118,10 +129,14 @@ function buildActiveFilters (): ActiveFilter[] {
 }
 
 function removeFilter (key: string) {
-  const fieldMap: Record<string, Ref> = { title, themes, startDate, endDate }
-  const field = fieldMap[key]
-  if (field) {
-    field.value = (key === 'startDate' || key === 'endDate') ? undefined : ''
+  if (key === 'themes') {
+    selectedThemes.value = ''
+  } else {
+    const fieldMap: Record<string, Ref> = { title, startDate, endDate }
+    const field = fieldMap[key]
+    if (field) {
+      field.value = (key === 'startDate' || key === 'endDate') ? undefined : ''
+    }
   }
   onSearch()
 }
@@ -132,8 +147,10 @@ function buildFieldQueries (): string | undefined {
   if (title.value.trim()) {
     parts.push(`(title_${locale.value.toUpperCase()}_t:${solrEscape(title.value.trim())} OR title_${locale.value.toUpperCase()}_t:*${solrEscape(title.value.trim())}* OR symbol_t:${solrEscape(title.value.trim())} OR symbol_t:*${solrEscape(title.value.trim())}*)`)
   }
-  if (themes.value.trim()) {
-    parts.push(`(themes_${locale.value.toUpperCase()}_txt:${solrEscape(themes.value.trim())} OR themes_${locale.value.toUpperCase()}_txt:*${solrEscape(themes.value.trim())}*)`)
+
+  if (selectedThemes.value) {
+    const label = subjectSelectRef.value?.getLabel(selectedThemes.value) ?? selectedThemes.value
+    parts.push(`themes_${locale.value.toUpperCase()}_txt:"${solrEscape(label)}"`)
   }
 
   return parts.length > 0 ? andOr(parts, 'AND') : undefined
