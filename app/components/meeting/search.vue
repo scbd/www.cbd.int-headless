@@ -78,7 +78,6 @@
 </template>
 <i18n src="~~/i18n/dist/app/components/meeting/search.json"></i18n>
 
-
 <script setup lang="ts">
 import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
