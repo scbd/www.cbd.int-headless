@@ -1,5 +1,7 @@
 import ThesaurusApi from '~~/api/thesaurus'
-import { notFound } from 'api-client/api-error'
+import { Cache } from '~~/utils/cache'
+import { mandatory, notFound } from 'api-client/api-error'
+import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
 import type { ThesaurusQuery } from '~~/types/api/thesaurus'
 import type { Subject } from '~~/types/subject'
 
@@ -7,16 +9,21 @@ const api = new ThesaurusApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
+const cache = new Cache({ name: 'subjectCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
+cache.startPurgeTimer()
+
 export async function getSubjects (domain: string): Promise<Subject[]> {
-  const response = await api.queryThesaurus(domain)
+  if (domain === null || domain === '') throw mandatory('domain', 'Subject domain is required.')
 
-  if (response === undefined || response === null) throw notFound(response)
+  return await cache.getOrFetch(domain, async () => {
+    const response = await api.queryThesaurus(domain)
 
-  const subjectList: Subject[] = response.map((item: ThesaurusQuery): Subject => ({
-    identifier: item.identifier,
-    title: item.title ?? {},
-    shortTitle: item.shortTitle ?? {}
-  }))
+    if (response === undefined || response === null) throw notFound(response)
 
-  return subjectList
+    return response.map((item: ThesaurusQuery): Subject => ({
+      identifier: item.identifier,
+      title: item.title ?? {},
+      shortTitle: item.shortTitle ?? {}
+    }))
+  })
 }
