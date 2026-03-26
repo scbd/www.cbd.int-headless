@@ -7,5 +7,6 @@ export const SOCIAL_MEDIA = {
   FACEBOOK: 'https://www.facebook.com/UNBiodiversity',
   INSTAGRAM: 'https://www.instagram.com/unbiodiversity',
   YOUTUBE: 'https://www.youtube.com/@chmcbd',
-  LINKEDIN: 'https://www.linkedin.com/company/unbiodiversity'
+  LINKEDIN: 'https://www.linkedin.com/company/unbiodiversity',
+  BLUESKY: 'https://bsky.app/profile/unbiodiversity.bsky.social'
 }
