@@ -49,7 +49,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     query,
     fieldQueries,
     sort: options?.sort ?? 'updatedDate_dt DESC',
-    fields: 'id,symbol_s,title_*_t,url_ss,files_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_t, fulltext_*_t,recipient_txt',
+    fields: 'id,symbol_s,title_*_t,url_ss,files_ss,from_*_t,sender_t,themes_*_txt,createdDate_dt,updatedDate_dt,actionDate_dt,deadline_dt,reference_s, fulltext_*_t,recipient_txt',
     start: options?.skip ?? 0,
     rowsPerPage: options?.limit ?? 10
   }
@@ -79,7 +79,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
       updatedOn: new Date(item.updatedDate_dt),
       actionOn: new Date(item.actionDate_dt),
       deadlineOn: new Date(item.deadline_dt),
-      reference: item.reference_t,
+      reference: item.reference_s,
       fulltext: toLString(item, 'fulltext'),
       from: toLString(item, 'from'),
       recipients: item.recipient_txt,
