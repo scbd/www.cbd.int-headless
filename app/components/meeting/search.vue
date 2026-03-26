@@ -135,7 +135,7 @@ function buildFieldQueries (): string | undefined {
   const parts: string[] = []
 
   if (title.value.trim()) {
-    parts.push(`(title_${locale.value.toUpperCase()}_t:${solrEscape(title.value.trim())} OR title_${locale.value.toUpperCase()}_t:*${solrEscape(title.value.trim())}* OR symbol_t:${solrEscape(title.value.trim())} OR symbol_t:*${solrEscape(title.value.trim())}*)`)
+    parts.push(`(title_${locale.value.toUpperCase()}_t:${solrEscape(title.value.trim())} OR title_${locale.value.toUpperCase()}_t:*${solrEscape(title.value.trim())}* OR symbol_s:${solrEscape(title.value.trim())} OR symbol_s:*${solrEscape(title.value.trim())}*)`)
   }
 
   if (selectedThemes.value) {
