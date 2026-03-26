@@ -5,13 +5,7 @@
     "title": "Título:",
     "themes": "Temas:",
     "recipients": "Destinatarios:",
-    "filter": "Filtro:",
-    "anyYear": "Cualquier año",
-    "year": "Año:",
-    "sort": "Ordenar",
-    "name": "Nombre",
-    "date": "Fecha",
-    "ascending": "Ascendente",
-    "descending": "Descendente",
+    "startDate": "Fecha de inicio:",
+    "endDate": "Fecha de fin:",
     "search": "Buscar"
 }

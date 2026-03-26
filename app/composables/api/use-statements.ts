@@ -13,7 +13,9 @@ export default async function useStatementsListApi (
       sort: options?.value.sort,
       limit: options?.value.limit,
       skip: options?.value.skip,
-      fieldQueries: options?.value.fieldQueries
+      fieldQueries: options?.value.fieldQueries,
+      startDate: options?.value.startDate,
+      endDate: options?.value.endDate
     })),
     default: () => ({ total: 0, rows: [] })
   })
