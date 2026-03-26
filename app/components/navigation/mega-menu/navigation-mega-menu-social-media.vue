@@ -32,6 +32,12 @@
           :alt="t('instagram')"
           class="social-media-icon"
       /></NuxtLink>
+      <NuxtLink :to="SOCIAL_MEDIA.BLUESKY" target="_blank" rel="noopener noreferrer"
+        ><NuxtImg
+          src="/images/icons/icon-social-bluesky.svg"
+          :alt="t('bluesky')"
+          class="social-media-icon"
+      /></NuxtLink>
     </div>
   </div>
 </template>
