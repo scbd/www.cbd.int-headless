@@ -1,5 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
+import OasisApi from '~~/api/oasis'
 import { solrEscape, toLString, toLStringArray, andOr, normalizeCode } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
 import { Cache } from '~~/utils/cache'
@@ -11,6 +12,10 @@ import type { SearchResult } from '~~/types/api/search-result'
 import { DEFAULT_IMAGE } from '~~/constants/image-paths'
 
 const api = new SolrIndexApi({
+  baseURL: useRuntimeConfig().apiBaseUrl
+})
+
+const oasis = new OasisApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
