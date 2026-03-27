@@ -30,30 +30,14 @@
                 />
             </label>
 
-            <div class="row">
-                <div class="col">
-                    <SearchSelect
-                      ref="subjectSelectRef"
-                      v-model="selectedThemes"
-                      :domain="SUBJECTS_DOMAIN"
-                      input-id="fsThemes"
-                    >
-                      {{ t('themes') }}
-                    </SearchSelect>
-                </div>
-                <div class="col">
-                    <label for="fsRecipients" class="w-100">
-                        {{ t('recipients') }}
-                        <input
-                            v-model="recipients"
-                            type="text"
-                            name="fsRecipients"
-                            id="fsRecipients"
-                            class="form-control"
-                        />
-                    </label>
-                </div>
-            </div>
+            <SearchSelect
+              ref="subjectSelectRef"
+              v-model="selectedThemes"
+              :domain="SUBJECTS_DOMAIN"
+              input-id="fsThemes"
+            >
+              {{ t('themes') }}
+            </SearchSelect>
 
             <div class="filter-row row">
               <div class="form_section-options d-flex gap-3">
@@ -98,7 +82,6 @@ const { toFormatDate, toFormatStartDay, toFormatEndDay } = useFormatDate()
 
 const title = ref('')
 const selectedThemes = ref('')
-const recipients = ref('')
 const startDate = ref<string | undefined>(undefined)
 const endDate   = ref<string | undefined>(undefined)
 const activeFilters = ref<ActiveFilter[]>([])
@@ -118,9 +101,6 @@ function buildActiveFilters (): ActiveFilter[] {
     const label = subjectSelectRef.value?.getLabel(selectedThemes.value) ?? selectedThemes.value
     filters.push({ key: 'themes', label: t('themes'), displayValue: label })
   }
-  if (recipients.value.trim()) {
-    filters.push({ key: 'recipients', label: t('recipients'), displayValue: recipients.value.trim() })
-  }
   if (startDate.value) {
     filters.push({ key: 'startDate', label: t('startDate'), displayValue: toFormatDate(startDate.value) })
   }
@@ -134,7 +114,7 @@ function removeFilter (key: string) {
   if (key === 'themes') {
     selectedThemes.value = ''
   } else {
-    const fieldMap: Record<string, Ref> = { title, recipients, startDate, endDate }
+    const fieldMap: Record<string, Ref> = { title, startDate, endDate }
     const field = fieldMap[key]
     if (field) {
       field.value = (key === 'startDate' || key === 'endDate') ? undefined : ''
@@ -152,10 +132,6 @@ function buildFieldQueries (): string | undefined {
   if (selectedThemes.value) {
     parts.push(`themes_ss:"${solrEscape(selectedThemes.value)}"`)
   }
-  if (recipients.value.trim()) {
-    parts.push(`(recipient_txt:${solrEscape(recipients.value.trim())} OR recipient_txt:*${solrEscape(recipients.value.trim())}*)`)
-  }
-
   return parts.length > 0 ? andOr(parts, 'AND') : undefined
 }
 
