@@ -123,7 +123,7 @@ const queryParams = computed(() => ({
   limit: ITEMS_PER_PAGE,
   skip: (currentPage.value - 1) * ITEMS_PER_PAGE,
   fieldQueries: props.searchParams?.fieldQueries,
-  startDate: props.searchParams?.startDate,
+  startDate: props.searchParams?.startDate ?? (props.searchParams?.endDate ? undefined : 'NOW'),
   endDate: props.searchParams?.endDate
 }))
 
