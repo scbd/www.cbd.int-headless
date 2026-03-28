@@ -44,7 +44,7 @@ const items = (rows ?? []).map((row) => ({
 async function getContent(component: string) {
   switch (component) {
     case 'articles':       return (await useArticleListApi(ref({ limit: 4 }))).articles.value.rows;
-    case 'meetings':       return (await useMeetingsListApi(ref({ limit: 4, sort: "query({!lucene v='endDate_dt:[NOW TO *]'}) DESC, endDate_dt ASC", startDate: 'NOW' }))).meetings.value.rows;
+    case 'meetings':       return (await useMeetingsListApi(ref({ limit: 4, sort: 'endDate_dt ASC', startDate: 'NOW' }))).meetings.value.rows;
     case 'notifications':  return (await useNotificationsListApi(ref({ limit: 4 }))).notifications.value.rows;
     case 'statements':     return (await useStatementsListApi(ref({ limit: 4 })) ).statements.value.rows;
     case 'decisions':      return (await useDecisionsApi({ limit: 4 })).decisions;
