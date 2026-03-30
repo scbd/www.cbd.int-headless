@@ -1,43 +1,43 @@
-export const COP = [
-    'COP-16',
-    'COP-15',
-    'CBD-EXCOP-02',
-    'COP-14',
-    'COP-13',
-    'COP-12',
-    'COP-11',
-    'COP-10',
-    'COP-9',
-    'COP-8',
-    'COP-7',
-    'COP-6',
-    'COP-5',
-    'EXCOP-01',
-    'COP-4',
-    'COP-3',
-    'COP-2',
-    'COP-1'
-]
-
-export const CP = [
-    'CP-MOP-11',
-    'CP-MOP-10',
-    'CP-EXMOP-01',
-    'CP-MOP-9',
-    'MOP-08',
-    'MOP-07',
-    'MOP-06',
-    'MOP-05',
-    'MOP-04',
-    'MOP-03',
-    'MOP-02',
-    'MOP-01'
-]
-
-export const NP = [
-    'NP-MOP-05',
-    'NP-MOP-04',
-    'NP-MOP-03',
-    'NP-MOP-02',
-    'NP-MOP-01'
-]
+export const DECISION = {
+    COP: [
+        { name: 'COP-16', dtt: true },
+        { name: 'COP-15', dtt: true },
+        { name: 'CBD-EXCOP-02' },
+        { name: 'COP-14', dtt: true },
+        { name: 'COP-13', dtt: true },
+        { name: 'COP-12', dtt: true },
+        { name: 'COP-11', dtt: true },
+        { name: 'COP-10', dtt: true },
+        { name: 'COP-09', dtt: true },
+        { name: 'COP-08', dtt: true },
+        { name: 'COP-07', dtt: true },
+        { name: 'COP-06', dtt: true },
+        { name: 'COP-05', dtt: true },
+        { name: 'EXCOP-01' },
+        { name: 'COP-04', dtt: true },
+        { name: 'COP-03', dtt: true },
+        { name: 'COP-02', dtt: true },
+        { name: 'COP-01', dtt: true }
+    ],
+    CP: [
+        { name: 'CP-MOP-11' },
+        { name: 'CP-MOP-10' },
+        { name: 'CP-EXMOP-01' },
+        { name: 'CP-MOP-9' },
+        { name: 'MOP-08' },
+        { name: 'MOP-07' },
+        { name: 'MOP-06' },
+        { name: 'MOP-05' },
+        { name: 'MOP-04' },
+        { name: 'MOP-03' },
+        { name: 'MOP-02' },
+        { name: 'MOP-01' }
+    ],
+    NP: [
+        { name: 'NP-MOP-05' },
+        { name: 'NP-MOP-04' },
+        { name: 'NP-MOP-03' },
+        { name: 'NP-MOP-02' },
+        { name: 'NP-MOP-01' }
+    ]
+}
