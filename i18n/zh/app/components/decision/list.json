@@ -1,1 +1,8 @@
-{}
+{
+  "title_cop": "缔约方大会决定",
+  "title_cp": "生物安全卡塔赫纳议定书决定",
+  "title_np": "遗传资源名古屋议定书决定",
+  "showingItems": "显示 {startItem} - {endItem} 共 {total} 项",
+  "readDecisions": "阅读决定",
+  "viewItem": "查看"
+}

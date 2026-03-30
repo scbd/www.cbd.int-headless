@@ -1,1 +1,8 @@
-{}
+{
+  "title_cop": "Decisiones de la Conferencia de las Partes",
+  "title_cp": "Decisiones del Protocolo de Cartagena sobre Seguridad de la Biotecnología",
+  "title_np": "Decisiones del Protocolo de Nagoya sobre Recursos Genéticos",
+  "showingItems": "Mostrando {startItem} - {endItem} de {total} elementos",
+  "readDecisions": "Leer Decisiones",
+  "viewItem": "Ver"
+}
