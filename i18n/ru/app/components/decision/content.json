@@ -1,0 +1,13 @@
+{
+  "title": "Решения — {meetingCode}",
+  "showingItems": "Показано {startItem} - {endItem} из {total} элементов",
+  "downloadDocuments": "Скачать документы",
+  "noDecisionsFound": "Решения для {meetingCode} не найдены.",
+  "decision": "Решение",
+  "en": "English",
+  "fr": "Français",
+  "es": "Español",
+  "ru": "Русский",
+  "zh": "中文",
+  "ar": "اللغة العربية"
+}

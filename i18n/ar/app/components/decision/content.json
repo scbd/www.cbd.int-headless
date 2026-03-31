@@ -1,0 +1,13 @@
+{
+  "title": "القرارات — {meetingCode}",
+  "showingItems": "عرض {startItem} - {endItem} من {total} عنصرًا",
+  "downloadDocuments": "تنزيل المستندات",
+  "noDecisionsFound": "لم يتم العثور على أي قرارات لـ {meetingCode}.",
+  "decision": "القرار",
+  "en": "English",
+  "fr": "Français",
+  "es": "Español",
+  "ru": "Русский",
+  "zh": "中文",
+  "ar": "اللغة العربية"
+}

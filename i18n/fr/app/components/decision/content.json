@@ -1,0 +1,13 @@
+{
+  "title": "Décisions — {meetingCode}",
+  "showingItems": "Affichage de {startItem} - {endItem} sur {total} éléments",
+  "downloadDocuments": "Télécharger les documents",
+  "noDecisionsFound": "Aucune décision trouvée pour {meetingCode}.",
+  "decision": "Décision",
+  "en": "English",
+  "fr": "Français",
+  "es": "Español",
+  "ru": "Русский",
+  "zh": "中文",
+  "ar": "اللغة العربية"
+}

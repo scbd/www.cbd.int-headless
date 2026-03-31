@@ -1,4 +1,7 @@
-export const DECISION = {
+export type Decision = { name: string; dtt?: true }
+
+
+export const DECISION: Record<string, Decision[]> = {
     COP: [
         { name: 'COP-16', dtt: true },
         { name: 'COP-15', dtt: true },

@@ -22,7 +22,7 @@
           <div class="content-information-wrapper">
             <div class="information">
               <h2 class="title-heading">
-                <NuxtLink :to="`/decisions/${meeting.code}`">
+                <NuxtLink :to="`/decisions/${code}/${meeting.code}`">
                   {{ toLocaleText(meeting.title) }}
                 </NuxtLink>
               </h2>
@@ -35,16 +35,22 @@
               <div class="location" v-else-if="meeting.country?.en">
                 {{ toLocaleText(meeting.city) }}, {{ toLocaleText(meeting.country) }}
               </div>
-              <div v-if="toLocaleText(meeting.title)" class="description">
-                {{ toLocaleText(meeting.title) }}
-              </div>
-              <div class="read-on-wrapper">
+              <div class="read-on-wrapper gap-2">
                 <NuxtLink
-                  :to="`/decisions/${meeting.code}`"
+                  :to="`/decisions/${code}/${meeting.code}`"
                   class="btn cbd-btn cbd-btn-primary btn cbd-btn-more-content read-on"
                 >
                   {{ t('readDecisions') }}
                 </NuxtLink>
+                <a
+                  v-if="dttMap[meeting.code]"
+                  :href="getDttUrl(meeting.code)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn cbd-btn cbd-btn-outline-more-content"
+                >
+                  {{ t('dtt') }}
+                </a>
               </div>
             </div>
           </div>
@@ -66,6 +72,7 @@
 import useMeetingsListApi from '~/composables/api/use-meetings'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { DECISION } from '~~/constants/decisions'
+import { DTT } from '~~/constants/url-paths'
 import { solrEscape, andOr } from '~~/utils/solr'
 
 const { t } = useI18n()
@@ -80,6 +87,18 @@ const meetingCodes = computed(() => {
   const entries = DECISION[props.code.toUpperCase() as keyof typeof DECISION] ?? []
   return entries.map(e => e.name)
 })
+
+const dttMap = computed(() => {
+  const entries = DECISION[props.code.toUpperCase() as keyof typeof DECISION] ?? []
+  return Object.fromEntries(entries.filter(e => e.dtt).map(e => [e.name, true]))
+})
+
+function getDttUrl(meetingCode: string): string {
+  const parts = meetingCode.split('-')
+  const num = parts.pop()
+  const protocol = parts.join('-').toLowerCase()
+  return `${DTT}/${protocol}/${num}`
+}
 
 // Build Solr fieldQuery: (symbol_s:COP\-16 OR symbol_s:COP\-15 OR ...)
 const fieldQueries = computed(() => {

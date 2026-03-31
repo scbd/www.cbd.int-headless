@@ -1,8 +1,8 @@
 {
-  "title_cop": "Conference of Parties Decisions",
+  "title_cop": "Conference of the Parties Decisions",
   "title_cp": "Cartagena Protocol on Biosafety Decisions",
-  "title_np": "Nagoya Protocol on Genetic Resources Decisions",
+  "title_np": "Nagoya Protocol on Access and Benefit-sharing Decisions",
   "showingItems": "Showing {startItem} - {endItem} of {total} items",
   "readDecisions": "Read Decisions",
-  "viewItem": "View"
+  "dtt": "Decision Tracking Tool"
 }

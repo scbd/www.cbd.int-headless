@@ -1,8 +1,8 @@
 {
   "title_cop": "Décisions de la Conférence des Parties",
-  "title_cp": "Décisions du Protocole de Cartagena sur la Sécurité Biologique",
-  "title_np": "Décisions du Protocole de Nagoya sur les Ressources Génétiques",
+  "title_cp": "Décisions du Protocole de Carthagène sur la prévention des risques biotechnologiques",
+  "title_np": "Décisions du Protocole de Nagoya sur l'accès et le partage des avantages",
   "showingItems": "{startItem} - {endItem} sur {total} éléments",
   "readDecisions": "Lire les décisions",
-  "viewItem": "Voir"
+  "dtt": "Outil de suivi des décisions"
 }

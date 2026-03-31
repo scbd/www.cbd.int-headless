@@ -5,6 +5,7 @@ export interface Decision {
   code: string
   title: LString
   urls: string[]
+  file: LString
   eventTitle: string
   session: number
   decision: number

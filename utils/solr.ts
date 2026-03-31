@@ -47,12 +47,11 @@ export function solrEscape (value: string | number | Date): string {
 
 export function toLString (item: any, field: string, type: LTypeString = LTypeString.t, locales: Locales[] = Object.values(Locales)): LString {
   return locales.reduce<LString>((ltext: LString, locale) => {
-    const localeField = `${field}_${locale.toUpperCase()}_${type}`
-    const value = item[localeField]
+    const value = item[`${field}_${locale.toUpperCase()}_${type}`] ?? item[`${field}_${locale.toLowerCase()}_${type}`]
 
     if (value === undefined || value === null) return ltext
 
-    ltext[locale as keyof LString] = item[localeField]
+    ltext[locale as keyof LString] = value
     return ltext
   }, {})
 };
@@ -61,7 +60,7 @@ export function toLStringArray (item: any, field: string, type: LTypeArray = LTy
   let maxEntries = 0
 
   for (const locale of locales) {
-    const value = item[`${field}_${locale.toUpperCase()}_${type}`]
+    const value = item[`${field}_${locale.toUpperCase()}_${type}`] ?? item[`${field}_${locale.toLowerCase()}_${type}`]
 
     maxEntries = Math.max(maxEntries, value?.length ?? 0)
   };

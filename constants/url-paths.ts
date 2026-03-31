@@ -2,6 +2,7 @@ export const MEETINGS = '/meetings'
 export const NOTIFICATIONS = '/notifications'
 export const STATEMENTS = '/statements'
 export const NBSAPS = 'https://ort.cbd.int/'
+export const DTT = 'https://archive.cbd.int/decisions'
 export const SOCIAL_MEDIA = {
   X: 'https://x.com/UNBiodiversity',
   FACEBOOK: 'https://www.facebook.com/UNBiodiversity',

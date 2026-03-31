@@ -1,0 +1,13 @@
+{
+  "title": "决定 — {meetingCode}",
+  "showingItems": "显示 {startItem} - {endItem} / {total} 项",
+  "downloadDocuments": "下载文件",
+  "noDecisionsFound": "未找到 {meetingCode} 的决定。",
+  "decision": "决定",
+  "en": "English",
+  "fr": "Français",
+  "es": "Español",
+  "ru": "Русский",
+  "zh": "中文",
+  "ar": "اللغة العربية"
+}
