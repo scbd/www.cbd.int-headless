@@ -2,7 +2,7 @@ import { lstring } from '@scbd/vue-components'
 import type { LString, Locale } from '@scbd/vue-components'
 
 export const useLString = (): { toLocaleText: (ltext: LString | string, localeOverride?: Locale) => string } => {
-  const { locale } = useI18n()
+  const { locale } = useI18n({ useScope: 'global' })
 
   const toLocaleText = (ltext: LString | string, localeOverride?: Locale): string => {
     if (typeof ltext === 'string') {

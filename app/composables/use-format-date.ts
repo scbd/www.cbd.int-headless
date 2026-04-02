@@ -3,7 +3,7 @@ export const useFormatDate = (): {
   toFormatStartDay: (date: string | undefined) => string | undefined
   toFormatEndDay: (date: string | undefined) => string | undefined
 } => {
-  const { locale } = useI18n()
+  const { locale } = useI18n({ useScope: 'global' })
 
   const toFormatDate = (date: Date | string, localeOverride?: string): string => {
     if (date === undefined || date === null || date === '') return ''
