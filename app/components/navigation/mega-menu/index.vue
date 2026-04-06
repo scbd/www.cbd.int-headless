@@ -125,12 +125,16 @@ const { t, locale } = useI18n();
 
 const navEl = useTemplateRef('navEl')
 
+let resizeObserver: ResizeObserver | null = null
+let navigationParent: Element | null = null
+
 onMounted(() => {
   const updateHeight = () => {
     const el = navEl.value
     const parent = el?.closest('.cus-navigation')
     if (parent) {
-      document.documentElement.style.setProperty(
+      navigationParent = parent;
+      (parent as HTMLElement).style.setProperty(
         '--cus-navigation-height',
         `${parent.getBoundingClientRect().height}px`
       )
@@ -138,9 +142,15 @@ onMounted(() => {
   }
 
   updateHeight()
-  const ro = new ResizeObserver(updateHeight)
-  if (navEl.value) ro.observe(navEl.value)
-  onUnmounted(() => ro.disconnect())
+  resizeObserver = new ResizeObserver(updateHeight)
+  if (navEl.value) resizeObserver.observe(navEl.value)
+})
+
+onUnmounted(() => {
+  resizeObserver?.disconnect()
+  if (navigationParent) {
+    (navigationParent as HTMLElement).style.removeProperty('--cus-navigation-height')
+  }
 })
 
 const languagesWithLabel = computed(() =>
