@@ -6,6 +6,7 @@ export interface Menu {
   position: number
   submenu?: string
   component?: string
+  filter?: string
   icon?: string
   childrenCount: number
   children?: Menu[]
