@@ -8,9 +8,9 @@ import { mandatory } from 'api-client/api-error'
 export default async function usePressReleasesListApi (
   options?: ComputedRef<QueryParams> | Ref<QueryParams>
 ): Promise<{
-  pressReleases: ComputedRef<{ rows: PressRelease[], total: number }>
-  error: Ref<Error | undefined>
-}> {
+    pressReleases: ComputedRef<{ rows: PressRelease[], total: number }>
+    error: Ref<Error | undefined>
+  }> {
   const { data, error } = await useFetch<SearchResult<PressRelease>>(PRESS_RELEASES, {
     params: computed(() => ({
       sort: options?.value.sort,

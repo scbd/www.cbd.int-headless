@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
   const [articles, pages] = await Promise.all([
     listArticles({ sort, search, limit: Number(limit), skip: Number(skip) }),
-    listPages({ sort, search, limit: Number(limit), skip: Number(skip) }),
+    listPages({ sort, search, limit: Number(limit), skip: Number(skip) })
   ]).catch(apiErrorHandler)
 
   const merged: Content[] = [...articles.rows, ...pages.rows]
@@ -24,6 +24,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     rows: merged,
-    total: articles.total + pages.total,
+    total: articles.total + pages.total
   }
 })

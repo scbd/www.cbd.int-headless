@@ -49,7 +49,7 @@ const menuCache = new Cache({
 menuCache.startPurgeTimer()
 
 export async function getRoute (url: string): Promise<DrupalRouterResponse> {
-  return drupalCache.getOrFetch(`route-${url}`, () => drupalApi.getRoute(url))
+  return await drupalCache.getOrFetch(`route-${url}`, async () => await drupalApi.getRoute(url))
 }
 
 export async function getContent (url: string): Promise<Content | Article> {
@@ -167,7 +167,7 @@ export async function listArticles (options?: QueryParams): Promise<{ rows: Arti
     sort: options?.sort,
     search: options?.search,
     limit: options?.limit,
-    skip: options?.skip,
+    skip: options?.skip
   })
 
   const articles = await Promise.all(
@@ -212,12 +212,12 @@ export async function listArticles (options?: QueryParams): Promise<{ rows: Arti
   return { rows: articles, total }
 }
 
-export async function listPages (options?: QueryParams): Promise<{ rows: Content[], total: number}> {
+export async function listPages (options?: QueryParams): Promise<{ rows: Content[], total: number }> {
   const { data, total } = await drupalApi.listPages({
     sort: options?.sort,
     search: options?.search,
     limit: options?.limit,
-    skip: options?.skip,
+    skip: options?.skip
   })
 
   const pages = await Promise.all(
@@ -236,7 +236,7 @@ export async function listPages (options?: QueryParams): Promise<{ rows: Content
         summary: extractTextFromHtml(attributes?.body?.processed ?? '')
       }
 
-      const page = content as Content
+      const page = content
 
       return page
     })

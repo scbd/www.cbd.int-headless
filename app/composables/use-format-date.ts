@@ -20,7 +20,7 @@ export const useFormatDate = (): {
       // and treat it as a local calendar date to avoid UTC timezone shifts.
       const dateOnlyMatch = date.match(/(\d{4})-(\d{2})-(\d{2})/)
 
-      if (dateOnlyMatch) {
+      if (dateOnlyMatch != null) {
         const [, year, month, day] = dateOnlyMatch
         convertedDate = new Date(Number(year), Number(month) - 1, Number(day))
       } else {

@@ -40,7 +40,7 @@ async function searchDecisions (options?: QueryParams & { code?: string }): Prom
   }
 
   const cacheKey = JSON.stringify(params)
-  return solrCache.getOrFetch(cacheKey, async () => {
+  return await solrCache.getOrFetch(cacheKey, async () => {
     const { response } = await api.querySolr(params)
 
     const decisionList: Decision[] = response.docs.map((item: any): Decision => ({

@@ -28,7 +28,7 @@ export async function listRecentUpdates (options: QueryParams): Promise<SearchRe
   }
 
   const cacheKey = JSON.stringify(params)
-  return solrCache.getOrFetch(cacheKey, async () => {
+  return await solrCache.getOrFetch(cacheKey, async () => {
     const { response } = await api.querySolr(params)
 
     const recentUpdatesList: RecentUpdate[] = await Promise.all(
@@ -63,6 +63,6 @@ export async function listRecentUpdates (options: QueryParams): Promise<SearchRe
 
 // TO-DO: currently the schema_s from solr returns meeting and the media endpoint in drupal returns meetings
 // this function will need to be updated when the Drupal endpoint is corrected to return the same pattern as solr
-function pluralizeImageCategory(word: string): Image['category'] {
+function pluralizeImageCategory (word: string): Image['category'] {
   return `${word}s` as Image['category']
 }

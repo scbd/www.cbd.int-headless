@@ -39,7 +39,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
 
   if (options?.startDate || options?.endDate) {
     const from = options.startDate ?? '*'
-    const to   = options.endDate   ?? '*'
+    const to = options.endDate ?? '*'
     fqParts.push(`(startDate_dt:[* TO ${to}] AND endDate_dt:[${from} TO *])`)
   }
 
@@ -55,7 +55,7 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
   }
 
   const cacheKey = JSON.stringify(params)
-  return solrCache.getOrFetch(cacheKey, async () => {
+  return await solrCache.getOrFetch(cacheKey, async () => {
     const { response } = await api.querySolr(params)
 
     const meetingList: Meeting[] = await Promise.all(response.docs.map(async (item: any): Promise<Meeting> => ({

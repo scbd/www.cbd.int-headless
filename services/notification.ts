@@ -39,7 +39,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
 
   if (options?.startDate || options?.endDate) {
     const from = options.startDate ?? '*'
-    const to   = options.endDate   ?? '*'
+    const to = options.endDate ?? '*'
     fqParts.push(`createdDate_dt:[${from} TO ${to}]`)
   }
 
@@ -55,7 +55,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
   }
 
   const cacheKey = JSON.stringify(params)
-  return solrCache.getOrFetch(cacheKey, async () => {
+  return await solrCache.getOrFetch(cacheKey, async () => {
     const { response } = await api.querySolr(params)
 
     const notificationList: Notification[] = await Promise.all(response.docs.map(async (item: any): Promise<Notification> => ({
@@ -120,7 +120,7 @@ async function searchSubmission (options?: QueryParams & { code?: string }): Pro
   }
 
   const cacheKey = JSON.stringify(params)
-  return solrCache.getOrFetch(cacheKey, async () => {
+  return await solrCache.getOrFetch(cacheKey, async () => {
     const { response } = await api.querySolr(params)
 
     const submissionList: Submission[] = response.docs.map((item: any): Submission => ({
