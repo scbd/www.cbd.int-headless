@@ -38,6 +38,7 @@ RUN composer require -n \
     "drupal/classy_paragraphs:*" \
     "drupal/config_log:*" \
     "drupal/coffee:*" \
+    "drupal/collapsible_dnd:*" \
     "drupal/consumers:*" \
     "drupal/ctools:*" \
     "drupal/decoupled_router:*" \
