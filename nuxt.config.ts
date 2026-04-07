@@ -54,7 +54,13 @@ export default defineNuxtConfig({
   runtimeConfig: {
     drupalBaseUrl: '',
     apiBaseUrl: '',
-    ortUrl: ''
+    ortUrl: '',
+    // TODO(DEV-842): Set NUXT_INJECT_CALENDAR_MENU_ITEM=false once Drupal CMS
+    // has the calendar menu item configured permanently.
+    injectCalendarMenuItem: true,
+    public: {
+      iframeCalendarUrl: ''
+    }
   },
   routeRules: {
     '/content/images/**': {
