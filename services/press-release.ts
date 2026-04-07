@@ -48,7 +48,7 @@ async function searchPressReleases (options?: QueryParams & { code?: string }): 
   }
 
   const cacheKey = JSON.stringify(params)
-  return solrCache.getOrFetch(cacheKey, async () => {
+  return await solrCache.getOrFetch(cacheKey, async () => {
     const { response } = await api.querySolr(params)
 
     const pressReleaseList: PressRelease[] = await Promise.all(response.docs.map(async (item: any): Promise<PressRelease> => ({

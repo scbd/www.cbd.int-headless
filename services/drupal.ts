@@ -49,7 +49,7 @@ const menuCache = new Cache({
 menuCache.startPurgeTimer()
 
 export async function getRoute (url: string): Promise<DrupalRouterResponse> {
-  return drupalCache.getOrFetch(`route-${url}`, () => drupalApi.getRoute(url))
+  return await drupalCache.getOrFetch(`route-${url}`, async () => await drupalApi.getRoute(url))
 }
 
 export async function getContent (url: string): Promise<Content | Article> {

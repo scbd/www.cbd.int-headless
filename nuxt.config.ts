@@ -62,10 +62,10 @@ export default defineNuxtConfig({
       proxy: `${String(process.env.NUXT_DRUPAL_BASE_URL)}/sites/default/files/**`
     },
     '/favicon.ico': {
-      headers: { 'cache-control': 'public, max-age=2592000' }  // 30 days
+      headers: { 'cache-control': 'public, max-age=2592000' } // 30 days
     },
     '/images/**': {
-      headers: { 'cache-control': 'public, max-age=604800' }  // 1 week
+      headers: { 'cache-control': 'public, max-age=604800' } // 1 week
     },
     // Cache SSR-rendered pages to avoid concurrent full renders under load
     '/': { swr: 600 },
@@ -81,7 +81,7 @@ export default defineNuxtConfig({
     storage: {
       cache: {
         driver: 'lruCache',
-        max: 100  // max cached responses
+        max: 100 // max cached responses
       }
     }
   },

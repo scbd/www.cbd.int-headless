@@ -28,7 +28,7 @@ export async function listRecentUpdates (options: QueryParams): Promise<SearchRe
   }
 
   const cacheKey = JSON.stringify(params)
-  return solrCache.getOrFetch(cacheKey, async () => {
+  return await solrCache.getOrFetch(cacheKey, async () => {
     const { response } = await api.querySolr(params)
 
     const recentUpdatesList: RecentUpdate[] = await Promise.all(

@@ -20,7 +20,7 @@ export const useFormatDate = (): {
       // and treat it as a local calendar date to avoid UTC timezone shifts.
       const dateOnlyMatch = date.match(/(\d{4})-(\d{2})-(\d{2})/)
 
-      if (dateOnlyMatch) {
+      if (dateOnlyMatch != null) {
         const [, year, month, day] = dateOnlyMatch
         convertedDate = new Date(Number(year), Number(month) - 1, Number(day))
       } else {
@@ -40,13 +40,13 @@ export const useFormatDate = (): {
   }
 
   const toFormatStartDay = (date: string | undefined): string | undefined => {
-    if (!date) return undefined
+    if (date === undefined || date === '') return undefined
     if (date.includes('T')) return date
     return `${date}T00:00:00Z`
   }
 
   const toFormatEndDay = (date: string | undefined): string | undefined => {
-    if (!date) return undefined
+    if (date === undefined || date === '') return undefined
     if (date.includes('T')) return date
     return `${date}T23:59:59Z`
   }

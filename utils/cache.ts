@@ -104,7 +104,7 @@ export class Cache {
     if (cached !== null) return cached
 
     const inflight = this.pending.get(key)
-    if (inflight !== undefined) return inflight as Promise<T>
+    if (inflight !== undefined) return await (inflight as Promise<T>)
 
     const promise = fetchFn().then(
       (value) => {
@@ -118,7 +118,7 @@ export class Cache {
     )
 
     this.pending.set(key, promise)
-    return promise
+    return await promise
   }
 
   get size (): number {
