@@ -56,7 +56,7 @@ export default class DrupalApi extends ApiBase {
       'page[offset]': options?.skip ?? 0
     }
 
-    if (options?.search) {
+    if (options?.search != null && options.search !== '') {
       query['filter[title][operator]'] = 'CONTAINS'
       query['filter[title][value]'] = options.search
     }
@@ -72,7 +72,7 @@ export default class DrupalApi extends ApiBase {
       'page[offset]': options?.skip ?? 0
     }
 
-    if (options?.search) {
+    if (options?.search != null && options.search !== '') {
       query['filter[title][operator]'] = 'CONTAINS'
       query['filter[title][value]'] = options.search
     }

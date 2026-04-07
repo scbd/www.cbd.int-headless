@@ -37,7 +37,7 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     fqParts.push(options.fieldQueries)
   }
 
-  if (options?.startDate || options?.endDate) {
+  if ((options?.startDate != null && options.startDate !== '') || (options?.endDate != null && options.endDate !== '')) {
     const from = options.startDate ?? '*'
     const to = options.endDate ?? '*'
     fqParts.push(`createdDate_dt:[${from} TO ${to}]`)

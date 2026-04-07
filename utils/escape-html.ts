@@ -41,5 +41,5 @@ export function extractTextFromHtml (html: string): string {
 
   const el = document.createElement('div')
   el.innerHTML = html
-  return el.textContent || ''
+  return el.textContent ?? ''
 }

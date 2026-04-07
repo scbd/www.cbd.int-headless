@@ -40,13 +40,13 @@ export const useFormatDate = (): {
   }
 
   const toFormatStartDay = (date: string | undefined): string | undefined => {
-    if (!date) return undefined
+    if (date == null || date === '') return undefined
     if (date.includes('T')) return date
     return `${date}T00:00:00Z`
   }
 
   const toFormatEndDay = (date: string | undefined): string | undefined => {
-    if (!date) return undefined
+    if (date == null || date === '') return undefined
     if (date.includes('T')) return date
     return `${date}T23:59:59Z`
   }
