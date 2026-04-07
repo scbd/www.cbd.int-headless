@@ -34,6 +34,7 @@ interface ProcessedMenuItem {
   submenu?: string
   icon?: string
   component?: string
+  filter?: string
   parentId: string | null
   depth: number
   childrenIds: string[]
@@ -321,6 +322,7 @@ async function loadCachedMenu (code: string): Promise<ProcessedMenuItem[]> {
         submenu: options?.attributes?.submenu,
         icon: options?.attributes?.icon,
         component: options?.attributes?.component,
+        filter: options?.attributes?.filter,
         parentId: (parentId === '' || parentId === null) ? null : parentId,
         depth: getDepth(item.id),
         childrenIds,
@@ -451,6 +453,7 @@ export async function getMenu (
     position: item.position,
     submenu: item.submenu,
     component: item.component,
+    filter: item.filter,
     icon: item.icon,
     childrenCount: item.childrenCount
   })
