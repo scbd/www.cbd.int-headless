@@ -14,6 +14,7 @@ import useMeetingsListApi from '~/composables/api/use-meetings';
 import useNotificationsListApi from '~/composables/api/use-notifications';
 import useStatementsListApi from '~/composables/api/use-statements';
 import usePressReleasesListApi from '~/composables/api/use-press-releases';
+import { andOr } from '~~/utils/solr';
 import { useLString } from '~/composables/use-lstring';
 import { useFormatDate } from '~/composables/use-format-date'
 import type { Article } from '~~/types/content';
@@ -26,6 +27,7 @@ import type { Statement } from '~~/types/statement';
 
 const props = defineProps<{
   component: string;
+  filter?: string;
 }>();
 
 const { toLocaleText } = useLString()
@@ -41,7 +43,7 @@ const items = (rows ?? []).map((row) => ({
 }))
 
 // TO-DO: articles/meetings/statements and decisions will follow the same new pattern as notifications on their respective PRs.
-async function getContent(component: string) {
+async function getContent(component: string, fieldQueries?: string) {
   switch (component) {
     case 'articles':       return (await useArticleListApi(ref({ limit: 4 }))).articles.value.rows;
     case 'meetings':       return (await useMeetingsListApi(ref({ limit: 4, sort: 'endDate_dt ASC', startDate: 'NOW' }))).meetings.value.rows;
@@ -57,5 +59,12 @@ function getDateProperty(row: Article | Decision | Meeting | Notification | Pres
   if ('startOn' in row && row.startOn !== undefined && row.startOn !== null) return row.startOn;
   if ('updatedOn' in row && row.updatedOn !== undefined && row.updatedOn !== null) return row.updatedOn;
   return row.createdOn;
+}
+
+function buildThemeFieldQuery(filter?: string): string | undefined {
+  if (!filter) return undefined
+  const themes = filter.split(',').map(t => t.trim()).filter(Boolean)
+  if (themes.length === 0) return undefined
+  return andOr(themes.map(t => `theme_ss:${t}`), 'OR')
 }
 </script>
