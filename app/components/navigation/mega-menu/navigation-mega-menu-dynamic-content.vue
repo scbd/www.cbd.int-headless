@@ -26,6 +26,7 @@ import type { Statement } from '~~/types/statement';
 
 const props = defineProps<{
   component: string;
+  filter?: string;
 }>();
 
 const { toLocaleText } = useLString()
@@ -59,5 +60,12 @@ function getDateProperty(row: Article | Decision | Meeting | Notification | Pres
   if ('startOn' in row && row.startOn !== undefined && row.startOn !== null) return row.startOn;
   if ('updatedOn' in row && row.updatedOn !== undefined && row.updatedOn !== null) return row.updatedOn;
   return row.createdOn;
+}
+
+function buildThemeFieldQuery(filter?: string): string | undefined {
+  if (!filter) return undefined
+  const themes = filter.split(',').map(t => t.trim()).filter(Boolean)
+  if (themes.length === 0) return undefined
+  return andOr(themes.map(t => `theme_ss:${t}`), 'OR')
 }
 </script>
