@@ -1,5 +1,5 @@
 <template>
-  <div class="cus-mega-menu container-fluid" role="navigation">
+  <div ref="navEl" class="cus-mega-menu container-fluid" role="navigation">
     <navigation-branding />
 
     <button
@@ -122,6 +122,36 @@ import { languages } from '~~/data/un-languages';
 import useMenuApi from '~/composables/api/use-menu-api';
 
 const { t, locale } = useI18n();
+
+const navEl = useTemplateRef('navEl')
+
+let resizeObserver: ResizeObserver | null = null
+let navigationParent: Element | null = null
+
+onMounted(() => {
+  const updateHeight = () => {
+    const el = navEl.value
+    const parent = el?.closest('.cus-navigation')
+    if (parent) {
+      navigationParent = parent;
+      (parent as HTMLElement).style.setProperty(
+        '--cus-navigation-height',
+        `${parent.getBoundingClientRect().height}px`
+      )
+    }
+  }
+
+  updateHeight()
+  resizeObserver = new ResizeObserver(updateHeight)
+  if (navEl.value) resizeObserver.observe(navEl.value)
+})
+
+onUnmounted(() => {
+  resizeObserver?.disconnect()
+  if (navigationParent) {
+    (navigationParent as HTMLElement).style.removeProperty('--cus-navigation-height')
+  }
+})
 
 const languagesWithLabel = computed(() =>
   languages.map((l) => {
