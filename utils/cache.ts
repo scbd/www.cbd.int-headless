@@ -34,11 +34,12 @@ export class Cache {
   /** Start a recurring setTimeout that purges expired cache entries. */
   startPurgeTimer (): void {
     if (this.purgeTimer !== null || this.purgeInterval === null) return
-    const schedule = () => {
+    const interval = this.purgeInterval
+    const schedule = (): void => {
       this.purgeTimer = setTimeout(() => {
         this.purgeExpired()
         schedule()
-      }, this.purgeInterval!)
+      }, interval)
       if (typeof this.purgeTimer === 'object' && 'unref' in this.purgeTimer) {
         this.purgeTimer.unref()
       }
@@ -103,7 +104,7 @@ export class Cache {
     if (cached !== null) return cached
 
     const inflight = this.pending.get(key)
-    if (inflight !== undefined) return inflight as Promise<T>
+    if (inflight !== undefined) return await (inflight as Promise<T>)
 
     const promise = fetchFn().then(
       (value) => {
@@ -117,7 +118,7 @@ export class Cache {
     )
 
     this.pending.set(key, promise)
-    return promise
+    return await promise
   }
 
   get size (): number {

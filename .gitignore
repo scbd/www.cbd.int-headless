@@ -27,3 +27,9 @@ infra/deploy/secrets/
 .env
 .env.*
 !.env.example
+.playwright*
+.claude
+.github
+test-results
+coverage
+playwright-report

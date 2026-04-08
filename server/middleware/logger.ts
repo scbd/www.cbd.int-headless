@@ -3,8 +3,8 @@ export default defineEventHandler((event) => {
     const mem = process.memoryUsage()
     console.log('URL:', getRequestURL(event).href)
     console.log('Memory:', {
-      heapUsed: Math.round(mem.heapUsed / 1024 / 1024) + 'MB',
-      rss: Math.round(mem.rss / 1024 / 1024) + 'MB'
+      heapUsed: String(Math.round(mem.heapUsed / 1024 / 1024)) + 'MB',
+      rss: String(Math.round(mem.rss / 1024 / 1024)) + 'MB'
     })
   }
 })

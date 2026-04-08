@@ -36,15 +36,15 @@ async function searchCountries (options?: QueryParams & { code?: string }): Prom
       code2: item.code2,
       code3: item.code3,
       treaties: {
-        XXVII8: !!item.treaties?.XXVII8?.party,
-        XXVII8a: !!item.treaties?.XXVII8a?.party,
-        XXVII8b: !!item.treaties?.XXVII8b?.party,
-        XXVII8c: !!item.treaties?.XXVII8c?.party
+        XXVII8: item.treaties?.XXVII8?.party != null,
+        XXVII8a: item.treaties?.XXVII8a?.party != null,
+        XXVII8b: item.treaties?.XXVII8b?.party != null,
+        XXVII8c: item.treaties?.XXVII8c?.party != null
       }
     }))
   })
 
-  if (options?.code) {
+  if (options?.code != null && options.code !== '') {
     const code = options.code.toUpperCase()
     countries = countries.filter(c => c.code?.toUpperCase() === code || c.code2?.toUpperCase() === code || c.code3?.toUpperCase() === code)
   }
