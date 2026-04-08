@@ -14,7 +14,7 @@
 
         <async-block>
           <ul v-if="menuItem.component" class="level-3-items nav">
-              <navigation-mega-menu-dynamic-content :component="menuItem.component" />
+              <navigation-mega-menu-dynamic-content :component="menuItem.component" :filter="menuItem.filter"/>
           </ul>
         </async-block>
 
