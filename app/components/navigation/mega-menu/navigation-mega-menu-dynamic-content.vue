@@ -33,7 +33,8 @@ const props = defineProps<{
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
-const rows = await getContent(props.component)
+const themeQuery = buildThemeQuery(props.filter)
+const rows = await getContent(props.component, themeQuery)
 
 const items = (rows ?? []).map((row) => ({
   id: row.id,
@@ -61,10 +62,10 @@ function getDateProperty(row: Article | Decision | Meeting | Notification | Pres
   return row.createdOn;
 }
 
-function buildThemeFieldQuery(filter?: string): string | undefined {
+function buildThemeQuery(filter?: string): string | undefined {
   if (!filter) return undefined
   const themes = filter.split(',').map(t => t.trim()).filter(Boolean)
   if (themes.length === 0) return undefined
-  return andOr(themes.map(t => `theme_ss:${t}`), 'OR')
+  return andOr(themes.map(t => `themes_ss:${t}`), 'OR')
 }
 </script>
