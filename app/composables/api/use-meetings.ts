@@ -6,9 +6,6 @@ import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { mandatory } from 'api-client/api-error'
 
 export default async function useMeetingsListApi (options?: ComputedRef<QueryParams> | Ref<QueryParams>): Promise<{ meetings: ComputedRef<{ rows: Meeting[], total: number }>, error: Ref<Error | undefined> }> {
-  
-  console.log(options?.value.fieldQueries)
-
   const { data, error } = await useFetch<SearchResult<Meeting>>(MEETINGS, {
     params: computed(() => ({
       sort: options?.value.sort,
