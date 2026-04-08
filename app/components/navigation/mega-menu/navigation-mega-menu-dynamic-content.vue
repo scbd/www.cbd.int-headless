@@ -62,10 +62,10 @@ function getDateProperty(row: Article | Decision | Meeting | Notification | Pres
   return row.createdOn;
 }
 
-function buildThemeFieldQuery(filter?: string): string | undefined {
+function buildThemeQuery(filter?: string): string | undefined {
   if (!filter) return undefined
   const themes = filter.split(',').map(t => t.trim()).filter(Boolean)
   if (themes.length === 0) return undefined
-  return andOr(themes.map(t => `theme_ss:${t}`), 'OR')
+  return andOr(themes.map(t => `themes_ss:${t}`), 'OR')
 }
 </script>
