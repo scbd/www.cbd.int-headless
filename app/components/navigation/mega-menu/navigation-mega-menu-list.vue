@@ -19,7 +19,7 @@
         </async-block>
 
         <ul v-if="menuItem.children" class="level-3-items nav">
-          <navigation-mega-menu-list-item :menu="menuItem" :filter="menuItem.filter"/>
+          <navigation-mega-menu-list-item :menu="menuItem"/>
         </ul>
       </li>
     </template>
