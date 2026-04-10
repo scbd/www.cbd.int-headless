@@ -14,7 +14,7 @@ import useMeetingsListApi from '~/composables/api/use-meetings';
 import useNotificationsListApi from '~/composables/api/use-notifications';
 import useStatementsListApi from '~/composables/api/use-statements';
 import usePressReleasesListApi from '~/composables/api/use-press-releases';
-import { andOr } from '~~/utils/solr';
+import { andOr, solrEscape } from '~~/utils/solr';
 import { useLString } from '~/composables/use-lstring';
 import { useFormatDate } from '~/composables/use-format-date'
 import type { Article } from '~~/types/content';
@@ -66,6 +66,6 @@ function buildThemeQuery(filter?: string): string | undefined {
   if (!filter) return undefined
   const themes = filter.split(',').map(t => t.trim()).filter(Boolean)
   if (themes.length === 0) return undefined
-  return andOr(themes.map(t => `themes_ss:${t}`), 'OR')
+  return andOr(themes.map(t => `themes_ss:${solrEscape(t)}`), 'OR')
 }
 </script>
