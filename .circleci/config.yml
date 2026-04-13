@@ -22,7 +22,7 @@ jobs:
             - yarn-deps-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
-          command: yarn install --frozen-lockfile || (rm -rf ~/.cache/yarn && yarn install --frozen-lockfile)
+          command: yarn install --frozen-lockfile --network-concurrency 1
       - save_cache:
           key: yarn-deps-{{ checksum "yarn.lock" }}
           paths:
