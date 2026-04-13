@@ -25,7 +25,7 @@ export async function getPressRelease (code: string): Promise<PressRelease> {
   if (code === null || code === '') throw mandatory('code', 'Press release code is required.')
   const data = await searchPressReleases({ code: normalizePressReleaseCode(code) })
 
-  if (!data.rows.length) throw notFound(`Press release '${code}' not found.`)
+  if (data.rows.length === 0) throw notFound(`Press release '${code}' not found.`)
   return data.rows[0] as PressRelease
 };
 
@@ -48,7 +48,7 @@ async function searchPressReleases (options?: QueryParams & { code?: string }): 
   }
 
   const cacheKey = JSON.stringify(params)
-  return solrCache.getOrFetch(cacheKey, async () => {
+  return await solrCache.getOrFetch(cacheKey, async () => {
     const { response } = await api.querySolr(params)
 
     const pressReleaseList: PressRelease[] = await Promise.all(response.docs.map(async (item: any): Promise<PressRelease> => ({

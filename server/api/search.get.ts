@@ -8,13 +8,13 @@ export default defineEventHandler(async (event) => {
 
   const [articles, pages] = await Promise.all([
     listArticles({ sort, search, limit: Number(limit), skip: Number(skip) }),
-    listPages({ sort, search, limit: Number(limit), skip: Number(skip) }),
+    listPages({ sort, search, limit: Number(limit), skip: Number(skip) })
   ]).catch(apiErrorHandler)
 
   const merged: Content[] = [...articles.rows, ...pages.rows]
 
-  const sortField = (sort?.replace(/^-/, '') || 'createdOn') as keyof Content
-  const sortDir = sort?.startsWith('-') ? -1 : 1
+  const sortField = (sort != null && sort !== '' ? sort.replace(/^-/, '') : 'createdOn') as keyof Content
+  const sortDir = sort?.startsWith('-') === true ? -1 : 1
 
   merged.sort((a, b) => {
     const aVal = new Date(a[sortField] as string | Date).getTime()
@@ -24,6 +24,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     rows: merged,
-    total: articles.total + pages.total,
+    total: articles.total + pages.total
   }
 })

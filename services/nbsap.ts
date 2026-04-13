@@ -40,7 +40,7 @@ async function searchNbsaps (options?: QueryParams & { code?: string }): Promise
   }
 
   const cacheKey = JSON.stringify(params)
-  return solrCache.getOrFetch(cacheKey, async () => {
+  return await solrCache.getOrFetch(cacheKey, async () => {
     const { response } = await api.querySolr(params)
 
     const nbsapList: Nbsap[] = response.docs.map((item: any): Nbsap => ({
