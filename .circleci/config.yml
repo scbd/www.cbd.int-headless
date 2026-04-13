@@ -19,12 +19,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - yarn-deps-{{ checksum "yarn.lock" }}
+            - yarn-cache-v1-{{ checksum "yarn.lock" }}
+            - yarn-cache-v1-
       - run:
           name: Install dependencies
           command: yarn install --frozen-lockfile
       - save_cache:
-          key: yarn-deps-{{ checksum "yarn.lock" }}
+          key: yarn-cache-v1-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
