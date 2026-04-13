@@ -22,7 +22,7 @@ jobs:
             - yarn-deps-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
-          command: yarn install --frozen-lockfile --network-timeout 300000 || (yarn cache clean && yarn install --frozen-lockfile --network-timeout 300000)
+          command: yarn install --frozen-lockfile || (rm -rf ~/.cache/yarn && yarn install --frozen-lockfile)
       - save_cache:
           key: yarn-deps-{{ checksum "yarn.lock" }}
           paths:
