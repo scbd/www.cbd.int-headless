@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
+    "prebuild": "yarn lint",
     "dev": "nuxt dev",
     "predev": "yarn lint",
     "generate": "nuxt generate",
