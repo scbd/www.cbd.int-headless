@@ -10,32 +10,6 @@
           <span class="nav-options-search-slot">{{ t('search') }}</span>
         </NuxtLink>
       </li>
-      <li class="nav-item">
-        <NuxtLink
-          to="#"
-          class="nav-link current-lang"
-          role="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <NuxtImg
-            src="/images/icons/icon-nav-language-outline.svg"
-            :alt="t('languageIcon')"
-          />
-          <span class="nav-options-current-lang-slot"> English </span>
-        </NuxtLink>
-
-        <ul class="language-selector-dropdown dropdown-menu">
-          <li
-            v-for="(language, index) in languagesWithLabel"
-            :key="language.locale"
-          >
-            <NuxtLink class="dropdown-item" to="#">
-              {{ language.label }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </li>
     </ul>
   </div>
 </template>
