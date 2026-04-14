@@ -27,3 +27,7 @@ infra/deploy/secrets/
 .env
 .env.*
 !.env.example
+
+# AI
+.claude
+.agent
