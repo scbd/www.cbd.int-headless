@@ -17,10 +17,11 @@ export function getStatementList (options?: MaybeRef<QueryParams>): ReturnType<t
 }
 
 export function getStatement (code: MaybeRef<string>): ReturnType<typeof useAsyncData<Statement | undefined>> {
-  if (code === undefined || code === null) { throw mandatory('code is mandatory') }
+  const c = unref(code) as string
+  if (c === '') { throw mandatory('code is mandatory') }
   return useAsyncData<Statement>(
-    computed(() => `statement-${unref(code) as string}`),
-    () => $fetch<Statement>(`${STATEMENTS}/${unref(code) as string}`),
+    computed(() => `statement-${c}`),
+    () => $fetch<Statement>(`${STATEMENTS}/${c}`),
     { transform: normalizeObjectDates }
   )
 }

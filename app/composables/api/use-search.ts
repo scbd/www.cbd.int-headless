@@ -1,11 +1,10 @@
-// app/composables/api/use-search.ts
 import type { Content, Article } from '~~/types/content'
 import type { QueryParams } from '~~/types/api/query-params'
 import type { SearchResult } from '~~/types/api/search-result'
 import { SEARCH } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
-export function useSearch (options?: MaybeRef<QueryParams>): ReturnType<typeof useAsyncData<SearchResult<Content | Article>>> {
+export function getSearchResults (options?: MaybeRef<QueryParams>): ReturnType<typeof useAsyncData<SearchResult<Content | Article>>> {
   return useAsyncData<SearchResult<Content | Article>>(
     computed(() => `search-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<Content | Article>>(SEARCH, { params: unref(options) }),

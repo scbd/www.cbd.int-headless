@@ -17,10 +17,11 @@ export function getNotificationList (options?: MaybeRef<QueryParams>): ReturnTyp
 }
 
 export function getNotification (code: MaybeRef<string>): ReturnType<typeof useAsyncData<Notification | undefined>> {
-  if (code === undefined || code === null) { throw mandatory('code is mandatory') }
+  const c = unref(code) as string
+  if (c === '') { throw mandatory('code is mandatory') }
   return useAsyncData<Notification>(
-    computed(() => `notification-${unref(code) as string}`),
-    () => $fetch<Notification>(`${NOTIFICATIONS}/${unref(code) as string}`),
+    computed(() => `notification-${c}`),
+    () => $fetch<Notification>(`${NOTIFICATIONS}/${c}`),
     { transform: normalizeObjectDates }
   )
 }

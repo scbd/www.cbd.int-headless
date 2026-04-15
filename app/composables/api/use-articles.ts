@@ -17,10 +17,11 @@ export function getArticleList (options?: MaybeRef<QueryParams>): ReturnType<typ
 }
 
 export function getArticle (url: MaybeRef<string>): ReturnType<typeof useAsyncData<Article | undefined>> {
-  if (url === undefined || url === null) { throw mandatory('url is mandatory') }
+  const u = unref(url) as string
+  if (u === '') { throw mandatory('url is mandatory') }
   return useAsyncData<Article>(
-    computed(() => `article-${unref(url) as string}`),
-    () => $fetch<Article>(CONTENT, { params: { url: unref(url) } }),
+    computed(() => `article-${u}`),
+    () => $fetch<Article>(CONTENT, { params: { url: u } }),
     { transform: normalizeObjectDates }
   )
 }

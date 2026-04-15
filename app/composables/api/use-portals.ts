@@ -3,10 +3,11 @@ import { PORTALS } from '~~/constants/api-paths'
 import { mandatory } from 'api-client/api-error'
 
 export function getPortalList (portal: MaybeRef<string>): ReturnType<typeof useAsyncData<Portal[]>> {
-  if (portal === undefined || portal === null) { throw mandatory('portal is mandatory') }
+  const p = unref(portal) as string
+  if (p === '') { throw mandatory('portal is mandatory') }
   return useAsyncData<Portal[]>(
-    computed(() => `portals-${unref(portal) as string}`),
-    () => $fetch<Portal[]>(PORTALS, { params: { portal: unref(portal) as string } }),
+    computed(() => `portals-${p}`),
+    () => $fetch<Portal[]>(PORTALS, { params: { portal: p } }),
     { default: () => [] as Portal[] }
   )
 }

@@ -36,7 +36,7 @@
 <i18n src="~~/i18n/dist/app/components/search/results-list.json"></i18n>
 
 <script setup lang="ts">
-import { useSearch } from '~/composables/api/use-search'
+import { getSearchResults } from '~/composables/api/use-search'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { useFormatDate } from '~/composables/use-format-date'
 import { truncate } from 'lodash-es'
@@ -57,7 +57,7 @@ const queryParams = computed(() => ({
   search: props.searchParams?.search,
 }))
 
-const { data: results, error } = await useSearch(queryParams)
+const { data: results, error } = await getSearchResults(queryParams)
 
 const totalPages = computed(() => Math.ceil(results.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>
