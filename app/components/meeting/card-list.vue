@@ -20,11 +20,11 @@
 <i18n src="~~/i18n/dist/app/components/meeting/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useMeetingsListApi from '~/composables/api/use-meetings'
+import { getMeetingList } from '~/composables/api/use-meetings'
 import { MEETINGS } from '~~/constants/url-paths'
 
 const { t } = useI18n()
 
 const sort = 'endDate_dt ASC'
-const { meetings, error } = await useMeetingsListApi(ref({ limit: 4, sort, startDate: 'NOW' }))
+const { data: meetings, error } = await getMeetingList(ref({ limit: 4, sort, startDate: 'NOW' }))
 </script>

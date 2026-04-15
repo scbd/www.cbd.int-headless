@@ -5,22 +5,17 @@ import { SUBMISSIONS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { mandatory } from 'api-client/api-error'
 
-export default async function useSubmissionsApi (code: string, options?: QueryParams): Promise<{ submissions: ComputedRef<SearchResult<Submission>>, error: Ref<Error | undefined> }> {
-  if (code === undefined || code === null) { throw mandatory('code is mandatory') }
-
-  const { data, error } = await useFetch<SearchResult<Submission>>(`${SUBMISSIONS}/${code}`, {
-    params: {
-      sort: options?.sort,
-      limit: options?.limit,
-      skip: options?.skip
+export function getSubmissionList (code: MaybeRef<string>, options?: MaybeRef<QueryParams>): ReturnType<typeof useAsyncData<SearchResult<Submission>>> {
+  return useAsyncData<SearchResult<Submission>>(
+    computed(() => `submissions-${unref(code) as string}-${JSON.stringify(unref(options))}`),
+    () => {
+      const c = unref(code) as string
+      if (c === '') throw mandatory('code is mandatory')
+      return $fetch<SearchResult<Submission>>(`${SUBMISSIONS}/${c}`, { params: unref(options) })
     },
-    default: () => ({ total: 0, rows: [] })
-  })
-
-  const submissions = computed(() => ({
-    rows: data.value.rows.map(row => normalizeObjectDates(row)),
-    total: data.value.total
-  }))
-
-  return { submissions, error }
+    {
+      default: () => ({ total: 0, rows: [] as Submission[] }),
+      transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
+    }
+  )
 }

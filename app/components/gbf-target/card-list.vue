@@ -32,11 +32,11 @@
 <i18n src="~~/i18n/dist/app/components/gbf-target/card-list.json"></i18n>
 
 <script setup lang="ts">
-import useGbfTargetsApi from '~/composables/api/use-gbf-targets-api'
+import { getGbfTargetsList } from '~/composables/api/use-gbf-targets'
 
 const { t } = useI18n()
 
-const { gbfTargets, error } = await useGbfTargetsApi()
+const { data: gbfTargets, error } = await getGbfTargetsList()
 
 const gbfTargetWrapper = useTemplateRef<HTMLDivElement>('gbfTargetWrapperRef')
 

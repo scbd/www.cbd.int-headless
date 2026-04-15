@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { useLString } from '~/composables/use-lstring'
-import useSubjectsApi from '~/composables/api/use-subjects'
+import { getSubjectList } from '~/composables/api/use-subjects'
 
 const props = defineProps<{
   modelValue: string
@@ -36,7 +36,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 const { toLocaleText } = useLString()
-const { subjects } = await useSubjectsApi(props.domain)
+const { data: subjects } = await getSubjectList(props.domain)
 
 function onSelect (event: Event) {
   const select = event.target as HTMLSelectElement

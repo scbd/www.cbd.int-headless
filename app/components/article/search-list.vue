@@ -71,7 +71,7 @@
 <i18n src="~~/i18n/dist/app/components/article/search-list.json"></i18n>
 
 <script setup lang="ts">
-import useArticleListApi from '~/composables/api/use-articles-api'
+import { getArticleList } from '~/composables/api/use-articles'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { truncate } from 'lodash-es'
@@ -95,7 +95,7 @@ const queryParams = computed(() => ({
   search: props.searchParams?.search
 }))
 
-const { articles, error } = await useArticleListApi(queryParams)
+const { data: articles, error } = await getArticleList(queryParams)
 
 const totalPages = computed(() => Math.ceil(articles.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

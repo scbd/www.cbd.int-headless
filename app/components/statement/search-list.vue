@@ -44,7 +44,7 @@
 <i18n src="~~/i18n/dist/app/components/statement/search-list.json"></i18n>
 
 <script setup lang="ts">
-import useStatementsApi from '~/composables/api/use-statements'
+import { getStatementList }  from '~/composables/api/use-statements'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 
@@ -66,7 +66,7 @@ const queryParams = computed(() => ({
   fieldQueries: props.searchParams?.fieldQueries
 }))
 
-const { statements, error } = await useStatementsApi(queryParams)
+const { data: statements, error } = await getStatementList(queryParams)
 
 const totalPages = computed(() => Math.ceil(statements.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

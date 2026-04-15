@@ -103,7 +103,7 @@
 <i18n src="~~/i18n/dist/app/components/notification/search-list.json"></i18n>
 
 <script setup lang="ts">
-import useNotificationsListApi from '~/composables/api/use-notifications'
+import { getNotificationList } from '~/composables/api/use-notifications'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { truncate } from 'lodash-es'
@@ -130,7 +130,7 @@ const queryParams = computed(() => ({
   fieldQueries: props.searchParams?.fieldQueries
 }))
 
-const { notifications, error } = await useNotificationsListApi(queryParams)
+const { data: notifications, error } = await getNotificationList(queryParams)
 
 const totalPages = computed(() => Math.ceil(notifications.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

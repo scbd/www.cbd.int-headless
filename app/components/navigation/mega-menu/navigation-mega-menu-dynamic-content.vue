@@ -8,12 +8,12 @@
 </template>
 
 <script setup lang="ts">
-import useArticleListApi from '~/composables/api/use-articles-api';
-import useDecisionsApi from '~/composables/api/use-decisions';
-import useMeetingsListApi from '~/composables/api/use-meetings';
-import useNotificationsListApi from '~/composables/api/use-notifications';
-import useStatementsListApi from '~/composables/api/use-statements';
-import usePressReleasesListApi from '~/composables/api/use-press-releases';
+import { getArticleList } from '~/composables/api/use-articles';
+import { getDecisionList } from '~/composables/api/use-decisions';
+import { getMeetingList } from '~/composables/api/use-meetings';
+import { getNotificationList } from '~/composables/api/use-notifications';
+import { getStatementList } from '~/composables/api/use-statements';
+import { getPressReleaseList } from '~/composables/api/use-press-releases';
 import { useLString } from '~/composables/use-lstring';
 import { useFormatDate } from '~/composables/use-format-date'
 import type { Article } from '~~/types/content';
@@ -31,25 +31,27 @@ const props = defineProps<{
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
-const rows = await getContent(props.component)
+const asyncData = getContent(props.component)
 
-const items = (rows ?? []).map((row) => ({
-  id: row.id,
-  title: row.title,
-  date: getDateProperty(row),
-  url: 'urls' in row ? row.urls?.[0] ?? '#' : row.alias ?? '#',  // TO-DO: standardize URL property across content types
-}))
+const items = computed(() => {
+  const rows = (asyncData?.data.value?.rows ?? []) as (Article | Decision | Meeting | Notification | PressRelease | Statement)[]
+  return rows.map((row) => ({
+    id: row.id,
+    title: row.title,
+    date: getDateProperty(row),
+    url: 'urls' in row ? row.urls?.[0] ?? '#' : row.alias ?? '#',  // TO-DO: standardize URL property across content types
+  }))
+})
 
-// TO-DO: articles/meetings/statements and decisions will follow the same new pattern as notifications on their respective PRs.
-async function getContent(component: string) {
+function getContent(component: string) {
   switch (component) {
-    case 'articles':       return (await useArticleListApi(ref({ limit: 4 }))).articles.value.rows;
-    case 'meetings':       return (await useMeetingsListApi(ref({ limit: 4, sort: 'endDate_dt ASC', startDate: 'NOW' }))).meetings.value.rows;
-    case 'notifications':  return (await useNotificationsListApi(ref({ limit: 4 }))).notifications.value.rows;
-    case 'statements':     return (await useStatementsListApi(ref({ limit: 4 })) ).statements.value.rows;
-    case 'decisions':      return (await useDecisionsApi({ limit: 4 })).decisions;
-    case 'press-releases': return (await usePressReleasesListApi(ref({ limit: 4 }))).pressReleases.value.rows;
-    default:               return [];
+    case 'articles':       return getArticleList({ limit: 4 })
+    case 'meetings':       return getMeetingList({ limit: 4, sort: 'endDate_dt ASC', startDate: 'NOW' })
+    case 'notifications':  return getNotificationList({ limit: 4 })
+    case 'statements':     return getStatementList({ limit: 4 })
+    case 'decisions':      return getDecisionList({ limit: 4 })
+    case 'press-releases': return getPressReleaseList({ limit: 4 })
+    default:               return null
   }
 }
 

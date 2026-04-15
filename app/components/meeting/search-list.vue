@@ -100,7 +100,7 @@
 <i18n src="~~/i18n/dist/app/components/meeting/search-list.json"></i18n>
 
 <script setup lang="ts">
-import useMeetingsListApi from '~/composables/api/use-meetings'
+import { getMeetingList } from '~/composables/api/use-meetings'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import type { Meeting } from '~~/types/meeting'
@@ -127,7 +127,7 @@ const queryParams = computed(() => ({
   endDate: props.searchParams?.endDate
 }))
 
-const { meetings, error } = await useMeetingsListApi(queryParams)
+const { data: meetings, error } = await getMeetingList(queryParams)
 
 // Group meetings by month, split into upcoming vs previous
 interface MonthGroup { label: string; meetings: Meeting[] }

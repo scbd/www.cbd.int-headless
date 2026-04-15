@@ -68,7 +68,7 @@
 <i18n src="~~/i18n/dist/app/components/press-release/search-list.json"></i18n>
 
 <script setup lang="ts">
-import usePressReleasesListApi from '~/composables/api/use-press-releases'
+import { getPressReleaseList } from '~/composables/api/use-press-releases'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 
@@ -92,7 +92,7 @@ const queryParams = computed(() => ({
   fieldQueries: props.searchParams?.fieldQueries
 }))
 
-const { pressReleases, error } = await usePressReleasesListApi(queryParams)
+const { data: pressReleases, error } = await getPressReleaseList(queryParams)
 
 const totalPages = computed(() => Math.ceil(pressReleases.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

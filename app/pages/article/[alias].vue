@@ -17,10 +17,10 @@
 </template>
 
 <script setup lang="ts">
-import { useArticleApi } from '~/composables/api/use-articles-api'
+import { getArticle } from '~/composables/api/use-articles'
 
 const route = useRoute()
-const { article, error } = await useArticleApi(route.path)
+const { data: article, error } = await getArticle(route.path)
 
 definePageMeta({
   layout: 'home',
