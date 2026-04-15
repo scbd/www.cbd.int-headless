@@ -31,8 +31,8 @@ WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
-# Lint the application
-RUN yarn lint
+# Lint the application (increase heap to avoid OOM with ts-standard)
+RUN NODE_OPTIONS=--max-old-space-size=4096 yarn lint
 
 # Build the application
 RUN yarn build
