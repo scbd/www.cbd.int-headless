@@ -23,10 +23,10 @@
 <i18n src="~~/i18n/dist/app/components/notification/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useNotificationsListApi from '~/composables/api/use-notifications'
+import { getNotificationList } from '~/composables/api/use-notifications'
 import { NOTIFICATIONS } from '~~/constants/url-paths'
 
 const { t } = useI18n()
 
-const { notifications, error } = await useNotificationsListApi(ref({ limit: 4 }))
+const { data: notifications, error } = await getNotificationList({ limit: 4 })
 </script>

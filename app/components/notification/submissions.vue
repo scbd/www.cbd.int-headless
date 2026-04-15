@@ -97,8 +97,8 @@
 <i18n src="~~/i18n/dist/app/components/notification/submissions.json"></i18n>
 
 <script setup lang="ts">
-import useSubmissionsApi from '~/composables/api/use-submissions'
-import useCountriesApi from '~/composables/api/use-countries'
+import { getSubmissionList } from '~/composables/api/use-submissions'
+import { getCountryList } from '~/composables/api/use-countries'
 import type { Submission, NotificationFileInfo } from '~~/types/notification'
 import type { Country } from '~~/types/country'
 
@@ -110,8 +110,8 @@ const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
-const { submissions } = await useSubmissionsApi(props.code, { limit: 500 })
-const { countries } = await useCountriesApi()
+const { data: submissions } = await getSubmissionList(props.code, { limit: 500 })
+const { data: countries } = await getCountryList()
 
 const countryMap = computed(() => {
   const map = new Map<string, Country>()

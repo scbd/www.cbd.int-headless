@@ -4,19 +4,13 @@ import type { SearchResult } from '~~/types/api/search-result'
 import { RECENT_UPDATES } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
-export default async function useRecentUpdatesListApi (
-  options?: QueryParams
-): Promise<{ recentUpdates: RecentUpdate[], error: Ref<Error | undefined> }> {
-  const { data, error } = await useFetch<SearchResult<RecentUpdate>>(RECENT_UPDATES, {
-    params: {
-      sort: options?.sort,
-      limit: options?.limit,
-      skip: options?.skip
-    },
-    default: () => ({ total: 0, rows: [] })
-  })
-
-  const recentUpdates = data.value.rows.map(row => normalizeObjectDates(row))
-
-  return { recentUpdates, error }
+export function getRecentUpdateList (options?: MaybeRef<QueryParams>): ReturnType<typeof useAsyncData<SearchResult<RecentUpdate>>> {
+  return useAsyncData<SearchResult<RecentUpdate>>(
+    computed(() => `recent-updates-${JSON.stringify(unref(options))}`),
+    () => $fetch<SearchResult<RecentUpdate>>(RECENT_UPDATES, { params: unref(options) }),
+    {
+      default: () => ({ total: 0, rows: [] as RecentUpdate[] }),
+      transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
+    }
+  )
 }

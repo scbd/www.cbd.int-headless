@@ -28,13 +28,13 @@
 <i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-list.json"></i18n>
 
 <script setup lang="ts">
-import useMenuApi from '~/composables/api/use-menu-api';
+import { getMenu } from '~/composables/api/use-menu';
 
 const props = defineProps<{
   submenu: string;
 }>();
 
-const { menu, error } = await useMenuApi(props.submenu);
+const { data: menu, error } = await getMenu(props.submenu);
 
 const level2MenuColumnCount = computed(() => {
   const classes: string[] = [];

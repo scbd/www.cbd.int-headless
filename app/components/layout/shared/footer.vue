@@ -82,11 +82,11 @@
 <i18n src="~~/i18n/dist/app/components/layout/shared/footer.json"></i18n>
 
 <script setup lang="ts">
-import useMenuApi from '~/composables/api/use-menu-api';
+import { getMenu } from '~/composables/api/use-menu';
 
 const { t, locale } = useI18n();
 
-const { menu, error } = await useMenuApi('cbd-footer');
+const { data: menu, error } = await getMenu('cbd-footer');
 
 const unepLogoUrl = computed(
   () => `/images/unep-logo-${encodeURIComponent(locale.value)}.svg`

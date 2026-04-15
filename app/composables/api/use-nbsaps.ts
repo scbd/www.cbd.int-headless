@@ -5,36 +5,26 @@ import { NBSAPS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { mandatory } from 'api-client/api-error'
 
-export default async function useNbsapsListApi (
-  options?: ComputedRef<QueryParams> | Ref<QueryParams>
-): Promise<{ nbsaps: ComputedRef<{ rows: Nbsap[], total: number }>, error: Ref<Error | undefined> }> {
-  const { data, error } = await useFetch<SearchResult<Nbsap>>(NBSAPS, {
-    params: computed(() => ({
-      sort: options?.value.sort,
-      limit: options?.value.limit,
-      skip: options?.value.skip,
-      fieldQueries: options?.value.fieldQueries
-    })),
-    default: () => ({ total: 0, rows: [] })
-  })
-
-  const nbsaps = computed(() => ({
-    rows: data.value.rows.map(row => normalizeObjectDates(row)),
-    total: data.value.total
-  }))
-
-  return { nbsaps, error }
+export function getNbsapList (options?: MaybeRef<QueryParams>): ReturnType<typeof useAsyncData<SearchResult<Nbsap>>> {
+  return useAsyncData<SearchResult<Nbsap>>(
+    computed(() => `nbsaps-${JSON.stringify(unref(options))}`),
+    () => $fetch<SearchResult<Nbsap>>(NBSAPS, { params: unref(options) }),
+    {
+      default: () => ({ total: 0, rows: [] as Nbsap[] }),
+      transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
+    }
+  )
 }
 
-export async function useNbsapApi (code: string): Promise<{ nbsaps: ComputedRef<{ rows: Nbsap[], total: number }>, error: Ref<Error | undefined> }> {
-  if (code === undefined || code === null) { throw mandatory('code', 'code is mandatory') }
-
-  const { data, error } = await useFetch<Nbsap>(`${NBSAPS}/${code}`)
-
-  const nbsaps = computed(() => {
-    const rows = data.value != null ? [normalizeObjectDates(data.value)] : []
-    return { rows, total: rows.length }
-  })
-
-  return { nbsaps, error }
+export function getNbsap (code: MaybeRef<string>): ReturnType<typeof useAsyncData<Nbsap | undefined>> {
+  if (code === undefined || code === null) { throw mandatory('code is mandatory') }
+  return useAsyncData<Nbsap>(
+    computed(() => `nbsap-${unref(code) as string}`),
+    () => {
+      const c = unref(code) as string
+      if (c === '') throw mandatory('code is mandatory')
+      return $fetch<Nbsap>(`${NBSAPS}/${c}`)
+    },
+    { transform: normalizeObjectDates }
+  )
 }

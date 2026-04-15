@@ -72,26 +72,26 @@
   lang="ts"
 >
 import type { Breadcrumb, Menu } from '~~/types/menu'
-import useContentApi from '~~/app/composables/api/use-content-api'
-import useMenuApi from '~~/app/composables/api/use-menu-api'
+import { getContent } from '~/composables/api/use-content'
+import { getMenu } from '~/composables/api/use-menu'
 
 const route = useRoute()
 
-const { content: page, error } = await useContentApi(route.path)
+const { data: page, error } = await getContent(route.path)
 
 if (error.value !== undefined && error.value !== null && 'statusCode' in error.value && error.value.statusCode === 404) {
   showError({ statusCode: 404, data: { url: route.path } })
 }
 
-const { menu, error: menuError } =
+const { data: menu, error: menuError } =
   page.value?.menu
-    ? await useMenuApi(page.value.menu,
+    ? await getMenu(page.value.menu,
       {
         url: route.path,
         depth: 1
       }
     )
-    : { menu: ref<Menu[]>([]), error: ref<Error | undefined>(undefined) }
+    : { data: ref<Menu[]>([]), error: ref<Error | undefined>(undefined) }
 
 const buildPath = (item: Menu | undefined): Breadcrumb[] => {
   if (!item) return []

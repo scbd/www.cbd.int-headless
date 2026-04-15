@@ -1,9 +1,9 @@
 <template>
   <article class="cus-article container-xxl d-flex flex-column page-component">
-    <template v-if="notifications.total === 0">
+    <template v-if="!notifications">
         <h1>{{ t('notificationNotFound', { code: props.code }) }}</h1>
     </template>
-    <section v-for="notification in notifications.rows" :key="notification.id">
+    <section v-for="notification in notifications ? [notifications] : []" :key="notification.id">
       <h1>{{ t('notificationTitle', { code: notification.code }) }}</h1>
       <h2>{{ toLocaleText(notification.title) }}</h2>
       <div class="content-object">
@@ -61,7 +61,7 @@
 <i18n src="~~/i18n/dist/app/components/notification/content.json"></i18n>
 
 <script setup lang="ts">
-import { useNotificationsApi } from '~/composables/api/use-notifications'
+import { getNotification } from '~/composables/api/use-notifications'
 import convertPlainTextToHtml from '~~/utils/convert-plain-text-to-html'
 
 const props = defineProps<{
@@ -72,5 +72,5 @@ const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
-const { notifications, error } = await useNotificationsApi(props.code)
+const { data: notifications, error } = await getNotification(props.code)
 </script>

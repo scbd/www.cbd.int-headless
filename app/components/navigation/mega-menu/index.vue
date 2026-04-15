@@ -119,7 +119,7 @@
 
 <script setup lang="ts">
 import { languages } from '~~/data/un-languages';
-import useMenuApi from '~/composables/api/use-menu-api';
+import { getMenu } from '~/composables/api/use-menu';
 
 const { t, locale } = useI18n();
 
@@ -164,5 +164,5 @@ const languagesWithLabel = computed(() =>
   })
 );
 
-const { menu, error } = await useMenuApi('cbd-header');
+const { data: menu, error } = await getMenu('cbd-header');
 </script>

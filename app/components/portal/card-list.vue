@@ -16,7 +16,7 @@
 <i18n src="~~/i18n/dist/app/components/portal/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import usePortalsApi from '~/composables/api/use-portals-api';
+import { getPortalList } from '~/composables/api/use-portals';
 
 const { t } = useI18n();
 
@@ -24,5 +24,5 @@ const props = defineProps<{
     portal: string;
 }>();
 
-const { portals, error } = await usePortalsApi(encodeURIComponent(props.portal))
+const { data: portals, error } = await getPortalList(encodeURIComponent(props.portal))
 </script>

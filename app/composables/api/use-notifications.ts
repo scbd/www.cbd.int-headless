@@ -5,36 +5,22 @@ import { NOTIFICATIONS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { mandatory } from 'api-client/api-error'
 
-export default async function useNotificationsListApi (options?: ComputedRef<QueryParams> | Ref<QueryParams>): Promise<{ notifications: ComputedRef<{ rows: Notification[], total: number }>, error: Ref<Error | undefined> }> {
-  const { data, error } = await useFetch<SearchResult<Notification>>(NOTIFICATIONS, {
-    params: computed(() => ({
-      sort: options?.value.sort,
-      limit: options?.value.limit,
-      skip: options?.value.skip,
-      fieldQueries: options?.value.fieldQueries,
-      startDate: options?.value.startDate,
-      endDate: options?.value.endDate
-    })),
-    default: () => ({ total: 0, rows: [] })
-  })
-
-  const notifications = computed(() => ({
-    rows: data.value.rows.map(row => normalizeObjectDates(row)),
-    total: data.value.total
-  }))
-
-  return { notifications, error }
+export function getNotificationList (options?: MaybeRef<QueryParams>): ReturnType<typeof useAsyncData<SearchResult<Notification>>> {
+  return useAsyncData<SearchResult<Notification>>(
+    computed(() => `notifications-${JSON.stringify(unref(options))}`),
+    () => $fetch<SearchResult<Notification>>(NOTIFICATIONS, { params: unref(options) }),
+    {
+      default: () => ({ total: 0, rows: [] as Notification[] }),
+      transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
+    }
+  )
 }
 
-export async function useNotificationsApi (code: string): Promise<{ notifications: ComputedRef<{ rows: Notification[], total: number }>, error: Ref<Error | undefined> }> {
+export function getNotification (code: MaybeRef<string>): ReturnType<typeof useAsyncData<Notification | undefined>> {
   if (code === undefined || code === null) { throw mandatory('code is mandatory') }
-
-  const { data, error } = await useFetch<Notification>(`${NOTIFICATIONS}/${code}`)
-
-  const notifications = computed(() => {
-    const rows = data.value != null ? [normalizeObjectDates(data.value)] : []
-    return { rows, total: rows.length }
-  })
-
-  return { notifications, error }
+  return useAsyncData<Notification>(
+    computed(() => `notification-${unref(code) as string}`),
+    () => $fetch<Notification>(`${NOTIFICATIONS}/${unref(code) as string}`),
+    { transform: normalizeObjectDates }
+  )
 }

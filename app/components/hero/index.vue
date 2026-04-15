@@ -20,9 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import useArticleListApi from '~/composables/api/use-articles-api'
+import { getArticleList } from '~/composables/api/use-articles'
 
-const { articles, error } = await useArticleListApi(ref({ limit: 3 }))
+const { data: articles, error } = await getArticleList(ref({ limit: 3 }))
 
 const primaryArticle = computed(() => articles.value.rows.at(0))
 const secondaryArticles = computed(() => articles.value.rows.slice(1))

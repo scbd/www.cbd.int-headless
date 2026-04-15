@@ -5,36 +5,22 @@ import { MEETINGS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { mandatory } from 'api-client/api-error'
 
-export default async function useMeetingsListApi (options?: ComputedRef<QueryParams> | Ref<QueryParams>): Promise<{ meetings: ComputedRef<{ rows: Meeting[], total: number }>, error: Ref<Error | undefined> }> {
-  const { data, error } = await useFetch<SearchResult<Meeting>>(MEETINGS, {
-    params: computed(() => ({
-      sort: options?.value.sort,
-      limit: options?.value.limit,
-      skip: options?.value.skip,
-      fieldQueries: options?.value.fieldQueries,
-      startDate: options?.value.startDate,
-      endDate: options?.value.endDate
-    })),
-    default: () => ({ total: 0, rows: [] })
-  })
-
-  const meetings = computed(() => ({
-    rows: (data.value.rows).map(row => normalizeObjectDates(row)),
-    total: data.value.total
-  }))
-
-  return { meetings, error }
+export function getMeetingList (options?: MaybeRef<QueryParams>): ReturnType<typeof useAsyncData<SearchResult<Meeting>>> {
+  return useAsyncData<SearchResult<Meeting>>(
+    computed(() => `meetings-${JSON.stringify(unref(options))}`),
+    () => $fetch<SearchResult<Meeting>>(MEETINGS, { params: unref(options) }),
+    {
+      default: () => ({ total: 0, rows: [] as Meeting[] }),
+      transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
+    }
+  )
 }
 
-export async function useMeetingsApi (code: string): Promise<{ meetings: ComputedRef<{ rows: Meeting[], total: number }>, error: Ref<Error | undefined> }> {
+export function getMeeting (code: MaybeRef<string>): ReturnType<typeof useAsyncData<Meeting | undefined>> {
   if (code === undefined || code === null) { throw mandatory('code is mandatory') }
-
-  const { data, error } = await useFetch<Meeting>(`${MEETINGS}/${code}`)
-
-  const meetings = computed(() => {
-    const rows = data.value != null ? [normalizeObjectDates(data.value)] : []
-    return { rows, total: rows.length }
-  })
-
-  return { meetings, error }
+  return useAsyncData<Meeting>(
+    computed(() => `meeting-${unref(code) as string}`),
+    () => $fetch<Meeting>(`${MEETINGS}/${unref(code) as string}`),
+    { transform: normalizeObjectDates }
+  )
 }

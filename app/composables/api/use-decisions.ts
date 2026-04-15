@@ -4,17 +4,13 @@ import type { SearchResult } from '~~/types/api/search-result'
 import { DECISIONS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
-export default async function useDecisionsApi (options?: QueryParams): Promise<{ decisions: Decision[], error: Ref<Error | undefined> }> {
-  const { data, error } = await useFetch<SearchResult<Decision>>(DECISIONS, {
-    params: {
-      sort: options?.sort,
-      limit: options?.limit,
-      skip: options?.skip
-    },
-    default: () => ({ total: 0, rows: [] })
-  })
-
-  const decisions = data.value.rows.map(row => normalizeObjectDates(row))
-
-  return { decisions, error }
+export function getDecisionList (options?: MaybeRef<QueryParams>): ReturnType<typeof useAsyncData<SearchResult<Decision>>> {
+  return useAsyncData<SearchResult<Decision>>(
+    computed(() => `decisions-${JSON.stringify(unref(options))}`),
+    () => $fetch<SearchResult<Decision>>(DECISIONS, { params: unref(options) }),
+    {
+      default: () => ({ total: 0, rows: [] as Decision[] }),
+      transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
+    }
+  )
 }
