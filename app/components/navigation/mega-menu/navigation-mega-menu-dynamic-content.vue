@@ -16,6 +16,7 @@ import { getStatementList } from '~/composables/api/use-statements';
 import { getPressReleaseList } from '~/composables/api/use-press-releases';
 import { useLString } from '~/composables/use-lstring';
 import { useFormatDate } from '~/composables/use-format-date'
+import { andOr } from '~~/utils/solr'
 import type { Article } from '~~/types/content';
 import type { Decision } from '~~/types/decision';
 import type { Meeting } from '~~/types/meeting';
