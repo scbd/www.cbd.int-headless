@@ -135,10 +135,8 @@ workflows:
     jobs:
       - lint:
           filters:
-            branches:
-              ignore: []
             tags:
-              only: /^\d{4}\.\d+\.\d+$/
+              only: /.*/
       - build-only:
           requires:
             - lint
