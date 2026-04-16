@@ -1,0 +1,111 @@
+// ─── wp-block-cover ───────────────────────────────────────────────────────────
+// Source: Drupal block-library/style.css → .wp-block-cover
+
+.wp-block-cover,
+.wp-block-cover-image {
+  align-items: flex-end;
+  background-position: 50% center;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  min-height: 430px;
+  overflow: clip;
+  padding: 0;
+  position: relative;
+}
+
+// Background image fills the container absolutely
+.wp-block-cover .wp-block-cover__image-background,
+.wp-block-cover video.wp-block-cover__video-background {
+  border: none;
+  box-shadow: none;
+  height: 100%;
+  inset: 0;
+  margin: 0;
+  max-height: none;
+  max-width: none;
+  object-fit: cover;
+  outline: none;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 0;
+}
+
+// Replace the flat dim overlay with a bottom gradient bar
+.wp-block-cover .wp-block-cover__background,
+.wp-block-cover .wp-block-cover__gradient-background {
+  inset: 0;
+  opacity: 1;
+  position: absolute;
+  z-index: 1;
+}
+
+// Replace solid black with a gradient that only covers the bottom portion
+.wp-block-cover .has-background-dim:not([class*="-background-color"]),
+.wp-block-cover-image .has-background-dim:not([class*="-background-color"]) {
+  background-color: transparent;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 60%);
+}
+
+// Dim-level overrides (10 % steps) — adjust gradient intensity
+@each $step in 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 {
+  .wp-block-cover .wp-block-cover__background.has-background-dim-#{$step},
+  .wp-block-cover .wp-block-cover__gradient-background.has-background-dim-#{$step} {
+    background-image: linear-gradient(to top, rgba(0, 0, 0, calc(#{$step} / 100)) 0%, transparent 60%);
+  }
+}
+
+// Inner container sits above image and overlay, anchored at the bottom
+.wp-block-cover .wp-block-cover__inner-container,
+.wp-block-cover-image .wp-block-cover__inner-container {
+  color: inherit;
+  font-size: 1.75rem;
+  padding: 1.25rem 2rem;
+  position: relative;
+  width: 100%;
+  z-index: 2;
+}
+
+// Text alignment utilities (used by Gutenberg blocks)
+.has-text-align-center {
+  text-align: center;
+}
+
+.has-text-align-left {
+  text-align: left;
+}
+
+.has-text-align-right {
+  text-align: right;
+}
+
+// Text colour: white by default (no has-text-color modifier)
+:where(.wp-block-cover:not(.has-text-color)),
+:where(.wp-block-cover-image:not(.has-text-color)) {
+  color: #fff;
+}
+
+// Headings / paragraphs inherit the cover text colour
+.wp-block-cover p:where(:not(.has-text-color)),
+.wp-block-cover h1:where(:not(.has-text-color)),
+.wp-block-cover h2:where(:not(.has-text-color)),
+.wp-block-cover h3:where(:not(.has-text-color)) {
+  color: inherit;
+}
+
+// ─── wp-block-image ──────────────────────────────────────────────────────────
+// Ensures standalone images don't exceed the column width
+
+.wp-block-image img {
+  box-sizing: border-box;
+  height: auto;
+  max-width: 100%;
+  vertical-align: bottom;
+}
+
+.wp-block-image.alignfull img,
+.wp-block-image.alignwide img {
+  height: auto;
+  width: 100%;
+}
