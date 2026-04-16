@@ -21,10 +21,30 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     'nuxt-gtag',
+    'nuxt-security',
     '@nuxtjs/robots',
     '@nuxtjs/i18n',
     '@nuxt/image'
   ],
+  security: {
+    headers: {
+      contentSecurityPolicy: {
+        'default-src': ["'self'"],
+        'script-src': ["'self'", 'https://www.googletagmanager.com', "'nonce-{{nonce}}'", "'strict-dynamic'", "'unsafe-inline'"],
+        'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        'font-src': ["'self'", 'https://fonts.gstatic.com'],
+        'img-src': ["'self'", 'data:', 'blob:', 'https://www.cbd.int'],
+        'connect-src': ["'self'", 'https://api.cbd.int', 'https://ort.cbd.int']
+      },
+      strictTransportSecurity: {
+        maxAge: 31536000,
+        includeSubdomains: true
+      },
+      xFrameOptions: 'SAMEORIGIN',
+      xContentTypeOptions: 'nosniff',
+      referrerPolicy: 'strict-origin-when-cross-origin'
+    }
+  },
   site: { indexable: false },
   vite: {
     plugins: [
