@@ -9,6 +9,7 @@ export function getRecentUpdateList (options?: MaybeRef<QueryParams>): ReturnTyp
     computed(() => `recent-updates-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<RecentUpdate>>(RECENT_UPDATES, { params: unref(options) }),
     {
+      lazy: true,
       default: () => ({ total: 0, rows: [] as RecentUpdate[] }),
       transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
     }

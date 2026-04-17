@@ -10,6 +10,7 @@ export function getArticleList (options?: MaybeRef<QueryParams>): ReturnType<typ
     computed(() => `articles-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<Article>>(ARTICLES, { params: unref(options) }),
     {
+      lazy: true,
       default: () => ({ total: 0, rows: [] as Article[] }),
       transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
     }
@@ -22,6 +23,9 @@ export function getArticle (url: MaybeRef<string>): ReturnType<typeof useAsyncDa
   return useAsyncData<Article>(
     computed(() => `article-${u}`),
     () => $fetch<Article>(CONTENT, { params: { url: u } }),
-    { transform: normalizeObjectDates }
+    {
+      lazy: true,
+      transform: normalizeObjectDates
+    }
   )
 }

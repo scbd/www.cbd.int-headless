@@ -10,6 +10,7 @@ export function getNotificationList (options?: MaybeRef<QueryParams>): ReturnTyp
     computed(() => `notifications-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<Notification>>(NOTIFICATIONS, { params: unref(options) }),
     {
+      lazy: true,
       default: () => ({ total: 0, rows: [] as Notification[] }),
       transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
     }
@@ -22,6 +23,9 @@ export function getNotification (code: MaybeRef<string>): ReturnType<typeof useA
   return useAsyncData<Notification>(
     computed(() => `notification-${c}`),
     () => $fetch<Notification>(`${NOTIFICATIONS}/${c}`),
-    { transform: normalizeObjectDates }
+    {
+      lazy: true,
+      transform: normalizeObjectDates
+    }
   )
 }

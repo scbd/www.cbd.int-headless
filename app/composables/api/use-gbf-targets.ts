@@ -5,6 +5,9 @@ export function getGbfTargetsList (): ReturnType<typeof useAsyncData<GbfTarget[]
   return useAsyncData<GbfTarget[]>(
     'gbf-targets',
     () => $fetch<GbfTarget[]>(GBF_TARGETS),
-    { default: () => [] as GbfTarget[] }
+    {
+      lazy: true,
+      default: () => [] as GbfTarget[]
+    }
   )
 }

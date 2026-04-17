@@ -12,6 +12,7 @@ export function getSubmissionList (code: MaybeRef<string>, options?: MaybeRef<Qu
     computed(() => `submissions-${c}-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<Submission>>(`${SUBMISSIONS}/${c}`, { params: unref(options) }),
     {
+      lazy: true,
       default: () => ({ total: 0, rows: [] as Submission[] }),
       transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
     }

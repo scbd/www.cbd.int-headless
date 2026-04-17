@@ -8,6 +8,9 @@ export function getPortalList (portal: MaybeRef<string>): ReturnType<typeof useA
   return useAsyncData<Portal[]>(
     computed(() => `portals-${p}`),
     () => $fetch<Portal[]>(PORTALS, { params: { portal: p } }),
-    { default: () => [] as Portal[] }
+    {
+      lazy: true,
+      default: () => [] as Portal[]
+    }
   )
 }

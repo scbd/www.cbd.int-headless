@@ -10,6 +10,7 @@ export function getStatementList (options?: MaybeRef<QueryParams>): ReturnType<t
     computed(() => `statements-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<Statement>>(STATEMENTS, { params: unref(options) }),
     {
+      lazy: true,
       default: () => ({ total: 0, rows: [] as Statement[] }),
       transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
     }
@@ -22,6 +23,9 @@ export function getStatement (code: MaybeRef<string>): ReturnType<typeof useAsyn
   return useAsyncData<Statement>(
     computed(() => `statement-${c}`),
     () => $fetch<Statement>(`${STATEMENTS}/${c}`),
-    { transform: normalizeObjectDates }
+    {
+      lazy: true,
+      transform: normalizeObjectDates
+    }
   )
 }

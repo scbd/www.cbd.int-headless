@@ -10,6 +10,7 @@ export function getNbsapList (options?: MaybeRef<QueryParams>): ReturnType<typeo
     computed(() => `nbsaps-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<Nbsap>>(NBSAPS, { params: unref(options) }),
     {
+      lazy: true,
       default: () => ({ total: 0, rows: [] as Nbsap[] }),
       transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
     }
@@ -22,6 +23,9 @@ export function getNbsap (code: MaybeRef<string>): ReturnType<typeof useAsyncDat
   return useAsyncData<Nbsap>(
     computed(() => `nbsap-${c}`),
     () => $fetch<Nbsap>(`${NBSAPS}/${c}`),
-    { transform: normalizeObjectDates }
+    {
+      lazy: true,
+      transform: normalizeObjectDates
+    }
   )
 }

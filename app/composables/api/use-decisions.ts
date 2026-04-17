@@ -9,6 +9,7 @@ export function getDecisionList (options?: MaybeRef<QueryParams>): ReturnType<ty
     computed(() => `decisions-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<Decision>>(DECISIONS, { params: unref(options) }),
     {
+      lazy: true,
       default: () => ({ total: 0, rows: [] as Decision[] }),
       transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
     }

@@ -8,6 +8,9 @@ export function getSubjectList (domain: MaybeRef<string>): ReturnType<typeof use
   return useAsyncData<Subject[]>(
     computed(() => `subjects-${d}`),
     () => $fetch<Subject[]>(`${SUBJECTS}/${encodeURIComponent(d)}`),
-    { default: () => [] as Subject[] }
+    {
+      lazy: true,
+      default: () => [] as Subject[]
+    }
   )
 }

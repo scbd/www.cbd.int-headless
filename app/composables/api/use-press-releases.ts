@@ -10,6 +10,7 @@ export function getPressReleaseList (options?: MaybeRef<QueryParams>): ReturnTyp
     computed(() => `press-releases-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<PressRelease>>(PRESS_RELEASES, { params: unref(options) }),
     {
+      lazy: true,
       default: () => ({ total: 0, rows: [] as PressRelease[] }),
       transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
     }
@@ -22,6 +23,9 @@ export function getPressRelease (code: MaybeRef<string>): ReturnType<typeof useA
   return useAsyncData<PressRelease>(
     computed(() => `press-release-${c}`),
     () => $fetch<PressRelease>(`${PRESS_RELEASES}/${c}`),
-    { transform: normalizeObjectDates }
+    {
+      lazy: true,
+      transform: normalizeObjectDates
+    }
   )
 }

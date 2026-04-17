@@ -9,6 +9,7 @@ export function getSearchResults (options?: MaybeRef<QueryParams>): ReturnType<t
     computed(() => `search-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<Content | Article>>(SEARCH, { params: unref(options) }),
     {
+      lazy: true,
       default: () => ({ total: 0, rows: [] as Array<Content | Article> }),
       transform: (data) => ({
         rows: (data.rows ?? []).map(item => normalizeObjectDates(item)),

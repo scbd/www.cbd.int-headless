@@ -6,6 +6,9 @@ export function getCountryList (): ReturnType<typeof useAsyncData<SearchResult<C
   return useAsyncData<SearchResult<Country>>(
     'countries',
     () => $fetch<SearchResult<Country>>(COUNTRIES),
-    { default: () => ({ total: 0, rows: [] as Country[] }) }
+    {
+      lazy: true,
+      default: () => ({ total: 0, rows: [] as Country[] })
+    }
   )
 }

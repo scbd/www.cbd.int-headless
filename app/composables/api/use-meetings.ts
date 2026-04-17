@@ -10,6 +10,7 @@ export function getMeetingList (options?: MaybeRef<QueryParams>): ReturnType<typ
     computed(() => `meetings-${JSON.stringify(unref(options))}`),
     () => $fetch<SearchResult<Meeting>>(MEETINGS, { params: unref(options) }),
     {
+      lazy: true,
       default: () => ({ total: 0, rows: [] as Meeting[] }),
       transform: (data) => ({ rows: data.rows.map(item => normalizeObjectDates(item)), total: data.total })
     }
@@ -22,6 +23,9 @@ export function getMeeting (code: MaybeRef<string>): ReturnType<typeof useAsyncD
   return useAsyncData<Meeting>(
     computed(() => `meeting-${c}`),
     () => $fetch<Meeting>(`${MEETINGS}/${c}`),
-    { transform: normalizeObjectDates }
+    {
+      lazy: true,
+      transform: normalizeObjectDates
+    }
   )
 }
