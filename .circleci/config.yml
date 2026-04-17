@@ -11,6 +11,26 @@
 version: 2.1
 
 jobs:
+  lint:
+    resource_class: small
+    docker:
+      - image: cimg/node:24.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-deps-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile --network-concurrency 1
+      - save_cache:
+          key: yarn-deps-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run:
+          name: Run lint
+          command: yarn lint
+
   build-only:
     resource_class: small
     docker:
@@ -113,13 +133,21 @@ jobs:
 workflows:
   build-deploy:
     jobs:
+      - lint:
+          filters:
+            tags:
+              only: /.*/
       - build-only:
+          requires:
+            - lint
           filters:
             branches:
               ignore:
                 - dev
                 - master
       - build-and-push:
+          requires:
+            - lint
           context: docker-hub
           filters:
             branches:
