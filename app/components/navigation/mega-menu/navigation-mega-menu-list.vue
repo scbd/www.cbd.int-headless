@@ -14,12 +14,12 @@
 
         <async-block>
           <ul v-if="menuItem.component" class="level-3-items nav">
-              <navigation-mega-menu-dynamic-content :component="menuItem.component" />
+              <navigation-mega-menu-dynamic-content :component="menuItem.component" :filter="menuItem.filter"/>
           </ul>
         </async-block>
 
         <ul v-if="menuItem.children" class="level-3-items nav">
-          <navigation-mega-menu-list-item :menu="menuItem" />
+          <navigation-mega-menu-list-item :menu="menuItem"/>
         </ul>
       </li>
     </template>
