@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import useArticleListApi from '~/composables/api/use-articles-api';
-import useDecisionsApi from '~/composables/api/use-decisions';
+import useDecisionsListApi from '~/composables/api/use-decisions';
 import useMeetingsListApi from '~/composables/api/use-meetings';
 import useNotificationsListApi from '~/composables/api/use-notifications';
 import useStatementsListApi from '~/composables/api/use-statements';
@@ -47,7 +47,7 @@ async function getContent(component: string) {
     case 'meetings':       return (await useMeetingsListApi(ref({ limit: 4, sort: 'endDate_dt ASC', startDate: 'NOW' }))).meetings.value.rows;
     case 'notifications':  return (await useNotificationsListApi(ref({ limit: 4 }))).notifications.value.rows;
     case 'statements':     return (await useStatementsListApi(ref({ limit: 4 })) ).statements.value.rows;
-    case 'decisions':      return (await useDecisionsApi({ limit: 4 })).decisions;
+    case 'decisions':      return (await useDecisionsListApi(ref({ limit: 4 }))).decisions.value.rows;
     case 'press-releases': return (await usePressReleasesListApi(ref({ limit: 4 }))).pressReleases.value.rows;
     default:               return [];
   }
