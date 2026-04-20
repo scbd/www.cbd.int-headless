@@ -18,11 +18,13 @@ export function getNotificationList (options?: MaybeRef<QueryParams>): ReturnTyp
 }
 
 export function getNotification (code: MaybeRef<string>): ReturnType<typeof useAsyncData<Notification | undefined>> {
-  const c = unref(code) as string
-  if (c === '') { throw mandatory('code is mandatory') }
   return useAsyncData<Notification>(
-    computed(() => `notification-${c}`),
-    () => $fetch<Notification>(`${NOTIFICATIONS}/${c}`),
+    computed(() => `notification-${unref(code) as string}`),
+    () => {
+      const c = unref(code) as string
+      if (c === '' || c === undefined) { throw mandatory('code is mandatory') }
+      return $fetch<Notification>(`${NOTIFICATIONS}/${encodeURIComponent(c)}`)
+    },
     {
       lazy: true,
       transform: normalizeObjectDates

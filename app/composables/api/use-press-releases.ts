@@ -18,11 +18,13 @@ export function getPressReleaseList (options?: MaybeRef<QueryParams>): ReturnTyp
 }
 
 export function getPressRelease (code: MaybeRef<string>): ReturnType<typeof useAsyncData<PressRelease | undefined>> {
-  const c = unref(code) as string
-  if (c === '') { throw mandatory('code is mandatory') }
   return useAsyncData<PressRelease>(
-    computed(() => `press-release-${c}`),
-    () => $fetch<PressRelease>(`${PRESS_RELEASES}/${c}`),
+    computed(() => `press-release-${unref(code) as string}`),
+    () => {
+      const c = unref(code) as string
+      if (c === '' || c === undefined) { throw mandatory('code is mandatory') }
+      return $fetch<PressRelease>(`${PRESS_RELEASES}/${encodeURIComponent(c)}`)
+    },
     {
       lazy: true,
       transform: normalizeObjectDates

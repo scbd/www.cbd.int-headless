@@ -18,11 +18,13 @@ export function getNbsapList (options?: MaybeRef<QueryParams>): ReturnType<typeo
 }
 
 export function getNbsap (code: MaybeRef<string>): ReturnType<typeof useAsyncData<Nbsap | undefined>> {
-  const c = unref(code) as string
-  if (c === '') { throw mandatory('code is mandatory') }
   return useAsyncData<Nbsap>(
-    computed(() => `nbsap-${c}`),
-    () => $fetch<Nbsap>(`${NBSAPS}/${c}`),
+    computed(() => `nbsap-${unref(code) as string}`),
+    () => {
+      const c = unref(code) as string
+      if (c === '' || c === undefined) { throw mandatory('code is mandatory') }
+      return $fetch<Nbsap>(`${NBSAPS}/${encodeURIComponent(c)}`)
+    },
     {
       lazy: true,
       transform: normalizeObjectDates

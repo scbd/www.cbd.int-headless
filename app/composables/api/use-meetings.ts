@@ -18,11 +18,13 @@ export function getMeetingList (options?: MaybeRef<QueryParams>): ReturnType<typ
 }
 
 export function getMeeting (code: MaybeRef<string>): ReturnType<typeof useAsyncData<Meeting | undefined>> {
-  const c = unref(code) as string
-  if (c === '') { throw mandatory('code is mandatory') }
   return useAsyncData<Meeting>(
-    computed(() => `meeting-${c}`),
-    () => $fetch<Meeting>(`${MEETINGS}/${c}`),
+    computed(() => `meeting-${unref(code) as string}`),
+    () => {
+      const c = unref(code) as string
+      if (c === '' || c === undefined) { throw mandatory('code is mandatory') }
+      return $fetch<Meeting>(`${MEETINGS}/${encodeURIComponent(c)}`)
+    },
     {
       lazy: true,
       transform: normalizeObjectDates
