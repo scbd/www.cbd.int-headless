@@ -22,7 +22,7 @@ export function getNbsap (code: MaybeRef<string>): ReturnType<typeof useAsyncDat
     computed(() => `nbsap-${unref(code) as string}`),
     () => {
       const c = unref(code) as string
-      if (c === '' || c === undefined) { throw mandatory('code is mandatory') }
+      if (c === '' || c === undefined) { throw mandatory('code', 'code is mandatory') }
       return $fetch<Nbsap>(`${NBSAPS}/${encodeURIComponent(c)}`)
     },
     {

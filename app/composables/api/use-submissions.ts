@@ -10,7 +10,7 @@ export function getSubmissionList (code: MaybeRef<string>, options?: MaybeRef<Qu
     computed(() => `submissions-${unref(code) as string}-${JSON.stringify(unref(options))}`),
     () => {
       const c = unref(code) as string
-      if (c === '') { throw mandatory('code is mandatory') }
+      if (c === '') { throw mandatory('code', 'code is mandatory') }
       return $fetch<SearchResult<Submission>>(`${SUBMISSIONS}/${encodeURIComponent(c)}`, { params: unref(options) })
     },
     {

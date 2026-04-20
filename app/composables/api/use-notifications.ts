@@ -22,7 +22,7 @@ export function getNotification (code: MaybeRef<string>): ReturnType<typeof useA
     computed(() => `notification-${unref(code) as string}`),
     () => {
       const c = unref(code) as string
-      if (c === '' || c === undefined) { throw mandatory('code is mandatory') }
+      if (c === '' || c === undefined) { throw mandatory('code', 'code is mandatory') }
       return $fetch<Notification>(`${NOTIFICATIONS}/${encodeURIComponent(c)}`)
     },
     {

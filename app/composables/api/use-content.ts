@@ -7,7 +7,7 @@ export function getContent (url: MaybeRef<string>): ReturnType<typeof useAsyncDa
     computed(() => `content-${unref(url) as string}`),
     () => {
       const u = unref(url) as string
-      if (u === '' || u === undefined) throw mandatory('url is mandatory')
+      if (u === '' || u === undefined) throw mandatory('url', 'url is mandatory')
       return $fetch<Content>(CONTENT, { params: { url: u } })
     }
   )

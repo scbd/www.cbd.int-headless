@@ -7,7 +7,7 @@ export function getPortalList (portal: MaybeRef<string>): ReturnType<typeof useA
     computed(() => `portals-${unref(portal) as string}`),
     () => {
       const p = unref(portal) as string
-      if (p === '') { throw mandatory('portal is mandatory') }
+      if (p === '') { throw mandatory('portal', 'portal is mandatory') }
       return $fetch<Portal[]>(PORTALS, { params: { portal: p } })
     },
     {

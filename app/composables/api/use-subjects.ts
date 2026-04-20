@@ -7,7 +7,7 @@ export function getSubjectList (domain: MaybeRef<string>): ReturnType<typeof use
     computed(() => `subjects-${unref(domain) as string}`),
     () => {
       const d = unref(domain) as string
-      if (d === '') { throw mandatory('domain is mandatory') }
+      if (d === '') { throw mandatory('domain', 'domain is mandatory') }
       return $fetch<Subject[]>(`${SUBJECTS}/${encodeURIComponent(d)}`)
     },
     {

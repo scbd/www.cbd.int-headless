@@ -22,7 +22,7 @@ export function getStatement (code: MaybeRef<string>): ReturnType<typeof useAsyn
     computed(() => `statement-${unref(code) as string}`),
     () => {
       const c = unref(code) as string
-      if (c === '') { throw mandatory('code is mandatory') }
+      if (c === '') { throw mandatory('code', 'code is mandatory') }
       return $fetch<Statement>(`${STATEMENTS}/${encodeURIComponent(c)}`)
     },
     {

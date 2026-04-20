@@ -6,7 +6,7 @@ export function getMenu (code: MaybeRef<string>, options?: MaybeRef<{ depth?: nu
     computed(() => `menu-${unref(code) as string}-${JSON.stringify(unref(options))}`),
     () => {
       const c = unref(code) as string
-      if (c === '' || c === undefined) { throw mandatory('code is mandatory') }
+      if (c === '' || c === undefined) { throw mandatory('code', 'code is mandatory') }
       return $fetch<Menu[]>(`/api/menus/${encodeURIComponent(c)}`, { params: unref(options) })
     },
     {

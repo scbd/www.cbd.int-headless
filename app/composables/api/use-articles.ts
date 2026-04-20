@@ -21,7 +21,7 @@ export function getArticle (url: MaybeRef<string>): ReturnType<typeof useAsyncDa
     computed(() => `article-${unref(url) as string}`),
     () => {
       const u = unref(url) as string
-      if (u === '' || u === undefined) throw mandatory('url is mandatory')
+      if (u === '' || u === undefined) throw mandatory('url', 'url is mandatory')
       return $fetch<Article>(CONTENT, { params: { url: u } })
     },
     { lazy: true, transform: (data) => data === null ? undefined : normalizeObjectDates(data) }
