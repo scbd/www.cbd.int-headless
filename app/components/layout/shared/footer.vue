@@ -82,9 +82,9 @@
 <i18n src="~~/i18n/dist/app/components/layout/shared/footer.json"></i18n>
 
 <script setup lang="ts">
-import { getMenu } from '~/composables/api/use-menu';
-
 const { t, locale } = useI18n();
+
+const { getMenu } = useMenu()
 
 const { data: menu, error } = await getMenu('cbd-footer');
 

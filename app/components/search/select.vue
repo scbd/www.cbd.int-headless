@@ -22,13 +22,14 @@
 
 <script setup lang="ts">
 import { useLString } from '~/composables/use-lstring'
-import { getSubjectList } from '~/composables/api/use-subjects'
 
 const props = defineProps<{
   modelValue: string
   domain: string
   inputId: string
 }>()
+
+const { getSubjectList } = useSubjects()
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]

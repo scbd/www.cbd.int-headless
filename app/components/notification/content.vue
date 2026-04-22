@@ -61,7 +61,6 @@
 <i18n src="~~/i18n/dist/app/components/notification/content.json"></i18n>
 
 <script setup lang="ts">
-import { getNotification } from '~/composables/api/use-notifications'
 import convertPlainTextToHtml from '~~/utils/convert-plain-text-to-html'
 
 const props = defineProps<{
@@ -71,6 +70,8 @@ const props = defineProps<{
 const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
+
+const { getNotification } = useNotifications()
 
 const { data: notifications, error } = await getNotification(props.code)
 </script>

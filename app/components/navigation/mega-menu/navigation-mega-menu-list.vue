@@ -28,11 +28,11 @@
 <i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-list.json"></i18n>
 
 <script setup lang="ts">
-import { getMenu } from '~/composables/api/use-menu';
-
 const props = defineProps<{
   submenu: string;
 }>();
+
+const { getMenu } = useMenu()
 
 const { data: menu, error } = await getMenu(props.submenu);
 

@@ -72,10 +72,11 @@
   lang="ts"
 >
 import type { Breadcrumb, Menu } from '~~/types/menu'
-import { getContent } from '~/composables/api/use-content'
-import { getMenu } from '~/composables/api/use-menu'
 
 const route = useRoute()
+
+const { getContent } = useContent()
+const { getMenu } = useMenu()
 
 const { data: page, error } = await getContent(route.path)
 

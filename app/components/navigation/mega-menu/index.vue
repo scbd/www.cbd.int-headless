@@ -119,9 +119,10 @@
 
 <script setup lang="ts">
 import { languages } from '~~/data/un-languages';
-import { getMenu } from '~/composables/api/use-menu';
 
 const { t, locale } = useI18n();
+
+const { getMenu } = useMenu()
 
 const navEl = useTemplateRef('navEl')
 

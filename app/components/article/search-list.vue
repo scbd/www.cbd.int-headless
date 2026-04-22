@@ -71,13 +71,13 @@
 <i18n src="~~/i18n/dist/app/components/article/search-list.json"></i18n>
 
 <script setup lang="ts">
-import { getArticleList } from '~/composables/api/use-articles'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { truncate } from 'lodash-es'
 
 const { t } = useI18n()
 const { toFormatDate } = useFormatDate()
+const { getArticleList } = useArticles()
 
 const props = defineProps<{
   searchParams?: {

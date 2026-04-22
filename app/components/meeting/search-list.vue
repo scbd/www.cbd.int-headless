@@ -100,7 +100,6 @@
 <i18n src="~~/i18n/dist/app/components/meeting/search-list.json"></i18n>
 
 <script setup lang="ts">
-import { getMeetingList } from '~/composables/api/use-meetings'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import type { Meeting } from '~~/types/meeting'
@@ -108,6 +107,8 @@ import type { Meeting } from '~~/types/meeting'
 const { t, locale } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
+
+const { getMeetingList } = useMeetings()
 
 const props = defineProps<{
   searchParams?: {

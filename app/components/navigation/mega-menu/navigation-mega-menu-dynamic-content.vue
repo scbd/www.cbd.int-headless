@@ -8,12 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { getArticleList } from '~/composables/api/use-articles';
-import { getDecisionList } from '~/composables/api/use-decisions';
-import { getMeetingList } from '~/composables/api/use-meetings';
-import { getNotificationList } from '~/composables/api/use-notifications';
-import { getStatementList } from '~/composables/api/use-statements';
-import { getPressReleaseList } from '~/composables/api/use-press-releases';
 import { useLString } from '~/composables/use-lstring';
 import { useFormatDate } from '~/composables/use-format-date'
 import type { Article } from '~~/types/content';
@@ -23,13 +17,19 @@ import type { Notification } from '~~/types/notification';
 import type { PressRelease } from '~~/types/press-release';
 import type { Statement } from '~~/types/statement';
 
-
 const props = defineProps<{
   component: string;
 }>();
 
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
+
+const { getArticleList } = useArticles()
+const { getDecisionList } = useDecision()
+const { getMeetingList } = useMeetings()
+const { getNotificationList } = useNotifications()
+const { getPressReleaseList } = usePressReleases()
+const { getStatementList } = useStatements()
 
 const asyncData = getContent(props.component)
 

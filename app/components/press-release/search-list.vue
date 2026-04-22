@@ -68,7 +68,6 @@
 <i18n src="~~/i18n/dist/app/components/press-release/search-list.json"></i18n>
 
 <script setup lang="ts">
-import { getPressReleaseList } from '~/composables/api/use-press-releases'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 
@@ -82,6 +81,8 @@ const props = defineProps<{
     sort?: string
   }
 }>()
+
+const { getPressReleaseList } = usePressReleases()
 
 const currentPage = ref(1)
 

@@ -20,10 +20,11 @@
 <i18n src="~~/i18n/dist/app/components/statement/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import { getStatementList } from '~/composables/api/use-statements';
 import { STATEMENTS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
+
+const { getStatementList } = useStatements()
 
 const { data: statements, error } = await getStatementList({ limit: 4 })
 </script>

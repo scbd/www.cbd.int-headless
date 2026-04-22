@@ -36,7 +36,6 @@
 <i18n src="~~/i18n/dist/app/components/search/results-list.json"></i18n>
 
 <script setup lang="ts">
-import { getSearchResults } from '~/composables/api/use-search'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { useFormatDate } from '~/composables/use-format-date'
 import { truncate } from 'lodash-es'
@@ -47,6 +46,8 @@ const { toFormatDate } = useFormatDate()
 const props = defineProps<{
   searchParams?: { sort?: string; search?: string }
 }>()
+
+const { getSearchResults } = useSearch()
 
 const currentPage = ref(1)
 

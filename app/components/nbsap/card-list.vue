@@ -20,10 +20,11 @@
 <i18n src="~~/i18n/dist/app/components/nbsap/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import { getNbsapList } from '~/composables/api/use-nbsaps'
 import { NBSAPS } from '~~/constants/url-paths'
 
 const { t } = useI18n()
+
+const { getNbsapList } = useNbsaps()
 
 const { data: nbsaps, error } = await getNbsapList({ limit: 4 })
 </script> 

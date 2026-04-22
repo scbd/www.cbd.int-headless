@@ -44,7 +44,6 @@
 <i18n src="~~/i18n/dist/app/components/statement/search-list.json"></i18n>
 
 <script setup lang="ts">
-import { getStatementList }  from '~/composables/api/use-statements'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 
@@ -55,6 +54,8 @@ const { toFormatDate } = useFormatDate()
 const props = defineProps<{
   searchParams?: { fieldQueries?: string; startDate?: string; endDate?: string }
 }>()
+
+const { getStatementList } = useStatements()
 
 const currentPage = ref(1)
 

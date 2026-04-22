@@ -32,9 +32,8 @@
 <i18n src="~~/i18n/dist/app/components/gbf-target/card-list.json"></i18n>
 
 <script setup lang="ts">
-import { getGbfTargetList } from '~/composables/api/use-gbf-targets'
-
 const { t } = useI18n()
+const { getGbfTargetList } = useGbfTargets()
 
 const { data: gbfTargets, error } = await getGbfTargetList()
 

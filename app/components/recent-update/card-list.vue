@@ -17,9 +17,9 @@
 <i18n src="~~/i18n/dist/app/components/recent-update/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import { getRecentUpdateList } from '~/composables/api/use-recent-updates'
-
 const { t } = useI18n()
+
+const {  getRecentUpdateList } = useRecentUpdates()
 
 const { data: recentUpdates, error } = await getRecentUpdateList({ limit: 4 })
 </script>
