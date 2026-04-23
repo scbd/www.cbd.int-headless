@@ -1,8 +1,6 @@
 <template>
-  <async-block>
-    <notification-search @search="onSearch" />
-    <notification-search-list :search-params="searchParams" />
-  </async-block>
+  <notification-search @search="onSearch" />
+  <notification-search-list :search-params="searchParams" />
 </template>
 
 <script setup lang="ts">

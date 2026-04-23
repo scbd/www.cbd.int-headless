@@ -165,5 +165,5 @@ const languagesWithLabel = computed(() =>
   })
 );
 
-const { data: menu, pending, error } = await getMenu('cbd-header');
+const { data: menu, pending, error } = getMenu('cbd-header');
 </script>

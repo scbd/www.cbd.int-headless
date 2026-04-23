@@ -86,7 +86,7 @@ const { t, locale } = useI18n();
 
 const { getMenu } = useMenu()
 
-const { data: menu, pending, error } = await getMenu('cbd-footer');
+const { data: menu, pending, error } = getMenu('cbd-footer');
 
 const unepLogoUrl = computed(
   () => `/images/unep-logo-${encodeURIComponent(locale.value)}.svg`

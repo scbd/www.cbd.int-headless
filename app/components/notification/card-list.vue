@@ -29,5 +29,5 @@ const { t } = useI18n()
 
 const { getNotificationList } = useNotifications()
 
-const { data: notifications, pending, error } = await getNotificationList({ limit: 4 })
+const { data: notifications, pending, error } = getNotificationList({ limit: 4 })
 </script>

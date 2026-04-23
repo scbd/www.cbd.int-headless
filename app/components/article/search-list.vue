@@ -95,7 +95,7 @@ const queryParams = computed(() => ({
   search: props.searchParams?.search
 }))
 
-const { data: articles, pending, error } = await getArticleList(queryParams)
+const { data: articles, pending, error } = getArticleList(queryParams)
 
 const totalPages = computed(() => Math.ceil(articles.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

@@ -67,7 +67,7 @@ const queryParams = computed(() => ({
   fieldQueries: props.searchParams?.fieldQueries
 }))
 
-const { data: statements, pending, error } = await getStatementList(queryParams)
+const { data: statements, pending, error } = getStatementList(queryParams)
 
 const totalPages = computed(() => Math.ceil(statements.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

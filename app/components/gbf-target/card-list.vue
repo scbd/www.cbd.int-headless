@@ -35,7 +35,7 @@
 const { t } = useI18n()
 const { getGbfTargetList } = useGbfTargets()
 
-const { data: gbfTargets, pending, error } = await getGbfTargetList()
+const { data: gbfTargets, pending, error } = getGbfTargetList()
 
 const gbfTargetWrapper = useTemplateRef<HTMLDivElement>('gbfTargetWrapperRef')
 

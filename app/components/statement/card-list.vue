@@ -26,5 +26,5 @@ const { t } = useI18n();
 
 const { getStatementList } = useStatements()
 
-const { data: statements, pending, error } = await getStatementList({ limit: 4 })
+const { data: statements, pending, error } = getStatementList({ limit: 4 })
 </script>

@@ -128,7 +128,7 @@ const queryParams = computed(() => ({
   endDate: props.searchParams?.endDate
 }))
 
-const { data: meetings, pending, error } = await getMeetingList(queryParams)
+const { data: meetings, pending, error } = getMeetingList(queryParams)
 
 // Group meetings by month, split into upcoming vs previous
 interface MonthGroup { label: string; meetings: Meeting[] }

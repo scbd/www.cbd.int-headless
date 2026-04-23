@@ -1,8 +1,6 @@
 <template>
-  <async-block>
-    <search-form @search="onSearch" />
-    <search-results-list v-if="searchParams" :search-params="searchParams" />
-  </async-block>
+  <search-form @search="onSearch" />
+  <search-results-list v-if="searchParams" :search-params="searchParams" />
 </template>
 
 <script setup lang="ts">

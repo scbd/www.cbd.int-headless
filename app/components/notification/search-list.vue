@@ -131,7 +131,7 @@ const queryParams = computed(() => ({
   fieldQueries: props.searchParams?.fieldQueries
 }))
 
-const { data: notifications, pending, error } = await getNotificationList(queryParams)
+const { data: notifications, pending, error } = getNotificationList(queryParams)
 
 const totalPages = computed(() => Math.ceil(notifications.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

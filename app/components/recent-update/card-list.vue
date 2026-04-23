@@ -21,5 +21,5 @@ const { t } = useI18n()
 
 const {  getRecentUpdateList } = useRecentUpdates()
 
-const { data: recentUpdates, pending, error } = await getRecentUpdateList({ limit: 4 })
+const { data: recentUpdates, pending, error } = getRecentUpdateList({ limit: 4 })
 </script>

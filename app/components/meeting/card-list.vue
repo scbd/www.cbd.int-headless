@@ -26,5 +26,5 @@ const { t } = useI18n()
 const { getMeetingList } = useMeetings()
 
 const sort = 'endDate_dt ASC'
-const { data: meetings, pending, error } = await getMeetingList(ref({ limit: 4, sort, startDate: 'NOW' }))
+const { data: meetings, pending, error } = getMeetingList(ref({ limit: 4, sort, startDate: 'NOW' }))
 </script>

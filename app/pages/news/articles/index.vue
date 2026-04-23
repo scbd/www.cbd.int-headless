@@ -1,8 +1,6 @@
 <template>
-  <async-block>
-    <article-search @search="onSearch" />
-    <article-search-list :search-params="searchParams" />
-  </async-block>
+  <article-search @search="onSearch" />
+  <article-search-list :search-params="searchParams" />
 </template>
 
 <script setup lang="ts">

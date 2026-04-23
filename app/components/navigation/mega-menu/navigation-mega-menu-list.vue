@@ -12,11 +12,9 @@
           {{ menuItem.title }}
         </NuxtLink>
 
-        <async-block>
-          <ul v-if="menuItem.component" class="level-3-items nav">
-              <navigation-mega-menu-dynamic-content :component="menuItem.component" />
-          </ul>
-        </async-block>
+        <ul v-if="menuItem.component" class="level-3-items nav">
+          <navigation-mega-menu-dynamic-content :component="menuItem.component" />
+        </ul>
 
         <ul v-if="menuItem.children" class="level-3-items nav">
           <navigation-mega-menu-list-item :menu="menuItem" />
@@ -34,7 +32,7 @@ const props = defineProps<{
 
 const { getMenu } = useMenu()
 
-const { data: menu, pending, error } = await getMenu(props.submenu);
+const { data: menu, pending, error } = getMenu(props.submenu);
 
 const level2MenuColumnCount = computed(() => {
   const classes: string[] = [];

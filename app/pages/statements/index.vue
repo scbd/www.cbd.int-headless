@@ -1,8 +1,6 @@
 <template>
-  <async-block>
-    <statement-search @search="onSearch" />
-    <statement-search-list :search-params="searchParams" />
-  </async-block>
+  <statement-search @search="onSearch" />
+  <statement-search-list :search-params="searchParams" />
 </template>
 
 <script setup lang="ts">

@@ -24,5 +24,5 @@ const props = defineProps<{
 
 const { getPortalList } = usePortals()
 
-const { data: portals, pending, error } = await getPortalList(encodeURIComponent(props.portal))
+const { data: portals, pending, error } = getPortalList(encodeURIComponent(props.portal))
 </script>

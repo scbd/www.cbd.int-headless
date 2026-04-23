@@ -26,5 +26,5 @@ const { t } = useI18n()
 
 const { getNbsapList } = useNbsaps()
 
-const { data: nbsaps, pending, error } = await getNbsapList({ limit: 4 })
+const { data: nbsaps, pending, error } = getNbsapList({ limit: 4 })
 </script> 

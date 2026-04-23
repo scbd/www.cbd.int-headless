@@ -1,7 +1,5 @@
 <template>
-  <async-block>
-    <notification-content :code="code" />
-  </async-block>
+  <notification-content :code="code" />
 </template>
 
 <script setup lang="ts">

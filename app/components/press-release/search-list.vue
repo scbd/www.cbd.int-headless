@@ -93,7 +93,7 @@ const queryParams = computed(() => ({
   fieldQueries: props.searchParams?.fieldQueries
 }))
 
-const { data: pressReleases, pending, error } = await getPressReleaseList(queryParams)
+const { data: pressReleases, pending, error } = getPressReleaseList(queryParams)
 
 const totalPages = computed(() => Math.ceil(pressReleases.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>
