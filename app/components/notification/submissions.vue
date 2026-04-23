@@ -111,8 +111,8 @@ const { toFormatDate } = useFormatDate()
 const { getCountryList } = useCountries()
 const { getSubmissionList } = useSubmissions()
 
-const { data: submissions } = await getSubmissionList(props.code, { limit: 500 })
-const { data: countries } = await getCountryList()
+const { data: submissions } = getSubmissionList(props.code, { limit: 500 })
+const { data: countries } = getCountryList()
 
 const countryMap = computed(() => {
   const map = new Map<string, Country>()

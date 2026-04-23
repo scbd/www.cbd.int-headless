@@ -1,5 +1,6 @@
 <template>
   <article class="cus-article container-xxl d-flex flex-column page-component">
+    <status v-if="pending || error" :error="error" />
     <template v-if="!notifications">
         <h1>{{ t('notificationNotFound', { code: props.code }) }}</h1>
     </template>
@@ -73,5 +74,5 @@ const { toFormatDate } = useFormatDate()
 
 const { getNotification } = useNotifications()
 
-const { data: notifications, error } = await getNotification(props.code)
+const { data: notifications, pending, error } = getNotification(props.code)
 </script>
