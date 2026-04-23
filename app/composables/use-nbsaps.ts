@@ -4,6 +4,7 @@ import type { SearchResult } from '~~/types/api/search-result'
 import { NBSAPS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { mandatory } from 'api-client/api-error'
+import { emptyKey } from '~~/utils/solr'
 
 export function useNbsaps (): {
   getNbsapList: (options?: MaybeRef<QueryParams>) => ReturnType<typeof useAsyncData<SearchResult<Nbsap>>>
@@ -26,7 +27,7 @@ export function useNbsaps (): {
       computed(() => `nbsap-${unref(code) as string}`),
       () => {
         const c = unref(code) as string
-        if (c === '' || c === undefined) { throw mandatory('code', 'code is mandatory') }
+        if (emptyKey(c)) { throw mandatory('code', 'code is mandatory') }
         return $fetch<Nbsap>(`${NBSAPS}/${encodeURIComponent(c)}`)
       },
       {

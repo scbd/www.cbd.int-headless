@@ -1,6 +1,7 @@
 import type { Portal } from '~~/types/portal'
 import { PORTALS } from '~~/constants/api-paths'
 import { mandatory } from 'api-client/api-error'
+import { emptyKey } from '~~/utils/solr'
 
 export function usePortals (): {
   getPortalList: (portal: MaybeRef<string>) => ReturnType<typeof useAsyncData<Portal[]>>
@@ -10,7 +11,7 @@ export function usePortals (): {
       computed(() => `portals-${unref(portal) as string}`),
       () => {
         const p = unref(portal) as string
-        if (p === '') { throw mandatory('portal', 'portal is mandatory') }
+        if (emptyKey(p)) { throw mandatory('portal', 'portal is mandatory') }
         return $fetch<Portal[]>(PORTALS, { params: { portal: p } })
       },
       {

@@ -4,7 +4,7 @@
             {{ t('portals') }}
         </div>
         <div class="content-wrapper d-flex">
-            <status v-if="error" :error="error" />
+            <status v-if="pending || error" :error="error" />
             <portal-card
                 v-else
                 v-for="portal in portals"
@@ -24,5 +24,5 @@ const props = defineProps<{
 
 const { getPortalList } = usePortals()
 
-const { data: portals, error } = await getPortalList(encodeURIComponent(props.portal))
+const { data: portals, pending, error } = await getPortalList(encodeURIComponent(props.portal))
 </script>

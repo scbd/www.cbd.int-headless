@@ -4,6 +4,7 @@ import type { SearchResult } from '~~/types/api/search-result'
 import { NOTIFICATIONS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { mandatory } from 'api-client/api-error'
+import { emptyKey } from '~~/utils/solr'
 
 export function useNotifications (): {
   getNotificationList: (options?: MaybeRef<QueryParams>) => ReturnType<typeof useAsyncData<SearchResult<Notification>>>
@@ -26,7 +27,7 @@ export function useNotifications (): {
       computed(() => `notification-${unref(code) as string}`),
       () => {
         const c = unref(code) as string
-        if (c === '' || c === undefined) { throw mandatory('code', 'code is mandatory') }
+        if (emptyKey(c)) { throw mandatory('code', 'code is mandatory') }
         return $fetch<Notification>(`${NOTIFICATIONS}/${encodeURIComponent(c)}`)
       },
       {

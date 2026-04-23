@@ -4,7 +4,7 @@
       {{ t('statements') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <statement-card
         v-else
         v-for="statement in statements.rows"
@@ -26,5 +26,5 @@ const { t } = useI18n();
 
 const { getStatementList } = useStatements()
 
-const { data: statements, error } = await getStatementList({ limit: 4 })
+const { data: statements, pending, error } = await getStatementList({ limit: 4 })
 </script>

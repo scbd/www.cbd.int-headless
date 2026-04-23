@@ -2,7 +2,7 @@
   <section class="content-row d-flex flex-column gbf-targets">
     <div class="row-title">{{ t('gbfTargets') }}</div>
     <div class="content-wrapper d-flex" ref="gbfTargetWrapperRef">
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <gbf-target-card
         v-else
         v-for="gbfTarget of gbfTargets"
@@ -35,7 +35,7 @@
 const { t } = useI18n()
 const { getGbfTargetList } = useGbfTargets()
 
-const { data: gbfTargets, error } = await getGbfTargetList()
+const { data: gbfTargets, pending, error } = await getGbfTargetList()
 
 const gbfTargetWrapper = useTemplateRef<HTMLDivElement>('gbfTargetWrapperRef')
 

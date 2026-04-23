@@ -1,6 +1,6 @@
 <template>
     <article class="cus-article container-xxl d-flex flex-column page-component">
-        <status v-if="error" :error="error" />
+        <status v-if="pending || error" :error="error" />
         <div v-else class="cus-serp">
         <!-- Top pagination -->
         <div class="results-info-wrapper">
@@ -95,7 +95,7 @@ const queryParams = computed(() => ({
   search: props.searchParams?.search
 }))
 
-const { data: articles, error } = await getArticleList(queryParams)
+const { data: articles, pending, error } = await getArticleList(queryParams)
 
 const totalPages = computed(() => Math.ceil(articles.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

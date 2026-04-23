@@ -4,6 +4,7 @@ import type { SearchResult } from '~~/types/api/search-result'
 import { CONTENT, ARTICLES } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { mandatory } from 'api-client/api-error'
+import { emptyKey } from '~~/utils/solr'
 
 export function useArticles (): {
   getArticleList: (options?: MaybeRef<QueryParams>) => ReturnType<typeof useAsyncData<SearchResult<Article>>>
@@ -26,7 +27,7 @@ export function useArticles (): {
       computed(() => `article-${unref(url) as string}`),
       () => {
         const u = unref(url) as string
-        if (u === '' || u === undefined) throw mandatory('url', 'url is mandatory')
+        if (emptyKey(u)) throw mandatory('url', 'url is mandatory')
         return $fetch<Article>(CONTENT, { params: { url: u } })
       },
       { lazy: true, transform: (data) => data === null ? undefined : normalizeObjectDates(data) }

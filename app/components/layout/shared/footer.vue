@@ -1,6 +1,6 @@
 <template>
   <footer class="cus-footer d-flex flex-column">
-    <status v-if="error" :error="error" />
+    <status v-if="pending || error" :error="error" />
     <template v-else-if="menu.length">
     <div class="footer-row footer-navigation">
       <nav v-for="menuItem in menu" :key="menuItem.title">
@@ -86,7 +86,7 @@ const { t, locale } = useI18n();
 
 const { getMenu } = useMenu()
 
-const { data: menu, error } = await getMenu('cbd-footer');
+const { data: menu, pending, error } = await getMenu('cbd-footer');
 
 const unepLogoUrl = computed(
   () => `/images/unep-logo-${encodeURIComponent(locale.value)}.svg`

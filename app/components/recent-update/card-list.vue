@@ -4,7 +4,7 @@
       {{ t('recentUpdates') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <recent-update-card
         v-else
         v-for="item in recentUpdates?.rows"
@@ -21,5 +21,5 @@ const { t } = useI18n()
 
 const {  getRecentUpdateList } = useRecentUpdates()
 
-const { data: recentUpdates, error } = await getRecentUpdateList({ limit: 4 })
+const { data: recentUpdates, pending, error } = await getRecentUpdateList({ limit: 4 })
 </script>

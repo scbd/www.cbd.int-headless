@@ -1,6 +1,6 @@
 <template>
   <article class="cus-article container-xxl d-flex flex-column page-component">
-    <status v-if="error" :error="error" />
+    <status v-if="pending || error" :error="error" />
     <div v-else class="cus-serp">
       <!-- Top pagination -->
       <div class="results-info-wrapper">
@@ -128,7 +128,7 @@ const queryParams = computed(() => ({
   endDate: props.searchParams?.endDate
 }))
 
-const { data: meetings, error } = await getMeetingList(queryParams)
+const { data: meetings, pending, error } = await getMeetingList(queryParams)
 
 // Group meetings by month, split into upcoming vs previous
 interface MonthGroup { label: string; meetings: Meeting[] }

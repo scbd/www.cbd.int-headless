@@ -4,7 +4,7 @@
       {{ t('nbsaps') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <nbsap-card
         v-else
         v-for="nbsap in nbsaps.rows"
@@ -26,5 +26,5 @@ const { t } = useI18n()
 
 const { getNbsapList } = useNbsaps()
 
-const { data: nbsaps, error } = await getNbsapList({ limit: 4 })
+const { data: nbsaps, pending, error } = await getNbsapList({ limit: 4 })
 </script> 

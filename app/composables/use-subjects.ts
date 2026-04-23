@@ -1,6 +1,7 @@
 import type { Subject } from '~~/types/subject'
 import { SUBJECTS } from '~~/constants/api-paths'
 import { mandatory } from 'api-client/api-error'
+import { emptyKey } from '~~/utils/solr'
 
 export function useSubjects (): {
   getSubjectList: (domain: MaybeRef<string>) => ReturnType<typeof useAsyncData<Subject[]>>
@@ -10,7 +11,7 @@ export function useSubjects (): {
       computed(() => `subjects-${unref(domain) as string}`),
       () => {
         const d = unref(domain) as string
-        if (d === '') { throw mandatory('domain', 'domain is mandatory') }
+        if (emptyKey(d)) { throw mandatory('domain', 'domain is mandatory') }
         return $fetch<Subject[]>(`${SUBJECTS}/${encodeURIComponent(d)}`)
       },
       {

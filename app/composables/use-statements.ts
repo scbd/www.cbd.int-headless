@@ -4,6 +4,7 @@ import type { SearchResult } from '~~/types/api/search-result'
 import { STATEMENTS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 import { mandatory } from 'api-client/api-error'
+import { emptyKey } from '~~/utils/solr'
 
 export function useStatements (): {
   getStatementList: (options?: MaybeRef<QueryParams>) => ReturnType<typeof useAsyncData<SearchResult<Statement>>>
@@ -26,7 +27,7 @@ export function useStatements (): {
       computed(() => `statement-${unref(code) as string}`),
       () => {
         const c = unref(code) as string
-        if (c === '') { throw mandatory('code', 'code is mandatory') }
+        if (emptyKey(c)) { throw mandatory('code', 'code is mandatory') }
         return $fetch<Statement>(`${STATEMENTS}/${encodeURIComponent(c)}`)
       },
       {

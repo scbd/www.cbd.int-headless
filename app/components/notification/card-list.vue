@@ -4,7 +4,7 @@
       {{ t('notifications') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <notification-card
         v-else
         v-for="notification in notifications.rows"
@@ -29,5 +29,5 @@ const { t } = useI18n()
 
 const { getNotificationList } = useNotifications()
 
-const { data: notifications, error } = await getNotificationList({ limit: 4 })
+const { data: notifications, pending, error } = await getNotificationList({ limit: 4 })
 </script>

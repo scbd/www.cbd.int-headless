@@ -1,8 +1,7 @@
 <template>
   <main class="cus-main cus-internal-page d-flex flex-column" role="main">
-    <status v-if="error" :error="error" />
+    <status v-if="pending || error" :error="error" />
     <template v-else-if="article">
-      <!-- Breadcrumbs -->
       <hero-item-page :article="article" />
       <div class="container-xxl d-flex">
         <article class="cus-article container-fluid d-flex flex-column">
@@ -17,11 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { useArticles } from '~/composables/use-articles'
-
 const route = useRoute()
 const { getArticle } = useArticles()
-const { data: article, error } = await getArticle(route.path)
+const { data: article, error, pending } = getArticle(route.path)
 
 definePageMeta({
   layout: 'home',

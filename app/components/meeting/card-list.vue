@@ -4,7 +4,7 @@
       {{ t('meetings') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <meeting-card
         v-else
         v-for="meeting in meetings.rows"
@@ -26,5 +26,5 @@ const { t } = useI18n()
 const { getMeetingList } = useMeetings()
 
 const sort = 'endDate_dt ASC'
-const { data: meetings, error } = await getMeetingList(ref({ limit: 4, sort, startDate: 'NOW' }))
+const { data: meetings, pending, error } = await getMeetingList(ref({ limit: 4, sort, startDate: 'NOW' }))
 </script>

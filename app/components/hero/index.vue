@@ -1,6 +1,6 @@
 <template>
   <div class="cus-hero" :class="heroClasses">
-    <status v-if="error" :error="error" />
+    <status v-if="pending || error" :error="error" />
     <div v-else class="featured-items">
       <hero-content-featured-item
         v-if="primaryArticle"
@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 const { getArticleList } = useArticles()
-const { data: articles, error } = await getArticleList(ref({ limit: 3 }))
+const { data: articles, pending, error } = await getArticleList(ref({ limit: 3 }))
 
 const primaryArticle = computed(() => articles.value.rows.at(0))
 const secondaryArticles = computed(() => articles.value.rows.slice(1))
