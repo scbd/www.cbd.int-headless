@@ -1,5 +1,5 @@
 <template>
-  <div v-if="submissions.total > 0" class="mt-4 w-100">
+  <div v-if="!submissionsPending && submissions.total > 0" class="mt-4 w-100">
     <h3>{{ t('submissions') }}</h3>
 
     <template v-if="parties.length > 0">
@@ -111,7 +111,7 @@ const { toFormatDate } = useFormatDate()
 const { getCountryList } = useCountries()
 const { getSubmissionList } = useSubmissions()
 
-const { data: submissions } = getSubmissionList(props.code, { limit: 500 })
+const { data: submissions, pending: submissionsPending } = getSubmissionList(props.code, { limit: 500 })
 const { data: countries } = getCountryList()
 
 const countryMap = computed(() => {

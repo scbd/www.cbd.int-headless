@@ -37,7 +37,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 const { toLocaleText } = useLString()
-const { data: subjects } = await getSubjectList(props.domain)
+const { data: subjects } = getSubjectList(props.domain)
 
 function onSelect (event: Event) {
   const select = event.target as HTMLSelectElement
