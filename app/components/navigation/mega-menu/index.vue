@@ -97,7 +97,7 @@
           </nav>
         </li>
       </ul>
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <ul v-else class="navbar-nav">
         <li v-for="childMenu in menu" class="mega-menu-item nav-item dropdown">
           <NuxtLink
@@ -119,9 +119,10 @@
 
 <script setup lang="ts">
 import { languages } from '~~/data/un-languages';
-import useMenuApi from '~/composables/api/use-menu-api';
 
 const { t, locale } = useI18n();
+
+const { getMenu } = useMenu()
 
 const navEl = useTemplateRef('navEl')
 
@@ -164,5 +165,5 @@ const languagesWithLabel = computed(() =>
   })
 );
 
-const { menu, error } = await useMenuApi('cbd-header');
+const { data: menu, pending, error } = getMenu('cbd-header');
 </script>

@@ -1,13 +1,12 @@
 <template>
   <main class="cus-main cus-internal-page d-flex flex-column" role="main">
-    <status v-if="error" :error="error" />
-    <template v-else>
-      <!-- Breadcrumbs -->
-      <hero-item-page :article="article!" />
+    <status v-if="pending || error" :error="error" />
+    <template v-else-if="article">
+      <hero-item-page :article="article" />
       <div class="container-xxl d-flex">
         <article class="cus-article container-fluid d-flex flex-column">
           <section
-            v-dompurify-html="article!.body"
+            v-dompurify-html="article.body"
             class="rendered-content"
           ></section>
         </article>
@@ -17,10 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { useArticleApi } from '~/composables/api/use-articles-api'
-
 const route = useRoute()
-const { article, error } = await useArticleApi(route.path)
+const { getArticle } = useArticles()
+const { data: article, error, pending } = getArticle(route.path)
 
 definePageMeta({
   layout: 'home',

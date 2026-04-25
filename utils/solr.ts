@@ -103,3 +103,7 @@ export function andOr (query: string | string[], sep: string): string {
 export function normalizeCode (code: string): string {
   return code.toUpperCase().trim()
 }
+
+export function emptyKey (v: unknown): boolean {
+  return v === '' || v === undefined || v === null
+}

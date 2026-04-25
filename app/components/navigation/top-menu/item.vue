@@ -15,10 +15,7 @@
 </template>
 <i18n src="~~/i18n/dist/app/components/navigation/mega-menu/navigation-mega-menu-list-item.json"></i18n>
 
-<script
-  setup
-  lang="ts"
->
+<script setup lang="ts">
 import type { Menu } from "~~/types/menu";
 
 const props = defineProps<{

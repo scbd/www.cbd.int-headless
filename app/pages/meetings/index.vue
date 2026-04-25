@@ -1,8 +1,6 @@
 <template>
-  <async-block>
-    <meeting-search @search="onSearch" />
-    <meeting-search-list :search-params="searchParams" />
-  </async-block>
+  <meeting-search @search="onSearch" />
+  <meeting-search-list :search-params="searchParams" />
 </template>
 
 <script setup lang="ts">

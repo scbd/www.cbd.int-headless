@@ -4,7 +4,7 @@
       {{ t('notifications') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <notification-card
         v-else
         v-for="notification in notifications.rows"
@@ -23,10 +23,11 @@
 <i18n src="~~/i18n/dist/app/components/notification/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useNotificationsListApi from '~/composables/api/use-notifications'
 import { NOTIFICATIONS } from '~~/constants/url-paths'
 
 const { t } = useI18n()
 
-const { notifications, error } = await useNotificationsListApi(ref({ limit: 4 }))
+const { getNotificationList } = useNotifications()
+
+const { data: notifications, pending, error } = getNotificationList({ limit: 4 })
 </script>

@@ -4,7 +4,7 @@
             {{ t('portals') }}
         </div>
         <div class="content-wrapper d-flex">
-            <status v-if="error" :error="error" />
+            <status v-if="pending || error" :error="error" />
             <portal-card
                 v-else
                 v-for="portal in portals"
@@ -16,13 +16,13 @@
 <i18n src="~~/i18n/dist/app/components/portal/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import usePortalsApi from '~/composables/api/use-portals-api';
-
 const { t } = useI18n();
 
 const props = defineProps<{
     portal: string;
 }>();
 
-const { portals, error } = await usePortalsApi(encodeURIComponent(props.portal))
+const { getPortalList } = usePortals()
+
+const { data: portals, pending, error } = getPortalList(encodeURIComponent(props.portal))
 </script>

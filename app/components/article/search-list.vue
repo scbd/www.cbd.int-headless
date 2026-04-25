@@ -1,6 +1,6 @@
 <template>
     <article class="cus-article container-xxl d-flex flex-column page-component">
-        <status v-if="error" :error="error" />
+        <status v-if="pending || error" :error="error" />
         <div v-else class="cus-serp">
         <!-- Top pagination -->
         <div class="results-info-wrapper">
@@ -71,13 +71,13 @@
 <i18n src="~~/i18n/dist/app/components/article/search-list.json"></i18n>
 
 <script setup lang="ts">
-import useArticleListApi from '~/composables/api/use-articles-api'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { truncate } from 'lodash-es'
 
 const { t } = useI18n()
 const { toFormatDate } = useFormatDate()
+const { getArticleList } = useArticles()
 
 const props = defineProps<{
   searchParams?: {
@@ -95,7 +95,7 @@ const queryParams = computed(() => ({
   search: props.searchParams?.search
 }))
 
-const { articles, error } = await useArticleListApi(queryParams)
+const { data: articles, pending, error } = getArticleList(queryParams)
 
 const totalPages = computed(() => Math.ceil(articles.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

@@ -4,7 +4,7 @@
       {{ t('statements') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <statement-card
         v-else
         v-for="statement in statements.rows"
@@ -20,10 +20,11 @@
 <i18n src="~~/i18n/dist/app/components/statement/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useStatementsListApi from '~/composables/api/use-statements';
 import { STATEMENTS } from '~~/constants/url-paths';
 
 const { t } = useI18n();
 
-const { statements, error } = await useStatementsListApi(ref({ limit: 4 }))
+const { getStatementList } = useStatements()
+
+const { data: statements, pending, error } = getStatementList({ limit: 4 })
 </script>

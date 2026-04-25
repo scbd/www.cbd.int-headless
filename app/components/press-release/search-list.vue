@@ -1,6 +1,6 @@
 <template>
     <article class="cus-article container-xxl d-flex flex-column page-component">
-        <status v-if="error" :error="error" />
+        <status v-if="pending || error" :error="error" />
         <div v-else class="cus-serp">
         <!-- Top pagination -->
         <div class="results-info-wrapper">
@@ -68,7 +68,6 @@
 <i18n src="~~/i18n/dist/app/components/press-release/search-list.json"></i18n>
 
 <script setup lang="ts">
-import usePressReleasesListApi from '~/composables/api/use-press-releases'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 
@@ -83,6 +82,8 @@ const props = defineProps<{
   }
 }>()
 
+const { getPressReleaseList } = usePressReleases()
+
 const currentPage = ref(1)
 
 const queryParams = computed(() => ({
@@ -92,7 +93,7 @@ const queryParams = computed(() => ({
   fieldQueries: props.searchParams?.fieldQueries
 }))
 
-const { pressReleases, error } = await usePressReleasesListApi(queryParams)
+const { data: pressReleases, pending, error } = getPressReleaseList(queryParams)
 
 const totalPages = computed(() => Math.ceil(pressReleases.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

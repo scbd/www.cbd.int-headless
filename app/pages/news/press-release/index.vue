@@ -1,8 +1,6 @@
 <template>
-  <async-block>
-    <press-release-search @search="onSearch" />
-    <press-release-search-list :search-params="searchParams" />
-  </async-block>
+  <press-release-search @search="onSearch" />
+  <press-release-search-list :search-params="searchParams" />
 </template>
 
 <script setup lang="ts">

@@ -1,6 +1,6 @@
 <template>
   <article class="cus-article container-xxl d-flex flex-column page-component">
-    <status v-if="error" :error="error" />
+    <status v-if="pending || error" :error="error" />
     <div v-else class="cus-serp">
       <!-- Top pagination -->
       <div class="results-info-wrapper">
@@ -100,7 +100,6 @@
 <i18n src="~~/i18n/dist/app/components/meeting/search-list.json"></i18n>
 
 <script setup lang="ts">
-import useMeetingsListApi from '~/composables/api/use-meetings'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import type { Meeting } from '~~/types/meeting'
@@ -108,6 +107,8 @@ import type { Meeting } from '~~/types/meeting'
 const { t, locale } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
+
+const { getMeetingList } = useMeetings()
 
 const props = defineProps<{
   searchParams?: {
@@ -127,7 +128,7 @@ const queryParams = computed(() => ({
   endDate: props.searchParams?.endDate
 }))
 
-const { meetings, error } = await useMeetingsListApi(queryParams)
+const { data: meetings, pending, error } = getMeetingList(queryParams)
 
 // Group meetings by month, split into upcoming vs previous
 interface MonthGroup { label: string; meetings: Meeting[] }

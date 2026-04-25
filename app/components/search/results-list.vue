@@ -1,6 +1,6 @@
 <template>
   <article class="cus-article container-xxl d-flex flex-column page-component">
-    <status v-if="error" :error="error" />
+    <status v-if="pending || error" :error="error" />
     <div v-else-if="results" class="cus-serp">
       <div class="results-info-wrapper">
         <div class="results-info">
@@ -36,7 +36,6 @@
 <i18n src="~~/i18n/dist/app/components/search/results-list.json"></i18n>
 
 <script setup lang="ts">
-import useSearchApi from '~/composables/api/use-search'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { useFormatDate } from '~/composables/use-format-date'
 import { truncate } from 'lodash-es'
@@ -48,6 +47,8 @@ const props = defineProps<{
   searchParams?: { sort?: string; search?: string }
 }>()
 
+const { getSearchResults } = useSearch()
+
 const currentPage = ref(1)
 
 const queryParams = computed(() => ({
@@ -57,7 +58,7 @@ const queryParams = computed(() => ({
   search: props.searchParams?.search,
 }))
 
-const { results, error } = await useSearchApi(queryParams)
+const { data: results, pending, error } = getSearchResults(queryParams)
 
 const totalPages = computed(() => Math.ceil(results.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>

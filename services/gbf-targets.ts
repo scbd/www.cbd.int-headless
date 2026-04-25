@@ -8,7 +8,7 @@ const api = new ThesaurusApi({
   baseURL: useRuntimeConfig().apiBaseUrl
 })
 
-export async function getGbfTargets (): Promise<GbfTarget[]> {
+export async function getGbfTarget (): Promise<GbfTarget[]> {
   const domain = 'GBF-TARGETS'
   const response = await api.queryThesaurus(domain)
 

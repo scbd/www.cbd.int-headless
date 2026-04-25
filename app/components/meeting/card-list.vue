@@ -4,7 +4,7 @@
       {{ t('meetings') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <meeting-card
         v-else
         v-for="meeting in meetings.rows"
@@ -20,11 +20,11 @@
 <i18n src="~~/i18n/dist/app/components/meeting/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useMeetingsListApi from '~/composables/api/use-meetings'
 import { MEETINGS } from '~~/constants/url-paths'
 
 const { t } = useI18n()
+const { getMeetingList } = useMeetings()
 
 const sort = 'endDate_dt ASC'
-const { meetings, error } = await useMeetingsListApi(ref({ limit: 4, sort, startDate: 'NOW' }))
+const { data: meetings, pending, error } = getMeetingList(ref({ limit: 4, sort, startDate: 'NOW' }))
 </script>

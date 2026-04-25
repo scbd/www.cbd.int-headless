@@ -4,10 +4,10 @@
       {{ t('recentUpdates') }}
     </div>
     <div class="content-wrapper d-flex">
-      <status v-if="error" :error="error" />
+      <status v-if="pending || error" :error="error" />
       <recent-update-card
         v-else
-        v-for="item in recentUpdates"
+        v-for="item in recentUpdates?.rows"
         :recent-update="item"
         :key="item.id"
       />
@@ -17,9 +17,9 @@
 <i18n src="~~/i18n/dist/app/components/recent-update/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import useRecentUpdatesListApi from '~/composables/api/use-recent-updates'
-
 const { t } = useI18n()
 
-const { recentUpdates, error } = await useRecentUpdatesListApi({ limit: 4 })
+const {  getRecentUpdateList } = useRecentUpdates()
+
+const { data: recentUpdates, pending, error } = getRecentUpdateList({ limit: 4 })
 </script>

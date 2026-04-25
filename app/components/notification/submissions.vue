@@ -1,5 +1,5 @@
 <template>
-  <div v-if="submissions.total > 0" class="mt-4 w-100">
+  <div v-if="!submissionsPending && submissions.total > 0" class="mt-4 w-100">
     <h3>{{ t('submissions') }}</h3>
 
     <template v-if="parties.length > 0">
@@ -97,8 +97,6 @@
 <i18n src="~~/i18n/dist/app/components/notification/submissions.json"></i18n>
 
 <script setup lang="ts">
-import useSubmissionsApi from '~/composables/api/use-submissions'
-import useCountriesApi from '~/composables/api/use-countries'
 import type { Submission, NotificationFileInfo } from '~~/types/notification'
 import type { Country } from '~~/types/country'
 
@@ -110,8 +108,11 @@ const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
-const { submissions } = await useSubmissionsApi(props.code, { limit: 500 })
-const { countries } = await useCountriesApi()
+const { getCountryList } = useCountries()
+const { getSubmissionList } = useSubmissions()
+
+const { data: submissions, pending: submissionsPending } = getSubmissionList(props.code, { limit: 500 })
+const { data: countries } = getCountryList()
 
 const countryMap = computed(() => {
   const map = new Map<string, Country>()

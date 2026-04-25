@@ -1,6 +1,6 @@
 <template>
     <article class="cus-article container-xxl d-flex flex-column page-component">
-        <status v-if="error" :error="error" />
+        <status v-if="pending || error" :error="error" />
         <div v-else class="cus-serp">
         <!-- Top pagination -->
         <div class="results-info-wrapper">
@@ -103,7 +103,6 @@
 <i18n src="~~/i18n/dist/app/components/notification/search-list.json"></i18n>
 
 <script setup lang="ts">
-import useNotificationsListApi from '~/composables/api/use-notifications'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { truncate } from 'lodash-es'
@@ -111,6 +110,8 @@ import { truncate } from 'lodash-es'
 const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
+
+const { getNotificationList } = useNotifications()
 
 const props = defineProps<{
   searchParams?: {
@@ -130,7 +131,7 @@ const queryParams = computed(() => ({
   fieldQueries: props.searchParams?.fieldQueries
 }))
 
-const { notifications, error } = await useNotificationsListApi(queryParams)
+const { data: notifications, pending, error } = getNotificationList(queryParams)
 
 const totalPages = computed(() => Math.ceil(notifications.value.total / ITEMS_PER_PAGE))
 const startItem = computed(() =>
