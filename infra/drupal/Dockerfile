@@ -33,6 +33,7 @@ RUN composer require -n \
     "drupal/admin_audit_trail:*" \
     "drupal/advanced_gutenberg_blocks:*" \
     "drupal/amazon_sns:*" \
+    "drupal/autocomplete_deluxe:*" \ 
     "drupal/aws:*" \
     "drupal/bootstrap5:*" \
     "drupal/classy_paragraphs:*" \
@@ -49,7 +50,6 @@ RUN composer require -n \
     "drupal/entity_update:*" \
     "drupal/extlink:*" \
     "drupal/externalauth:*" \
-    "drupal/facets:*" \
     "drupal/feeds:*" \
     "drupal/feeds_ex:^1.0@beta" \
     "drupal/tamper:^1.0@beta" \
