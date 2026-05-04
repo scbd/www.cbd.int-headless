@@ -33,7 +33,7 @@ RUN composer require -n \
     "drupal/admin_audit_trail:*" \
     "drupal/advanced_gutenberg_blocks:*" \
     "drupal/amazon_sns:*" \
-    "drupal/autocomplete_deluxe:*" \ 
+    "drupal/autocomplete_deluxe:*" \
     "drupal/aws:*" \
     "drupal/bootstrap5:*" \
     "drupal/classy_paragraphs:*" \
