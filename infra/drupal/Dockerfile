@@ -33,6 +33,7 @@ RUN composer require -n \
     "drupal/admin_audit_trail:*" \
     "drupal/advanced_gutenberg_blocks:*" \
     "drupal/amazon_sns:*" \
+    "drupal/autocomplete_deluxe:*" \
     "drupal/aws:*" \
     "drupal/bootstrap5:*" \
     "drupal/classy_paragraphs:*" \
@@ -49,6 +50,10 @@ RUN composer require -n \
     "drupal/entity_update:*" \
     "drupal/extlink:*" \
     "drupal/externalauth:*" \
+    "drupal/feeds:*" \
+    "drupal/feeds_ex:^1.0@beta" \
+    "drupal/tamper:^1.0@beta" \
+    "drupal/feeds_tamper:^2.0@RC" \
     "drupal/field_group:*" \
     "drupal/file_replace:*" \
     "drupal/fontawesome:*" \
@@ -88,6 +93,7 @@ RUN composer require -n \
     "drupal/rules:*" \
     "drupal/simple_oauth:^6.0" \
     "drupal/something_went_wrong:^2.0@alpha" \
+    "drupal/tagify:*" \
     "drupal/tmgmt:*" \
     "drupal/tmgmt_deepl:^2.3@alpha" \
     "drupal/taxonomy_manager:*" \
