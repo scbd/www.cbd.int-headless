@@ -4,11 +4,12 @@ import DOMPurify from 'isomorphic-dompurify'
 export default defineNuxtPlugin((nuxtApp) => {
   const iframeAllowedSrc = [
     // YouTube
-    /^(https?:)?\/\/(www\.)?youtube\.com\/embed\//,
-    /^(https?:)?\/\/youtu\.be\//,
-    /^(https?:)?\/\/if-cdn\.com\//,
+    /^(https:)?\/\/(www\.)?youtube\.com\/embed\//,
+    /^(https:)?\/\/youtu\.be\//,
+    /^(https:)?\/\/if-cdn\.com\//,
     // CBD
-    /^https?:\/\/[^/]+\.cbd\.int\//
+    /^https:\/\/[^/]+\.cbd\.int\//,
+    /\/en\/national-targets\/analyzer(\?|$)/
   ]
 
   nuxtApp.vueApp.use(
