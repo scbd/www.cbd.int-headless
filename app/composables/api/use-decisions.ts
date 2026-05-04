@@ -4,9 +4,9 @@ import type { SearchResult } from '~~/types/api/search-result'
 import { DECISIONS } from '~~/constants/api-paths'
 import normalizeObjectDates from '~~/utils/normalize-object-dates'
 
-export default async function useDecisionsListApi(
+export default async function useDecisionsListApi (
   options?: ComputedRef<QueryParams> | Ref<QueryParams>
-): Promise<{ decisions: ComputedRef<{ rows: Decision[]; total: number }>; error: Ref<Error | undefined> }> {
+): Promise<{ decisions: ComputedRef<{ rows: Decision[], total: number }>, error: Ref<Error | undefined> }> {
   const { data, error } = await useFetch<SearchResult<Decision>>(DECISIONS, {
     params: computed(() => ({
       sort: options?.value.sort,
