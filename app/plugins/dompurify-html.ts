@@ -9,8 +9,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     /^(https:)?\/\/if-cdn\.com\//,
     // CBD
     /^https:\/\/[^/]+\.cbd\.int\//,
-    // Local embed
-    /^\//
+    // Local embed (reject protocol-relative URLs)
+    /^\/(?!\/)/
   ]
 
   nuxtApp.vueApp.use(
