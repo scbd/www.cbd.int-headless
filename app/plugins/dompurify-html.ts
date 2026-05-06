@@ -2,10 +2,15 @@ import VueDOMPurifyHTML from 'vue-dompurify-html'
 import DOMPurify from 'isomorphic-dompurify'
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const youtubeSrc = [
-    /^(https?:)?\/\/(www\.)?youtube\.com\/embed\//,
-    /^(https?:)?\/\/youtu\.be\//,
-    /^(https?:)?\/\/if-cdn\.com\//
+  const iframeAllowedSrc = [
+    // YouTube
+    /^(https:)?\/\/(www\.)?youtube\.com\/embed\//,
+    /^(https:)?\/\/youtu\.be\//,
+    /^(https:)?\/\/if-cdn\.com\//,
+    // CBD
+    /^https:\/\/[^/]+\.cbd\.int\//,
+    // Local embed (reject protocol-relative URLs)
+    /^\/(?!\/)/
   ]
 
   nuxtApp.vueApp.use(
@@ -23,10 +28,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       enableSSRPropsSupport: true,
       hooks: {
         uponSanitizeElement: (currentNode: any) => {
-          // Limit iframes to only allow YouTube embeds
+          // Limit iframes to only allow whitelisted domains
           if (currentNode.nodeName === 'IFRAME') {
             const src = currentNode.getAttribute('src')
-            if (src === null || src === undefined || !youtubeSrc.some(p => p.test(src))) {
+            if (src === null || src === undefined || !iframeAllowedSrc.some(p => p.test(src))) {
               currentNode.parentNode?.removeChild(currentNode)
             }
           }
