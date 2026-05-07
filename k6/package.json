@@ -1,0 +1,23 @@
+{
+  "name": "cbd-k6-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "k6 stress tests for www.cbd.int headless frontend",
+  "scripts": {
+    "smoke":   "k6 run scenarios/smoke.ts",
+    "average": "k6 run scenarios/average-load.ts",
+    "peak":    "k6 run scenarios/peak-load.ts",
+    "stress":  "k6 run scenarios/stress.ts",
+    "soak":    "k6 run scenarios/soak.ts",
+    "drupal":  "k6 run tests/drupal/direct.ts",
+    "solr":    "k6 run tests/solr/direct.ts",
+    "cbd-api": "k6 run tests/cbd-api/direct.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "k6": "^0.54.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

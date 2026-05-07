@@ -1,0 +1,28 @@
+import { group } from 'k6'
+import { BASE_URL } from '../../config/env.ts'
+import { apiGet } from '../../utils/http.ts'
+import { randomItem } from '../../utils/random.ts'
+import { PAGE_ALIASES, ARTICLE_ALIASES } from '../../fixtures/index.ts'
+
+export function testContentPage (): void {
+  const alias = randomItem(PAGE_ALIASES)
+  apiGet(`${BASE_URL}/api/content`, {
+    endpoint: 'content',
+    params: { url: alias }
+  })
+}
+
+export function testContentArticle (): void {
+  const alias = randomItem(ARTICLE_ALIASES)
+  apiGet(`${BASE_URL}/api/content`, {
+    endpoint: 'content',
+    params: { url: alias }
+  })
+}
+
+export function testAllContent (): void {
+  group('api/content', () => {
+    testContentPage()
+    testContentArticle()
+  })
+}
