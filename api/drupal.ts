@@ -31,7 +31,7 @@ export default class DrupalApi extends ApiBase {
     if (id === null || id === '') throw mandatory('id', 'Parameter id is required.')
     if (category === null || category === '') throw mandatory('category', 'Parameter category is required.')
 
-    const data = await this.fetch(`/jsonapi/taxonomy/${encodeURIComponent(category)}/${encodeURIComponent(id)}`)
+    const data = await this.fetch(`/jsonapi/taxonomy_term/${encodeURIComponent(category)}/${encodeURIComponent(id)}`)
     return data
   };
 

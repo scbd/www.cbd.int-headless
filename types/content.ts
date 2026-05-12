@@ -10,6 +10,12 @@ export interface Content {
   body: string
   summary: string
   menu?: string
+  tags?: string[]
+  components?: {
+    meetings?: string[]
+    notifications?: string[]
+    statements?: string[]
+  }
 };
 
 export interface Article extends Content {
