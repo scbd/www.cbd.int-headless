@@ -78,6 +78,18 @@ export async function getContent (url: string): Promise<Content | Article> {
     const page = content
 
     page.menu = drupalContent.data.attributes.field_menu
+
+    const relationships = drupalContent.data.relationships
+
+    const [tags, meetings, notifications, statements] = await Promise.all([
+      getTaxonomyIdentifiers(relationships?.field_cbd_tags?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_meetings?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_notifications?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_statements?.data ?? [])
+    ])
+
+    page.tags = tags
+    page.components = { meetings, notifications, statements }
   }
 
   if (route.entity.bundle === 'article') {
@@ -517,6 +529,19 @@ export async function getMenu (
 
   return menus
 };
+
+async function getTaxonomyIdentifiers (entries: any[]): Promise<string[]> {
+  if (entries.length === 0) return []
+  const results = await Promise.all(
+    entries.map(async (entry: any) => {
+      const category = entry.type?.split('--')[1]
+      if (category == null) return null
+      const taxonomy = await drupalApi.getTaxonomy(entry.id, category)
+      return taxonomy?.data?.attributes?.field_identifier ?? null
+    })
+  )
+  return results.filter((v): v is string => v != null)
+}
 
 function contentNormalizer (value: string): string {
   if (value === undefined || value === null || value === '') return ''
