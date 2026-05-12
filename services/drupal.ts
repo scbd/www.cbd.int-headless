@@ -534,11 +534,12 @@ async function getTaxonomyIdentifiers (entries: any[]): Promise<string[]> {
   if (entries.length === 0) return []
   const results = await Promise.all(
     entries.map(async (entry: any) => {
-      const category = entry.type?.split('--')[1]
-      if (category == null) return null
+      const category: string | undefined = entry.type?.split('--')[1]
+      const id: string | undefined = entry.id
+      if (category == null || id == null) return null
       const taxonomy = await drupalCache.getOrFetch(
-        `taxonomy-${category}-${entry.id}`,
-        async () => await drupalApi.getTaxonomy(entry.id, category)
+        `taxonomy-${category}-${id}`,
+        async () => await drupalApi.getTaxonomy(id, category)
       )
       return taxonomy?.data?.attributes?.field_identifier ?? null
     })
