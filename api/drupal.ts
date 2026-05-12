@@ -27,6 +27,14 @@ export default class DrupalApi extends ApiBase {
     return data
   };
 
+  async getTaxonomy (id: string, category: string): Promise<any> {
+    if (id === null || id === '') throw mandatory('id', 'Parameter id is required.')
+    if (category === null || category === '') throw mandatory('category', 'Parameter category is required.')
+
+    const data = await this.fetch(`/jsonapi/taxonomy_term/${encodeURIComponent(category)}/${encodeURIComponent(id)}`)
+    return data
+  };
+
   async getMedia (id: string): Promise<any> {
     if (id === null || id === '') throw mandatory('id', 'Parameter id is required.')
 
