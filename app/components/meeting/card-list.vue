@@ -30,7 +30,7 @@ const { t } = useI18n()
 
 const sort = 'endDate_dt ASC'
 const fieldQueries = props.tags?.length
-  ? andOr(props.tags.map(tag => `themes_ss:${solrEscape(tag)}`), 'OR')
+  ? andOr(props.tags.map(tag => `themes_ss:"${solrEscape(tag)}"`), 'OR')
   : undefined
 
 const { meetings, error } = await useMeetingsListApi(ref({ limit: 4, sort, startDate: 'NOW', fieldQueries }))

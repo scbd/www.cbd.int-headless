@@ -29,7 +29,7 @@ const props = defineProps<{ tags?: string[] }>()
 const { t } = useI18n();
 
 const fieldQueries = props.tags?.length
-  ? andOr(props.tags.map(tag => `themes_ss:${solrEscape(tag)}`), 'OR')
+  ? andOr(props.tags.map(tag => `themes_ss:"${solrEscape(tag)}"`), 'OR')
   : undefined
 const { statements, error } = await useStatementsListApi(ref({ limit: 4, fieldQueries }))
 </script>
