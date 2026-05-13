@@ -26,6 +26,11 @@ server {
     location ^~ /core/                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ~* "^/([a-z]{2}(-[a-z]+)?/)?(?:node|history|contextual|editor)/" { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
 
+    # ===========================================
+    # Specific js libraries used by Drupal
+    # ===========================================
+    location ^~ /autocomplete_deluxe/    { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+
     # Phoenix theme assets -> Legacy CMS (via CloudFront) for /meetings & conferenecs
     location ^~ /themes/custom/bootstrap_sass/ { include /etc/nginx/conf.d/snippets/proxy-pass-legacy-cms.conf; }
 
