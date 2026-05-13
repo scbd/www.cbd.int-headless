@@ -23,10 +23,17 @@
 <i18n src="~~/i18n/dist/app/components/notification/card-list.json"></i18n>
 
 <script lang="ts" setup>
+import { andOr, solrEscape } from '~~/utils/solr'
 import useNotificationsListApi from '~/composables/api/use-notifications'
 import { NOTIFICATIONS } from '~~/constants/url-paths'
 
+const props = defineProps<{ tags?: string[] }>()
+
 const { t } = useI18n()
 
-const { notifications, error } = await useNotificationsListApi(ref({ limit: 4 }))
+const fieldQueries = props.tags?.length
+  ? andOr(props.tags.map(tag => `themes_ss:${solrEscape(tag)}`), 'OR')
+  : undefined
+
+const { notifications, error } = await useNotificationsListApi(ref({ limit: 4, fieldQueries }))
 </script>
