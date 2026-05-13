@@ -16,6 +16,7 @@ server {
     # ===========================================
     location ^~ /admin                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /batch                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ^~ /feed                    { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /user                    { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /themes/                 { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /media                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
