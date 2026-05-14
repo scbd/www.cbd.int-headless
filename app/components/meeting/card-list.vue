@@ -1,5 +1,5 @@
 <template>
-  <section class="content-row d-flex flex-column">
+  <section v-if="!error || meetings.rows?.length" class="content-row d-flex flex-column">
     <div class="row-title">
       {{ t('meetings') }}
     </div>
@@ -20,11 +20,18 @@
 <i18n src="~~/i18n/dist/app/components/meeting/card-list.json"></i18n>
 
 <script lang="ts" setup>
+import { solrEscape } from '~~/utils/solr'
 import useMeetingsListApi from '~/composables/api/use-meetings'
 import { MEETINGS } from '~~/constants/url-paths'
+
+const props = defineProps<{ tags?: string[] }>()
 
 const { t } = useI18n()
 
 const sort = 'endDate_dt ASC'
-const { meetings, error } = await useMeetingsListApi(ref({ limit: 4, sort, startDate: 'NOW' }))
+const fieldQueries = props.tags?.length
+  ? `themes_ss:(${props.tags.map(tag => `"${solrEscape(tag)}"`).join(' ')})`
+  : undefined
+
+const { meetings, error } = await useMeetingsListApi(ref({ limit: 4, sort, startDate: 'NOW', fieldQueries }))
 </script>
