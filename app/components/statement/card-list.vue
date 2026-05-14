@@ -1,5 +1,5 @@
 <template>
-  <section class="content-row d-flex flex-column">
+  <section v-if="!error && statements.rows?.length" class="content-row d-flex flex-column">
     <div class="row-title">
       {{ t('statements') }}
     </div>
