@@ -1,5 +1,5 @@
 <template>
-  <section v-if="!error && meetings.rows?.length" class="content-row d-flex flex-column">
+  <section v-if="!error || meetings.rows?.length" class="content-row d-flex flex-column">
     <div class="row-title">
       {{ t('meetings') }}
     </div>
