@@ -1,5 +1,5 @@
 <template>
-  <section class="content-row d-flex flex-column">
+  <section v-if="!error || statements.rows?.length" class="content-row d-flex flex-column">
     <div class="row-title">
       {{ t('statements') }}
     </div>
@@ -20,10 +20,16 @@
 <i18n src="~~/i18n/dist/app/components/statement/card-list.json"></i18n>
 
 <script lang="ts" setup>
+import { solrEscape } from '~~/utils/solr'
 import useStatementsListApi from '~/composables/api/use-statements';
 import { STATEMENTS } from '~~/constants/url-paths';
 
+const props = defineProps<{ tags?: string[] }>()
+
 const { t } = useI18n();
 
-const { statements, error } = await useStatementsListApi(ref({ limit: 4 }))
+const fieldQueries = props.tags?.length
+  ? `themes_ss:(${props.tags.map(tag => `"${solrEscape(tag)}"`).join(' ')})`
+  : undefined
+const { statements, error } = await useStatementsListApi(ref({ limit: 4, fieldQueries }))
 </script>
