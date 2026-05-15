@@ -100,6 +100,7 @@
 <i18n src="~~/i18n/dist/app/components/meeting/search-list.json"></i18n>
 
 <script setup lang="ts">
+import { solrEscape } from '~~/utils/solr'
 import useMeetingsListApi from '~/composables/api/use-meetings'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
@@ -110,6 +111,7 @@ const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
 const props = defineProps<{
+  tags?: string[]
   searchParams?: {
     fieldQueries?: string
     startDate?: string
@@ -122,7 +124,9 @@ const currentPage = ref(1)
 const queryParams = computed(() => ({
   limit: ITEMS_PER_PAGE,
   skip: (currentPage.value - 1) * ITEMS_PER_PAGE,
-  fieldQueries: props.searchParams?.fieldQueries,
+  fieldQueries: props.tags?.length
+    ? `themes_ss:(${props.tags.map(tag => `"${solrEscape(tag)}"`).join(' ')})`
+    : props.searchParams?.fieldQueries,
   startDate: props.searchParams?.startDate ?? (props.searchParams?.endDate ? undefined : 'NOW'),
   endDate: props.searchParams?.endDate
 }))
