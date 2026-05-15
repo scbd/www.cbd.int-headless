@@ -34,6 +34,11 @@
     margin: 0;
     flex: 1 2 100%;
   }
+
+  .cus-article .cus-article {
+    flex: 0 1 auto;
+    overflow-x: visible;
+  }
 }
 
 .cus-article {
