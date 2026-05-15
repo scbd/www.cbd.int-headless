@@ -131,7 +131,7 @@ const queryParams = computed(() => ({
   endDate: props.searchParams?.endDate,
   fieldQueries: props.tags?.length
     ? `themes_ss:(${props.tags.map(tag => `"${solrEscape(tag)}"`).join(' ')})`
-    : props.searchParams?.fieldQueries,
+    : props.searchParams?.fieldQueries
 }))
 
 const { notifications, error } = await useNotificationsListApi(queryParams)

@@ -55,7 +55,7 @@ const { toFormatDate } = useFormatDate()
 
 const props = defineProps<{
   tags?: string[]
-  searchParams?: { 
+  searchParams?: {
     fieldQueries?: string;
     startDate?: string;
     endDate?: string
@@ -71,7 +71,7 @@ const queryParams = computed(() => ({
   endDate: props.searchParams?.endDate,
   fieldQueries: props.tags?.length
     ? `themes_ss:(${props.tags.map(tag => `"${solrEscape(tag)}"`).join(' ')})`
-    : props.searchParams?.fieldQueries,
+    : props.searchParams?.fieldQueries
 }))
 
 const { statements, error } = await useStatementsApi(queryParams)
