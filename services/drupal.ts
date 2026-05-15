@@ -89,9 +89,9 @@ export async function getContent (url: string): Promise<Content | Article> {
         getTaxonomyIdentifiers(relationships?.field_statements?.data ?? [])
       ]).then(([meetings, notifications, statements]) => ({ meetings, notifications, statements })),
       Promise.all([
-        getTaxonomyIdentifiers(relationships?.field_meetings_list?.data ?? []),
-        getTaxonomyIdentifiers(relationships?.field_notifications_list?.data ?? []),
-        getTaxonomyIdentifiers(relationships?.field_statements_list?.data ?? [])
+        getTaxonomyIdentifiers(relationships?.field_list_meetings?.data ?? []),
+        getTaxonomyIdentifiers(relationships?.field_list_notifications?.data ?? []),
+        getTaxonomyIdentifiers(relationships?.field_list_statements?.data ?? [])
       ]).then(([meetings, notifications, statements]) => ({ meetings, notifications, statements }))
     ])
 
