@@ -1,8 +1,8 @@
 import { group } from 'k6'
-import { BASE_URL } from '../../config/env.ts'
-import { apiGet } from '../../utils/http.ts'
-import { randomItem } from '../../utils/random.ts'
-import { PAGE_ALIASES, ARTICLE_ALIASES } from '../../fixtures/index.ts'
+import { BASE_URL } from '../../config/env'
+import { apiGet } from '../../utils/http'
+import { randomItem } from '../../utils/random'
+import { PAGE_ALIASES, ARTICLE_ALIASES } from '../../fixtures/index'
 
 export function testContentPage (): void {
   const alias = randomItem(PAGE_ALIASES)

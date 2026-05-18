@@ -15,7 +15,8 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "k6": "^0.54.3"
+    "k6": "*",
+    "@types/k6": "*"
   },
   "engines": {
     "node": ">=18"

@@ -1,13 +1,13 @@
 import { group } from 'k6'
-import { BASE_URL } from '../../config/env.ts'
-import { ssrGet } from '../../utils/http.ts'
-import { randomItem } from '../../utils/random.ts'
+import { BASE_URL } from '../../config/env'
+import { ssrGet } from '../../utils/http'
+import { randomItem } from '../../utils/random'
 import {
   PAGE_ALIASES,
   ARTICLE_ALIASES,
   NOTIFICATION_CODES,
   SEARCH_TERMS
-} from '../../fixtures/index.ts'
+} from '../../fixtures/index'
 
 export function testHomePage (): void {
   ssrGet(`${BASE_URL}/`, { endpoint: 'home', layer: 'ssr' })

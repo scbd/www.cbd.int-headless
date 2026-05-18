@@ -1,8 +1,8 @@
 import { group } from 'k6'
-import { BASE_URL } from '../../config/env.ts'
-import { apiGet } from '../../utils/http.ts'
-import { randomItem } from '../../utils/random.ts'
-import { SUBMISSION_NOTIFICATION_CODES } from '../../fixtures/index.ts'
+import { BASE_URL } from '../../config/env'
+import { apiGet } from '../../utils/http'
+import { randomItem } from '../../utils/random'
+import { SUBMISSION_NOTIFICATION_CODES } from '../../fixtures/index'
 
 export function testSubmissionsByNotification (): void {
   const code = randomItem(SUBMISSION_NOTIFICATION_CODES)

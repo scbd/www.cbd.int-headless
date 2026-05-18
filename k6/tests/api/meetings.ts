@@ -1,8 +1,8 @@
 import { group } from 'k6'
-import { BASE_URL } from '../../config/env.ts'
-import { apiGet } from '../../utils/http.ts'
-import { randomItem } from '../../utils/random.ts'
-import { MEETING_CODES } from '../../fixtures/index.ts'
+import { BASE_URL } from '../../config/env'
+import { apiGet } from '../../utils/http'
+import { randomItem } from '../../utils/random'
+import { MEETING_CODES } from '../../fixtures/index'
 
 // NOTE: list endpoint triggers 1 Solr + up to N Drupal image requests (fan-out).
 // Expect higher latency than Solr-only endpoints.

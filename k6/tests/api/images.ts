@@ -1,8 +1,8 @@
 import { group } from 'k6'
-import { BASE_URL } from '../../config/env.ts'
-import { apiGet } from '../../utils/http.ts'
-import { randomItem } from '../../utils/random.ts'
-import { IMAGE_FIXTURES } from '../../fixtures/index.ts'
+import { BASE_URL } from '../../config/env'
+import { apiGet } from '../../utils/http'
+import { randomItem } from '../../utils/random'
+import { IMAGE_FIXTURES } from '../../fixtures/index'
 
 export function testImageByCodeAndCategory (): void {
   const fixture = randomItem(IMAGE_FIXTURES)

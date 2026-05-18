@@ -1,6 +1,6 @@
 import { check } from 'k6'
 import http from 'k6/http'
-import { BASE_URL, DEFAULT_HEADERS } from '../config/env.ts'
+import { BASE_URL, DEFAULT_HEADERS } from '../config/env'
 
 export function testHealthcheck (): void {
   const res = http.get(`${BASE_URL}/api/healthcheck`, {

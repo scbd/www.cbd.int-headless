@@ -1,6 +1,6 @@
 import { group } from 'k6'
-import { BASE_URL } from '../../config/env.ts'
-import { apiGet } from '../../utils/http.ts'
+import { BASE_URL } from '../../config/env'
+import { apiGet } from '../../utils/http'
 
 export function testGbfTargets (): void {
   apiGet(`${BASE_URL}/api/gbf-targets`, { endpoint: 'gbf_targets' })

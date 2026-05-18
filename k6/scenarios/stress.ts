@@ -12,17 +12,17 @@
  */
 import type { Options } from 'k6/options'
 import { group, sleep } from 'k6'
-import { STRESS_THRESHOLDS } from '../config/thresholds.ts'
-import { randomBetween, randomInt } from '../utils/random.ts'
+import { STRESS_THRESHOLDS } from '../config/thresholds'
+import { randomBetween, randomInt } from '../utils/random'
 
-import { testHealthcheck } from '../tests/healthcheck.ts'
-import { testMenuByCode } from '../tests/api/menus.ts'
-import { testAllMeetings } from '../tests/api/meetings.ts'
-import { testAllNotifications } from '../tests/api/notifications.ts'
-import { testAllDecisions } from '../tests/api/decisions.ts'
-import { testAllSearch } from '../tests/api/search.ts'
-import { testAllRecentUpdates } from '../tests/api/recent-updates.ts'
-import { testHomePage } from '../tests/pages/ssr-pages.ts'
+import { testHealthcheck } from '../tests/healthcheck'
+import { testMenuByCode } from '../tests/api/menus'
+import { testAllMeetings } from '../tests/api/meetings'
+import { testAllNotifications } from '../tests/api/notifications'
+import { testAllDecisions } from '../tests/api/decisions'
+import { testAllSearch } from '../tests/api/search'
+import { testAllRecentUpdates } from '../tests/api/recent-updates'
+import { testHomePage } from '../tests/pages/ssr-pages'
 
 export const options: Options = {
   stages: [

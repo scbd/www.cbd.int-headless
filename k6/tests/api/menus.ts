@@ -1,8 +1,8 @@
 import { group } from 'k6'
-import { BASE_URL } from '../../config/env.ts'
-import { apiGet } from '../../utils/http.ts'
-import { randomItem } from '../../utils/random.ts'
-import { MENU_CODES } from '../../fixtures/index.ts'
+import { BASE_URL } from '../../config/env'
+import { apiGet } from '../../utils/http'
+import { randomItem } from '../../utils/random'
+import { MENU_CODES } from '../../fixtures/index'
 
 // Menus are the most-called endpoint: every SSR page load fetches at least one menu.
 // SWR 900 s + 15 min app cache → should be very fast after warm-up.

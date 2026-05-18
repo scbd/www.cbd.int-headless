@@ -1,8 +1,8 @@
 import { group } from 'k6'
-import { BASE_URL } from '../../config/env.ts'
-import { apiGet } from '../../utils/http.ts'
-import { randomItem } from '../../utils/random.ts'
-import { SEARCH_TERMS } from '../../fixtures/index.ts'
+import { BASE_URL } from '../../config/env'
+import { apiGet } from '../../utils/http'
+import { randomItem } from '../../utils/random'
+import { SEARCH_TERMS } from '../../fixtures/index'
 
 // NOTE: merges articles + pages from Drupal — two parallel Drupal queries.
 // Generates a new cache key per unique search term.

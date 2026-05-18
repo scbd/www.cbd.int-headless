@@ -1,7 +1,7 @@
 import http from 'k6/http'
 import { check } from 'k6'
 import type { RefinedResponse, ResponseType } from 'k6/http'
-import { DEFAULT_HEADERS, SSR_HEADERS } from '../config/env.ts'
+import { DEFAULT_HEADERS, SSR_HEADERS } from '../config/env'
 
 export interface RequestOptions {
   endpoint: string // tag used in thresholds, e.g. 'meetings'
@@ -38,7 +38,7 @@ export function apiGet (url: string, opts: RequestOptions): RefinedResponse<Resp
   check(res, {
     [`${opts.endpoint} status ${expectedStatus}`]: (r) => r.status === expectedStatus,
     ...(opts.expectBody !== false && {
-      [`${opts.endpoint} has body`]: (r) => (r.body?.length ?? 0) > 0
+      [`${opts.endpoint} has body`]: (r) => (typeof r.body === 'string' ? r.body.length : (r.body?.byteLength ?? 0)) > 0
     })
   })
 

@@ -9,11 +9,11 @@
  */
 import type { Options } from 'k6/options'
 import { group, sleep } from 'k6'
-import { DRUPAL_BASE_URL } from '../../config/env.ts'
-import { apiGet } from '../../utils/http.ts'
-import { randomItem, randomBetween } from '../../utils/random.ts'
-import { MENU_CODES, PAGE_ALIASES, MEETING_CODES } from '../../fixtures/index.ts'
-import { STANDARD_THRESHOLDS } from '../../config/thresholds.ts'
+import { DRUPAL_BASE_URL } from '../../config/env'
+import { apiGet } from '../../utils/http'
+import { randomItem, randomBetween } from '../../utils/random'
+import { MENU_CODES, PAGE_ALIASES, MEETING_CODES } from '../../fixtures/index'
+import { STANDARD_THRESHOLDS } from '../../config/thresholds'
 
 export const options: Options = {
   stages: [
