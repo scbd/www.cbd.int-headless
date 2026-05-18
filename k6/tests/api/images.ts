@@ -2,7 +2,7 @@ import { group } from 'k6'
 import { BASE_URL } from '../../config/env'
 import { apiGet } from '../../utils/http'
 import { randomItem } from '../../utils/random'
-import { IMAGE_FIXTURES } from '../../fixtures/index'
+import { IMAGE_FIXTURES } from '../../const'
 
 export function testImageByCodeAndCategory (): void {
   const fixture = randomItem(IMAGE_FIXTURES)

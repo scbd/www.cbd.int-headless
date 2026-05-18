@@ -2,7 +2,7 @@ import { group } from 'k6'
 import { BASE_URL } from '../../config/env'
 import { apiGet } from '../../utils/http'
 import { randomItem } from '../../utils/random'
-import { NOTIFICATION_CODES } from '../../fixtures/index'
+import { NOTIFICATION_CODES } from '../../const'
 
 // NOTE: list endpoint triggers Solr + N Drupal image requests (fan-out).
 

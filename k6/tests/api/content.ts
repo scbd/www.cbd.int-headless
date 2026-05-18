@@ -2,7 +2,7 @@ import { group } from 'k6'
 import { BASE_URL } from '../../config/env'
 import { apiGet } from '../../utils/http'
 import { randomItem } from '../../utils/random'
-import { PAGE_ALIASES, ARTICLE_ALIASES } from '../../fixtures/index'
+import { PAGE_ALIASES, ARTICLE_ALIASES } from '../../const'
 
 export function testContentPage (): void {
   const alias = randomItem(PAGE_ALIASES)

@@ -2,7 +2,7 @@ import { group } from 'k6'
 import { BASE_URL } from '../../config/env'
 import { apiGet } from '../../utils/http'
 import { randomItem } from '../../utils/random'
-import { PORTAL_CODES } from '../../fixtures/index'
+import { PORTAL_CODES } from '../../const'
 
 export function testPortal (): void {
   const portal = randomItem(PORTAL_CODES)

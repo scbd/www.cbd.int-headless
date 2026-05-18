@@ -2,7 +2,7 @@ import { group } from 'k6'
 import { BASE_URL } from '../../config/env'
 import { apiGet } from '../../utils/http'
 import { randomItem } from '../../utils/random'
-import { NBSAP_CODES } from '../../fixtures/index'
+import { NBSAP_CODES } from '../../const'
 
 export function testNbsapsList (): void {
   apiGet(`${BASE_URL}/api/nbsaps`, {

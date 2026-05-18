@@ -10,7 +10,7 @@ import { group, sleep } from 'k6'
 import { API_BASE_URL } from '../../config/env'
 import { apiGet } from '../../utils/http'
 import { randomItem, randomBetween } from '../../utils/random'
-import { COUNTRY_CODES, SUBJECT_DOMAINS } from '../../fixtures/index'
+import { COUNTRY_CODES, SUBJECT_DOMAINS } from '../../const'
 import { STANDARD_THRESHOLDS } from '../../config/thresholds'
 
 export const options: Options = {

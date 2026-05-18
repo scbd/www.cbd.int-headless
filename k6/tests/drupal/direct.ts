@@ -12,7 +12,7 @@ import { group, sleep } from 'k6'
 import { DRUPAL_BASE_URL } from '../../config/env'
 import { apiGet } from '../../utils/http'
 import { randomItem, randomBetween } from '../../utils/random'
-import { MENU_CODES, PAGE_ALIASES, MEETING_CODES } from '../../fixtures/index'
+import { MENU_CODES, PAGE_ALIASES, MEETING_CODES } from '../../const'
 import { STANDARD_THRESHOLDS } from '../../config/thresholds'
 
 export const options: Options = {

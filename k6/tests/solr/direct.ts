@@ -13,7 +13,7 @@ import { Trend } from 'k6/metrics'
 import http from 'k6/http'
 import { API_BASE_URL, DEFAULT_HEADERS } from '../../config/env'
 import { randomBetween, randomItem } from '../../utils/random'
-import { DECISION_CODES, MEETING_CODES } from '../../fixtures/index'
+import { DECISION_CODES, MEETING_CODES } from '../../const'
 import { STANDARD_THRESHOLDS } from '../../config/thresholds'
 
 export const options: Options = {

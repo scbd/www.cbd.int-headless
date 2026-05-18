@@ -2,7 +2,7 @@ import { group } from 'k6'
 import { BASE_URL } from '../../config/env'
 import { apiGet } from '../../utils/http'
 import { randomItem } from '../../utils/random'
-import { SEARCH_TERMS } from '../../fixtures/index'
+import { SEARCH_TERMS } from '../../const'
 
 // NOTE: merges articles + pages from Drupal — two parallel Drupal queries.
 // Generates a new cache key per unique search term.

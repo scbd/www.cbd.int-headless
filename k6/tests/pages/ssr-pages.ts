@@ -7,7 +7,7 @@ import {
   ARTICLE_ALIASES,
   NOTIFICATION_CODES,
   SEARCH_TERMS
-} from '../../fixtures/index'
+} from '../../const'
 
 export function testHomePage (): void {
   ssrGet(`${BASE_URL}/`, { endpoint: 'home', layer: 'ssr' })
