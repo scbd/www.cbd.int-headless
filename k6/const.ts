@@ -113,26 +113,29 @@ export const NOTIFICATION_CODES: string[] = [
 
 // Decision symbol codes
 export const DECISION_CODES: string[] = [
-  'COP-15-3', // REPLACE
-  'COP-15-4' // REPLACE
+  'COP-16',
+  'COP-15',
+  'COP-14',
+  'COP-13',
+  'COP-12',
+  'COP-11',
+  'COP-10',
+  'COP-09'
 ]
 
 // Statement symbol codes
 export const STATEMENT_CODES: string[] = [
-  'SCBD/SHSM/2024/001', // REPLACE
-  'SCBD/SHSM/2024/002' // REPLACE
+  '', // REPLACE
 ]
 
 // Press release symbol codes
 export const PRESS_RELEASE_CODES: string[] = [
-  'CBD-PR-2024-001', // REPLACE
-  'CBD-PR-2024-002' // REPLACE
+  '', // REPLACE
 ]
 
 // NBSAP unique identifier codes
 export const NBSAP_CODES: string[] = [
-  'CBD-NBSAP-2024-001', // REPLACE
-  'CBD-NBSAP-2024-002' // REPLACE
+  '', // REPLACE
 ]
 
 // ISO 3166 country codes (2-letter)
@@ -142,33 +145,30 @@ export const COUNTRY_CODES: string[] = [
 
 // Thesaurus subject domains
 export const SUBJECT_DOMAINS: string[] = [
-  'ABS', // REPLACE/verify domain names
-  'BIODIVERSITY', // REPLACE/verify
-  'CLIMATE-CHANGE' // REPLACE/verify
+  '', // REPLACE
 ]
 
 // Notification codes that have submissions
 export const SUBMISSION_NOTIFICATION_CODES: string[] = [
-  'CBD/SBSTTA/24/1' // REPLACE — must match a notification with submissions
+  '2024-122'
 ]
 
 // Drupal menu codes
 export const MENU_CODES: string[] = [
-  'cbd-header', // REPLACE/verify menu machine names in Drupal
-  'cbd-footer', // REPLACE
-  'cbd-sidebar' // REPLACE
+  'cbd-header',
+  'cbd-footer'
 ]
 
 // Drupal portal menu codes (used by /api/portals)
 export const PORTAL_CODES: string[] = [
-  'cbd-header' // REPLACE
+  'cbd-portals'
 ]
 
 // Image category + code pairs for /api/images/[category]/[code]
 export const IMAGE_FIXTURES: Array<{ category: string, code: string }> = [
-  { category: 'meetings', code: 'CBD/COP/15' }, // REPLACE
-  { category: 'notifications', code: 'CBD/SBSTTA/24/1' }, // REPLACE
-  { category: 'statements', code: 'SCBD/SHSM/2024/001' } // REPLACE
+  { category: 'meetings', code: 'COP-17' },
+  { category: 'notifications', code: '2026-020' },
+  { category: 'statements', code: '' } // REPLACE
 ]
 
 // Search terms (varied to avoid identical cache keys)

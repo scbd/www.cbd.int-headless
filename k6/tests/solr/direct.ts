@@ -48,7 +48,7 @@ function solrQuery (body: Record<string, unknown>, endpoint: string): void {
     }
   })
 
-  if (ok) {
+  if (ok === true) {
     try {
       const json = res.json() as Record<string, unknown>
       const header = json.responseHeader as Record<string, unknown> | undefined
