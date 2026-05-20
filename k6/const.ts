@@ -125,17 +125,17 @@ export const DECISION_CODES: string[] = [
 
 // Statement symbol codes
 export const STATEMENT_CODES: string[] = [
-  '', // REPLACE
+  '' // REPLACE
 ]
 
 // Press release symbol codes
 export const PRESS_RELEASE_CODES: string[] = [
-  '', // REPLACE
+  '' // REPLACE
 ]
 
 // NBSAP unique identifier codes
 export const NBSAP_CODES: string[] = [
-  '', // REPLACE
+  '' // REPLACE
 ]
 
 // ISO 3166 country codes (2-letter)
@@ -145,7 +145,7 @@ export const COUNTRY_CODES: string[] = [
 
 // Thesaurus subject domains
 export const SUBJECT_DOMAINS: string[] = [
-  '', // REPLACE
+  '' // REPLACE
 ]
 
 // Notification codes that have submissions
