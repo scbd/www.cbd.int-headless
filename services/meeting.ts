@@ -37,6 +37,10 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
     fqParts.push(options.fieldQueries)
   }
 
+  if (options?.tags != null && options?.tags.length > 0) {
+    fqParts.push(`themes_ss:(${options.tags.map(t => `"${solrEscape(t)}"`).join(' ')})`)
+  }
+
   if ((options?.startDate != null && options.startDate !== '') || (options?.endDate != null && options.endDate !== '')) {
     const from = options.startDate ?? '*'
     const to = options.endDate ?? '*'
