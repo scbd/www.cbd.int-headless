@@ -35,7 +35,7 @@ function solrQuery (body: Record<string, unknown>, endpoint: string): void {
     tags: { endpoint, layer: 'solr' }
   })
 
-  const ok = check(res, {
+  const ok: boolean = check(res, {
     [`solr ${endpoint} status 200`]: (r) => r.status === 200,
     [`solr ${endpoint} no error`]: (r) => {
       try {
