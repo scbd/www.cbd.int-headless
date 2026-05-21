@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, toLString, toLStringArray, andOr, normalizeCode } from '~~/utils/solr'
+import { solrEscape, toLString, toLStringArray, andOr, normalizeCode, buildTagsFilter } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
 import { Cache } from '~~/utils/cache'
 import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
@@ -37,12 +37,8 @@ async function searchNotification (options?: QueryParams & { code?: string }): P
     fqParts.push(options.fieldQueries)
   }
 
-  if (options?.tags != null && options.tags.length > 0) {
-    const tags = [...new Set(options.tags.map(t => t.trim()).filter(t => t !== ''))]
-    if (tags.length > 0) {
-      fqParts.push(`themes_ss:(${tags.map(t => `"${solrEscape(t)}"`).join(' ')})`)
-    }
-  }
+  const tagsFilter = buildTagsFilter(options?.tags)
+  if (tagsFilter != null) fqParts.push(tagsFilter)
 
   if ((options?.startDate != null && options.startDate !== '') || (options?.endDate != null && options.endDate !== '')) {
     const from = options.startDate ?? '*'
