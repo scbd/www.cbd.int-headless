@@ -81,15 +81,27 @@ export async function getContent (url: string): Promise<Content | Article> {
 
     const relationships = drupalContent.data.relationships
 
-    const [tags, meetings, notifications, statements] = await Promise.all([
+    const [tags, componentsMeeting, componentsNotifications, componentsStatements, listMeeting, listNotifications, listStatements] = await Promise.all([
       getTaxonomyIdentifiers(relationships?.field_cbd_tags?.data ?? []),
       getTaxonomyIdentifiers(relationships?.field_meetings?.data ?? []),
       getTaxonomyIdentifiers(relationships?.field_notifications?.data ?? []),
-      getTaxonomyIdentifiers(relationships?.field_statements?.data ?? [])
+      getTaxonomyIdentifiers(relationships?.field_statements?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_list_meetings?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_list_notifications?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_list_statements?.data ?? [])
     ])
 
     page.tags = tags
-    page.components = { meetings, notifications, statements }
+    page.components = {
+      meetings: componentsMeeting,
+      notifications: componentsNotifications,
+      statements: componentsStatements
+    }
+    page.list = {
+      meetings: listMeeting,
+      notifications: listNotifications,
+      statements: listStatements
+    }
   }
 
   if (route.entity.bundle === 'article') {

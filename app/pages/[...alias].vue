@@ -60,6 +60,15 @@
               v-dompurify-html="page?.body ?? ''"
               class="rendered-content"
               ></section>
+            <async-block v-if="page?.list?.meetings?.length">
+              <meeting-search-list :tags="page.list.meetings" />
+            </async-block>
+            <async-block v-if="page?.list?.notifications?.length">
+              <notification-search-list :tags="page.list.notifications" />
+            </async-block>
+            <async-block v-if="page?.list?.statements?.length">
+              <statement-search-list :tags="page.list.statements" />
+            </async-block>
             <async-block v-if="page?.components?.meetings?.length">
               <meeting-card-list :tags="page.components.meetings" />
             </async-block>

@@ -16,6 +16,11 @@ export interface Content {
     notifications?: string[]
     statements?: string[]
   }
+  list?: {
+    meetings?: string[]
+    notifications?: string[]
+    statements?: string[]
+  }
 };
 
 export interface Article extends Content {

@@ -44,6 +44,7 @@
 <i18n src="~~/i18n/dist/app/components/statement/search-list.json"></i18n>
 
 <script setup lang="ts">
+import { solrEscape } from '~~/utils/solr'
 import useStatementsApi from '~/composables/api/use-statements'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
@@ -53,7 +54,12 @@ const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
 const props = defineProps<{
-  searchParams?: { fieldQueries?: string; startDate?: string; endDate?: string }
+  tags?: string[]
+  searchParams?: {
+    fieldQueries?: string;
+    startDate?: string;
+    endDate?: string
+  }
 }>()
 
 const currentPage = ref(1)
@@ -63,7 +69,9 @@ const queryParams = computed(() => ({
   skip: (currentPage.value - 1) * ITEMS_PER_PAGE,
   startDate: props.searchParams?.startDate,
   endDate: props.searchParams?.endDate,
-  fieldQueries: props.searchParams?.fieldQueries
+  fieldQueries: props.tags?.length
+    ? `themes_ss:(${props.tags.map(tag => `"${solrEscape(tag)}"`).join(' ')})`
+    : props.searchParams?.fieldQueries
 }))
 
 const { statements, error } = await useStatementsApi(queryParams)
