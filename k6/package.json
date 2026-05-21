@@ -4,21 +4,34 @@
   "private": true,
   "description": "k6 stress tests for www.cbd.int headless frontend",
   "scripts": {
-    "smoke":   "k6 run scenarios/smoke.ts",
-    "average": "k6 run scenarios/average-load.ts",
-    "peak":    "k6 run scenarios/peak-load.ts",
-    "stress":  "k6 run scenarios/stress.ts",
-    "soak":    "k6 run scenarios/soak.ts",
-    "drupal":  "k6 run tests/drupal/direct.ts",
-    "solr":    "k6 run tests/solr/direct.ts",
-    "cbd-api": "k6 run tests/cbd-api/direct.ts",
-    "typecheck": "tsc --noEmit"
+    "build": "yarn build:scenarios && yarn build:tests",
+    "build:scenarios": "esbuild scenarios/smoke.ts scenarios/average-load.ts scenarios/peak-load.ts scenarios/stress.ts scenarios/soak.ts --bundle --outdir=dist/scenarios --platform=neutral --format=esm --external:k6 --external:k6/*",
+    "smoke":   "k6 run dist/scenarios/smoke.js",
+    "average": "k6 run dist/scenarios/average-load.ts",
+    "peak":    "k6 run dist/scenarios/peak-load.ts",
+    "stress":  "k6 run dist/scenarios/stress.ts",
+    "soak":    "k6 run dist/scenarios/soak.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "ts-standard",
+    "lint:fix": "ts-standard --fix"
   },
   "devDependencies": {
     "k6": "*",
-    "@types/k6": "*"
+    "@types/k6": "*",
+    "esbuild": "^0.25.0",
+    "ts-standard": "*",
+    "typescript": "*"
   },
   "engines": {
     "node": ">=18"
+  },
+  "ts-standard": {
+    "ignore": [
+      ".nuxt",
+      "dist/**",
+      "node_modules",
+      ".output"
+    ],
+    "project": "../tsconfig.eslint.json"
   }
 }
