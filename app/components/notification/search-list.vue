@@ -103,7 +103,6 @@
 <i18n src="~~/i18n/dist/app/components/notification/search-list.json"></i18n>
 
 <script setup lang="ts">
-import { solrEscape } from '~~/utils/solr'
 import useNotificationsListApi from '~/composables/api/use-notifications'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'

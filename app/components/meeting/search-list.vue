@@ -100,7 +100,6 @@
 <i18n src="~~/i18n/dist/app/components/meeting/search-list.json"></i18n>
 
 <script setup lang="ts">
-import { solrEscape } from '~~/utils/solr'
 import useMeetingsListApi from '~/composables/api/use-meetings'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
