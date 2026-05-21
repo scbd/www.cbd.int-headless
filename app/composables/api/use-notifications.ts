@@ -12,6 +12,7 @@ export default async function useNotificationsListApi (options?: ComputedRef<Que
       limit: options?.value.limit,
       skip: options?.value.skip,
       fieldQueries: options?.value.fieldQueries,
+      tags: options?.value.tags,
       startDate: options?.value.startDate,
       endDate: options?.value.endDate
     })),

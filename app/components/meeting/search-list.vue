@@ -124,9 +124,8 @@ const currentPage = ref(1)
 const queryParams = computed(() => ({
   limit: ITEMS_PER_PAGE,
   skip: (currentPage.value - 1) * ITEMS_PER_PAGE,
-  fieldQueries: props.tags?.length
-    ? `themes_ss:(${props.tags.map(tag => `"${solrEscape(tag)}"`).join(' ')})`
-    : props.searchParams?.fieldQueries,
+  tags: props.tags,
+  fieldQueries: props.searchParams?.fieldQueries,
   startDate: props.searchParams?.startDate ?? (props.searchParams?.endDate ? undefined : 'NOW'),
   endDate: props.searchParams?.endDate
 }))

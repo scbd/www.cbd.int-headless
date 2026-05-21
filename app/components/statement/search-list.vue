@@ -67,11 +67,10 @@ const currentPage = ref(1)
 const queryParams = computed(() => ({
   limit: ITEMS_PER_PAGE,
   skip: (currentPage.value - 1) * ITEMS_PER_PAGE,
+  tags: props.tags,
+  fieldQueries: props.searchParams?.fieldQueries,
   startDate: props.searchParams?.startDate,
-  endDate: props.searchParams?.endDate,
-  fieldQueries: props.tags?.length
-    ? `themes_ss:(${props.tags.map(tag => `"${solrEscape(tag)}"`).join(' ')})`
-    : props.searchParams?.fieldQueries
+  endDate: props.searchParams?.endDate
 }))
 
 const { statements, error } = await useStatementsApi(queryParams)
