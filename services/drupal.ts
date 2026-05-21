@@ -81,23 +81,27 @@ export async function getContent (url: string): Promise<Content | Article> {
 
     const relationships = drupalContent.data.relationships
 
-    const [tags, components, list] = await Promise.all([
+    const [tags, componentsMeeting, componentsNotifications, componentsStatements, listMeeting, listNotifications, listStatements] = await Promise.all([
       getTaxonomyIdentifiers(relationships?.field_cbd_tags?.data ?? []),
-      Promise.all([
-        getTaxonomyIdentifiers(relationships?.field_meetings?.data ?? []),
-        getTaxonomyIdentifiers(relationships?.field_notifications?.data ?? []),
-        getTaxonomyIdentifiers(relationships?.field_statements?.data ?? [])
-      ]).then(([meetings, notifications, statements]) => ({ meetings, notifications, statements })),
-      Promise.all([
-        getTaxonomyIdentifiers(relationships?.field_list_meetings?.data ?? []),
-        getTaxonomyIdentifiers(relationships?.field_list_notifications?.data ?? []),
-        getTaxonomyIdentifiers(relationships?.field_list_statements?.data ?? [])
-      ]).then(([meetings, notifications, statements]) => ({ meetings, notifications, statements }))
+      getTaxonomyIdentifiers(relationships?.field_meetings?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_notifications?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_statements?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_list_meetings?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_list_notifications?.data ?? []),
+      getTaxonomyIdentifiers(relationships?.field_list_statements?.data ?? [])
     ])
 
     page.tags = tags
-    page.components = components
-    page.list = list
+    page.components = {
+      meetings: componentsMeeting,
+      notifications: componentsNotifications,
+      statements: componentsStatements
+    }
+    page.list = {
+      meetings: listMeeting,
+      notifications: listNotifications,
+      statements: listStatements
+    }
   }
 
   if (route.entity.bundle === 'article') {
