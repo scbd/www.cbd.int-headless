@@ -44,8 +44,11 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
     fqParts.push(options.fieldQueries)
   }
 
-  if (options?.tags != null && options?.tags.length > 0) {
-    fqParts.push(`themes_ss:(${options.tags.map(t => `"${solrEscape(t)}"`).join(' ')})`)
+  if (options?.tags != null && options.tags.length > 0) {
+    const tags = [...new Set(options.tags.map(t => t.trim()).filter(t => t !== ''))]
+    if (tags.length > 0) {
+      fqParts.push(`themes_ss:(${tags.map(t => `"${solrEscape(t)}"`).join(' ')})`)
+    }
   }
 
   if ((options?.startDate != null && options.startDate !== '') || (options?.endDate != null && options.endDate !== '')) {
