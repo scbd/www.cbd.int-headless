@@ -8,33 +8,36 @@
 </template>
 
 <script setup lang="ts">
-import useArticleListApi from '~/composables/api/use-articles-api';
-import useDecisionsListApi from '~/composables/api/use-decisions';
-import useMeetingsListApi from '~/composables/api/use-meetings';
-import useNotificationsListApi from '~/composables/api/use-notifications';
-import useStatementsListApi from '~/composables/api/use-statements';
-import usePressReleasesListApi from '~/composables/api/use-press-releases';
-import { andOr, solrEscape } from '~~/utils/solr';
-import { useLString } from '~/composables/use-lstring';
+import useArticleListApi from '~/composables/api/use-articles-api'
+import useDecisionsListApi from '~/composables/api/use-decisions'
+import useMeetingsListApi from '~/composables/api/use-meetings'
+import useNotificationsListApi from '~/composables/api/use-notifications'
+import useStatementsListApi from '~/composables/api/use-statements'
+import usePressReleasesListApi from '~/composables/api/use-press-releases'
+import { andOr, solrEscape } from '~~/utils/solr'
+import { useLString } from '~/composables/use-lstring'
 import { useFormatDate } from '~/composables/use-format-date'
-import type { Article } from '~~/types/content';
-import type { Decision } from '~~/types/decision';
-import type { Meeting } from '~~/types/meeting';
-import type { Notification } from '~~/types/notification';
-import type { PressRelease } from '~~/types/press-release';
-import type { Statement } from '~~/types/statement';
+import type { Article } from '~~/types/content'
+import type { Decision } from '~~/types/decision'
+import type { Meeting } from '~~/types/meeting'
+import type { Notification } from '~~/types/notification'
+import type { PressRelease } from '~~/types/press-release'
+import type { Statement } from '~~/types/statement'
 
 
 const props = defineProps<{
   component: string;
   filter?: string;
-}>();
+}>()
 
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
-const themeQuery = buildThemeQuery(props.filter)
-const rows = await getContent(props.component, themeQuery)
+const tags = props.filter
+  ? props.filter.split(',').map(t => t.trim()).filter(Boolean)
+  : undefined
+
+const rows = await getContent(props.component, tags)
 
 const items = (rows ?? []).map((row) => ({
   id: row.id,
@@ -43,8 +46,7 @@ const items = (rows ?? []).map((row) => ({
   url: 'urls' in row ? row.urls?.[0] ?? '#' : row.alias ?? '#',  // TO-DO: standardize URL property across content types
 }))
 
-// TO-DO: articles/meetings/statements and decisions will follow the same new pattern as notifications on their respective PRs.
-async function getContent(component: string, fieldQueries?: string) {
+async function getContent (component: string, tags?: string[]) {
   switch (component) {
     case 'articles':       return (await useArticleListApi(ref({ limit: 4 }))).articles.value.rows;
     case 'meetings':       return (await useMeetingsListApi(ref({ limit: 4, sort: 'endDate_dt ASC', startDate: 'NOW' }))).meetings.value.rows;
@@ -56,16 +58,9 @@ async function getContent(component: string, fieldQueries?: string) {
   }
 }
 
-function getDateProperty(row: Article | Decision | Meeting | Notification | PressRelease | Statement): Date {
+function getDateProperty (row: Article | Decision | Meeting | Notification | PressRelease | Statement): Date {
   if ('startOn' in row && row.startOn !== undefined && row.startOn !== null) return row.startOn;
   if ('updatedOn' in row && row.updatedOn !== undefined && row.updatedOn !== null) return row.updatedOn;
   return row.createdOn;
-}
-
-function buildThemeQuery(filter?: string): string | undefined {
-  if (!filter) return undefined
-  const themes = filter.split(',').map(t => t.trim()).filter(Boolean)
-  if (themes.length === 0) return undefined
-  return andOr(themes.map(t => `themes_ss:${solrEscape(t)}`), 'OR')
 }
 </script>
