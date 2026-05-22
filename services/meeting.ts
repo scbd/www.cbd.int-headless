@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, toLString, toLStringArray, andOr, normalizeCode } from '~~/utils/solr'
+import { solrEscape, toLString, toLStringArray, andOr, normalizeCode, buildTagsFilter } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
 import { Cache } from '~~/utils/cache'
 import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
@@ -36,6 +36,9 @@ async function searchMeetings (options?: QueryParams & { code?: string }): Promi
   if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
     fqParts.push(options.fieldQueries)
   }
+
+  const tagsFilter = buildTagsFilter(options?.tags)
+  if (tagsFilter != null) fqParts.push(tagsFilter)
 
   if ((options?.startDate != null && options.startDate !== '') || (options?.endDate != null && options.endDate !== '')) {
     const from = options.startDate ?? '*'

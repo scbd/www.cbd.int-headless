@@ -103,3 +103,10 @@ export function andOr (query: string | string[], sep: string): string {
 export function normalizeCode (code: string): string {
   return code.toUpperCase().trim()
 }
+
+export function buildTagsFilter (tags?: string[] | null): string | null {
+  if (tags == null || tags.length === 0) return null
+  const cleaned = [...new Set(tags.map(t => t.trim()).filter(t => t !== ''))]
+  if (cleaned.length === 0) return null
+  return `themes_ss:(${cleaned.map(t => `"${solrEscape(t)}"`).join(' ')})`
+}

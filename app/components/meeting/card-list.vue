@@ -20,7 +20,6 @@
 <i18n src="~~/i18n/dist/app/components/meeting/card-list.json"></i18n>
 
 <script lang="ts" setup>
-import { solrEscape } from '~~/utils/solr'
 import useMeetingsListApi from '~/composables/api/use-meetings'
 import { MEETINGS } from '~~/constants/url-paths'
 
@@ -29,9 +28,6 @@ const props = defineProps<{ tags?: string[] }>()
 const { t } = useI18n()
 
 const sort = 'endDate_dt ASC'
-const fieldQueries = props.tags?.length
-  ? `themes_ss:(${props.tags.map(tag => `"${solrEscape(tag)}"`).join(' ')})`
-  : undefined
 
-const { meetings, error } = await useMeetingsListApi(ref({ limit: 4, sort, startDate: 'NOW', fieldQueries }))
+const { meetings, error } = await useMeetingsListApi(ref({ limit: 4, sort, startDate: 'NOW', tags: props.tags }))
 </script>

@@ -4,6 +4,7 @@ export interface QueryParams {
   skip?: number
   limit?: number
   search?: string
+  tags?: string[]
   startDate?: string // ISO datetime string (e.g. "2026-03-01T00:00:00Z")
   endDate?: string // ISO datetime string (e.g. "2026-03-31T23:59:59Z")
 }

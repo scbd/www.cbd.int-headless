@@ -1,6 +1,6 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, andOr, toLString, toLStringArray } from '~~/utils/solr'
+import { solrEscape, andOr, toLString, toLStringArray, buildTagsFilter } from '~~/utils/solr'
 import { getImage } from '~~/services/drupal'
 import { Cache } from '~~/utils/cache'
 import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
@@ -43,6 +43,9 @@ async function searchStatements (options?: QueryParams & { code?: string }): Pro
   if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
     fqParts.push(options.fieldQueries)
   }
+
+  const tagsFilter = buildTagsFilter(options?.tags)
+  if (tagsFilter != null) fqParts.push(tagsFilter)
 
   if ((options?.startDate != null && options.startDate !== '') || (options?.endDate != null && options.endDate !== '')) {
     const from = options.startDate ?? '*'

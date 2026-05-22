@@ -103,7 +103,6 @@
 <i18n src="~~/i18n/dist/app/components/notification/search-list.json"></i18n>
 
 <script setup lang="ts">
-import { solrEscape } from '~~/utils/solr'
 import useNotificationsListApi from '~/composables/api/use-notifications'
 import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
@@ -127,11 +126,10 @@ const currentPage = ref(1)
 const queryParams = computed(() => ({
   limit: ITEMS_PER_PAGE,
   skip: (currentPage.value - 1) * ITEMS_PER_PAGE,
+  tags: props.tags,
+  fieldQueries: props.searchParams?.fieldQueries,
   startDate: props.searchParams?.startDate,
-  endDate: props.searchParams?.endDate,
-  fieldQueries: props.tags?.length
-    ? `themes_ss:(${props.tags.map(tag => `"${solrEscape(tag)}"`).join(' ')})`
-    : props.searchParams?.fieldQueries
+  endDate: props.searchParams?.endDate
 }))
 
 const { notifications, error } = await useNotificationsListApi(queryParams)
