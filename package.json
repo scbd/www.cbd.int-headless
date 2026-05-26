@@ -11,7 +11,7 @@
     "postinstall": "nuxt prepare",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
-    "clean-install": "rm -rf ./node_modules && rm -rf ./.nuxt && rm -rf ./dist && rm -rf .output && yarn install --network-concurrency 1"
+    "clean-install": "rm -rf ./node_modules && rm -rf ./.nuxt && rm -rf ./dist && rm -rf .output && yarn install"
   },
   "ts-standard": {
     "ignore": [
@@ -46,7 +46,7 @@
     "vue-dompurify-html": "^5.3.0",
     "vue-router": "^4.5.1"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "packageManager": "yarn@4.15.0",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/jsdom": "^28.0.0",

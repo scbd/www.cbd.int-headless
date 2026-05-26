@@ -18,7 +18,8 @@ RUN apk add --no-cache libc6-compat git
 COPY package.json yarn.lock ./
 
 # Install dependencies
-RUN yarn install --frozen-lockfile --network-timeout 100000 --network-concurrency 1
+RUN --mount=type=cache,target=/root/.yarn \
+    YARN_CACHE_FOLDER=/root/.yarn yarn install --immutable
 
 # -----------------------------------------------------------------------------
 # Stage 2: Builder

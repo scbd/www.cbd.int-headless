@@ -27,3 +27,9 @@ infra/deploy/secrets/
 .env
 .env.*
 !.env.example
+
+# Yarn Berry
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
