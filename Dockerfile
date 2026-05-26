@@ -18,7 +18,7 @@ RUN apk add --no-cache libc6-compat git
 RUN corepack enable
 
 # Copy package files
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock .yarnrc.yml ./
 
 # Install dependencies
 RUN --mount=type=cache,target=/root/.yarn \
