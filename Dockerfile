@@ -14,6 +14,9 @@ WORKDIR /app
 # Install dependencies required for native modules
 RUN apk add --no-cache libc6-compat git
 
+# Enable Corepack so Node uses the yarn version declared in packageManager
+RUN corepack enable
+
 # Copy package files
 COPY package.json yarn.lock ./
 
@@ -27,6 +30,8 @@ RUN --mount=type=cache,target=/root/.yarn \
 FROM node:24-alpine AS builder
 
 WORKDIR /app
+
+RUN corepack enable
 
 # Copy dependencies from previous stage
 COPY --from=dependencies /app/node_modules ./node_modules
