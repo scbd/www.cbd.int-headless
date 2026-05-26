@@ -17,6 +17,9 @@ jobs:
       - image: cimg/node:24.0
     steps:
       - checkout
+      - run:
+          name: Enable Corepack
+          command: sudo corepack enable
       - restore_cache:
           keys:
             - yarn-deps-{{ checksum "yarn.lock" }}
