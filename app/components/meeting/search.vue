@@ -96,7 +96,7 @@ const activeFilters = ref<ActiveFilter[]>([])
 const subjectSelectRef = ref<{ getLabel: (id: string) => string } | null>(null)
 
 const emit = defineEmits<{
-  search: [params: { fieldQueries?: string, startDate?: string, endDate?: string }]
+  search: [params: { fieldQueries?: string, startDate?: string, endDate?: string, themes?: string}]
 }>()
 
 
@@ -138,10 +138,6 @@ function buildFieldQueries (): string | undefined {
     parts.push(`(title_${locale.value.toUpperCase()}_t:${solrEscape(title.value.trim())} OR title_${locale.value.toUpperCase()}_t:*${solrEscape(title.value.trim())}* OR symbol_s:${solrEscape(title.value.trim())} OR symbol_s:*${solrEscape(title.value.trim())}*)`)
   }
 
-  if (selectedThemes.value) {
-    parts.push(`themes_ss:"${solrEscape(selectedThemes.value)}"`)
-  }
-
   return parts.length > 0 ? andOr(parts, 'AND') : undefined
 }
 
@@ -150,7 +146,8 @@ function onSearch () {
   emit('search', {
     fieldQueries: buildFieldQueries(),
     startDate: toFormatStartDay(startDate.value),
-    endDate: toFormatEndDay(endDate.value)
+    endDate: toFormatEndDay(endDate.value),
+    themes: selectedThemes.value || undefined
   })
 }
 </script>

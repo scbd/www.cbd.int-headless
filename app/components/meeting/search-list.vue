@@ -115,6 +115,7 @@ const props = defineProps<{
     fieldQueries?: string
     startDate?: string
     endDate?: string
+    themes?: string
   }
 }>()
 
@@ -123,7 +124,7 @@ const currentPage = ref(1)
 const queryParams = computed(() => ({
   limit: ITEMS_PER_PAGE,
   skip: (currentPage.value - 1) * ITEMS_PER_PAGE,
-  tags: props.tags,
+  tags: props.searchParams?.themes ? [props.searchParams.themes] : props.tags,
   fieldQueries: props.searchParams?.fieldQueries,
   startDate: props.searchParams?.startDate ?? (props.searchParams?.endDate ? undefined : 'NOW'),
   endDate: props.searchParams?.endDate
