@@ -177,6 +177,17 @@
   }
 }
 
+.wp-block-embed {
+  figcaption,
+  .wp-element-caption {
+    font-size: 13px;
+    text-align: center;
+    color: rgb(85, 85, 85);
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+  }
+}
+
 .wp-block-table {
   overflow-x: auto;
   margin-bottom: 1rem;
