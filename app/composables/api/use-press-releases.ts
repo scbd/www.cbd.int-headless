@@ -16,6 +16,7 @@ export default async function usePressReleasesListApi (
       sort: options?.value.sort,
       limit: options?.value.limit,
       skip: options?.value.skip,
+      tags: options?.value.tags,
       fieldQueries: options?.value.fieldQueries
     })),
     default: () => ({ total: 0, rows: [] })

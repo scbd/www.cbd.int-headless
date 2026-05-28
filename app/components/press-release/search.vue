@@ -34,13 +34,14 @@
             <div class="col">
                 <label for="fsThemes" class="w-100">
                     {{ t('themes') }}
-                    <input
-                        v-model="themes"
-                        type="text"
-                        name="fsThemes"
-                        id="fsThemes"
-                        class="form-control"
-                    />
+                  <SearchSelect
+                        ref="subjectSelectRef"
+                        v-model="selectedThemes"
+                        :domain="SUBJECTS_DOMAIN"
+                        input-id="fsThemes"
+                  >
+                    {{ t('themes') }}
+                  </SearchSelect>
                 </label>
             </div>
 
@@ -98,11 +99,13 @@
 <script setup lang="ts">
 import { solrEscape, andOr } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
+import { SUBJECTS_DOMAIN } from '~~/constants/thesaurus'
 
 const { t, locale } = useI18n()
 
 const title = ref('')
-const themes = ref('')
+const selectedThemes = ref('')
+const subjectSelectRef = ref<{ getLabel: (id: string) => string } | null>(null)
 const year = ref(0)
 const sortField = ref('date')
 const sortDirection = ref('desc')
@@ -110,7 +113,7 @@ const activeFilters = ref<ActiveFilter[]>([])
 
 
 const emit = defineEmits<{
-  search: [params: { fieldQueries?: string, sort?: string }]
+  search: [params: { fieldQueries?: string, sort?: string, themes?: string }]
 }>()
 
 function buildActiveFilters (): ActiveFilter[] {
@@ -118,9 +121,11 @@ function buildActiveFilters (): ActiveFilter[] {
   if (title.value.trim()) {
     filters.push({ key: 'title', label: t('title'), displayValue: title.value.trim() })
   }
-  if (themes.value.trim()) {
-    filters.push({ key: 'themes', label: t('themes'), displayValue: themes.value.trim() })
+  if (selectedThemes.value) {
+    const label = subjectSelectRef.value?.getLabel(selectedThemes.value) ?? selectedThemes.value
+    filters.push({ key: 'themes', label: t('themes'), displayValue: label })
   }
+
   if (year.value) {
     filters.push({ key: 'year', label: t('year'), displayValue: String(year.value) })
   }
@@ -128,11 +133,12 @@ function buildActiveFilters (): ActiveFilter[] {
 }
 
 function removeFilter (key: string) {
-  const fieldMap: Record<string, Ref> = { title, themes, year }
+  const fieldMap: Record<string, Ref> = { title, year }
   const field = fieldMap[key]
   if (field) {
     field.value = key === 'year' ? 0 : ''
   }
+  if (key === 'themes') selectedThemes.value = ''
   onSearch()
 }
 
@@ -141,9 +147,6 @@ function buildFieldQueries (): string | undefined {
   
   if (title.value.trim()) {
     parts.push(`(title_${locale.value.toUpperCase()}_t:${solrEscape(title.value.trim())} OR title_${locale.value.toUpperCase()}_t:*${solrEscape(title.value.trim())}*)`)
-  }
-  if (themes.value.trim()) {
-    parts.push(`(themes_${locale.value.toUpperCase()}_txt:${solrEscape(themes.value.trim())} OR themes_${locale.value.toUpperCase()}_txt:*${solrEscape(themes.value.trim())}*)`)
   }
   if (year.value) {
     // Date range — NOT escaped since we control the format
@@ -164,6 +167,7 @@ function onSearch () {
   activeFilters.value = buildActiveFilters()
   emit('search', {
     fieldQueries: buildFieldQueries(),
+    themes: selectedThemes.value || undefined,
     sort: buildSort()
   })
 }

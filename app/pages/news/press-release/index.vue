@@ -10,9 +10,9 @@ definePageMeta({
   layout: 'home'
 })
 
-const searchParams = ref<{ fieldQueries?: string; sort?: string }>()
+const searchParams = ref<{ fieldQueries?: string; sort?: string; themes?: string; }>()
 
-function onSearch (params: { fieldQueries?: string; sort?: string }) {
+function onSearch (params: { fieldQueries?: string; sort?: string; themes?: string }) {
   searchParams.value = params
 }
 </script>
