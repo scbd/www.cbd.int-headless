@@ -2,7 +2,7 @@
     <label :for="inputId" class="w-100">
         <slot>{{ t('themes') }}</slot>
         <select
-            :value="modelValue"
+            value=""
             @change="onSelect"
             :id="inputId"
             class="form-select"
@@ -25,13 +25,13 @@ import { useLString } from '~/composables/use-lstring'
 import useSubjectsApi from '~/composables/api/use-subjects'
 
 const props = defineProps<{
-  modelValue: string
+  modelValue: string[]
   domain: string
   inputId: string
 }>()
 
 const emit = defineEmits<{
-  'update:modelValue': [value: string]
+  'update:modelValue': [value: string[]]
 }>()
 
 const { t } = useI18n()
@@ -40,7 +40,11 @@ const { subjects } = await useSubjectsApi(props.domain)
 
 function onSelect (event: Event) {
   const select = event.target as HTMLSelectElement
-  emit('update:modelValue', select.value)
+  const value = select.value
+  if (value && !props.modelValue.includes(value)) {
+    emit('update:modelValue', [...props.modelValue, value])
+  }
+  select.value = ''
 }
 
 /**

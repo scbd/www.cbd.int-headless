@@ -104,7 +104,7 @@ import { SUBJECTS_DOMAIN } from '~~/constants/thesaurus'
 const { t, locale } = useI18n()
 
 const title = ref('')
-const selectedThemes = ref('')
+const selectedThemes = ref<string[]>([])
 const subjectSelectRef = ref<{ getLabel: (id: string) => string } | null>(null)
 const year = ref(0)
 const sortField = ref('date')
@@ -113,7 +113,7 @@ const activeFilters = ref<ActiveFilter[]>([])
 
 
 const emit = defineEmits<{
-  search: [params: { fieldQueries?: string, sort?: string, themes?: string }]
+  search: [params: { fieldQueries?: string, sort?: string, themes?: string[] }]
 }>()
 
 function buildActiveFilters (): ActiveFilter[] {
@@ -121,11 +121,10 @@ function buildActiveFilters (): ActiveFilter[] {
   if (title.value.trim()) {
     filters.push({ key: 'title', label: t('title'), displayValue: title.value.trim() })
   }
-  if (selectedThemes.value) {
-    const label = subjectSelectRef.value?.getLabel(selectedThemes.value) ?? selectedThemes.value
-    filters.push({ key: 'themes', label: t('themes'), displayValue: label })
+  for (const id of selectedThemes.value) {
+    const label = subjectSelectRef.value?.getLabel(id) ?? id
+    filters.push({ key: `themes:${id}`, label: t('themes'), displayValue: label })
   }
-
   if (year.value) {
     filters.push({ key: 'year', label: t('year'), displayValue: String(year.value) })
   }
@@ -133,12 +132,15 @@ function buildActiveFilters (): ActiveFilter[] {
 }
 
 function removeFilter (key: string) {
+  if (key.startsWith('themes:')) {
+    selectedThemes.value = selectedThemes.value.filter(t => t !== key.slice(7))
+    return
+  }
   const fieldMap: Record<string, Ref> = { title, year }
   const field = fieldMap[key]
   if (field) {
     field.value = key === 'year' ? 0 : ''
   }
-  if (key === 'themes') selectedThemes.value = ''
   onSearch()
 }
 
@@ -163,11 +165,13 @@ function buildSort (): string {
   return `updatedDate_dt ${sortDirection.value === 'asc' ? 'ASC' : 'DESC'}`
 }
 
+watch(selectedThemes, onSearch)
+
 function onSearch () {
   activeFilters.value = buildActiveFilters()
   emit('search', {
     fieldQueries: buildFieldQueries(),
-    themes: selectedThemes.value || undefined,
+    themes: selectedThemes.value.length ? selectedThemes.value : undefined,
     sort: buildSort()
   })
 }

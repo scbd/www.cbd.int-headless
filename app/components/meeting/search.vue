@@ -88,7 +88,7 @@ const { t, locale } = useI18n()
 const { toFormatDate, toFormatStartDay, toFormatEndDay } = useFormatDate()
 
 const title = ref('')
-const selectedThemes = ref('')
+const selectedThemes = ref<string[]>([])
 const startDate = ref<string | undefined>(undefined)
 const endDate   = ref<string | undefined>(undefined)
 const activeFilters = ref<ActiveFilter[]>([])
@@ -96,18 +96,17 @@ const activeFilters = ref<ActiveFilter[]>([])
 const subjectSelectRef = ref<{ getLabel: (id: string) => string } | null>(null)
 
 const emit = defineEmits<{
-  search: [params: { fieldQueries?: string, startDate?: string, endDate?: string, themes?: string}]
+  search: [params: { fieldQueries?: string, startDate?: string, endDate?: string, themes?: string[] }]
 }>()
-
 
 function buildActiveFilters (): ActiveFilter[] {
   const filters: ActiveFilter[] = []
   if (title.value.trim()) {
     filters.push({ key: 'title', label: t('title'), displayValue: title.value.trim() })
   }
-  if (selectedThemes.value) {
-    const label = subjectSelectRef.value?.getLabel(selectedThemes.value) ?? selectedThemes.value
-    filters.push({ key: 'themes', label: t('themes'), displayValue: label })
+  for (const id of selectedThemes.value) {
+    const label = subjectSelectRef.value?.getLabel(id) ?? id
+    filters.push({ key: `themes:${id}`, label: t('themes'), displayValue: label })
   }
   if (startDate.value) {
     filters.push({ key: 'startDate', label: t('startDate'), displayValue: toFormatDate(startDate.value) })
@@ -119,14 +118,14 @@ function buildActiveFilters (): ActiveFilter[] {
 }
 
 function removeFilter (key: string) {
-  if (key === 'themes') {
-    selectedThemes.value = ''
-  } else {
-    const fieldMap: Record<string, Ref> = { title, startDate, endDate }
-    const field = fieldMap[key]
-    if (field) {
-      field.value = (key === 'startDate' || key === 'endDate') ? undefined : ''
-    }
+  if (key.startsWith('themes:')) {
+    selectedThemes.value = selectedThemes.value.filter(t => t !== key.slice(7))
+    return
+  }
+  const fieldMap: Record<string, Ref> = { title, startDate, endDate }
+  const field = fieldMap[key]
+  if (field) {
+    field.value = (key === 'startDate' || key === 'endDate') ? undefined : ''
   }
   onSearch()
 }
@@ -141,13 +140,15 @@ function buildFieldQueries (): string | undefined {
   return parts.length > 0 ? andOr(parts, 'AND') : undefined
 }
 
+watch(selectedThemes, onSearch)
+
 function onSearch () {
   activeFilters.value = buildActiveFilters()
   emit('search', {
     fieldQueries: buildFieldQueries(),
     startDate: toFormatStartDay(startDate.value),
     endDate: toFormatEndDay(endDate.value),
-    themes: selectedThemes.value || undefined
+    themes: selectedThemes.value.length ? selectedThemes.value : undefined
   })
 }
 </script>

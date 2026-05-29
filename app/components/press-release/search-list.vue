@@ -79,7 +79,7 @@ const { toFormatDate } = useFormatDate()
 const props = defineProps<{
   searchParams?: {
     fieldQueries?: string
-    themes?: string | string[]
+    themes?: string[]
     sort?: string
   }
 }>()
@@ -90,7 +90,7 @@ const queryParams = computed(() => ({
   limit: ITEMS_PER_PAGE,
   skip: (currentPage.value - 1) * ITEMS_PER_PAGE,
   sort: props.searchParams?.sort,
-  tags: props.searchParams?.themes ? [props.searchParams.themes].flat() : undefined,
+  tags: props.searchParams?.themes,
   fieldQueries: props.searchParams?.fieldQueries
 }))
 
