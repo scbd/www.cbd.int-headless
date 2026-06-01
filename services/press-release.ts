@@ -1,5 +1,5 @@
 import SolrIndexApi from '~~/api/solr-index'
-import { solrEscape, toLString, toLStringArray, andOr } from '~~/utils/solr'
+import { solrEscape, toLString, toLStringArray, andOr, buildTagsFilter } from '~~/utils/solr'
 import { Cache } from '~~/utils/cache'
 import { mandatory, notFound } from 'api-client/api-error'
 import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
@@ -36,6 +36,8 @@ async function searchPressReleases (options?: QueryParams & { code?: string }): 
   if (options?.fieldQueries !== undefined && options.fieldQueries !== null && options.fieldQueries !== '') {
     fqParts.push(options.fieldQueries)
   }
+  const tagsFilter = buildTagsFilter(options?.tags)
+  if (tagsFilter != null) fqParts.push(tagsFilter)
   const fieldQueries = andOr(fqParts, 'AND')
 
   const params: SolrQuery = {
