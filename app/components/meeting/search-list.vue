@@ -151,7 +151,7 @@ function groupByMonth (items: Meeting[]): MonthGroup[] {
   const groups = new Map<string, Meeting[]>()
   for (const meeting of items) {
     const date = new Date(meeting.startOn)
-    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+    const key = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`
     if (!groups.has(key)) groups.set(key, [])
     groups.get(key)!.push(meeting)
   }
@@ -160,7 +160,7 @@ function groupByMonth (items: Meeting[]): MonthGroup[] {
     .map(([, meetings]) => {
       const date = new Date(meetings[0]!.startOn)
       return {
-        label: date.toLocaleDateString(locale.value, { year: 'numeric', month: 'long' }),
+        label: date.toLocaleDateString(locale.value, { year: 'numeric', month: 'long', timeZone: 'UTC' }),
         meetings
       }
     })
