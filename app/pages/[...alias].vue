@@ -93,6 +93,48 @@ import type { Breadcrumb, Menu } from '~~/types/menu'
 import useContentApi from '~~/app/composables/api/use-content-api'
 import useMenuApi from '~~/app/composables/api/use-menu-api'
 
+function openAccordionFromHash (): void {
+  const hash = window.location.hash.slice(1)
+  if (!hash) return
+
+  const target = document.getElementById(hash)
+  if (!target) return
+
+  const button = target.querySelector<HTMLButtonElement>('.accordion-button')
+  if (!button) return
+
+  const panelId = button.getAttribute('aria-controls')
+  if (!panelId) return
+
+  const panel = document.getElementById(panelId)
+  if (!panel) return
+
+  // Close all other open accordions in the same accordion container
+  const accordion = target.closest('.accordion')
+  if (accordion) {
+    accordion.querySelectorAll<HTMLButtonElement>('.accordion-button:not(.collapsed)').forEach((btn) => {
+      btn.classList.add('collapsed')
+      btn.setAttribute('aria-expanded', 'false')
+    })
+    accordion.querySelectorAll<HTMLElement>('.accordion-collapse.show').forEach((pane) => {
+      pane.classList.remove('show')
+    })
+  }
+
+  button.classList.remove('collapsed')
+  button.setAttribute('aria-expanded', 'true')
+  panel.classList.add('show')
+}
+
+onMounted(() => {
+  nextTick(openAccordionFromHash)
+  window.addEventListener('hashchange', openAccordionFromHash)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', openAccordionFromHash)
+})
+
 const route = useRoute()
 
 const { content: page, error } = await useContentApi(route.path)

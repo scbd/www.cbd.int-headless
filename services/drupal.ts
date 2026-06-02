@@ -585,6 +585,13 @@ function contentNormalizer (value: string): string {
   value = value.replace(/class="accordion-panel"/g, 'class="accordion-collapse collapse"')
   value = value.replace(/<div([^>]*class="accordion-collapse collapse"[^>]*) hidden/g, '<div$1')
 
+  // Add id to faqitem div based on letter prefix for anchor navigation (e.g. "A. Title" → id="a")
+  // Must run before faqitem→accordion-item transform. Block-level target avoids inline-span scroll offset issues.
+  value = value.replace(
+    /<div class="faqitem">(<div[^>]*><button[^>]*><span class="accordion-title"><span>([A-Z])\.)/g,
+    (_match, rest: string, letter: string) => `<div class="faqitem" id="${letter.toLowerCase()}">${rest}`
+  )
+
   // Transform faqitem → accordion-item
   value = value.replace(/class="faqitem"/g, 'class="accordion-item"')
 
