@@ -103,27 +103,16 @@ function openAccordionFromHash (): void {
   const button = target.querySelector<HTMLButtonElement>('.accordion-button')
   if (!button) return
 
-  const panelId = button.getAttribute('aria-controls')
-  if (!panelId) return
-
-  const panel = document.getElementById(panelId)
-  if (!panel) return
-
-  // Close all other open accordions in the same accordion container
   const accordion = target.closest('.accordion')
   if (accordion) {
     accordion.querySelectorAll<HTMLButtonElement>('.accordion-button:not(.collapsed)').forEach((btn) => {
-      btn.classList.add('collapsed')
-      btn.setAttribute('aria-expanded', 'false')
-    })
-    accordion.querySelectorAll<HTMLElement>('.accordion-collapse.show').forEach((pane) => {
-      pane.classList.remove('show')
+      if (btn !== button) btn.click()
     })
   }
 
-  button.classList.remove('collapsed')
-  button.setAttribute('aria-expanded', 'true')
-  panel.classList.add('show')
+  if (button.classList.contains('collapsed')) {
+    button.click()
+  }
 }
 
 onMounted(() => {
@@ -133,6 +122,11 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('hashchange', openAccordionFromHash)
+})
+
+watch(() => route.fullPath, async () => {
+   await nextTick()
+   openAccordionFromHash()
 })
 
 const route = useRoute()

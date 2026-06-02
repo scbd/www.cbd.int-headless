@@ -25,7 +25,7 @@
 
 html {
   font-size: 16px;
-  scroll-padding-top: 8.125rem;
+  scroll-padding-top: var(--cus-navigation-height, 8.125rem);
 }
 
 body {
