@@ -92,44 +92,32 @@
 import type { Breadcrumb, Menu } from '~~/types/menu'
 import useContentApi from '~~/app/composables/api/use-content-api'
 import useMenuApi from '~~/app/composables/api/use-menu-api'
-
-function openAccordionFromHash (): void {
-  const hash = window.location.hash.slice(1)
-  if (!hash) return
-
-  const target = document.getElementById(hash)
-  if (!target) return
-
-  const button = target.querySelector<HTMLButtonElement>('.accordion-button')
-  if (!button) return
-
-  const accordion = target.closest('.accordion')
-  if (accordion) {
-    accordion.querySelectorAll<HTMLButtonElement>('.accordion-button:not(.collapsed)').forEach((btn) => {
-      if (btn !== button) btn.click()
-    })
-  }
-
-  if (button.classList.contains('collapsed')) {
-    button.click()
-  }
-}
-
-onMounted(() => {
-  nextTick(openAccordionFromHash)
-  window.addEventListener('hashchange', openAccordionFromHash)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('hashchange', openAccordionFromHash)
-})
-
-watch(() => route.fullPath, async () => {
-   await nextTick()
-   openAccordionFromHash()
-})
+import { Collapse } from 'bootstrap'
 
 const route = useRoute()
+
+function openAccordionFromHash (hash: string): void {
+  const id = hash.startsWith('#') ? hash.slice(1) : hash
+  if (!id) return
+
+  const target = document.getElementById(id)
+  if (!target) return
+
+  const collapseEl = target.querySelector<HTMLElement>('.accordion-collapse')
+  if (!collapseEl) return
+
+  const accordion = target.closest('.accordion')
+  accordion?.querySelectorAll<HTMLElement>('.accordion-collapse.show').forEach((el) => {
+    if (el !== collapseEl) Collapse.getInstance(el)?.hide()
+  })
+
+  Collapse.getOrCreateInstance(collapseEl, { toggle: false }).show()
+}
+
+watch(() => route.hash, async (hash) => {
+  await nextTick()
+  openAccordionFromHash(hash)
+}, { immediate: true })
 
 const { content: page, error } = await useContentApi(route.path)
 
