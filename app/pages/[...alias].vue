@@ -92,11 +92,11 @@
 import type { Breadcrumb, Menu } from '~~/types/menu'
 import useContentApi from '~~/app/composables/api/use-content-api'
 import useMenuApi from '~~/app/composables/api/use-menu-api'
-import { Collapse } from 'bootstrap'
-
 const route = useRoute()
 
-function openAccordionFromHash (hash: string): void {
+async function openAccordionFromHash (hash: string): Promise<void> {
+  if (!import.meta.client) return
+
   const id = hash.startsWith('#') ? hash.slice(1) : hash
   if (!id) return
 
@@ -105,6 +105,8 @@ function openAccordionFromHash (hash: string): void {
 
   const collapseEl = target.querySelector<HTMLElement>('.accordion-collapse')
   if (!collapseEl) return
+
+  const { Collapse } = await import('bootstrap')
 
   const accordion = target.closest('.accordion')
   accordion?.querySelectorAll<HTMLElement>('.accordion-collapse.show').forEach((el) => {
