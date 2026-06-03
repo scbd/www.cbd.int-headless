@@ -56,7 +56,7 @@
           <status v-if="error" :error="error" />
 
           <template v-else>
-            <section
+            <section ref="contentSection"
               v-dompurify-html="page?.body ?? ''"
               class="rendered-content"
               ></section>
@@ -94,36 +94,29 @@ import useContentApi from '~~/app/composables/api/use-content-api'
 import useMenuApi from '~~/app/composables/api/use-menu-api'
 const route = useRoute()
 
+const contentSection = ref<HTMLElement | null>(null)
+
 async function openAccordionFromHash (hash: string): Promise<void> {
   if (!import.meta.client) return
 
   const id = hash.startsWith('#') ? hash.slice(1) : hash
   if (!id) return
 
-  const target = document.getElementById(id)
-  if (!target) return
+  const el = contentSection.value?.querySelector<HTMLElement>(`#${id}`)
+  if (!el) return
 
-  const collapseEl = target.querySelector<HTMLElement>('.accordion-collapse')
+  const collapseEl = el.classList.contains('accordion-collapse')
+    ? el
+    : el.querySelector<HTMLElement>('.accordion-collapse')
   if (!collapseEl) return
 
   const { Collapse } = await import('bootstrap')
-
-  const accordion = target.closest('.accordion')
-  accordion?.querySelectorAll<HTMLElement>('.accordion-collapse.show').forEach((el) => {
-    if (el !== collapseEl) Collapse.getInstance(el)?.hide()
-  })
-
   Collapse.getOrCreateInstance(collapseEl, { toggle: false }).show()
 }
 
 onMounted(async () => {
   await nextTick()
   openAccordionFromHash(route.hash)
-})
-
-watch(() => route.hash, async (hash) => {
-  await nextTick()
-  openAccordionFromHash(hash)
 })
 
 const { content: page, error } = await useContentApi(route.path)
