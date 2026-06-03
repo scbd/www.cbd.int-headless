@@ -116,10 +116,15 @@ async function openAccordionFromHash (hash: string): Promise<void> {
   Collapse.getOrCreateInstance(collapseEl, { toggle: false }).show()
 }
 
+onMounted(async () => {
+  await nextTick()
+  openAccordionFromHash(route.hash)
+})
+
 watch(() => route.hash, async (hash) => {
   await nextTick()
   openAccordionFromHash(hash)
-}, { immediate: true })
+})
 
 const { content: page, error } = await useContentApi(route.path)
 
