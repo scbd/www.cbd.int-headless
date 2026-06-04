@@ -96,27 +96,22 @@ const route = useRoute()
 
 const contentSection = ref<HTMLElement | null>(null)
 
-async function openAccordionFromHash (hash: string): Promise<void> {
+async function openAccordionFromHash (): Promise<void> {
   if (!import.meta.client) return
 
-  const id = hash.startsWith('#') ? hash.slice(1) : hash
+  const id = route.hash.startsWith('#') ? route.hash.slice(1) : route.hash
   if (!id) return
 
-  const el = contentSection.value?.querySelector<HTMLElement>(`#${id}`)
+  const el = contentSection.value?.querySelector<HTMLElement>(`#${id} .accordion-collapse`)
   if (!el) return
 
-  const collapseEl = el.classList.contains('accordion-collapse')
-    ? el
-    : el.querySelector<HTMLElement>('.accordion-collapse')
-  if (!collapseEl) return
-
   const { Collapse } = await import('bootstrap')
-  Collapse.getOrCreateInstance(collapseEl, { toggle: false }).show()
+  Collapse.getOrCreateInstance(el, { toggle: false }).show()
 }
 
 onMounted(async () => {
   await nextTick()
-  openAccordionFromHash(route.hash)
+  openAccordionFromHash()
 })
 
 const { content: page, error } = await useContentApi(route.path)
