@@ -38,6 +38,13 @@ async function searchPressReleases (options?: QueryParams & { code?: string }): 
   }
   const tagsFilter = buildTagsFilter(options?.tags)
   if (tagsFilter != null) fqParts.push(tagsFilter)
+
+  if ((options?.startDate != null && options.startDate !== '') || (options?.endDate != null && options.endDate !== '')) {
+    const from = options.startDate ?? '*'
+    const to = options.endDate ?? '*'
+    fqParts.push(`createdDate_dt:[${from} TO ${to}]`)
+  }
+
   const fieldQueries = andOr(fqParts, 'AND')
 
   const params: SolrQuery = {
