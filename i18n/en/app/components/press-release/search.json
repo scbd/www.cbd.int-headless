@@ -3,14 +3,8 @@
     "filterAndSort": "Filter and Sort",
     "titleContains": "Title contains",
     "themes": "Subject Areas:",
-    "anyYear": "Any year",
-    "filter": "Filter",
-    "sort": "Sort",
-    "name": "Name",
-    "date": "Date",
-    "ascending": "Ascending",
-    "descending": "Descending",
+    "startDate": "Start date:",
+    "endDate": "End date:",
     "search": "Search",
-    "title": "Title:",
-    "year": "Year:"
+    "title": "Title:"
 }

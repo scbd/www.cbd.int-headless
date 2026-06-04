@@ -3,14 +3,8 @@
     "filterAndSort": "Filtrar y ordenar",
     "titleContains": "El título contiene",
     "themes": "Áreas temáticas:",
-    "anyYear": "Cualquier año",
-    "filter": "Filtro",
-    "sort": "Ordenar",
-    "name": "Nombre",
-    "date": "Fecha",
-    "ascending": "Ascendente",
-    "descending": "Descendente",
+    "startDate": "Fecha de inicio:",
+    "endDate": "Fecha de fin:",
     "search": "Buscar",
-    "title": "Título:",
-    "year": "Año:"
+    "title": "Título:"
 }
