@@ -80,7 +80,8 @@ const props = defineProps<{
   searchParams?: {
     fieldQueries?: string
     themes?: string[]
-    sort?: string
+    startDate?: string
+    endDate?: string
   }
 }>()
 
@@ -89,9 +90,10 @@ const currentPage = ref(1)
 const queryParams = computed(() => ({
   limit: ITEMS_PER_PAGE,
   skip: (currentPage.value - 1) * ITEMS_PER_PAGE,
-  sort: props.searchParams?.sort,
   tags: props.searchParams?.themes,
-  fieldQueries: props.searchParams?.fieldQueries
+  fieldQueries: props.searchParams?.fieldQueries,
+  startDate: props.searchParams?.startDate,
+  endDate: props.searchParams?.endDate
 }))
 
 const { pressReleases, error } = await usePressReleasesListApi(queryParams)
