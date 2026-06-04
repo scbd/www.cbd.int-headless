@@ -31,17 +31,12 @@
             </label>
 
             <div class="col">
-                <label for="fsThemes" class="w-100">
-                    {{ t('themes') }}
-                  <SearchSelect
-                        ref="subjectSelectRef"
-                        v-model="selectedThemes"
-                        :domain="SUBJECTS_DOMAIN"
-                        input-id="fsThemes"
-                  >
-                    {{ t('themes') }}
-                  </SearchSelect>
-                </label>
+                <SearchSelect
+                    ref="subjectSelectRef"
+                    v-model="selectedThemes"
+                    :domain="SUBJECTS_DOMAIN"
+                    input-id="fsThemes"
+                />
             </div>
 
             <div class="filter-row row">
