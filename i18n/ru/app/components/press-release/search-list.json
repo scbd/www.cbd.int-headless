@@ -1,5 +1,5 @@
 {
     "showingPressReleases": "Показано {startItem}-{endItem} из {total} пресс-релизов",
-    "themes": "Темы",
+    "themes": "Предметные области:",
     "viewPressRelease": "Просмотреть пресс-релиз"
 }
