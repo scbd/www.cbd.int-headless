@@ -36,7 +36,9 @@
                     v-model="selectedThemes"
                     :domain="SUBJECTS_DOMAIN"
                     input-id="fsThemes"
-                />
+                >
+                  {{ t('themes') }}
+                </SearchSelect>
             </div>
 
             <div class="filter-row row">
