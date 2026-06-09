@@ -66,7 +66,7 @@
 <i18n src="~~/i18n/dist/app/components/statement/search.json"></i18n>
 
 <script setup lang="ts">
-import { solrEscape, andOr } from '~~/utils/solr'
+import { andOr, buildTitleFieldQuery } from '~~/utils/solr'
 import type { ActiveFilter } from '~~/types/api/search-result'
 import { useFormatDate } from '~/composables/use-format-date'
 import { SUBJECTS_DOMAIN } from '~~/constants/thesaurus'
@@ -122,7 +122,7 @@ function buildFieldQueries (): string | undefined {
   const parts: string[] = []
 
   if (title.value.trim()) {
-    parts.push(`(title_${locale.value.toUpperCase()}_t:${solrEscape(title.value.trim())} OR title_${locale.value.toUpperCase()}_t:*${solrEscape(title.value.trim())}* OR symbol_s:${solrEscape(title.value.trim())} OR symbol_s:*${solrEscape(title.value.trim())}*)`)
+    parts.push(buildTitleFieldQuery(title.value.trim(), locale.value))
   }
   return parts.length > 0 ? andOr(parts, 'AND') : undefined
 }

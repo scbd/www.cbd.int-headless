@@ -3,14 +3,8 @@
     "filterAndSort": "Filtrer et trier",
     "titleContains": "Le titre contient",
     "themes": "Domaines:",
-    "anyYear": "N'importe quelle année",
-    "filter": "Filtrer",
-    "sort": "Trier",
-    "name": "Nom",
-    "date": "Date",
-    "ascending": "Ascendant",
-    "descending": "Descendant",
+    "startDate": "Date de début:",
+    "endDate": "Date de fin:",
     "search": "Rechercher",
-    "title": "Titre:",
-    "year": "Année:"
+    "title": "Titre:"
 }

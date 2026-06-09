@@ -104,6 +104,16 @@ export function normalizeCode (code: string): string {
   return code.toUpperCase().trim()
 }
 
+export function buildTitleFieldQuery (term: string, locale?: string, extraFields: string[] = []): string {
+  const escaped = solrEscape(term)
+  const parts = [`title_EN_t:${escaped}`, `title_EN_t:*${escaped}*`, `symbol_s:${escaped}`, `symbol_s:*${escaped}*`]
+  for (const field of extraFields) {
+    parts.push(`${field}:${escaped}`, `${field}:*${escaped}*`)
+  }
+  const q = `(${parts.join(' OR ')})`
+  return localizeFields(q, locale) ?? q
+}
+
 export function buildTagsFilter (tags?: string[] | null): string | null {
   if (tags == null || tags.length === 0) return null
   const cleaned = [...new Set(tags.map(t => t.trim()).filter(t => t !== ''))]

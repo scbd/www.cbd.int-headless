@@ -3,14 +3,8 @@
     "filterAndSort": "筛选与排序",
     "titleContains": "标题包含",
     "themes": "学科领域：",
-    "anyYear": "任意年份",
-    "filter": "筛选条件",
-    "sort": "排序",
-    "name": "名称",
-    "date": "日期",
-    "ascending": "升序",
-    "descending": "降序",
+    "startDate": "开始日期：",
+    "endDate": "结束日期：",
     "search": "搜索",
-    "title": "标题：",
-    "year": "年份:"
+    "title": "标题："
 }

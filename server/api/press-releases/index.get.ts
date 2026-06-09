@@ -3,6 +3,7 @@ import { listPressReleases } from '~~/services/press-release'
 import { apiErrorHandler } from '~~/server/utils/api-error-handler'
 
 export default defineEventHandler(async (event) => {
-  const { sort, limit, skip, tags, fieldQueries } = getQuery(event) as QueryParams
-  return await listPressReleases({ sort, limit, skip, tags, fieldQueries }).catch(apiErrorHandler)
+  const { sort, limit, skip, tags: rawTags, fieldQueries, startDate, endDate } = getQuery(event) as QueryParams
+  const tags = rawTags != null ? [rawTags].flat().filter(e => e) : undefined
+  return await listPressReleases({ sort, limit, skip, tags, fieldQueries, startDate, endDate }).catch(apiErrorHandler)
 })
