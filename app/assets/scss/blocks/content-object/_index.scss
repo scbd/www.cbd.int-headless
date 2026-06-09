@@ -7,8 +7,7 @@
   box-shadow: 0 2px var(--bs-secondary-bg);
 
   .row-title {
-    font-size: 1.35rem;
-    line-height: 1.25;
+    font-size: 1.33rem;
     font-weight: 600;
     font-variant-caps: small-caps;
   }
@@ -35,8 +34,6 @@
   display: flex;
   flex-direction: column;
   row-gap: 0.66rem;
-  font-size: 0.75rem;
-  line-height: 1.25;
   box-shadow: 1px 0 var(--bs-secondary-bg);
   overflow: hidden;
   &:first-of-type {
@@ -66,6 +63,7 @@
       display: flex;
       flex-wrap: wrap;
       padding-left: 1rem;
+      font-size: 0.778rem;
       font-weight: bold;
       color: var(--bs-secondary-color);
       box-shadow: 0.3rem 0 inset var(--cbd-content-accent);
@@ -86,28 +84,34 @@
 
   .date {
     align-self: flex-end;
+    font-size: 0.778rem;
     color: var(--bs-secondary-color);
+    .dash {
+      margin: 0 0.25rem;
+    }
     white-space: nowrap;
   }
 
   .title {
-    font-weight: 600;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    font-weight: bold;
     letter-spacing: -0.02rem;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
-    color: var(--bs-secondary-color);
   }
 
   .action-required {
+    font-size: 0.778rem;
     font-weight: bold;
     color: var(--cbd-danger-color);
   }
 
   .subjects,
   .location {
-    // font-size: 0.89rem;
+    font-size: 0.89rem;
     color: var(--bs-secondary-color);
     overflow: hidden;
     display: -webkit-box;

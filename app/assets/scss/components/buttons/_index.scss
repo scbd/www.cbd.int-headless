@@ -186,7 +186,7 @@ $bd-secondary-active: color.scale($bd-secondary, $lightness: -30%);
   --bs-btn-active-color: var(--cbd-content-accent);
   --bs-btn-active-border-color: var(--cbd-content-accent);
 
-  // background-color: var(--bs-btn-bg);
+  background-color: var(--bs-btn-bg);
   background: linear-gradient(
     $bd-secondary 42%,
     color.scale($bd-secondary, $lightness: -9.5%)

@@ -99,7 +99,8 @@
       box-shadow: 0.33rem 0 inset var(--cbd-content-accent);
       .featured-taxonomy {
         display: flex;
-        line-height: 1.25;
+        font-size: 1rem;
+        line-height: 1;
         font-weight: 600;
         .featured-type {
           text-transform: capitalize;
@@ -111,7 +112,9 @@
         }
       }
       .featured-description {
+        font-size: 1.778rem;
         line-height: 1.25;
+        font-weight: 600;
       }
     }
     .featured-buttons {
@@ -152,6 +155,13 @@
       }
       .featured-buttons {
         display: none;
+      }
+    }
+    .featured-item {
+      .featured-information {
+        .featured-description {
+          font-size: 1.167rem;
+        }
       }
     }
   }
