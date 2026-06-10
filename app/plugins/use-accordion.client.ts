@@ -1,7 +1,7 @@
 function collapseSiblings (button: HTMLElement): void {
   const accordion = button.closest('.usa-accordion')
 
-  if (accordion !== null && accordion.getAttribute('aria-multiselectable') !== 'true') {
+  if (accordion != null && accordion.getAttribute('aria-multiselectable') !== 'true') {
     accordion.querySelectorAll<HTMLElement>('.usa-accordion__button[aria-expanded="true"]').forEach(btn => {
       if (btn !== button) {
         btn.setAttribute('aria-expanded', 'false')
@@ -10,57 +10,45 @@ function collapseSiblings (button: HTMLElement): void {
   }
 }
 
-function openAccordionForHash (): boolean {
+function resolveAccordionHash (): void {
   const hash = window.location.hash.slice(1)
-  if (hash === '') return true
+  if (hash === '') return
 
   const target = document.getElementById(hash)
-  if (target == null) return false
+  if (target == null) return
 
   const content = target.closest<HTMLElement>('.usa-accordion__content')
-  if (content == null) return true
+  if (content == null) return
 
   const button = document.querySelector<HTMLElement>(`.usa-accordion__button[aria-controls="${content.id}"]`)
-  if (button == null) return false
+  if (button == null) return
 
   collapseSiblings(button)
   button.setAttribute('aria-expanded', 'true')
 
   // Re-scroll now that the panel is expanded (native anchor scroll ran before it opened).
   target.scrollIntoView()
-  return true
-}
-
-// On a cold load the accordion markup may not be in the DOM yet when this first
-// runs (hydration / async content). Retry across a few frames until the target
-// is found, so the hash anchor opens reliably on refresh.
-function openAccordionForHashWithRetry (attempts = 20): void {
-  if (openAccordionForHash() || attempts <= 0) return
-  requestAnimationFrame(() => openAccordionForHashWithRetry(attempts - 1))
 }
 
 export default defineNuxtPlugin(nuxtApp => {
+  // Defer one frame so the directive-rendered markup is patched before we look for
+  // the target panel.
+  const openForHash = (): void => { requestAnimationFrame(resolveAccordionHash) }
+
   document.addEventListener('click', (event: Event) => {
     const button = (event.target as Element).closest<HTMLElement>('.usa-accordion__button')
     if (button == null) return
 
     const isExpanded = button.getAttribute('aria-expanded') === 'true'
-
     collapseSiblings(button)
     button.setAttribute('aria-expanded', isExpanded ? 'false' : 'true')
   })
 
-  document.addEventListener('click', (event: Event) => {
-    const link = (event.target as Element).closest<HTMLAnchorElement>('a[href*="#"]')
-    if (link == null) return
-
-    // Same-page hash links don't fire hashchange reliably; defer to let the hash update.
-    requestAnimationFrame(() => openAccordionForHashWithRetry())
-  })
-
-  window.addEventListener('hashchange', () => openAccordionForHashWithRetry())
+  // In-app quick links are cross-page (handled by page:finish); same-page anchors live
+  // in CMS body HTML as raw <a href="#x"> and fire native hashchange.
+  window.addEventListener('hashchange', openForHash)
 
   // Run after hydration settles and on every page navigation.
-  nuxtApp.hook('app:suspense:resolve', () => openAccordionForHashWithRetry())
-  nuxtApp.hook('page:finish', () => openAccordionForHashWithRetry())
+  nuxtApp.hook('app:suspense:resolve', openForHash)
+  nuxtApp.hook('page:finish', openForHash)
 })
