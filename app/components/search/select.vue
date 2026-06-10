@@ -8,13 +8,19 @@
             class="form-select"
         >
             <option value="">{{ t('anySubject') }}</option>
-            <option
-                v-for="subject in subjects"
-                :key="subject.identifier"
-                :value="subject.identifier"
+            <optgroup
+              v-for="group in groups"
+              :key="group.identifier"
+              :label="group.label"
             >
-                {{ toLocaleText(subject.title) }}
-            </option>
+              <option
+                v-for="child in group.children"
+                :key="child.identifier"
+                :value="child.identifier"
+              >
+                {{ child.label }}
+              </option>
+            </optgroup>
         </select>
     </label>
 </template>
@@ -23,6 +29,7 @@
 <script setup lang="ts">
 import { useLString } from '~/composables/use-lstring'
 import useSubjectsApi from '~/composables/api/use-subjects'
+import { groupSubjects } from '~~/utils/subjects'
 
 const props = defineProps<{
   modelValue: string[]
@@ -34,9 +41,11 @@ const emit = defineEmits<{
   'update:modelValue': [value: string[]]
 }>()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { toLocaleText } = useLString()
 const { subjects } = await useSubjectsApi(props.domain)
+const groups = computed(() => groupSubjects(subjects.value, locale.value, toLocaleText))
+
 
 function onSelect (event: Event) {
   const select = event.target as HTMLSelectElement

@@ -12,3 +12,9 @@ export interface Subject {
   relatedTerms?: string[]
   nonPreferredTerms?: string[]
 }
+
+export interface SubjectGroup {
+  label: string
+  identifier: string
+  children: Array<{ identifier: string, label: string }>
+}
