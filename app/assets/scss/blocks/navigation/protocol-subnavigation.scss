@@ -90,9 +90,11 @@
     justify-content: flex-start;
     column-gap: 1.5rem;
     row-gap: 0.5rem;
-    width: fit-content;
     max-width: 100%;
-    margin-inline: auto;
+    @media (min-width: 540px) {
+      width: fit-content;
+      margin-inline: auto;
+    }
     &.item-overflow {
       width: auto;
       flex-wrap: wrap;
