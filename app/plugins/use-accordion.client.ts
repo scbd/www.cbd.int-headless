@@ -20,7 +20,7 @@ function resolveAccordionHash (): void {
   const content = target.closest<HTMLElement>('.usa-accordion__content')
   if (content == null) return
 
-  const button = document.querySelector<HTMLElement>(`.usa-accordion__button[aria-controls="${content.id}"]`)
+  const button = document.querySelector<HTMLElement>(`.usa-accordion__button[aria-controls="${CSS.escape(content.id)}"]`)
   if (button == null) return
 
   collapseSiblings(button)
@@ -36,7 +36,9 @@ export default defineNuxtPlugin(nuxtApp => {
   const openForHash = (): void => { requestAnimationFrame(resolveAccordionHash) }
 
   document.addEventListener('click', (event: Event) => {
-    const button = (event.target as Element).closest<HTMLElement>('.usa-accordion__button')
+    if (!(event.target instanceof Element)) return
+
+    const button = event.target.closest<HTMLElement>('.usa-accordion__button')
     if (button == null) return
 
     const isExpanded = button.getAttribute('aria-expanded') === 'true'

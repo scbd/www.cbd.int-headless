@@ -87,16 +87,6 @@
     }
   }
 
-  .usa-accordion__heading:nth-child(4n + 1) {
-    .usa-accordion__button {
-      background-color: var(--bs-accordion-btn-bg);
-    }
-
-    .usa-accordion__button[aria-expanded="true"] {
-      background-color: var(--bs-accordion-active-bg);
-    }
-  }
-
   .usa-accordion__content {
     padding: var(--bs-accordion-body-padding-y) var(--bs-accordion-body-padding-x);
     font-size: 1rem;
