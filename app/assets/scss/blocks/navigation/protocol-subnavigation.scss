@@ -86,9 +86,17 @@
   .subnav-level-3-items {
     margin-top: 0.5rem;
     flex-direction: row;
-    justify-content: space-evenly;
     flex-wrap: wrap;
+    justify-content: flex-start;
+    column-gap: 1.5rem;
+    row-gap: 0.5rem;
+    max-width: 100%;
+    @media (min-width: 540px) {
+      width: fit-content;
+      margin-inline: auto;
+    }
     &.item-overflow {
+      width: auto;
       flex-wrap: wrap;
       .nav-item {
         flex-basis: 12.5%;
