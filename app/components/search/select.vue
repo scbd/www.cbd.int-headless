@@ -44,7 +44,18 @@ const emit = defineEmits<{
 const { t, locale } = useI18n()
 const { toLocaleText } = useLString()
 const { subjects } = await useSubjectsApi(props.domain)
-const groups = computed(() => groupSubjects(subjects.value, locale.value, toLocaleText))
+const groups = computed(() => {
+  const cmp = (a: string, b: string): number => a.localeCompare(b, locale.value)
+  return groupSubjects(subjects.value)
+    .map(group => ({
+      identifier: group.identifier,
+      label: toLocaleText(group.title),
+      children: group.children
+        .map(child => ({ identifier: child.identifier, label: toLocaleText(child.title) }))
+        .sort((a, b) => cmp(a.label, b.label))
+    }))
+    .sort((a, b) => cmp(a.label, b.label))
+})
 
 
 function onSelect (event: Event) {

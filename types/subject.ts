@@ -14,7 +14,7 @@ export interface Subject {
 }
 
 export interface SubjectGroup {
-  label: string
   identifier: string
-  children: Array<{ identifier: string, label: string }>
+  title: LString
+  children: Array<{ identifier: string, title: LString }>
 }
