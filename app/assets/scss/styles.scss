@@ -27,7 +27,7 @@
 html {
   font-size: 18px;
   // Offset anchored sections by 1.5x the header height (header + subnav).
-  scroll-padding-top: calc(var(--cus-navigation-height) * 1.25);
+  scroll-padding-top: calc(var(--cus-navigation-height) * 1.5);
 }
 
 body {
