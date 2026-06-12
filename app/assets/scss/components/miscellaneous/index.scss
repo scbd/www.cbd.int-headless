@@ -4,6 +4,105 @@
   --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
 }
 
+.usa-accordion {
+  // Bootstrap accordion CSS variables are only scoped to .accordion in BS5, not :root
+  --bs-accordion-bg: var(--bs-body-bg);
+  --bs-accordion-border-color: var(--bs-border-color-translucent);
+  --bs-accordion-btn-color: var(--bs-body-color);
+  --bs-accordion-btn-bg: var(--bs-accordion-bg);
+  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23212529' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+  --bs-accordion-btn-icon-transform: rotate(-180deg);
+  --bs-accordion-btn-padding-x: 1.25rem;
+  --bs-accordion-btn-padding-y: 1rem;
+  --bs-accordion-body-padding-x: 1.25rem;
+  --bs-accordion-body-padding-y: 1rem;
+  // CBD theme overrides
+  --bs-accordion-active-bg: var(--cbd-content-accent);
+  --bs-accordion-active-color: var(--cbd-tertiary-body);
+  --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+  overflow: hidden;
+  font-family: inherit;
+  font-size: 1rem;
+  width: 100%;
+  color: inherit;
+  border: 1px solid var(--bs-accordion-border-color);
+  border-radius: 0.375rem;
+
+  .usa-accordion__heading {
+    margin: 0;
+    font-size: 1rem;
+    line-height: normal;
+
+    &:not(:first-child) {
+      border-top: 1px solid var(--bs-accordion-border-color);
+    }
+  }
+
+  .usa-accordion__button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
+    font-size: 1rem;
+    font-weight: normal;
+    color: var(--bs-accordion-btn-color);
+    text-align: left;
+    background-color: var(--bs-accordion-bg);
+    background-image: none;
+    border: 0;
+    overflow-anchor: none;
+    cursor: pointer;
+
+    &::after {
+      flex-shrink: 0;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-left: auto;
+      content: "";
+      background-image: var(--bs-accordion-btn-icon);
+      background-repeat: no-repeat;
+      background-size: 1.25rem;
+    }
+
+    &[aria-expanded="true"] {
+      color: var(--bs-accordion-active-color);
+      background-color: var(--bs-accordion-active-bg);
+
+      &::after {
+        background-image: var(--bs-accordion-btn-active-icon);
+        transform: var(--bs-accordion-btn-icon-transform);
+      }
+    }
+
+    &:hover {
+      color: var(--bs-accordion-btn-color);
+      background-color: var(--bs-accordion-bg);
+      background-image: none;
+      text-decoration: none;
+    }
+
+    &[aria-expanded="true"]:hover {
+      color: var(--bs-accordion-active-color);
+      background-color: var(--bs-accordion-active-bg);
+    }
+  }
+
+  .usa-accordion__content {
+    padding: var(--bs-accordion-body-padding-y) var(--bs-accordion-body-padding-x);
+    font-size: 1rem;
+    font-weight: 400;
+    background-color: var(--bs-accordion-bg);
+
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  .usa-accordion__heading:has([aria-expanded="false"]) + .usa-accordion__content {
+    display: none;
+  }
+}
+
 .badge {
   background-color: var(--bs-primary);
 }

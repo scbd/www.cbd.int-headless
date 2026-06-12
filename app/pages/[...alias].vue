@@ -57,6 +57,7 @@
 
           <template v-else>
             <section
+              ref="renderedContent"
               v-dompurify-html="page?.body ?? ''"
               class="rendered-content"
               ></section>
@@ -94,6 +95,9 @@ import useContentApi from '~~/app/composables/api/use-content-api'
 import useMenuApi from '~~/app/composables/api/use-menu-api'
 
 const route = useRoute()
+
+const renderedContent = useTemplateRef<HTMLElement>('renderedContent')
+useAccordion(renderedContent)
 
 const { content: page, error } = await useContentApi(route.path)
 

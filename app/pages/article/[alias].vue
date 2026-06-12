@@ -7,6 +7,7 @@
       <div class="container-xxl d-flex">
         <article class="cus-article container-fluid d-flex flex-column">
           <section
+            ref="renderedContent"
             v-dompurify-html="article!.body"
             class="rendered-content"
           ></section>
@@ -21,6 +22,9 @@ import { useArticleApi } from '~/composables/api/use-articles-api'
 
 const route = useRoute()
 const { article, error } = await useArticleApi(route.path)
+
+const renderedContent = useTemplateRef<HTMLElement>('renderedContent')
+useAccordion(renderedContent)
 
 definePageMeta({
   layout: 'home',

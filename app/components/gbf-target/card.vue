@@ -16,16 +16,12 @@
     </div>
     <div class="resources"></div>
     <div class="links">
-      <NuxtLink :to="gbfTarget.url">{{ t('quickLinksImportant') }}</NuxtLink>
-      <NuxtLink :to="gbfTarget.url">{{ t('quickLinksExplanation') }}</NuxtLink>
-      <NuxtLink :to="gbfTarget.url">{{
-        t('quickLinksGuidingQuestions')
-      }}</NuxtLink>
-      <NuxtLink :to="gbfTarget.url">{{ t('quickLinksLinks') }}</NuxtLink>
-      <NuxtLink :to="gbfTarget.url">{{
-        t('quickLinksRelevantResources')
-      }}</NuxtLink>
-      <NuxtLink :to="gbfTarget.url">{{ t('quickLinksIndicators') }}</NuxtLink>
+      <NuxtLink :to="`${gbfTarget.url}#a`">{{ t('quickLinksImportant') }}</NuxtLink>
+      <NuxtLink :to="`${gbfTarget.url}#b`">{{ t('quickLinksExplanation') }}</NuxtLink>
+      <NuxtLink :to="`${gbfTarget.url}#c`">{{ t('quickLinksLinks') }}</NuxtLink>
+      <NuxtLink :to="`${gbfTarget.url}#d`">{{ t('quickLinksGuidingQuestions') }}</NuxtLink>
+      <NuxtLink :to="`${gbfTarget.url}#e`">{{ t('quickLinksIndicators') }}</NuxtLink>
+      <NuxtLink :to="`${gbfTarget.url}#f`">{{ t('quickLinksRelevantResources') }}</NuxtLink>
     </div>
     <NuxtLink :to="gbfTarget.url" class="view-target">{{
       t('viewGbfTarget')
