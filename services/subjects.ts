@@ -23,7 +23,9 @@ export async function getSubjects (domain: string): Promise<Subject[]> {
     return response.map((item: ThesaurusQuery): Subject => ({
       identifier: item.identifier,
       title: item.title ?? {},
-      shortTitle: item.shortTitle ?? {}
+      shortTitle: item.shortTitle ?? {},
+      broaderTerms: item.broaderTerms ?? [],
+      narrowerTerms: item.narrowerTerms ?? []
     }))
   })
 }
