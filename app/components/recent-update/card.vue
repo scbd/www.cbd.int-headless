@@ -24,8 +24,10 @@
     </div>
 
     <div class="title">
-      <template v-if="item.category !== 'meeting'">{{ item.code }} &ndash; </template>
-      <NuxtLink :to="item.url">{{ toLocaleText(item.title) }}</NuxtLink>
+      <NuxtLink :to="item.url">
+        <template v-if="item.category !== 'meeting'">{{ item.code }} &ndash; </template>
+        {{ toLocaleText(item.title) }}
+      </NuxtLink>
     </div>
 
     <div v-if="item.category === 'meeting' && (item.city || item.country)" class="location">
