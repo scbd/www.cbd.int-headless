@@ -4,18 +4,20 @@
       {{ toFormatDate(notification.createdOn) }}
     </div>
 
-    <NuxtImg
-      :src="notification?.image?.path"
-      :alt="notification?.image?.alt"
-      class="content-image"
-      loading="lazy"
-      :placeholder="IMAGE_FALLBACK"
-    />
+    <NuxtLink :to="notification.url">
+      <NuxtImg
+        :src="notification?.image?.path"
+        :alt="notification?.image?.alt"
+        class="content-image"
+        loading="lazy"
+        :placeholder="IMAGE_FALLBACK"
+      />
+    </NuxtLink>
 
-    <div class="title"
-      >{{ notification.code }} &ndash;
-      {{ toLocaleText(notification.title) }}</div
-    >
+    <div class="title">
+      <NuxtLink :to="notification.url">{{ notification.code }} &ndash;
+      {{ toLocaleText(notification.title) }}</NuxtLink>
+    </div>
 
     <div v-if="notification.actionOn" class="action-required">
       {{ t('actionRequired') }}: {{ toFormatDate(notification.actionOn) }}

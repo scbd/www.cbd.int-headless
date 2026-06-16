@@ -9,13 +9,15 @@
       </template>
     </div>
 
-    <NuxtImg
-      :src="item?.image?.path"
-      :alt="item?.image?.alt"
-      class="content-image"
-      loading="lazy"
-      :placeholder="IMAGE_FALLBACK"
-    />
+    <NuxtLink :to="item.url">
+      <NuxtImg
+        :src="item?.image?.path"
+        :alt="item?.image?.alt"
+        class="content-image"
+        loading="lazy"
+        :placeholder="IMAGE_FALLBACK"
+      />
+    </NuxtLink>
 
     <div class="category-badge">
       {{ t(item.category) }}
@@ -23,7 +25,7 @@
 
     <div class="title">
       <template v-if="item.category !== 'meeting'">{{ item.code }} &ndash; </template>
-      {{ toLocaleText(item.title) }}
+      <NuxtLink :to="item.url">{{ toLocaleText(item.title) }}</NuxtLink>
     </div>
 
     <div v-if="item.category === 'meeting' && (item.city || item.country)" class="location">
