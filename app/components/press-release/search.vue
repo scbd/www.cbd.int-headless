@@ -2,22 +2,11 @@
     <article class="cus-article container-xxl d-flex flex-column page-component">
         <h1>{{ t('pressReleases')}}</h1>
         <div class="filter-and-sort-wrapper container-fluid">
-            <button
-                class="btn cbd-btn-outline-icon filter-and-sort"
-                type="button"
-                data-bs-toggle="collapse"
-                aria-expanded="true"
-                data-bs-target="#searchForm"
-                aria-controls="searchForm"
-            >
-                {{ t('filterAndSort') }}
-            </button>
-
             <form
                 @submit.prevent="onSearch"
                 action="#"
                 id="searchForm"
-                class="filter-and-sort-form collapse show"
+                class="filter-and-sort-form show"
             >
 
             <label for="fsTitle" class="w-100">
