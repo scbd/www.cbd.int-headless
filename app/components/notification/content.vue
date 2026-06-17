@@ -86,7 +86,8 @@ const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
-const { notifications, error } = await useNotificationsApi(props.code)
-
-const { content } = await useContentApi(`${NOTIFICATIONS}/${props.code}`)
+const [{ notifications }, { content }] = await Promise.all([
+  useNotificationsApi(props.code),
+  useContentApi(`${NOTIFICATIONS}/${props.code}`),
+])
 </script>
