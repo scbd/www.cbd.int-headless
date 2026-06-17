@@ -8,15 +8,17 @@
       </template>
     </div>
 
-    <NuxtImg
-      :src="meeting?.image?.path"
-      :alt="meeting?.image?.alt"
-      class="content-image"
-      loading="lazy"
-      :placeholder="IMAGE_FALLBACK"
-    />
+    <NuxtLink :to="meeting.url">
+      <NuxtImg
+        :src="meeting?.image?.path"
+        :alt="meeting?.image?.alt"
+        class="content-image"
+        loading="lazy"
+        :placeholder="IMAGE_FALLBACK"
+      />
+    </NuxtLink>
 
-    <div class="title">{{ toLocaleText(meeting.title) }}</div>
+    <div class="title"><NuxtLink :to="meeting.url">{{ toLocaleText(meeting.title) }}</NuxtLink></div>
     <div v-if="meeting.city || meeting.country" class="location">
       {{
         `${toLocaleText(meeting.city)}, ${toLocaleText(meeting.country)}`

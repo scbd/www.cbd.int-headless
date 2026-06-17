@@ -4,17 +4,19 @@
       {{ toFormatDate(statement.createdOn) }}
     </div>
 
-    <NuxtImg
-      :src="statement?.image?.path"
-      :alt="statement?.image?.alt"
-      class="content-image"
-      loading="lazy"
-      :placeholder="IMAGE_FALLBACK"
-    />
+    <NuxtLink :to="statement.url">
+      <NuxtImg
+        :src="statement?.image?.path"
+        :alt="statement?.image?.alt"
+        class="content-image"
+        loading="lazy"
+        :placeholder="IMAGE_FALLBACK"
+      />
+    </NuxtLink>
 
-    <div class="title"
-      >{{ statement.code }} - {{ toLocaleText(statement.title) }}</div
-    >
+    <div class="title">
+      <NuxtLink :to="statement.url">{{ statement.code }} - {{ toLocaleText(statement.title) }}</NuxtLink>
+    </div>
 
     <div class="subjects">
       <template v-for="theme of statement.themes">
