@@ -95,21 +95,22 @@ import useContentApi from '~~/app/composables/api/use-content-api'
 import useMenuApi from '~~/app/composables/api/use-menu-api'
 
 const route = useRoute()
+const path = route.path.replace(/\/+$/, '') || '/'
 
 const renderedContent = useTemplateRef<HTMLElement>('renderedContent')
 useAccordion(renderedContent)
 
-const { content: page, error } = await useContentApi(route.path)
+const { content: page, error } = await useContentApi(path)
 
 if (error.value !== undefined && error.value !== null && 'statusCode' in error.value && error.value.statusCode === 404) {
-  showError({ statusCode: 404, data: { url: route.path } })
+  showError({ statusCode: 404, data: { url: path } })
 }
 
 const { menu, error: menuError } =
   page.value?.menu
     ? await useMenuApi(page.value.menu,
       {
-        url: route.path,
+        url: path,
         depth: 1
       }
     )
