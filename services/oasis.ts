@@ -16,9 +16,9 @@ export async function getOasisArticle (category: string, code: string): Promise<
   if (code === null || code === '') throw mandatory('code', 'Code is required.')
 
   const cacheKey = `oasis-${category}:${code}`
-  const article = await cache.getOrFetch(cacheKey, async () => {
+  return await cache.getOrFetch(cacheKey, async () => {
     const item = await api.queryOasisArticle(category, code)
-    if (item == null) return null
+    if (item == null) throw notFound(`Article '${category}/${code}' not found.`)
 
     return {
       _id: item._id,
@@ -26,7 +26,4 @@ export async function getOasisArticle (category: string, code: string): Promise<
       title: item.title
     }
   })
-
-  if (article == null) throw notFound(`Article '${category}/${code}' not found.`)
-  return article
 }

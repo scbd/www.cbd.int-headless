@@ -13,7 +13,9 @@ export default class OasisApi extends ApiBase {
   }
 
   async queryOasisArticle (category: string, code: string): Promise<OasisArticleQuery | null> {
-    const data = await this.fetch(`/api/v2017/articles?q={"adminTags":{"$all":["${encodeURI(category)}","${encodeURI(code)}"]}}&s={"meta.updatedOn":-1}&fo=1`, { method: 'GET' })
+    const q = encodeURIComponent(JSON.stringify({ adminTags: { $all: [category, code] } }))
+    const s = encodeURIComponent(JSON.stringify({ 'meta.updatedOn': -1 }))
+    const data = await this.fetch(`/api/v2017/articles?q=${q}&s=${s}&fo=1`, { method: 'GET' })
     return data ?? null
   }
 }
