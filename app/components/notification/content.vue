@@ -52,14 +52,14 @@
         </div>
         
         <div
-          v-if="oasis?.content"
-          class="description"
-          v-dompurify-html="toLocaleText(oasis.content)"
-        ></div>
-        <div
-          v-else-if="content?.body"
+          v-if="content?.body"
           class="description"
           v-dompurify-html="content.body"
+        ></div>
+        <div
+          v-else-if="oasisContent?.content"
+          class="description"
+          v-dompurify-html="toLocaleText(oasisContent.content)"
         ></div>
         <div v-else>
           <div 
@@ -81,6 +81,7 @@ import useContentApi from '~/composables/api/use-content-api'
 import useOasisApi from '~/composables/api/use-oasis'
 import { useNotificationsApi } from '~/composables/api/use-notifications'
 import { NOTIFICATIONS } from '~~/constants/url-paths'
+import { OASIS_NOTIFICATION } from '~~/constants/properties'
 import convertPlainTextToHtml from '~~/utils/convert-plain-text-to-html'
 
 const props = defineProps<{
@@ -91,9 +92,9 @@ const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
-const [{ notifications }, { content }, { oasis }] = await Promise.all([
+const [{ notifications }, { content }, { oasisContent }] = await Promise.all([
   useNotificationsApi(props.code),
   useContentApi(`${NOTIFICATIONS}/${props.code}`),
-  useOasisApi('notification', props.code),
+  useOasisApi([OASIS_NOTIFICATION, props.code]),
 ])
 </script>

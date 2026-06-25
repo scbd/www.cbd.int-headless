@@ -1,8 +1,9 @@
 import type { OasisArticleQuery } from '~~/types/api/oasis'
 import { OASIS } from '~~/constants/api-paths'
 
-export default async function useOasisApi (category: string, code: string): Promise<{ oasis: Ref<OasisArticleQuery | undefined>, error: Ref<Error | undefined> }> {
-  const { data: oasis, error } = await useFetch<OasisArticleQuery>(`${OASIS}/${encodeURIComponent(category)}/${encodeURIComponent(code)}`)
+export default async function useOasisApi (adminTags: string[]): Promise<{ oasisContent: Ref<OasisArticleQuery | undefined>, error: Ref<Error | undefined> }> {
+  const path = adminTags.map(encodeURIComponent).join('/')
+  const { data: oasisContent, error } = await useFetch<OasisArticleQuery>(`${OASIS}/${path}`)
 
-  return { oasis, error }
+  return { oasisContent, error }
 }

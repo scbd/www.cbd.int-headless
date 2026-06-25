@@ -12,10 +12,13 @@ export default class OasisApi extends ApiBase {
     })
   }
 
-  async queryOasisArticle (category: string, code: string): Promise<OasisArticleQuery | null> {
-    const q = encodeURIComponent(JSON.stringify({ adminTags: { $all: [category, code] } }))
-    const s = encodeURIComponent(JSON.stringify({ 'meta.updatedOn': -1 }))
-    const data = await this.fetch(`/api/v2017/articles?q=${q}&s=${s}&fo=1`, { method: 'GET' })
-    return data ?? null
+  async queryOasisArticle (adminTags: string[]): Promise<OasisArticleQuery | null> {
+    const ag = encodeURIComponent(JSON.stringify([
+      { $match: { adminTags: { $all: adminTags } } },
+      { $sort: { 'meta.updatedOn': -1 } },
+      { $limit: 1 }
+    ]))
+    const data = await this.fetch(`/api/v2017/articles?ag=${ag}`, { method: 'GET' })
+    return data?.[0] ?? null
   }
 }

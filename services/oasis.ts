@@ -11,14 +11,13 @@ const api = new OasisApi({
 const cache = new Cache({ name: 'oasisCache', expiry: SOLR_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
 cache.startPurgeTimer()
 
-export async function getOasisArticle (category: string, code: string): Promise<OasisArticleQuery> {
-  if (category === null || category === '') throw mandatory('category', 'Category is required.')
-  if (code === null || code === '') throw mandatory('code', 'Code is required.')
+export async function getOasisArticle (adminTags: string[]): Promise<OasisArticleQuery> {
+  if (adminTags.length === 0) throw mandatory('adminTags', 'At least one admin tag is required.')
 
-  const cacheKey = `oasis-${category}:${code}`
+  const cacheKey = `oasis-${adminTags.join(':')}`
   return await cache.getOrFetch(cacheKey, async () => {
-    const item = await api.queryOasisArticle(category, code)
-    if (item == null) throw notFound(`Article '${category}/${code}' not found.`)
+    const item = await api.queryOasisArticle(adminTags)
+    if (item == null) throw notFound(`Article '${adminTags.join('/')}' not found.`)
 
     return {
       _id: item._id,
