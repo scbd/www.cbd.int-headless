@@ -1,9 +1,13 @@
 import { mandatory, notFound } from 'api-client/api-error'
 import SolrIndexApi from '~~/api/solr-index'
 import { solrEscape, toLString, toLStringArray, andOr, normalizeCode, buildTagsFilter } from '~~/utils/solr'
-import { getImage } from '~~/services/drupal'
+import { getImage, getContent } from '~~/services/drupal'
+import { getOasisArticle } from '~~/services/oasis'
 import { Cache } from '~~/utils/cache'
 import { SOLR_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
+import { OASIS_NOTIFICATION } from '~~/constants/properties'
+import { NOTIFICATIONS } from '~~/constants/url-paths'
+import type { LString } from '@scbd/vue-components'
 import type { SolrQuery } from '~~/types/api/solr'
 import type { Notification, Submission } from '~~/types/notification'
 import type { QueryParams } from '~~/types/api/query-params'
@@ -22,8 +26,26 @@ export async function getNotification (code: string): Promise<Notification> {
   const data = await searchNotification({ code: normalizeCode(code) })
 
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Notification '${code}' not found.`)
-  return data.rows[0] as Notification
+  const notification = data.rows[0] as Notification
+  return { ...notification, ...await getNotificationBody(notification) }
 };
+
+// Prefer richer CMS content for the body: Drupal article, then Oasis.
+// Returns HTML when found; otherwise keeps the plain Solr text and flags it
+// so the client renders it the old way (plain-text + `from` signature).
+async function getNotificationBody (notification: Notification): Promise<{ fulltext: LString | string, isHtml: boolean }> {
+  try {
+    const content = await getContent(`${NOTIFICATIONS}/${notification.code}`)
+    if (content.body != null && content.body !== '') return { fulltext: content.body, isHtml: true }
+  } catch { /* no Drupal article: fall through to Oasis */ }
+
+  try {
+    const oasis = await getOasisArticle([OASIS_NOTIFICATION, notification.code])
+    if (oasis.content != null) return { fulltext: oasis.content, isHtml: true }
+  } catch { /* no Oasis article: fall through to Solr */ }
+
+  return { fulltext: notification.fulltext, isHtml: false }
+}
 
 export async function listNotifications (options: QueryParams): Promise<SearchResult<Notification>> {
   return await searchNotification(options)
