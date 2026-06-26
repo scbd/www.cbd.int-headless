@@ -152,12 +152,20 @@ async function getNotificationBody (notification: Notification): Promise<{ fullt
   try {
     const content = await getContent(`${NOTIFICATIONS}/${notification.code}`)
     if (content.body != null && content.body !== '') return { fulltext: content.body, isHtml: true }
-  } catch { /* no Drupal article: fall through to Oasis */ }
+  } catch (err) {
+    /* no Drupal article: fall through to Oasis */
+    const statusCode = (err as any)?.statusCode
+    if (statusCode !== 404) throw err
+  }
 
   try {
     const oasis = await getOasisArticle([OASIS_NOTIFICATION, notification.code])
     if (oasis.content != null) return { fulltext: oasis.content, isHtml: true }
-  } catch { /* no Oasis article: fall through to Solr */ }
+  } catch (err) {
+    /* no Oasis article: fall through to Solr */
+    const statusCode = (err as any)?.statusCode
+    if (statusCode !== 404) throw err
+  }
 
   return { fulltext: notification.fulltext, isHtml: false }
 }

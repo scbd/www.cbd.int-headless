@@ -15,7 +15,7 @@ export default class OasisApi extends ApiBase {
   async queryOasisArticle (adminTags: string[]): Promise<OasisArticleQuery | null> {
     const ag = encodeURIComponent(JSON.stringify([
       { $match: { adminTags: { $all: adminTags } } },
-      { $sort: { 'meta.updatedOn': -1 } },
+      { $sort: { 'meta.modifiedOn': -1 } },
       { $limit: 1 }
     ]))
     const data = await this.fetch(`/api/v2017/articles?ag=${ag}`, { method: 'GET' })
