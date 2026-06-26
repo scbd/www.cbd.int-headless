@@ -28,23 +28,6 @@ export async function getNotification (code: string): Promise<Notification> {
   if (data.total === 0 || data.rows[0] === null) throw notFound(`Notification '${code}' not found.`)
   const notification = data.rows[0] as Notification
   return { ...notification, ...await getNotificationBody(notification) }
-};
-
-// Prefer richer CMS content for the body: Drupal article, then Oasis.
-// Returns HTML when found; otherwise keeps the plain Solr text and flags it
-// so the client renders it the old way (plain-text + `from` signature).
-async function getNotificationBody (notification: Notification): Promise<{ fulltext: LString | string, isHtml: boolean }> {
-  try {
-    const content = await getContent(`${NOTIFICATIONS}/${notification.code}`)
-    if (content.body != null && content.body !== '') return { fulltext: content.body, isHtml: true }
-  } catch { /* no Drupal article: fall through to Oasis */ }
-
-  try {
-    const oasis = await getOasisArticle([OASIS_NOTIFICATION, notification.code])
-    if (oasis.content != null) return { fulltext: oasis.content, isHtml: true }
-  } catch { /* no Oasis article: fall through to Solr */ }
-
-  return { fulltext: notification.fulltext, isHtml: false }
 }
 
 export async function listNotifications (options: QueryParams): Promise<SearchResult<Notification>> {
@@ -160,4 +143,21 @@ async function searchSubmission (options?: QueryParams & { code?: string }): Pro
 
     return { total: response.numFound, rows: submissionList }
   })
+}
+
+// Prefer richer CMS content for the body: Drupal article, then Oasis.
+// Returns HTML when found; otherwise keeps the plain Solr text and flags it
+// so the client renders it the old way (plain-text + `from` signature).
+async function getNotificationBody (notification: Notification): Promise<{ fulltext: LString | string, isHtml: boolean }> {
+  try {
+    const content = await getContent(`${NOTIFICATIONS}/${notification.code}`)
+    if (content.body != null && content.body !== '') return { fulltext: content.body, isHtml: true }
+  } catch { /* no Drupal article: fall through to Oasis */ }
+
+  try {
+    const oasis = await getOasisArticle([OASIS_NOTIFICATION, notification.code])
+    if (oasis.content != null) return { fulltext: oasis.content, isHtml: true }
+  } catch { /* no Oasis article: fall through to Solr */ }
+
+  return { fulltext: notification.fulltext, isHtml: false }
 }
