@@ -25,15 +25,6 @@
             :key="notification.id"
             class="search-item content-object"
             >
-            <div class="content-image-wrapper">
-                <NuxtImg
-                :src="notification?.image?.path"
-                :alt="notification?.image?.alt"
-                class="content-image"
-                loading="lazy"
-                :placeholder="IMAGE_FALLBACK"
-                />
-            </div>
             <div class="content-information-wrapper">
                 <div class="information">
                 <div class="date">{{ toFormatDate(notification.createdOn) }}</div>
