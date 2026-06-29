@@ -93,7 +93,6 @@
 
 <script setup lang="ts">
 import useMeetingsListApi from '~/composables/api/use-meetings'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import type { Meeting } from '~~/types/meeting'
 
