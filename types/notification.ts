@@ -17,7 +17,8 @@ export interface Notification {
   actionOn?: Date
   deadlineOn?: Date
   reference: string
-  fulltext: LString
+  fulltext: LString | string
+  isHtml?: boolean
   from: LString
   sender: string
   recipients: string[]

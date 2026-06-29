@@ -52,17 +52,18 @@
         </div>
         
         <div
-          v-if="content?.body"
+          v-if="notification.isHtml"
           class="description"
-          v-dompurify-html="content.body"
+          v-dompurify-html="toLocaleText(notification.fulltext)"
         ></div>
         <div v-else>
-          <div 
+          <div
             class="description"
             v-html="convertPlainTextToHtml(toLocaleText(notification.fulltext))"
           ></div>
           <div class="description"><p>{{ toLocaleText(notification.from) }}</p></div>
         </div>
+
 
         <notification-submissions :code="notification.code" />
       </div>
@@ -72,10 +73,7 @@
 <i18n src="~~/i18n/dist/app/components/notification/content.json"></i18n>
 
 <script setup lang="ts">
-import useContentApi from '~/composables/api/use-content-api'
 import { useNotificationsApi } from '~/composables/api/use-notifications'
-import { NOTIFICATIONS } from '~~/constants/url-paths'
-
 import convertPlainTextToHtml from '~~/utils/convert-plain-text-to-html'
 
 const props = defineProps<{
@@ -86,8 +84,5 @@ const { t } = useI18n()
 const { toLocaleText } = useLString()
 const { toFormatDate } = useFormatDate()
 
-const [{ notifications }, { content }] = await Promise.all([
-  useNotificationsApi(props.code),
-  useContentApi(`${NOTIFICATIONS}/${props.code}`),
-])
+const { notifications } = await useNotificationsApi(props.code)
 </script>
