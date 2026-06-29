@@ -41,7 +41,6 @@
 
 <script setup lang="ts">
 import useStatementsApi from '~/composables/api/use-statements'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 
 const { t } = useI18n()

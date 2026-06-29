@@ -95,7 +95,6 @@
 
 <script setup lang="ts">
 import useNotificationsListApi from '~/composables/api/use-notifications'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { truncate } from 'lodash-es'
 

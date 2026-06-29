@@ -60,7 +60,6 @@
 
 <script setup lang="ts">
 import usePressReleasesListApi from '~/composables/api/use-press-releases'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 
 const { t } = useI18n()
