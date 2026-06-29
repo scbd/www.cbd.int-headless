@@ -11,10 +11,6 @@
 
       <div class="search-results-items">
         <div v-for="statement in statements.rows" :key="statement.id" class="search-item content-object">
-          <div class="content-image-wrapper">
-            <NuxtImg :src="statement?.image?.path" :alt="statement?.image?.alt"
-              class="content-image" loading="lazy" :placeholder="IMAGE_FALLBACK" />
-          </div>
           <div class="content-information-wrapper">
             <div class="information">
               <div class="date">{{ toFormatDate(statement.createdOn) }}</div>
@@ -45,7 +41,6 @@
 
 <script setup lang="ts">
 import useStatementsApi from '~/composables/api/use-statements'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 
 const { t } = useI18n()

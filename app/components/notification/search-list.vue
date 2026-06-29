@@ -25,15 +25,6 @@
             :key="notification.id"
             class="search-item content-object"
             >
-            <div class="content-image-wrapper">
-                <NuxtImg
-                :src="notification?.image?.path"
-                :alt="notification?.image?.alt"
-                class="content-image"
-                loading="lazy"
-                :placeholder="IMAGE_FALLBACK"
-                />
-            </div>
             <div class="content-information-wrapper">
                 <div class="information">
                 <div class="date">{{ toFormatDate(notification.createdOn) }}</div>
@@ -104,7 +95,6 @@
 
 <script setup lang="ts">
 import useNotificationsListApi from '~/composables/api/use-notifications'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import { truncate } from 'lodash-es'
 

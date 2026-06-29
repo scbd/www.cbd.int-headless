@@ -21,10 +21,6 @@
           <h3>{{ group.label }}</h3>
           <div class="search-results-items">
             <div v-for="meeting in group.meetings" :key="meeting.id" class="search-item content-object">
-              <div class="content-image-wrapper">
-                <NuxtImg :src="meeting?.image?.path" :alt="meeting?.image?.alt"
-                  class="content-image" loading="lazy" :placeholder="IMAGE_FALLBACK" />
-              </div>
               <div class="content-information-wrapper">
                 <div class="information">
                   <div class="date">{{ toFormatDate(meeting.startOn) }} - {{ toFormatDate(meeting.endOn) }}</div>
@@ -58,10 +54,6 @@
           <h3>{{ group.label }}</h3>
           <div class="search-results-items">
             <div v-for="meeting in group.meetings" :key="meeting.id" class="search-item content-object">
-              <div class="content-image-wrapper">
-                <NuxtImg :src="meeting?.image?.path" :alt="meeting?.image?.alt"
-                  class="content-image" loading="lazy" :placeholder="IMAGE_FALLBACK" />
-              </div>
               <div class="content-information-wrapper">
                 <div class="information">
                   <div class="date">{{ toFormatDate(meeting.startOn) }} - {{ toFormatDate(meeting.endOn) }}</div>
@@ -101,7 +93,6 @@
 
 <script setup lang="ts">
 import useMeetingsListApi from '~/composables/api/use-meetings'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 import type { Meeting } from '~~/types/meeting'
 

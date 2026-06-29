@@ -25,33 +25,24 @@
             :key="pressRelease.id"
             class="search-item content-object"
             >
-            <div class="content-image-wrapper">
-                <NuxtImg
-                :src="pressRelease?.image?.path"
-                :alt="pressRelease?.image?.alt"
-                class="content-image"
-                loading="lazy"
-                :placeholder="IMAGE_FALLBACK"
-                />
-            </div>
             <div class="content-information-wrapper">
                 <div class="information">
-                <div class="date">{{ toFormatDate(pressRelease.createdOn) }}</div>
-                <NuxtLink :to="pressRelease.urls?.[0]" class="title">
-                    {{ pressRelease.code }} &ndash; {{ toLocaleText(pressRelease.title) }}
-                </NuxtLink>
-                <div class="themes">
-                    {{ t('themes') }}
-                    <template v-for="(theme, i) of pressRelease.themes" :key="i">
-                    {{ toLocaleText(theme) }}<template v-if="i < pressRelease.themes.length - 1">, </template>
-                    </template>
-                </div>
-                <div class="read-on-wrapper">
-                    <NuxtLink :to="pressRelease.urls?.[0]" class="btn cbd-btn cbd-btn-primary btn cbd-btn-more-content read-on">
-                        {{ t('viewPressRelease') }}
+                    <div class="date">{{ toFormatDate(pressRelease.createdOn) }}</div>
+                    <NuxtLink :to="pressRelease.urls?.[0]" class="title">
+                        {{ pressRelease.code }} &ndash; {{ toLocaleText(pressRelease.title) }}
                     </NuxtLink>
+                    <div class="subjects" v-if="pressRelease.themes?.length">
+                        {{ t('themes') }}
+                        <template v-for="(theme, i) of pressRelease.themes" :key="i">
+                        {{ toLocaleText(theme) }}<template v-if="i < pressRelease.themes.length - 1">, </template>
+                        </template>
+                    </div>
+                    <div class="read-on-wrapper">
+                        <NuxtLink :to="pressRelease.urls?.[0]" class="btn cbd-btn cbd-btn-primary btn cbd-btn-more-content read-on">
+                            {{ t('viewPressRelease') }}
+                        </NuxtLink>
+                    </div>
                 </div>
-            </div>
             </div>
             </div>
         </div>
@@ -69,7 +60,6 @@
 
 <script setup lang="ts">
 import usePressReleasesListApi from '~/composables/api/use-press-releases'
-import { IMAGE_FALLBACK } from '~~/constants/image-paths'
 import { ITEMS_PER_PAGE } from '~~/constants/search'
 
 const { t } = useI18n()
