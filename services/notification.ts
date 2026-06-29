@@ -159,6 +159,7 @@ async function getNotificationBody (notification: Notification): Promise<{ fullt
   }
 
   try {
+    // Fallback to Oasis Article until they are migrated to Drupal content. Then we will be able to drop this.
     const oasis = await getOasisArticle([OASIS_NOTIFICATION, notification.code])
     if (oasis.content != null) return { fulltext: oasis.content, isHtml: true }
   } catch (err) {
