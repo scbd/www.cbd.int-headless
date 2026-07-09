@@ -208,7 +208,7 @@ without pulling in the full Nuxt layer:
   `${authApiUrl}/app/authorize.html` — the CBD SSO domain, a different origin from
   `www.cbd.int-headless` — and exchanges a `postMessage` handshake against that iframe's own origin
   to ask for `getAuthenticationToken`. The response is `{ authenticationToken, expiration }`, a
-  Bearer-prefixed token string (`utils/scbd-auth-scheme.ts` — `initAuhtIFrame`, `sendMessage`,
+  Bearer-prefixed token string (`utils/scbd-auth-scheme.ts` — `initAuthIFrame`, `sendMessage`,
   `getToken`; `types/scbd-auth-token.ts`). `use-coa-auth.ts` repeats this same iframe-plus-postMessage
   exchange. There is no `document.cookie` read anywhere in this path.
 - **The token is held only in memory**, re-acquired by the handshake above on each load — not stored
@@ -217,7 +217,7 @@ without pulling in the full Nuxt layer:
   either/or: there is no cookie to name, because the mechanism never uses one.
 - **Roles are read from a whoami JSON response, not decoded from the token.** After the handshake
   resolves a token, the layer calls `GET ${authApiUrl}/api/v2013/authentication/user` with header
-  `Authorization: <Bearer token>` (`composables/use-scbd-auth-config.ts`'s `currenUserUrl`;
+  `Authorization: <Bearer token>` (`composables/use-scbd-auth-config.ts`'s `currentUserUrl`;
   `utils/scbd-auth-scheme.ts`'s `getUser`) and gets back an `AuthUser` object whose `roles: string[]`
   field is read directly (`types/scbd-auth-user.ts`). There is no claim path to name (e.g. no
   `payload.roles` vs. `payload.realm_access.roles` question) because there is no JWT decode step —

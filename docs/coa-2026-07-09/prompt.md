@@ -53,11 +53,9 @@ index); nothing else:
    Model the example's *logical* approach (rival seamings, independence test, trade-offs) —
    do NOT fabricate LOC counts or file paths for code that does not exist yet; cite real
    existing files where relevant.
-5. **ADRs / AADRs** (skills: `docs-adrs` for human-ratified decisions, `docs-aadrs` for
-   agent-made decisions under the Question protocol) — in the repo root docs tree
-   (`/Users/randyhoulahan/projects/@COA/www.cbd.int-headless/docs/adr/` and `docs/aadr/`),
-   NOT in `coa-2026-07-09/`. Neither directory exists yet — initialize each practice on
-   first use (skill baselines, sequential numbering from 0001).
+5. **ADRs** (skill: `docs-adrs` for architecturally-significant decisions) — in the repo
+   root docs tree (`docs/adr/`), NOT in `coa-2026-07-09/`. The directory does not exist yet —
+   initialize the practice on first use (skill baseline, sequential numbering from 0001).
 
 No implementation plans and no source code in this run.
 
@@ -115,7 +113,7 @@ No implementation plans and no source code in this run.
    `prd.md`, each with a one-line reason. The prototype PRD's own flagged defects and
    "the rebuild must decide" items are NOT Question-protocol forks: resolve each with the
    most defensible call and record the choice in one line in the relevant spoke PRD,
-   reserving AADRs for choices that change approved scope.
+   reserving ADRs for choices that change approved scope.
 10. Never use "draft" as a workflow state name — the state is **unpublished**. (This is
     about state naming only; the `calendar-of-activities-draft-1/2` reference folder names
     are fine.)
@@ -180,7 +178,7 @@ spawn-and-wait).
 | Seam-option critique | `pr-seam-critic` | `agent-seam-critic` |
 | War games (each set) | `ref-war-games` | — |
 | Devil's advocate (each set) | `orchestrator-devils-advocate` (codex/agy/claude critics) | — |
-| ADRs / AADRs | `docs-adrs` / `docs-aadrs` | — |
+| ADRs | `docs-adrs` | — |
 | Prose cleanup before shipping each doc | `ref-humanizer` | — |
 | Tech-debt / deferred items | `docs-debt` (optional) | — |
 
@@ -200,8 +198,8 @@ spawn-and-wait).
 - **Question protocol:** when a genuine fork appears, ask Randy in chat (options +
   recommendation, recommended option first) — never with a blocking question tool, and
   keep working on non-dependent parts meanwhile. If no answer within about 5 minutes, make
-  the most defensible call yourself, record it as an AADR (docs-aadrs skill) in
-  `/Users/randyhoulahan/projects/@COA/www.cbd.int-headless/docs/aadr/`, and continue.
+  the most defensible call yourself, record it as an ADR (docs-adrs skill) in
+  `docs/adr/`, and continue.
   **Hard blockers are exempt from the 5-minute auto-decide:** auth/role naming when gaia
   defines no suitable roles, changes to approved scope or ontology, and a High gate
   finding that survives two rounds — for these, stop and wait for Randy.
@@ -221,7 +219,7 @@ spawn-and-wait).
 ## Verification (run these before declaring done)
 
 1. The deliverables dir contains exactly Deliverables 1–4 plus `prompt.md` and `README.md`
-   (Deliverable 5 — ADRs/AADRs — lives in the repo root `docs/adr/` and `docs/aadr/`).
+   (Deliverable 5 — ADRs — lives in the repo root `docs/adr/`).
 2. `grep -ri "C4Context" <deliverables dir>` returns nothing.
 3. No deliverable uses "draft" as a workflow state (folder names and "draft PR" prose are
    fine).
