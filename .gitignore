@@ -27,3 +27,10 @@ infra/deploy/secrets/
 .env
 .env.*
 !.env.example
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+coverage/
+graphify-out/
