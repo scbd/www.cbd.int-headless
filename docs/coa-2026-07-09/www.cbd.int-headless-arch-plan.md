@@ -174,7 +174,7 @@ or `COA-ADMIN`)?* It gates rendering only. The hard constraints shape the whole 
 
 | Option | What it is | Trade-off |
 |---|---|---|
-| **B — Minimal client-only session composable, verified against `scbd-auth-layer`'s own handshake (Recommended default)** | A small client-only plugin repeats the exact three-step handshake `scbd-auth-layer` itself runs (`utils/scbd-auth-scheme.ts`, `composables/use-scbd-auth-sso.ts` — read directly for this plan): open a hidden iframe at `${authApiUrl}/app/authorize.html`, exchange one `postMessage` for a Bearer token, then call `GET ${authApiUrl}/api/v2013/authentication/user` with that token and read `roles: string[]` straight off the returned JSON body. No cookie is read, no JWT is decoded, and `jwt-decode` plays no part — see [Option B's verified mechanism](#option-bs-verified-mechanism-new) below. | Lightest, zero SSR involvement by construction — no framework-level SSR-inertness question to answer. Cost: re-implements the same three-step handshake as the layer and must track the SSO endpoint shapes it owns, risking drift from strata's login. |
+| **B — Minimal client-only session composable, verified against `scbd-auth-layer`'s own handshake (Recommended default)** | A small client-only plugin repeats the exact three-step handshake `scbd-auth-layer` itself runs (`utils/scbd-auth-scheme.ts`, `composables/use-scbd-auth-sso.ts` — read directly for this plan): open a hidden iframe at `${authApiUrl}/app/authorize.html`, exchange one `postMessage` for a Bearer token, then call `GET ${authApiUrl}/api/v2013/authentication/user` with that token and read `roles: string[]` straight off the returned JSON body. No cookie is read, no JWT is decoded, and `jwt-decode` plays no part — see [Option B's verified mechanism](#option-bs-verified-mechanism-new--resolves-round-2-high-1) below. | Lightest, zero SSR involvement by construction — no framework-level SSR-inertness question to answer. Cost: re-implements the same three-step handshake as the layer and must track the SSO endpoint shapes it owns, risking drift from strata's login. |
 | **A — Reuse `scbd-auth-layer`, consumed client-side only (upgrade path, gated)** | Adopt the same Nuxt auth layer strata uses for the CBD SSO login and token, integrated through one **client-only** composable so no auth code runs during SSR. | One CBD login shared with strata; roles are identical to gaia's by construction; proven layer *in strata*. Cost: Nuxt's `extends` mechanism merges in everything the layer ships — `server/` routes, global `middleware/`, app-level `plugins/` — at the framework level, not opt-in per file. Wrapping the *consumption* of the layer's composable in a client-only call does nothing to stop the layer's own globally-registered middleware/plugins from running during SSR if they were not already written to be SSR-inert. The layer has so far only run inside strata, which is `ssr:false` (a pure SPA) — its authors had no reason to guarantee SSR-inertness, and this plan cites no source confirming they did. |
 
 **Recommendation: Option B is the default.** Reusing `scbd-auth-layer` (Option A) has a real,
@@ -276,7 +276,7 @@ The edit and create controls are plain links built from a small util and runtime
 - **Edit:** `${strataBaseUrl}/calendar-activity/${record.humanLegibleId}?returnUrl=<current calendar
   URL, encoded>` — using the record's `CAL-ACT-YYYY-NNN` identifier.
 - The routes and `returnUrl` follow strata's published contract
-  ([strata → entry-point URL contract](strata-arch-plan.md#the-entry-point-url-contract-published-new)).
+  ([strata → entry-point URL contract](strata-arch-plan.md#the-entry-point-url-contract-published-new--resolves-forward-finding-2)).
   Changing them is a coordinated two-repo change.
 
 ### Mega-menu entry (from the fast-www plan, DEV-842) **[new]**
@@ -442,7 +442,7 @@ Dockerfile, non-root `nuxtjs` user, healthcheck `/api/healthcheck`.
   varied by user (the load-bearing decision).
 - Ship the minimal client-only session composable (Option B) as the **default**, built by repeating
   `scbd-auth-layer`'s own iframe-plus-`postMessage` token handshake and whoami role read — see
-  [Option B's verified mechanism](#option-bs-verified-mechanism-new); adopt the `scbd-auth-layer`
+  [Option B's verified mechanism](#option-bs-verified-mechanism-new--resolves-round-2-high-1); adopt the `scbd-auth-layer`
   (Option A) only after its `middleware/`/`plugins/` files are confirmed SSR-inert, per the
   build-time checklist item — Option A is an upgrade, not the starting design.
 - Drop the `jwt-decode` dependency, or leave it unused: Option B's verified mechanism reads roles

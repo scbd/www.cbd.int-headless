@@ -375,13 +375,13 @@ open" **[resolves round-2 Medium #4]**.
 **How the front end keeps its copy of this manifest current:** the front end cannot call gaia at
 build time and stay hermetic, so it keeps a checked-in snapshot instead, refreshed by a scheduled
 CI job that catches drift automatically — see
-[www § How the front end consumes gaia's manifest](www.cbd.int-headless-arch-plan.md#the-coa-parity-check-new)
+[www § How the front end consumes gaia's manifest](www.cbd.int-headless-arch-plan.md#the-coa-parity-check-front-end-side-new--resolves-forward-finding-6-resolves-hub-d5)
 for that companion workflow; the two sides are one mechanism split across two repos.
 
 ### The *COA read/emit parity CI check **[new — resolves forward finding 6]**
 
 The front end consumes the same manifest in its own CI (design in the
-[www spoke](www.cbd.int-headless-arch-plan.md#the-coa-parity-check-new)): a check asserts every field
+[www spoke](www.cbd.int-headless-arch-plan.md#the-coa-parity-check-front-end-side-new--resolves-forward-finding-6-resolves-hub-d5)): a check asserts every field
 the calendar service *reads* is present in gaia's committed manifest **with the same `solrType`**,
 not just the same name. gaia's CI protects the emit side, www's CI protects the read side; together
 they catch exactly the silent-rename failure of hub Flow 4 — and, since both sides compare the full
@@ -556,8 +556,8 @@ above instead of inline **[as-built logic; relocated this version]**:
   via SQL `SELECT NTF_ID FROM T_NTF WHERE NTF_CD=@code AND NTF_WEB_YN=1`; for each meeting it uses a
   numeric ref directly as `EVT_ID` or resolves an alphanumeric code via
   `SELECT EVT_ID FROM T_EVT WHERE EVT_CD=@code ...`. It then publishes to two AMQ routing keys on
-  `amq.topic`: `sqs.us-east-1.amazonaws.com.264764397830.T_NTF_Events` (payload `{NTF_ID}`) and
-  `sqs.us-east-1.amazonaws.com.264764397830.IndexerQueue_meeting` (payload `{EVT_ID}`). Each
+  `amq.topic`: `sqs.us-east-1.amazonaws.com.<AWS_ACCOUNT_ID>.T_NTF_Events` (payload `{NTF_ID}`) and
+  `sqs.us-east-1.amazonaws.com.<AWS_ACCOUNT_ID>.IndexerQueue_meeting` (payload `{EVT_ID}`). Each
   external lookup is wrapped, so one bad reference logs a warning and degrades one record rather than
   aborting the save. **This version moves the call site from the request into the decoupled worker**
   — the SQL and the two publishes are unchanged, only where they run changes.

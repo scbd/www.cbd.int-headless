@@ -5,7 +5,7 @@
 Draft the production design document set for the Calendar of Activities (COA) as a
 hub-and-spoke system: PRDs, ADRs, DDD docs (CONTEXT.md + CONTEXT-MAP.md), an architectural
 plan per spoke, and a seam-options document per spoke. The guiding mandate is
-`/Users/randyhoulahan/projects/@plans/COA/v2.md` — it supplies the domain framing and the
+`@plans/COA/v2.md` — it supplies the domain framing and the
 Action/Activity ontology; the functional baseline is the prototype PRD plus the Fixed
 decisions below.
 
@@ -18,14 +18,14 @@ The hub (docs home) is `www.cbd.int-headless`. The spokes:
 
 | Spoke | Path | Role |
 |---|---|---|
-| gaia | `/Users/randyhoulahan/projects/@COA/gaia` | API service |
-| strata | `/Users/randyhoulahan/projects/@COA/strata` | Create/edit screen for calendarActivity; future: notifications and meetings |
-| www.cbd.int-headless | `/Users/randyhoulahan/projects/@COA/www.cbd.int-headless` | Front-end search; production implementation of the prototype |
+| gaia | `@COA/gaia` | API service |
+| strata | `@COA/strata` | Create/edit screen for calendarActivity; future: notifications and meetings |
+| www.cbd.int-headless | `@scbd/www.cbd.int-headless` | Front-end search; production implementation of the prototype |
 
 ## Deliverables
 
 All deliverables live in
-`/Users/randyhoulahan/projects/@COA/www.cbd.int-headless/docs/coa-2026-07-09/`.
+`docs/coa-2026-07-09/`.
 This placement deliberately OVERRIDES the default in-repo `docs/` locations in the
 docs-prd, docs-context-map, and docs-architectural-planner skills — one consolidated set
 here, not scattered per repo. Exactly these files (plus this `prompt.md` and a `README.md`
@@ -48,7 +48,7 @@ index); nothing else:
    with `pr-seam-critic` / the `agent-seam-critic` subagent) — `gaia-seam-options.md`,
    `strata-seam-options.md`,
    `www.cbd.int-headless-seam-options.md`. Model each on this example (local cached copy:
-   `/Users/randyhoulahan/projects/@plans/COA/decomp-seams-example.md`; source:
+   `@plans/COA/decomp-seams-example.md`; source:
    <https://raw.githubusercontent.com/scbd/drupal-module-scbd-field-js/ff2e4e76a70fdfd9b0dc45952ae7cab6358bf35f/docs/decomp-seams.md>).
    Model the example's *logical* approach (rival seamings, independence test, trade-offs) —
    do NOT fabricate LOC counts or file paths for code that does not exist yet; cite real
@@ -63,7 +63,7 @@ No implementation plans and no source code in this run.
 
 1. The prototype's features are approved and all transfer to production, plus the edit
    buttons and Outcomes additions below. Prototype:
-   `/Users/randyhoulahan/projects/@COA/calendar-of-activities-and-actions`
+   `@COA/calendar-of-activities-and-actions`
    (functionality: its `docs/prd.md`).
 2. The API service lives in **gaia**. The create/edit form lives in **strata**.
 3. Strata gets only the form — create new, or edit existing. No list page and no menu entry
@@ -118,7 +118,7 @@ No implementation plans and no source code in this run.
     about state naming only; the `calendar-of-activities-draft-1/2` reference folder names
     are fine.)
 11. **Mermaid style:** never the experimental `C4Context` diagram type (the illegible style
-    in `/Users/randyhoulahan/projects/@COA/www.cbd.int-headless/docs/architecture.md`
+    in `docs/architecture.md`
     section "2. System Context (C4 L1)"). Always plain Mermaid `flowchart` (the style used
     in that same doc from section 3 onward).
 12. Every C4 L1 (context) diagram carries a footnote explaining what "C4 L1" means, with
@@ -204,8 +204,8 @@ spawn-and-wait).
   defines no suitable roles, changes to approved scope or ontology, and a High gate
   finding that survives two rounds — for these, stop and wait for Randy.
 - **Off-repo / temporary work:** everything transient goes in
-  `/Users/randyhoulahan/projects/@plans/COA/<spoke>/` for spoke-specific work, or
-  `/Users/randyhoulahan/projects/@plans/COA/` root for cross-cutting work — never in the
+  `@plans/COA/<spoke>/` for spoke-specific work, or
+  `@plans/COA/` root for cross-cutting work — never in the
   product repos.
 
 ## Token economy
@@ -227,13 +227,13 @@ spawn-and-wait).
    every C4 L1 diagram has its footnote.
 5. The hub `prd.md` contains a Deferred register (even if empty).
 6. The adversarial gate passes for all three sets are logged under
-   `/Users/randyhoulahan/projects/@plans/COA/`.
+   `@plans/COA/`.
 
 ## References
 
-- Mandate: `/Users/randyhoulahan/projects/@plans/COA/v2.md`
-- Draft 1: `/Users/randyhoulahan/projects/@COA/www.cbd.int-headless/docs/calendar-of-activities-draft-1/`
-- Draft 2: `/Users/randyhoulahan/projects/@COA/www.cbd.int-headless/docs/calendar-of-activities-draft-2/`
-- Prototype: `/Users/randyhoulahan/projects/@COA/calendar-of-activities-and-actions/`
+- Mandate: `@plans/COA/v2.md`
+- Draft 1: `docs/calendar-of-activities-draft-1/`
+- Draft 2: `docs/calendar-of-activities-draft-2/`
+- Prototype: `@COA/calendar-of-activities-and-actions/`
   (PRD: `docs/prd.md`)
 - Seam-options example: the decomp-seams.md URL under Deliverables item 4.

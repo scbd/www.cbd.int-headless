@@ -167,7 +167,7 @@ gates visibility.
 | `confirmed` / `tentative` / `postponed` / `cancelled` / `completed` | Activity | gaia | Yes (as `statusCOA` / `activityStatus`) | Where the event stands; filterable; a badge on the front end |
 
 The **canonical, server-enforced transition matrix** lives in one place only:
-[gaia → Workflow transitions](gaia-arch-plan.md#workflow-transitions). Strata shows the buttons for
+[gaia → Workflow transitions](gaia-arch-plan.md#workflow-transitions-canonical-server-enforced). Strata shows the buttons for
 the transitions gaia allows and calls gaia's status endpoint; the front end mirrors none of the
 machine because it only ever receives published records.
 
@@ -194,7 +194,7 @@ see exactly where control and data move from one project to the next.
 ### Flow 2 — Edit from the public page (www → strata)
 
 1. A signed-in **admin** loads the calendar page. The front end reads the user's roles from the CBD
-   login **in the browser only** (see [www spoke → Auth integration](www.cbd.int-headless-arch-plan.md#auth-integration-new)).
+   login **in the browser only** (see [www spoke → Auth integration](www.cbd.int-headless-arch-plan.md#auth-integration-new--the-recommended-mechanism)).
 2. Each calendar-activity result they may edit shows an edit button; the page header shows a create
    button. Both are plain links into strata; the edit link carries the record identifier. **Seam
    crossed: www → strata (a URL, no data but the identifier).**
@@ -277,7 +277,7 @@ assumption buried in prose.
 - **Committed `*COA` field manifest (was D5).** A machine-readable manifest, owned by gaia and
   consumed by www's CI, replaces the test-and-convention-only contract. See
   [gaia → the field manifest](gaia-arch-plan.md#a-committed-coa-field-manifest-new--resolves-hub-d5-was-deferred-d5)
-  and [www → manifest CI check](www.cbd.int-headless-arch-plan.md#the-coa-parity-check-new).
+  and [www → manifest CI check](www.cbd.int-headless-arch-plan.md#the-coa-parity-check-front-end-side-new--resolves-forward-finding-6-resolves-hub-d5).
 - **Reference-vocabulary upkeep (was D9).** A mandatory manual workstream, no code — see the
   verification checklist below.
 
