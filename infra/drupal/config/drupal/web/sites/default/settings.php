@@ -42,8 +42,8 @@ $settings['rebuild_access']             = FALSE;
 $settings['skip_permissions_hardening'] = FALSE;
 
 // CSS/JS aggregation is handled by the CDN/reverse proxy — disable Drupal's own preprocessing.
-$config['system.performance']['css']['preprocess'] = FALSE;
-$config['system.performance']['js']['preprocess']  = FALSE;
+$config['system.performance']['css']['preprocess'] = TRUE;
+$config['system.performance']['js']['preprocess']  = TRUE;
 
 // Runtime overrides (DB credentials, Redis, trusted_host_patterns)
 if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
