@@ -30,8 +30,11 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 
 // CBD.int customization
 
-// Multilingual content + large JSON:API responses require more than the 256M default.
-ini_set('memory_limit', '1024M');
+// Web requests are capped at 384M by php_admin_value in php-fpm.d/zz-tuning.conf.
+// CLI (drush) keeps the larger limit for multilingual JSON:API exports and entity updates.
+if (PHP_SAPI === 'cli') {
+  ini_set('memory_limit', '1024M');
+}
 
 // Outside the webroot — mounted via Docker volume (drupal_sync).
 // In production this maps to a dedicated EFS mount point.
