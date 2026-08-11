@@ -42,7 +42,7 @@ server {
     location ^~ /libraries/              { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ~* "^/([a-z]{2}(-[a-z]+)?/)?(?:node|history|contextual|editor)/" { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
 
-    # Phoenix theme assets -> Legacy CMS (via CloudFront) for /meetings & conferenecs
+    # Phoenix theme assets -> Legacy CMS (via CloudFront) for /meetings & conferences
     location ^~ /themes/custom/bootstrap_sass/ { include /etc/nginx/conf.d/snippets/proxy-pass-legacy-cms.conf; }
 
     # For missing routes

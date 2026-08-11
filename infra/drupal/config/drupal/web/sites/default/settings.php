@@ -44,7 +44,7 @@ $settings['config_sync_directory'] = '/var/drupal/sync';
 $settings['rebuild_access']             = FALSE;
 $settings['skip_permissions_hardening'] = FALSE;
 
-// CSS/JS aggregation is handled by the CDN/reverse proxy — disable Drupal's own preprocessing.
+// Enable Drupal CSS/JS preprocessing (aggregation) so generated assets can be cached efficiently by the CDN/reverse proxy.
 $config['system.performance']['css']['preprocess'] = TRUE;
 $config['system.performance']['js']['preprocess']  = TRUE;
 
