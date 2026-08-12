@@ -8,7 +8,7 @@ import type { QueryParams } from '~~/types/api/query-params'
 import type { Menu } from '~~/types/menu'
 import type { Portal } from '~~/types/portal'
 import type { Image } from '~~/types/image'
-import { MENU_CACHE_DURATION_MS, CACHE_MAX_SIZE } from '~~/constants/cache'
+import { MENU_CACHE_DURATION_MS, CACHE_MAX_SIZE, ROUTE_NOT_FOUND_CACHE_DURATION_MS } from '~~/constants/cache'
 import { DEFAULT_IMAGE, DRUPAL_IMAGE_PATH } from '~~/constants/image-paths'
 
 const drupalApi = new DrupalApi({
@@ -16,7 +16,10 @@ const drupalApi = new DrupalApi({
 })
 
 const drupalCache = new Cache({ name: 'drupalCache', expiry: MENU_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
+const drupalRouteNotFoundCache = new Cache({ name: 'drupalRouteNotFound', expiry: ROUTE_NOT_FOUND_CACHE_DURATION_MS, maxSize: CACHE_MAX_SIZE })
+
 drupalCache.startPurgeTimer()
+drupalRouteNotFoundCache.startPurgeTimer()
 
 // Cache structure
 interface MenuCacheEntry {
@@ -50,7 +53,14 @@ const menuCache = new Cache({
 menuCache.startPurgeTimer()
 
 export async function getRoute (url: string): Promise<DrupalRouterResponse> {
-  return await drupalCache.getOrFetch(`route-${url}`, async () => await drupalApi.getRoute(url))
+  if (drupalRouteNotFoundCache.has(url)) throw notFound('Route not found.')
+
+  try {
+    return await drupalCache.getOrFetch(`route-${url}`, async () => await drupalApi.getRoute(url))
+  } catch (error: any) {
+    if (error?.statusCode === 404) drupalRouteNotFoundCache.set(url, true)
+    throw error
+  }
 }
 
 export async function getContent (url: string): Promise<Content | Article> {
