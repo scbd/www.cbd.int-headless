@@ -1,0 +1,81 @@
+# Local development stack — NOT used in production (production = Docker Swarm, see origin/deployment-stacks)
+name: cbd-www
+
+services:
+  router:
+    image: scbd/www-router:local
+    ports:
+      - "80:80"
+    environment:
+      NUXT_HOST: nuxt
+      NUXT_PORT: "3000"
+      DRUPAL_HOST: drupal
+      DRUPAL_PORT: "80"
+      LEGACY_CMS_HOST: archive.cbd.int
+      LEGACY_CMS_PORT: "443"
+      LEGACY_WWW_FALLBACK_URL: https://archive.cbd.int
+      GAIA_DOCS_S3_ENDPOINT: s3.us-east-1.amazonaws.com
+      API_HOST: api.cbd.int
+      API_PORT: "443"
+    depends_on: [nuxt, drupal]
+    restart: unless-stopped
+
+  nuxt:
+    image: scbd/www-nuxt:local
+    ports:
+      - "3000:3000"            # optional, for hitting Nuxt directly
+    environment:
+      NODE_ENV: production
+      NUXT_DRUPAL_BASE_URL: http://drupal      # direct to Drupal, never via router
+      NUXT_API_BASE_URL: https://api.cbd.int
+      NUXT_ORT_URL: https://ort.cbd.int
+      NUXT_PUBLIC_GTAG_ID: ""
+    depends_on: [drupal]
+    restart: unless-stopped
+
+  drupal:
+    image: scbd/www-drupal:local
+    ports:
+      - "8081:80"              # direct Drupal access + admin UI
+    environment:
+      DRUPAL_DATABASE_HOST: mariadb
+      DRUPAL_DATABASE_PORT: "3306"
+      DRUPAL_DATABASE_DB_NAME: www-cms
+      DRUPAL_DATABASE_USERNAME: drupal
+      DRUPAL_DATABASE_PASSWORD: drupal        # dev-only value
+      DRUPAL_HASH_SALT: local-dev-hash-salt-change-me
+      DRUPAL_TRUSTED_HOST: .*
+      DRUPAL_REDIS_HOST: redis
+      DRUPAL_REDIS_PORT: "6379"
+      DRUPAL_REDIS_DB: "0"
+      DRUPAL_REDIS_CACHE_PREFIX: cbd_
+    volumes:
+      - drupal_files:/opt/drupal/web/sites/default/files
+      - drupal_sync:/var/drupal/sync
+    depends_on: [mariadb, redis]
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb:10.6.21-focal
+    ports:
+      - "33061:3306"           # optional, for a local SQL client
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: www-cms
+      MARIADB_USER: drupal
+      MARIADB_PASSWORD: drupal
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+
+  redis:
+    image: redis:8.2.1
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  drupal_files:
+  drupal_sync:
+  db_data:
+  redis_data:
