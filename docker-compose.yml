@@ -27,7 +27,8 @@ services:
       - "3000:3000"            # optional, for hitting Nuxt directly
     environment:
       NODE_ENV: development
-      NUXT_DRUPAL_BASE_URL: ${NUXT_DRUPAL_BASE_URL:?}   # must resolve to Drupal directly, never via router
+      # (inside this container `localhost` is Nuxt itself). Direct to Drupal, never via router.
+      NUXT_DRUPAL_BASE_URL: http://${DRUPAL_HOST:?}:${DRUPAL_PORT:?}
       NUXT_API_BASE_URL: ${NUXT_API_BASE_URL:?}
       NUXT_ORT_URL: ${NUXT_ORT_URL:?}
       NUXT_PUBLIC_GTAG_ID: ${NUXT_PUBLIC_GTAG_ID:?}
