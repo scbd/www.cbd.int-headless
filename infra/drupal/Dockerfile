@@ -107,8 +107,7 @@ RUN composer require -n \
 
 RUN composer update -n
 
-# Classmap + APCu autoloader: removes filesystem probing on every class load.
-RUN composer dump-autoload --optimize --classmap-authoritative --apcu
+RUN composer dump-autoload --optimize
 
 # ---------------------------------------------------------------------------
 # Stage 2: runtime — lean final image with only what's needed at runtime
