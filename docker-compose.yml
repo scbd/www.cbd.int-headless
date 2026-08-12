@@ -1,4 +1,5 @@
 # Local development stack — NOT used in production (production = Docker Swarm, see origin/deployment-stacks)
+# All values come from .env. `${VAR:?}` = fail fast if the variable is missing.
 name: cbd-www
 
 services:
@@ -7,16 +8,16 @@ services:
     ports:
       - "80:80"
     environment:
-      NUXT_HOST: nuxt
-      NUXT_PORT: "3000"
-      DRUPAL_HOST: drupal
-      DRUPAL_PORT: "80"
-      LEGACY_CMS_HOST: archive.cbd.int
-      LEGACY_CMS_PORT: "443"
-      LEGACY_WWW_FALLBACK_URL: https://archive.cbd.int
-      GAIA_DOCS_S3_ENDPOINT: s3.us-east-1.amazonaws.com
-      API_HOST: api.cbd.int
-      API_PORT: "443"
+      NUXT_HOST: ${NUXT_HOST:?}
+      NUXT_PORT: ${NUXT_PORT:?}
+      DRUPAL_HOST: ${DRUPAL_HOST:?}
+      DRUPAL_PORT: ${DRUPAL_PORT:?}
+      LEGACY_CMS_HOST: ${LEGACY_CMS_HOST:?}
+      LEGACY_CMS_PORT: ${LEGACY_CMS_PORT:?}
+      LEGACY_WWW_FALLBACK_URL: ${LEGACY_WWW_FALLBACK_URL:?}
+      GAIA_DOCS_S3_ENDPOINT: ${GAIA_DOCS_S3_ENDPOINT:?}
+      API_HOST: ${API_HOST:?}
+      API_PORT: ${API_PORT:?}
     depends_on: [nuxt, drupal]
     restart: unless-stopped
 
@@ -25,11 +26,11 @@ services:
     ports:
       - "3000:3000"            # optional, for hitting Nuxt directly
     environment:
-      NODE_ENV: production
-      NUXT_DRUPAL_BASE_URL: http://drupal      # direct to Drupal, never via router
-      NUXT_API_BASE_URL: https://api.cbd.int
-      NUXT_ORT_URL: https://ort.cbd.int
-      NUXT_PUBLIC_GTAG_ID: ""
+      NODE_ENV: development
+      NUXT_DRUPAL_BASE_URL: ${NUXT_DRUPAL_BASE_URL:?}   # must resolve to Drupal directly, never via router
+      NUXT_API_BASE_URL: ${NUXT_API_BASE_URL:?}
+      NUXT_ORT_URL: ${NUXT_ORT_URL:?}
+      NUXT_PUBLIC_GTAG_ID: ${NUXT_PUBLIC_GTAG_ID:?}
     depends_on: [drupal]
     restart: unless-stopped
 
@@ -38,17 +39,17 @@ services:
     ports:
       - "8081:80"              # direct Drupal access + admin UI
     environment:
-      DRUPAL_DATABASE_HOST: mariadb
-      DRUPAL_DATABASE_PORT: "3306"
-      DRUPAL_DATABASE_DB_NAME: www-cms
-      DRUPAL_DATABASE_USERNAME: drupal
-      DRUPAL_DATABASE_PASSWORD: drupal        # dev-only value
-      DRUPAL_HASH_SALT: local-dev-hash-salt-change-me
-      DRUPAL_TRUSTED_HOST: .*
-      DRUPAL_REDIS_HOST: redis
-      DRUPAL_REDIS_PORT: "6379"
-      DRUPAL_REDIS_DB: "0"
-      DRUPAL_REDIS_CACHE_PREFIX: cbd_
+      DRUPAL_DATABASE_HOST: ${DRUPAL_DATABASE_HOST:?}
+      DRUPAL_DATABASE_PORT: ${DRUPAL_DATABASE_PORT:?}
+      DRUPAL_DATABASE_DB_NAME: ${DRUPAL_DATABASE_DB_NAME:?}
+      DRUPAL_DATABASE_USERNAME: ${DRUPAL_DATABASE_USERNAME:?}
+      DRUPAL_DATABASE_PASSWORD: ${DRUPAL_DATABASE_PASSWORD:?}
+      DRUPAL_HASH_SALT: ${DRUPAL_HASH_SALT:?}
+      DRUPAL_TRUSTED_HOST: ${DRUPAL_TRUSTED_HOST:?}
+      DRUPAL_REDIS_HOST: ${DRUPAL_REDIS_HOST:?}
+      DRUPAL_REDIS_PORT: ${DRUPAL_REDIS_PORT:?}
+      DRUPAL_REDIS_DB: ${DRUPAL_REDIS_DB:?}
+      DRUPAL_REDIS_CACHE_PREFIX: ${DRUPAL_REDIS_CACHE_PREFIX:?}
     volumes:
       - drupal_files:/opt/drupal/web/sites/default/files
       - drupal_sync:/var/drupal/sync
@@ -60,10 +61,10 @@ services:
     ports:
       - "33061:3306"           # optional, for a local SQL client
     environment:
-      MARIADB_ROOT_PASSWORD: root
-      MARIADB_DATABASE: www-cms
-      MARIADB_USER: drupal
-      MARIADB_PASSWORD: drupal
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:?}
+      MARIADB_USER: ${MARIADB_USER:?}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?}
     volumes:
       - db_data:/var/lib/mysql
     restart: unless-stopped
