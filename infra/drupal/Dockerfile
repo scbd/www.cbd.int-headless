@@ -107,6 +107,8 @@ RUN composer require -n \
 
 RUN composer update -n
 
+RUN composer dump-autoload --optimize
+
 # ---------------------------------------------------------------------------
 # Stage 2: runtime — lean final image with only what's needed at runtime
 # ---------------------------------------------------------------------------
@@ -134,6 +136,21 @@ RUN yes '' | pecl install -f redis \
 RUN printf 'upload_max_filesize = 64M\npost_max_size = 64M\nmax_input_vars = 10000\nmemory_limit = 1024M\n' \
     > /usr/local/etc/php/conf.d/docker-php-custom.ini
 
+# OPcache sized for Drupal core + ~90 contrib modules. The base image's
+# opcache-recommended.ini caps max_accelerated_files at 4000, which this codebase
+# blows past by an order of magnitude.
+RUN printf '%s\n' \
+      'opcache.enable=1' \
+      'opcache.memory_consumption=512' \
+      'opcache.interned_strings_buffer=32' \
+      'opcache.max_accelerated_files=50000' \
+      'opcache.validate_timestamps=0' \
+      'opcache.save_comments=1' \
+      'opcache.max_wasted_percentage=10' \
+      'realpath_cache_size=4096K' \
+      'realpath_cache_ttl=300' \
+    > /usr/local/etc/php/conf.d/zz-opcache.ini
+
 WORKDIR /opt/drupal
 
 # Copy built Drupal (vendor + web) from builder stage
@@ -153,6 +170,21 @@ COPY config/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # PHP-FPM: listen on localhost only — nginx is co-located in the same container
 RUN sed -i 's|^listen = .*|listen = 127.0.0.1:9000|' /usr/local/etc/php-fpm.d/www.conf
+
+# PHP-FPM pool sizing. The base image default is pm.max_children=5, which is far too
+# small for an authenticated admin workload.
+RUN { \
+      echo '[www]'; \
+      echo 'pm = dynamic'; \
+      echo 'pm.max_children = 24'; \
+      echo 'pm.start_servers = 6'; \
+      echo 'pm.min_spare_servers = 4'; \
+      echo 'pm.max_spare_servers = 12'; \
+      echo 'pm.max_requests = 500'; \
+      echo 'pm.status_path = /fpm-status'; \
+      echo 'php_admin_value[memory_limit] = 384M'; \
+    } > /usr/local/etc/php-fpm.d/zz-tuning.conf
+
 
 # Fix permissions
 RUN chown -R www-data:www-data /opt/drupal/web

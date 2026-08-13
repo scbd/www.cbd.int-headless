@@ -1,8 +1,23 @@
-upstream www-nuxt    { server ${NUXT_HOST}:${NUXT_PORT};             }
-upstream drupal      { server ${DRUPAL_HOST}:${DRUPAL_PORT};         }
-upstream legacy-cms  { server ${LEGACY_CMS_HOST}:${LEGACY_CMS_PORT}; }
-upstream gaia-docs   { server ${GAIA_DOCS_S3_ENDPOINT}:443; }
-upstream api         { server ${API_HOST}:${API_PORT}; }
+upstream www-nuxt {
+    server ${NUXT_HOST}:${NUXT_PORT};
+    keepalive 64;
+    keepalive_requests 1000;
+    keepalive_timeout 60s;
+}
+upstream drupal {
+    server ${DRUPAL_HOST}:${DRUPAL_PORT};
+    keepalive 64;
+    keepalive_requests 1000;
+    keepalive_timeout 60s;
+}
+upstream legacy-cms { server ${LEGACY_CMS_HOST}:${LEGACY_CMS_PORT}; keepalive 32; }
+upstream gaia-docs  { server ${GAIA_DOCS_S3_ENDPOINT}:443;          keepalive 32; }
+upstream api        { server ${API_HOST}:${API_PORT};               keepalive 32; }
+
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      '';
+}
 
 server {
     listen 80 default_server;
@@ -24,14 +39,10 @@ server {
     location ^~ /sites/default/files     { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /views/                  { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ^~ /core/                   { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
+    location ^~ /libraries/              { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
     location ~* "^/([a-z]{2}(-[a-z]+)?/)?(?:node|history|contextual|editor)/" { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
 
-    # ===========================================
-    # Specific js libraries used by Drupal
-    # ===========================================
-    location ^~ /autocomplete_deluxe/    { include /etc/nginx/conf.d/snippets/proxy-pass-drupal.conf; }
-
-    # Phoenix theme assets -> Legacy CMS (via CloudFront) for /meetings & conferenecs
+    # Phoenix theme assets -> Legacy CMS (via CloudFront) for /meetings & conferences
     location ^~ /themes/custom/bootstrap_sass/ { include /etc/nginx/conf.d/snippets/proxy-pass-legacy-cms.conf; }
 
     # For missing routes
@@ -117,7 +128,7 @@ server {
     location / {
         include /etc/nginx/conf.d/snippets/proxy-pass-nuxt.conf;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection $connection_upgrade;
         proxy_intercept_errors on;
         error_page 301 = @convert_301_to_302;
         error_page 404 = @legacy_fallback;

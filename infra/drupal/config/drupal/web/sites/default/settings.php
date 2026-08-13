@@ -30,8 +30,11 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 
 // CBD.int customization
 
-// Multilingual content + large JSON:API responses require more than the 256M default.
-ini_set('memory_limit', '1024M');
+// Web requests are capped at 384M by php_admin_value in php-fpm.d/zz-tuning.conf.
+// CLI (drush) keeps the larger limit for multilingual JSON:API exports and entity updates.
+if (PHP_SAPI === 'cli') {
+  ini_set('memory_limit', '1024M');
+}
 
 // Outside the webroot — mounted via Docker volume (drupal_sync).
 // In production this maps to a dedicated EFS mount point.
@@ -41,9 +44,9 @@ $settings['config_sync_directory'] = '/var/drupal/sync';
 $settings['rebuild_access']             = FALSE;
 $settings['skip_permissions_hardening'] = FALSE;
 
-// CSS/JS aggregation is handled by the CDN/reverse proxy — disable Drupal's own preprocessing.
-$config['system.performance']['css']['preprocess'] = FALSE;
-$config['system.performance']['js']['preprocess']  = FALSE;
+// Enable Drupal CSS/JS preprocessing (aggregation) so generated assets can be cached efficiently by the CDN/reverse proxy.
+$config['system.performance']['css']['preprocess'] = TRUE;
+$config['system.performance']['js']['preprocess']  = TRUE;
 
 // Runtime overrides (DB credentials, Redis, trusted_host_patterns)
 if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
