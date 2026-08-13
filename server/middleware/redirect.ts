@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
   if (/^\/notifications(\/|$)/i.test(path)) return // Ignore /notifications path
   if (/^\/search(\/|$)/i.test(path)) return // Ignore /search path
   if (/^\/_/.test(path)) return
+  if (/\.[a-z0-9]{2,5}$/i.test(path)) return
 
   try {
     const route = await getRoute(path)
