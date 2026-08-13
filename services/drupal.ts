@@ -58,7 +58,7 @@ export async function getRoute (url: string): Promise<DrupalRouterResponse> {
   try {
     return await drupalCache.getOrFetch(`route-${url}`, async () => await drupalApi.getRoute(url))
   } catch (error: any) {
-    if (error?.statusCode === 404) drupalRouteNotFoundCache.set(url, true)
+    if (error?.statusCode === 404 || error?.status === 404) drupalRouteNotFoundCache.set(url, true)
     throw error
   }
 }
