@@ -41,6 +41,18 @@ cat > "${SETTINGS_LOCAL}" <<PHP
 
 \$settings['hash_salt'] = '${DRUPAL_HASH_SALT}';
 \$settings['trusted_host_patterns'] = ['${DRUPAL_TRUSTED_HOST:-.*}'];
+
+// Behind Traefik -> www-router -> this container. Without this, Symfony ignores
+// every X-Forwarded-* header: isSecure() is FALSE, all generated URLs and
+// redirects come out as http://, the session cookie loses its Secure flag, and
+// getClientIp() returns the router's container IP.
+\$settings['reverse_proxy'] = TRUE;
+\$settings['reverse_proxy_addresses'] = ['${DRUPAL_REVERSE_PROXY_ADDRESSES}'];
+\$settings['reverse_proxy_trusted_headers'] =
+    \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_FOR
+  | \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_PROTO
+  | \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_PORT
+  | \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_HOST;
 PHP
 
 # Override individual DB fields only when the corresponding env var is set
