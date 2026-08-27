@@ -23,7 +23,7 @@ RUN composer create-project -n "drupal/recommended-project:^10" /tmp/recommended
 COPY config/drupal/composer.json /opt/drupal/composer.json
 RUN rm -f /opt/drupal/composer.lock \
     && rm -rf /opt/drupal/vendor \
-    && composer install -n
+    && composer install --no-dev --optimize-autoloader -n
 
 # Install drush and all contrib modules
 RUN composer require -n "drush/drush:*"
@@ -104,10 +104,6 @@ RUN composer require -n \
     "drupal/workbench:*" \
     "drupal/workbench_access:*" \
     "drupal/workbench_email:*"
-
-RUN composer update -n
-
-RUN composer dump-autoload --optimize
 
 # ---------------------------------------------------------------------------
 # Stage 2: runtime — lean final image with only what's needed at runtime
