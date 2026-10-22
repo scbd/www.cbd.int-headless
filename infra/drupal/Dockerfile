@@ -138,7 +138,6 @@ RUN printf '%s\n' \
       'upload_max_filesize = 8M' \
       'post_max_size = 32M' \
       'max_input_vars = 10000' \
-      'memory_limit = 1024M' \
       'session.upload_progress.enabled = 0' \
       'fatal_error_backtraces = 0' \
     > /usr/local/etc/php/conf.d/docker-php-custom.ini
@@ -189,7 +188,7 @@ RUN { \
       echo 'pm.max_spare_servers = 12'; \
       echo 'pm.max_requests = 500'; \
       echo 'pm.status_path = /fpm-status'; \
-      echo 'php_admin_value[memory_limit] = 384M'; \
+      echo 'php_admin_value[memory_limit] = -1'; \
     } > /usr/local/etc/php-fpm.d/zz-tuning.conf
 
 
