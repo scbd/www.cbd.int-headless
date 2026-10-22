@@ -133,7 +133,13 @@ RUN yes '' | pecl install -f redis \
     && echo "extension=redis.so" > /usr/local/etc/php/conf.d/docker-php-ext-redis.ini
 
 # PHP runtime config
-RUN printf 'upload_max_filesize = 64M\npost_max_size = 64M\nmax_input_vars = 10000\nmemory_limit = 1024M\n' \
+RUN printf '%s\n' \
+      'memory_limit=-1' \
+      'upload_max_filesize = 8M' \
+      'post_max_size = 32M' \
+      'max_input_vars = 10000' \
+      'session.upload_progress.enabled = 0' \
+      'fatal_error_backtraces = 0' \
     > /usr/local/etc/php/conf.d/docker-php-custom.ini
 
 # OPcache sized for Drupal core + ~90 contrib modules. The base image's
@@ -182,7 +188,7 @@ RUN { \
       echo 'pm.max_spare_servers = 12'; \
       echo 'pm.max_requests = 500'; \
       echo 'pm.status_path = /fpm-status'; \
-      echo 'php_admin_value[memory_limit] = 384M'; \
+      echo 'php_admin_value[memory_limit] = -1'; \
     } > /usr/local/etc/php-fpm.d/zz-tuning.conf
 
 
@@ -197,4 +203,5 @@ VOLUME ["/opt/drupal/web/sites/default/files", "/var/drupal/sync"]
 EXPOSE 80
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
