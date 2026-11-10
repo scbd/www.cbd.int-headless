@@ -80,7 +80,7 @@ jobs:
       # Portainer webhooks — non-critical, a failed redeploy never blocks CI.
       - name: Trigger Portainer webhooks
         env:
-          URLS: ${{ github.ref_name == 'master' && secrets.WEBHOOK_URL_MASTER || secrets.WEBHOOK_URL_DEV }}
+          URLS: ${{ secrets[github.ref_name == 'master' && 'WEBHOOK_URL_MASTER' || 'WEBHOOK_URL_DEV'] }}
         run: |
           tr ',' '\n' <<< "$URLS" | while read -r url; do
             if [ -n "$url" ]; then curl -fsS -X POST "$url" || echo "::warning::Portainer webhook failed"; fi
