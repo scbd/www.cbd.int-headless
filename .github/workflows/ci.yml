@@ -4,9 +4,9 @@
 #   DOCKERHUB_USERNAME  - Docker Hub username
 #   DOCKERHUB_TOKEN     - Docker Hub access token
 #
-# Deployment webhooks (repo-level, optional — comma-separated, one per Portainer service):
-#   WEBHOOK_URL_DEV     - Portainer service webhook URL(s) for dev redeploy
-#   WEBHOOK_URL_MASTER  - Portainer service webhook URL(s) for master redeploy
+# Deployment webhooks (repo-level, optional — omit if no deploy target):
+#   WEBHOOK_URL_MASTER  - Portainer service webhook URL for master redeploy
+#   WEBHOOK_URL_DEV     - Portainer service webhook URL for dev redeploy
 
 name: CI
 
@@ -78,10 +78,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Portainer webhooks — non-critical, a failed redeploy never blocks CI.
-      - name: Trigger Portainer webhooks
-        env:
-          URLS: ${{ secrets[github.ref_name == 'master' && 'WEBHOOK_URL_MASTER' || 'WEBHOOK_URL_DEV'] }}
-        run: |
-          tr ',' '\n' <<< "$URLS" | while read -r url; do
-            if [ -n "$url" ]; then curl -fsS -X POST "$url" || echo "::warning::Portainer webhook failed"; fi
-          done
+
+      - name: Deploy to master
+        if: github.ref_name == 'master'
+        continue-on-error: true
+        uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{ secrets.WEBHOOK_URL_MASTER }}
+
+      - name: Deploy to dev
+        if: github.ref_name == 'dev'
+        continue-on-error: true
+        uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{ secrets.WEBHOOK_URL_DEV }}
