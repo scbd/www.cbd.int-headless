@@ -67,8 +67,9 @@ export default defineNuxtConfig({
     '/images/**': {
       headers: { 'cache-control': 'public, max-age=604800' } // 1 week
     },
-    // Cache SSR-rendered pages to avoid concurrent full renders under load
-    '/': { swr: 600 },
+    // ponytail: no swr on '/'. Nitro >= 2.13 refuses to cache responses with Set-Cookie (i18n_redirected),
+    // and a cached render strips Accept-Language/Cookie, which breaks the i18n root-locale redirect.
+    // Pages render per request; their data still comes from the swr-cached /api/** routes below.
     '/api/**': { swr: 600 },
     '/api/menus/**': { swr: 900 }
   },
