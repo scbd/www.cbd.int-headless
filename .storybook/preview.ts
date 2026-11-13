@@ -15,6 +15,7 @@ window.fetch = async (input, init) => {
 
 const preview: Preview = {
   tags: ['autodocs'],
+  parameters: { a11y: { test: 'error' } },
   globalTypes: {
     locale: {
       description: 'Locale',

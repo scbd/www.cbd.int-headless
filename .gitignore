@@ -6,6 +6,10 @@
 .cache
 dist
 storybook-static
+.storybook/test-results
+# Visual baselines are Linux-only (yarn test:visual); never commit native ones
+.storybook/__screenshots__/**/*-darwin.png
+.storybook/__screenshots__/**/*-win32.png
 
 # Node dependencies
 node_modules

@@ -1,4 +1,3 @@
-import type { LString } from '@scbd/vue-components'
 export interface Content {
   id: string
   title: string
@@ -6,7 +5,7 @@ export interface Content {
   createdOn: Date
   updatedOn: Date
   alias: string
-  locale: LString
+  locale: string
   body: string
   summary: string
   menu?: string

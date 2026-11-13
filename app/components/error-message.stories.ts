@@ -3,7 +3,9 @@ import ErrorMessage from './error-message.vue'
 
 const meta = {
   component: ErrorMessage,
-  args: { statusCode: 404, url: '/meetings/unknown-meeting' }
+  args: { statusCode: 404, url: '/meetings/unknown-meeting' },
+  // a11y debt (color-contrast): fix the component, then delete this line
+  parameters: { a11y: { test: 'todo' } }
 } satisfies Meta<typeof ErrorMessage>
 
 export default meta

@@ -7,6 +7,8 @@ const meta = {
   component: NavigationMegaMenu,
   decorators: [() => ({ template: '<header class="cus-navigation"><nav class="navbar navbar-expand-xl d-flex flex-column"><story /></nav></header>' })],
   parameters: {
+    // a11y debt (landmark-unique): fix the component, then delete this line
+    a11y: { test: 'todo' },
     layout: 'fullscreen',
     api: megaMenuApi,
     // Each story mocks the API differently; render them in separate iframes on the docs page (tall enough for an open drawer)

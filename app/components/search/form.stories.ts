@@ -4,7 +4,9 @@ import SearchForm from './form.vue'
 
 const meta = {
   component: SearchForm,
-  args: { onSearch: fn() }
+  args: { onSearch: fn() },
+  // a11y debt (button-name, color-contrast, select-name): fix the component, then delete this line
+  parameters: { a11y: { test: 'todo' } }
 } satisfies Meta<typeof SearchForm>
 
 export default meta

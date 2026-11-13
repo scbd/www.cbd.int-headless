@@ -32,6 +32,32 @@ Locally preview production build:
 yarn preview
 ```
 
+## Storybook
+
+Every component in `app/components` has a colocated `*.stories.ts`. Stories need no backend: data components get
+their `/api/*` responses from `parameters.api`, using the typed fixtures in `.storybook/fixtures`.
+
+```bash
+yarn storybook          # http://localhost:6006
+yarn build-storybook    # static build in storybook-static/
+yarn preview-storybook  # serve the static build at http://127.0.0.1:6007
+```
+
+## Tests
+
+```bash
+yarn test               # every story as a browser test: render, play function, a11y checks
+yarn test:visual        # visual regression against the baselines in .storybook/__screenshots__ (needs Docker)
+yarn test:visual --update-snapshots   # accept visual changes; commit the updated PNGs
+```
+
+Run `yarn playwright install chromium` once before `yarn test`.
+
+- **Accessibility:** violations fail the test. Story files with known violations carry an
+  `a11y: { test: 'todo' }` "a11y debt" line naming the rules; fix the component, then delete that line.
+- **Visual baselines are Linux-only** (fonts render differently per OS), so `yarn test:visual` always runs in the
+  Playwright Docker image, locally and in CI. Diffs of a failed run are in `.storybook/test-results/`.
+
 ## Environment Variables
 
 Create a `.env` file in the root directory with the following variables:

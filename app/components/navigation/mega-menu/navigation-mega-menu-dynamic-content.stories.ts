@@ -13,6 +13,8 @@ const meta = {
       '<ul class="level-3-items nav"><story /></ul></li></div></ul></nav></div>'
   })],
   parameters: {
+    // a11y debt (list, listitem): fix the component, then delete this line
+    a11y: { test: 'todo' },
     layout: 'fullscreen',
     api: dynamicContentApi,
     // Each story mocks the API differently; render them in separate iframes on the docs page

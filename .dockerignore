@@ -17,6 +17,8 @@ node_modules
 .cache
 dist
 storybook-static
+.storybook/test-results
+.storybook/__screenshots__
 
 # Logs
 logs

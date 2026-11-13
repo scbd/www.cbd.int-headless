@@ -9,7 +9,11 @@ const meta = {
   component: MeetingSearch,
   args: { onSearch: fn() },
   // The subject select loads its options
-  parameters: { api: { [`${SUBJECTS}/${SUBJECTS_DOMAIN}`]: subjects } }
+  parameters: {
+    api: { [`${SUBJECTS}/${SUBJECTS_DOMAIN}`]: subjects },
+    // a11y debt (color-contrast, image-redundant-alt): fix the component, then delete this line
+    a11y: { test: 'todo' }
+  }
 } satisfies Meta<typeof MeetingSearch>
 
 export default meta

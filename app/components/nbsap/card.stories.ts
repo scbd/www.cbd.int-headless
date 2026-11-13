@@ -5,7 +5,9 @@ import { nbsapLongTitle } from '~~/.storybook/fixtures/cards-extra'
 
 const meta = {
   component: NbsapCard,
-  args: { nbsap: nbsap1 }
+  args: { nbsap: nbsap1 },
+  // a11y debt (color-contrast): fix the component, then delete this line
+  parameters: { a11y: { test: 'todo' } }
 } satisfies Meta<typeof NbsapCard>
 
 export default meta

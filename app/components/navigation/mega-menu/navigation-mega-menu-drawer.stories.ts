@@ -14,6 +14,8 @@ const meta = {
   }),
   decorators: [() => ({ template: '<div class="cus-mega-menu"><story /></div>' })],
   parameters: {
+    // a11y debt (list, listitem): fix the component, then delete this line
+    a11y: { test: 'todo' },
     layout: 'fullscreen',
     api: megaMenuApi,
     // Each story mocks the API differently; render them in separate iframes on the docs page

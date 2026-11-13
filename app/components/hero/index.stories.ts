@@ -6,6 +6,8 @@ import { ARTICLES } from '~~/constants/api-paths'
 const meta = {
   component: Hero,
   parameters: {
+    // a11y debt (color-contrast): fix the component, then delete this line
+    a11y: { test: 'todo' },
     api: { [ARTICLES]: { total: 3, rows: [article1, article2, article3] } },
     // Each story mocks the API differently; render them in separate iframes on the docs page
     docs: { story: { inline: false, iframeHeight: 640 } }

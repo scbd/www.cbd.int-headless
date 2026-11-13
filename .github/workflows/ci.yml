@@ -45,6 +45,22 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile --network-concurrency 1
       - run: yarn build-storybook
+      # Every story as a browser test: render, play function, a11y checks
+      - run: yarn playwright install --with-deps chromium
+      - run: yarn test
+
+  visual:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # Same Docker image as `yarn test:visual` locally, so screenshots match the committed baselines
+      - run: sh .storybook/visual.sh
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-diffs
+          path: .storybook/test-results
 
   build:
     needs: lint
