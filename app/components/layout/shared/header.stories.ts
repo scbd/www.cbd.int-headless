@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook-vue/nuxt'
 import LayoutSharedHeader from './header.vue'
+import NavigationMegaMenu from '../../navigation/mega-menu/index.vue'
 import { megaMenuApi } from '~~/.storybook/fixtures/navigation-extra'
 
 const meta = {
@@ -15,11 +16,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-// As layouts/home.vue fills the slot
+// As layouts/home.vue fills the slot. Story templates compile at runtime, so Nuxt's
+// auto-registered components must be imported explicitly
 export const WithMegaMenu: Story = {
   render: (args) => ({
-    components: { LayoutSharedHeader },
+    components: { LayoutSharedHeader, NavigationMegaMenu },
     setup: () => ({ args }),
-    template: '<LayoutSharedHeader v-bind="args"><navigation-mega-menu /></LayoutSharedHeader>'
+    template: '<LayoutSharedHeader v-bind="args"><NavigationMegaMenu /></LayoutSharedHeader>'
   })
 }
