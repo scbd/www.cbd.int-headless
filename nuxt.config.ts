@@ -23,8 +23,29 @@ export default defineNuxtConfig({
     'nuxt-gtag',
     '@nuxtjs/robots',
     '@nuxtjs/i18n',
-    '@nuxt/image'
+    '@nuxt/image',
+    'nuxt-security'
   ],
+  security: {
+    // Phase 1: report only. Flip to false once dev is clean.
+    contentSecurityPolicyReportOnly: true,
+    headers: {
+      // Prod default 'credentialless' blocks YouTube/if-cdn iframes (dev default differs, so it only breaks in prod)
+      crossOriginEmbedderPolicy: false,
+      // Default 'no-referrer' breaks YouTube embeds (error 153)
+      referrerPolicy: 'strict-origin-when-cross-origin',
+      // Default fullscreen=() kills fullscreen on embedded videos
+      permissionsPolicy: { fullscreen: '*' },
+      contentSecurityPolicy: {
+        // Drupal body HTML references external images; GA uses image beacons
+        'img-src': ["'self'", 'data:', 'https:']
+      }
+    },
+    // Per-instance memory, keyed on client-spoofable X-Forwarded-For, one bucket per IP for all routes. Do it at nginx if needed.
+    rateLimiter: false,
+    // Rejects search input like "a < b" with 400; output is already escaped by Vue + DOMPurify
+    xssValidator: false
+  },
   site: { indexable: false },
   vite: {
     plugins: [
