@@ -34,6 +34,18 @@ jobs:
       - run: yarn install --frozen-lockfile --network-concurrency 1
       - run: yarn lint
 
+  storybook:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: yarn
+      - run: yarn install --frozen-lockfile --network-concurrency 1
+      - run: yarn build-storybook
+
   build:
     needs: lint
     runs-on: ubuntu-latest
