@@ -5,7 +5,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   typescript: {
     strict: true,
-    typeCheck: true,
+    // Storybook loads this config with the checker plugin, which breaks its Vite server (nuxt-modules/storybook#835)
+    typeCheck: process.env.STORYBOOK !== 'true',
     tsConfig: {
       include: [
         '../services/**/*',
